@@ -8,6 +8,7 @@ import falgImg from "../../images/Group 34168.svg"
 import googleImg from "../../images/google.svg"
 import linkedIn from "../../images/Group.svg"
 import appleImg from "../../images/Group 34165.svg"
+import Link from 'next/link'
 
 const SignInPage = () => {
     return (
@@ -26,7 +27,9 @@ const SignInPage = () => {
                         </div>
                         <div className='xl:w-[80%] w-[70%]'><input type="text" name="" id="" className='border border-[#868E97] w-full py-3 outline-0 px-5' /></div>
                     </div>
+                    <Link href={'/verification'}>
                     <div className='bg-primary text-white flex justify-center items-center py-3 rounded-lg xl:text-lg text-xs font-semibold cursor-pointer'><button className='tracking-widest'>Verify</button></div>
+                    </Link>
                     <div className='text-center md:text-base text-sm text-[#383838] font-semibold tracking-widest mt-10 mb-8 '><h2>or Sign In with</h2></div>
                     <div className='flex items-center justify-center gap-x-6'>
                         <div className='sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer' ><Image src={googleImg} alt='' height={1000} width={1000} className='h-full w-full object-fill'/></div>

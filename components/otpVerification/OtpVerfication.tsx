@@ -7,6 +7,7 @@ import falgImg from "../../images/Group 34168.svg"
 import googleImg from "../../images/google.svg"
 import linkedIn from "../../images/Group.svg"
 import appleImg from "../../images/Group 34165.svg"
+import Link from 'next/link'
 
 const OtpVerfication = () => {
     return (
@@ -31,7 +32,9 @@ const OtpVerfication = () => {
                    <div className='mt-6 text-[#868E97] sm:text-sm text-xs font-semibold mb-12'><h4>Resend code (20 sec)</h4></div>
 
                    </div>
+                   <Link href={"/"}>
                     <div className='bg-primary text-white flex justify-center items-center py-3 rounded-lg xl:text-lg text-xs font-semibold cursor-pointer '><button className='tracking-widest'>Verify</button></div>
+                    </Link>
                 </div>
             </div>
         </>

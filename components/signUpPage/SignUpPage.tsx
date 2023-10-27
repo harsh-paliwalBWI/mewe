@@ -6,6 +6,7 @@ import checkImg from "../../images/Vector 57.svg"
 import googleImg from "../../images/google.svg"
 import linkedIn from "../../images/Group.svg"
 import appleImg from "../../images/Group 34165.svg"
+import Link from 'next/link'
 
 const SignUpPage = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -52,7 +53,9 @@ const SignUpPage = () => {
               <div className="sm:text-sm text-xs w-fit text-gray-600 tracking-widest font-semibold">By signing in, You agree to our <span className=" text-primary font-semibold">Terms and Conditions</span> and <span className=" text-primary font-semibold">Privacy Policy.</span></div>
             </div>
           </div>
+          <Link href={"/signin"}>
           <div className='bg-primary text-white flex justify-center items-center py-4 rounded-lg xl:text-base text-xs font-semibold cursor-pointer'><button className='tracking-widest'>Sign Up</button></div>
+          </Link>
           <div className='text-center md:text-base text-sm text-[#383838] font-semibold tracking-widest mt-10 mb-8'><h2>or Sign In with</h2></div>
                     <div className='flex items-center justify-center gap-x-6'>
                         <div className='sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer' ><Image src={googleImg} alt='' height={1000} width={1000} className='h-full w-full object-fill'/></div>
