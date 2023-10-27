@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import 'antd/dist/antd.css'; */
+
 
 /* :root {
   --foreground-rgb: 0, 0, 0;
@@ -25,3 +27,16 @@ body {
     )
     rgb(var(--background-start-rgb));
 } */
+.chat-container{
+  box-shadow: 0px 4px 79px 6px rgba(0, 0, 0, 0.4);
+
+}
+.msg-container input[type="text"]::placeholder{
+  color: #FFFFFF;
+  font-size: small;
+}
+.search-container input[type="text"]::placeholder{
+color:#5c636a;
+  font-size: medium;
+  font-weight: 400;
+}
