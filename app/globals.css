@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "../assets/flaticons/flaticon_shein.css";
+@import "../assets/flaticons/flaticon_mycollection.css";
 
 /* :root {
   --foreground-rgb: 0, 0, 0;

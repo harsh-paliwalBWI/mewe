@@ -1,0 +1,205 @@
+$flaticon_mycollection-font: "flaticon_mycollection";
+
+@font-face {
+    font-family: $flaticon_mycollection-font;
+    src: url("./flaticon_mycollection.ttf?3b6cc60b6fe89ae26036fa35a1aa840d") format("truetype"),
+url("./flaticon_mycollection.woff?3b6cc60b6fe89ae26036fa35a1aa840d") format("woff"),
+url("./flaticon_mycollection.woff2?3b6cc60b6fe89ae26036fa35a1aa840d") format("woff2"),
+url("./flaticon_mycollection.eot?3b6cc60b6fe89ae26036fa35a1aa840d#iefix") format("embedded-opentype"),
+url("./flaticon_mycollection.svg?3b6cc60b6fe89ae26036fa35a1aa840d#flaticon_mycollection") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon_mycollection !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon_mycollection-map: (
+    "notification": "\f101",
+    "add-user": "\f102",
+    "user": "\f103",
+    "readed": "\f104",
+    "post": "\f105",
+    "play": "\f106",
+    "phone": "\f107",
+    "options": "\f108",
+    "instagram": "\f109",
+    "healthcare": "\f10a",
+    "calander": "\f10b",
+    "office": "\f10c",
+    "arrow-right": "\f10d",
+    "twitter-1": "\f10e",
+    "twitter": "\f10f",
+    "travel": "\f110",
+    "technology": "\f111",
+    "support": "\f112",
+    "setting": "\f113",
+    "send": "\f114",
+    "search": "\f115",
+    "bookmark": "\f116",
+    "plus": "\f117",
+    "clock": "\f118",
+    "close": "\f119",
+    "help-1": "\f11a",
+    "email": "\f11b",
+    "entertainment": "\f11c",
+    "food": "\f11d",
+    "industries": "\f11e",
+    "linkedin": "\f11f",
+    "down-right-2": "\f120",
+    "map": "\f121",
+    "education": "\f122",
+    "help": "\f123",
+    "heart": "\f124",
+    "edit": "\f125",
+    "fintech": "\f126",
+    "down-arrow": "\f127",
+    "placeholder": "\f128",
+    "location": "\f129",
+    "verify": "\f12a",
+    "notificaiton": "\f12b",
+    "chat": "\f12c",
+    "exit": "\f12d",
+);
+
+.flaticon-notification:before {
+    content: map-get($flaticon_mycollection-map, "notification");
+}
+.flaticon-add-user:before {
+    content: map-get($flaticon_mycollection-map, "add-user");
+}
+.flaticon-user:before {
+    content: map-get($flaticon_mycollection-map, "user");
+}
+.flaticon-readed:before {
+    content: map-get($flaticon_mycollection-map, "readed");
+}
+.flaticon-post:before {
+    content: map-get($flaticon_mycollection-map, "post");
+}
+.flaticon-play:before {
+    content: map-get($flaticon_mycollection-map, "play");
+}
+.flaticon-phone:before {
+    content: map-get($flaticon_mycollection-map, "phone");
+}
+.flaticon-options:before {
+    content: map-get($flaticon_mycollection-map, "options");
+}
+.flaticon-instagram:before {
+    content: map-get($flaticon_mycollection-map, "instagram");
+}
+.flaticon-healthcare:before {
+    content: map-get($flaticon_mycollection-map, "healthcare");
+}
+.flaticon-calander:before {
+    content: map-get($flaticon_mycollection-map, "calander");
+}
+.flaticon-office:before {
+    content: map-get($flaticon_mycollection-map, "office");
+}
+.flaticon-arrow-right:before {
+    content: map-get($flaticon_mycollection-map, "arrow-right");
+}
+.flaticon-twitter-1:before {
+    content: map-get($flaticon_mycollection-map, "twitter-1");
+}
+.flaticon-twitter:before {
+    content: map-get($flaticon_mycollection-map, "twitter");
+}
+.flaticon-travel:before {
+    content: map-get($flaticon_mycollection-map, "travel");
+}
+.flaticon-technology:before {
+    content: map-get($flaticon_mycollection-map, "technology");
+}
+.flaticon-support:before {
+    content: map-get($flaticon_mycollection-map, "support");
+}
+.flaticon-setting:before {
+    content: map-get($flaticon_mycollection-map, "setting");
+}
+.flaticon-send:before {
+    content: map-get($flaticon_mycollection-map, "send");
+}
+.flaticon-search:before {
+    content: map-get($flaticon_mycollection-map, "search");
+}
+.flaticon-bookmark:before {
+    content: map-get($flaticon_mycollection-map, "bookmark");
+}
+.flaticon-plus:before {
+    content: map-get($flaticon_mycollection-map, "plus");
+}
+.flaticon-clock:before {
+    content: map-get($flaticon_mycollection-map, "clock");
+}
+.flaticon-close:before {
+    content: map-get($flaticon_mycollection-map, "close");
+}
+.flaticon-help-1:before {
+    content: map-get($flaticon_mycollection-map, "help-1");
+}
+.flaticon-email:before {
+    content: map-get($flaticon_mycollection-map, "email");
+}
+.flaticon-entertainment:before {
+    content: map-get($flaticon_mycollection-map, "entertainment");
+}
+.flaticon-food:before {
+    content: map-get($flaticon_mycollection-map, "food");
+}
+.flaticon-industries:before {
+    content: map-get($flaticon_mycollection-map, "industries");
+}
+.flaticon-linkedin:before {
+    content: map-get($flaticon_mycollection-map, "linkedin");
+}
+.flaticon-down-right-2:before {
+    content: map-get($flaticon_mycollection-map, "down-right-2");
+}
+.flaticon-map:before {
+    content: map-get($flaticon_mycollection-map, "map");
+}
+.flaticon-education:before {
+    content: map-get($flaticon_mycollection-map, "education");
+}
+.flaticon-help:before {
+    content: map-get($flaticon_mycollection-map, "help");
+}
+.flaticon-heart:before {
+    content: map-get($flaticon_mycollection-map, "heart");
+}
+.flaticon-edit:before {
+    content: map-get($flaticon_mycollection-map, "edit");
+}
+.flaticon-fintech:before {
+    content: map-get($flaticon_mycollection-map, "fintech");
+}
+.flaticon-down-arrow:before {
+    content: map-get($flaticon_mycollection-map, "down-arrow");
+}
+.flaticon-placeholder:before {
+    content: map-get($flaticon_mycollection-map, "placeholder");
+}
+.flaticon-location:before {
+    content: map-get($flaticon_mycollection-map, "location");
+}
+.flaticon-verify:before {
+    content: map-get($flaticon_mycollection-map, "verify");
+}
+.flaticon-notificaiton:before {
+    content: map-get($flaticon_mycollection-map, "notificaiton");
+}
+.flaticon-chat:before {
+    content: map-get($flaticon_mycollection-map, "chat");
+}
+.flaticon-exit:before {
+    content: map-get($flaticon_mycollection-map, "exit");
+}
