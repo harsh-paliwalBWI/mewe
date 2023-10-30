@@ -9,16 +9,16 @@ import CategoryCard from "@/components/categorycard/CategoryCard";
 
 const Category = () => {
   return (
-    <div className="px-body flex flex-col gap-10 mt-10">
-      <div className="flex justify-between ">
-        <h1 className="opacity-80 text-black text-4xl font-semibold ">
+    <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-16 sm:mt-24 md:mt-32">
+      <div className="flex justify-between items-center">
+        <h1 className="opacity-80 text-black md:text-4xl sm:text-3xl text-2xl font-semibold ">
           Categories
         </h1>
-        <p className="opacity-80 text-black text-xl font-medium underline underline-offset-2">
+        <p className="opacity-80 text-black md:text-xl sm:text-lg text-base font-medium underline underline-offset-2 cursor-pointer">
           View all
         </p>
       </div>
-      <div className="grid w-full  xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-5 sm:grid-cols-4   grid-cols-3 gap-y-6  sm:gap-y-8  md:gap-y-10 lg:gap-y-12   gap-x-6  sm:gap-x-8  md:gap-x-10 lg:gap-x-12   border-2 border-red-800">
+      <div className="grid w-full  xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-5 sm:grid-cols-4   grid-cols-3 gap-y-6  sm:gap-y-8  md:gap-y-10 lg:gap-y-12   gap-x-6  sm:gap-x-8  md:gap-x-10 lg:gap-x-12   ">
         <CategoryCard />
         <CategoryCard />
         <CategoryCard />

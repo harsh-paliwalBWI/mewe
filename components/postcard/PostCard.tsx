@@ -8,61 +8,90 @@ import img2 from "../../images/modern-luxury-hotel-office-reception-lounge-with-
 
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
-import { Carousel } from 'antd';
+import { Carousel } from "antd";
 
 const PostCard = () => {
   return (
-    <div className="flex flex-col  gap-1 sm:gap-2 md:gap-3  bg-[#f7f9fb]   p-6">
-      {/* Header Section */}
+    <div className="flex flex-col justify-center gap-1 sm:gap-2 md:gap-3  bg-[#f7f9fb] p-4 sm:p-6 md:p-8 ">
       <div className=" flex items-center justify-between ">
-      <div className=" flex items-center  gap-4">
-        <div className="h-16 w-16  rounded-full  overflow-hidden">
-          <Image src={profile} alt="" className="h-full w-full object-cover " />
-        </div>
-        <div className="flex flex-col gap-1 border-2  border-green-800">
-          <div className="flex  gap-3 items-center border-2 border-red-800">
-            <h2 className="text-[#205d9d] text-lg font-medium border-2 border-yellow-800">
-              Code Fusion
-            </h2>
-            <span className="h-1.5 w-1.5 bg-[#205d9d] aspect-square rounded-full text-center"></span>
-            <p className="  text-[#626565] text-base font-medium  h-fit ">
-              5mins ago
+        <div className=" flex items-center  gap-2 sm:gap-3 md:gap-4 ">
+          <div className="w-8 h-8 sm:w-12 sm:h-12  md:w-16 md:h-16  rounded-full  overflow-hidden">
+            <Image
+              src={profile}
+              alt=""
+              className="h-full w-full object-cover "
+            />
+          </div>
+          <div className="flex flex-col gap-0.5 md:gap-1 ">
+            <div className="flex  gap-1 sm:gap-2 md:gap-3 items-center ">
+              <h2 className="text-[#205d9d] text-sm sm:text-base md:text-lg font-medium ">
+                Code Fusion
+              </h2>
+              <span className="h-0.5 w-0.5 sm:h-1 sm:w-1 md:h-1.5 md:w-1.5 bg-[#205d9d] aspect-square rounded-full text-center"></span>
+              <p className="  text-[#626565] md:text-base sm:text-sm text-xs font-medium  h-fit ">
+                5mins ago
+              </p>
+            </div>
+
+            <p className=" text-[#626565] md:text-base sm:text-sm text-xs font-medium">
+              @codefusion243
             </p>
           </div>
-
-          <p className=" text-[#626565] text-base font-medium">@codefusion243</p>
         </div>
-      </div>
-      <FlatIcon className="flaticon-star text-2xl  text-[#054A91]  " />
+        <FlatIcon className="flaticon-options md:text-3xl sm:text-2xl text-xl text-[#054A91]  " />
       </div>
 
-      {/* Image Carousel Section */}
-      <div className="imageCarousel mb-4"> 
-       <Carousel autoplay>
-       <div className="h-64 w-full    overflow-hidden">
-          <Image src={img2} alt="" className="h-full w-full object-contain " />
-        </div>
-        <div className="h-64 w-full  overflow-hidden">
-          <Image src={img2} alt="" className="h-full w-full object-contain " />
-        </div>
-        <div className="h-64 w-full  overflow-hidden">
-          <Image src={img2} alt="" className="h-full w-full object-contain " />
-        </div>
+      <div className="relative rounded sm:rounded-lg md:rounded-xl">
+        <Carousel>
+          <div className="h-auto w-full  rounded sm:rounded-lg md:rounded-xl  overflow-hidden ">
+            <Image
+              src={img2}
+              alt=""
+              className="h-full w-full object-contain "
+            />
+          </div>
+          <div className="h-auto w-full  rounded sm:rounded-lg md:rounded-xl overflow-hidden ">
+            <Image
+              src={img2}
+              alt=""
+              className="h-full w-full object-contain "
+            />
+          </div>
+          <div className="h-auto w-full rounded sm:rounded-lg md:rounded-xl overflow-hidden ">
+            <Image
+              src={img2}
+              alt=""
+              className="h-full w-full object-contain "
+            />
+          </div>
         </Carousel>
+
+        <div className=" flex justify-between bg-[#054a91] py-1 sm:py-2 md:py-3 px-3 sm:px-4 md:px-5  absolute bottom-0 transform translate-y-1/2 w-full  rounded-b sm:rounded-b-lg md:rounded-b-xl">
+          <div className=" flex gap-2 sm:gap-3 md:gap-4">
+            <FlatIcon className="flaticon-heart md:text-2xl sm:text-xl text-lg font-bold text-white " />
+            <FlatIcon className="flaticon-chat md:text-2xl sm:text-xl text-lg font-bold text-white " />
+          </div>
+
+          <FlatIcon className="flaticon-send md:text-2xl sm:text-xl text-lg font-bold text-white " />
         </div>
-
-      {/* Like, Comment, Share Icons Section */}
-      <div className="icons flex justify-between mb-4">
-        <FlatIcon className="flaticon-heart text-4xl font-bold text-white " />
-        <FlatIcon className="flaticon-heart text-4xl font-bold text-white " />
-        <FlatIcon className="flaticon-heart text-4xl font-bold text-white " />
       </div>
 
-      {/* Third Section */}
-      <div className="content">
-        <h2 className="text-xl font-semibold mb-2">heading</h2>
-        <p className="text-gray-700">paragraph</p>
+      <div className="flex-col gap-1 sm:gap-2 md:gap-3 mt-6 sm:mt-8 md:mt-10 mb-2 sm:mb-3 md:mb-4 ">
+        <h2 className="font-semibold  text-gray-800 md:text-xl sm:text-lg text-base ">
+          Deliver Conference
+        </h2>
+        <div className=" text-gray-400 md:text-xs sm:text-[10px] text-[8px] font-normal ">
+          Eth2Vec: Learning contract-wide code representations for vulnerability
+          detection on Ethereum smart cEth2Vec: Learning contract-wide code
+          representations for vulnerability detection on Ethereum smart c
+        </div>
       </div>
+
+      <input
+        className=" border-2 border-gray-300  w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 text-gray-300 
+        text-[10px] sm:text-xs md:text-sm font-normal bg-white rounded-full"
+        placeholder="Write something.."
+      />
     </div>
   );
 };

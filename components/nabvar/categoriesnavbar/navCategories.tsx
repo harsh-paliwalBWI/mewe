@@ -3,17 +3,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-
 import FlatIcon from "../../flatIcon/flatIcon";
 
-const data = [
-  "About",
-  "Explore",
-  "Schemes",
-  "Financials",
-  "Account",
- 
-];
+const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 
 const Categories = () => {
   return (
@@ -30,13 +22,18 @@ const Categories = () => {
         <FlatIcon className="flaticon-arrow-down md:text-xs text-[10px] font-semibold" />
         </div>
         <Link href={"/account"}>
-        <div className="text-[#cbcbcb]"><h1 >Account</h1></div>
+          <div className="text-[#cbcbcb] cursor-pointer">
+            <h1 className="md:text-base sm:text-sm text-xs ">Account</h1>
+          </div>
         </Link>
         <Link href={"/welcome"}>
-        <div className="text-[#cbcbcb]"><h1 >Log in / Sign up</h1></div>
+          <div className="text-[#cbcbcb] cursor-pointer">
+            <h1 className="md:text-base sm:text-sm text-xs ">
+              Log in / Sign up
+            </h1>
+          </div>
         </Link>
       </div>
-      
     </div>
   );
 };

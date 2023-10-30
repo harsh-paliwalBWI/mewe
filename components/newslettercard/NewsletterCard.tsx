@@ -12,35 +12,35 @@ import FlatIcon from "../flatIcon/flatIcon";
 
 const NewsletterCard = () => {
   return (
-    <div className="  flex flex-row justify-between border-2 border-black p-8  bg-[#f7f9fb]">
-      <div className=" w-[40%]  border-2 border-black ">
-        <div className="w-full h-auto ">
+    <div className="  flex flex-col lg:flex-row justify-between gap-1 sm:gap-2 md:gap-3  p-3 sm:p-5 md:p-7 bg-[#f7f9fb]">
+<div className="w-full lg:w-[41%] overflow-hidden flex justify-center">
+        <div className="w-full  lg:w-64 h-36 sm:h-48 md:h-60 lg:h-72 ">
           <Image
             src={startup}
             alt=""
             width={1000}
             height={1000}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover  "
           />
-        </div>
-      </div>
-
-      <div className=" w-[56%]  border-2 border-black ">
-        <div className="  flex flex-col h-full justify-between border-2 border-black">
-          <div className="  flex flex-col gap-3  justify-between ">
-            <h3 className=" text-black text-lg font-semibold">
+ 
+      </div>   
+           </div>
+      <div className=" w-full lg:w-[55%]   ">
+        <div className="  flex flex-col h-full gap-1 sm:gap-2 md:gap-3 justify-between ">
+          <div className="  flex flex-col gap-1 sm:gap-2 md:gap-3  justify-between ">
+            <h3 className=" text-black text-sm sm:text-base md:text-lg font-semibold">
               Nemo enim ipsam voluptatem quia voluptas sit aspernatur
             </h3>
-            <div className="opacity-70 text-black text-lg font-normal ">
+            <div className="opacity-70 text-black text-sm sm:text-base md:text-lg font-normal ">
               Ut enim ad minima veniam, quis nostrum exercitationem ullam
               corporis suscipit laboriosam, nisi ut al
             </div>
           </div>
-          <div className="w-full  bg-[#054A91] rounded-[5px] flex justify-between px-3 py-3">
-            <div className="text-white text-sm sm:text-base md:text-lg font-normal">
+          <div className="w-full  bg-[#054A91] rounded-[5px] flex justify-between px-1 sm:px-2 md:px-3 py-1 sm:py-2 md:py-3">
+            <div className="text-white text-sm sm:text-base md:text-lg font-normal cursor-pointer">
               Continue Reading
             </div>
-            <FlatIcon className="flaticon-left-arrow md:text-xl text-lg text-white rotate-180" />
+            <FlatIcon className="flaticon-arrow-right md:text-xl sm:text-lg text-base text-white " />
           </div>
         </div>
       </div>
