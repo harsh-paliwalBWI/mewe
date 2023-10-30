@@ -76,7 +76,7 @@ const Posts = () => {
     </div>
 
   
-        <Carousel responsive={responsiveSettings}  >
+        <Carousel responsive={responsiveSettings} className="border border-primary" >
           <div className="px-4"><PostCard /></div>
           <div className="px-4"><PostCard /></div>
           <div className="px-4"><PostCard /></div>

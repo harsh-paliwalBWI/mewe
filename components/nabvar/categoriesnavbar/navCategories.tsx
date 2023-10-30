@@ -19,7 +19,9 @@ const Categories = () => {
   return (
     <div className="w-full bg-[#272726] px-body flex justify-center items-center   py-3">
       <div className="flex justify-between gap-6  w-full md:w-[80%] lg:w-[50%]  border-2 border-white  ">
+        <Link href={"/about"}>
         <div className="text-[#cbcbcb]"><h1 >About</h1></div>
+        </Link>
         <div className="text-[#cbcbcb]"><h1 >Explore</h1></div>
         <div className="text-[#cbcbcb] flex gap-2"><h1 >Schemes</h1>
          <FlatIcon className="flaticon-arrow-down md:text-xs text-[10px] font-semibold" />

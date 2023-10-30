@@ -18,9 +18,9 @@ const WelcomePage = () => {
                     <div className='flex justify-center items-center xl:text-3xl md:text-2xl text-xl font-bold  tracking-widest'><h1> Welcome <span className='font-semibold'>to</span> <span className='text-primary font-bold'>ME WE</span></h1></div>
                    <div className='flex justify-center items-center text-center text-gray-500 font-semibold xl:text-base text-xs mt-6 tracking-widest md:mb-32 mb-16'><h4>Full | Mischievous dramedy featuring accordion,<br /> tuba & pizzicato violin</h4></div>
                   <div className='flex flex-col gap-5'>
-                    {/* <Link href={"/signin"}> */}
+                    <Link href={"/signup"}>
                    <div className=' border border-primary text-primary flex justify-center items-center py-3 rounded-full xl:text-base text-xs font-semibold w-[85%] mx-auto cursor-pointer'><button className='tracking-widest'>Log In</button></div>
-                   {/* </Link> */}
+                   </Link>
                    <Link href={"/signup"}>
                     <div className='bg-primary text-white flex justify-center items-center py-3 rounded-full xl:text-base text-xs font-semibold w-[85%] mx-auto cursor-pointer '><button className='tracking-widest'>Sign Up</button></div>
                     </Link>

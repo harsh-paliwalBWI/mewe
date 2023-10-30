@@ -1,6 +1,7 @@
 import React from 'react'
 import profileImg from "../../../images/Ellipse 31.svg"
 import Image from 'next/image'
+import FlatIcon from '@/components/flatIcon/flatIcon'
 
 const ChatsPage = () => {
     return (
@@ -8,7 +9,7 @@ const ChatsPage = () => {
             <div className='flex justify-between items-center bg-white  px-4 py-3 chat-container'>
                 <div className='text-2xl font-bold' >Chats</div>
                 <div className='flex items-center justify-end gap-x-10  w-fit '>
-                    <div className='bg-[#F3F7FA]  flex items-center gap-x-4 h-fit rounded-full px-5 border w-[50%] search-container'><div>icon</div><input type="text" className='bg-transparent py-1.5 ' placeholder='Search' /></div>
+                    <div className='bg-[#F3F7FA]  flex items-center gap-x-4 h-fit rounded-full px-5 border w-[50%] search-container'><div> <FlatIcon className="flaticon-search md:text-lg text-[#5c636a] font-semibold" /></div><input type="text" className='bg-transparent py-1.5 ' placeholder='Search' /></div>
                     <div className='bg-primary text-lg text-white cursor-pointer px-10 py-3 rounded-sm'>+ New Chat</div>
                 </div>
             </div>
