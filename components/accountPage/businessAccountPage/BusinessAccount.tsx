@@ -24,7 +24,7 @@ const BusinessAccount = () => {
   const inputStyle = "rounded-lg px-3 py-3 w-full outline-0"
 
   return (
-    <div className='  h-fit py-2 md:w-[63%] w-[100%] relative z-0'>
+    <div className='  h-fit py-2 md:w-[63%] w-[100%] relative z-0 mb-10'>
       <div className='text-primary font-bold xl:text-2xl text-xl '><h1>Create Business Account</h1></div>
       <div className='text-[#868E97] xl:text-base text-sm font-medium  mb-8 mt-4'><p>Fill in all the details to get started.</p></div>
       <div className='text-primary font-bold xl:text-lg text-base  '><h2>Basic</h2></div>

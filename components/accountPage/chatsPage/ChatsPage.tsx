@@ -13,7 +13,7 @@ import Link from 'next/link'
 
 const ChatsPage = () => {
     return (
-        <div className='w-[70%]  h-full '>
+        <div className='w-[70%]  h-full mb-32'>
             <div className='flex justify-between items-center gap-5 bg-white  px-4 py-3 chat-container rounded-md'>
                 <div className='text-2xl font-bold px-2' >Chats</div>
                 <div className='flex items-center justify-end gap-x-10  w-full  '>
