@@ -21,9 +21,9 @@ const Footer = () => {
     {
       heading: "SITEMAP",
       subLinks: [
-        { name: "Home", href: "home" },
+        { name: "Home", href: "/" },
         { name: "About", href: "about-our-company" },
-        { name: "Explore", href: "explore" },
+        { name: "Explore", href: "/" },
         { name: "Scheme", href: "schemes" },
         { name: "Financials", href: "financials" },
         { name: "Account", href: "account" },
