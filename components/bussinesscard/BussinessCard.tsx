@@ -9,9 +9,11 @@ import bird from "../../images/Ellipse 52.svg";
 import verify from "../../images/verify 2.svg";
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
+import Link from "next/link";
 
 const BussinessCard = () => {
   return (
+    <Link href={"/about"}>
     <div className="flex flex-col justify-between items-center gap-1 sm:gap-2 md:gap-3  bg-[#f6f9fd] rounded-[5px] ">
       <div className="relative rounded-[5px] w-full h-auto flex items-center justify-center  ">
         <Image
@@ -24,7 +26,7 @@ const BussinessCard = () => {
                 "
         />
 
-        <div className="absolute  top-0 right-0 transform -translate-x-1/2 translate-y-1/2 ">
+        <div className="absolute  top-0 right-0 transform -translate-x-1/2 translate-y-1/2  cursor-pointer">
           <FlatIcon className="flaticon-close  md:text-xl sm:text-lg text-base text-black" />
         </div>
         <div className="w-12 h-12 sm:w-16 sm:h-16  md:w-20 md:h-20 bottom-0 md:translate-y-1/2 sm:translate-y-1/2 translate-y-1/2 absolute ">
@@ -72,6 +74,7 @@ const BussinessCard = () => {
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 
