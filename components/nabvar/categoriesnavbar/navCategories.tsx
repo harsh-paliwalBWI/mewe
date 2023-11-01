@@ -14,7 +14,12 @@ const Categories = () => {
             <h1 className=" ">About</h1>
           </div>
         </Link>
-        <div className={`text-[#CBCBCB] cursor-pointer ${textStyle}`}><h1 >Explore</h1></div>
+        <Link href={"/"} className="">
+          <div className={`text-[#cbcbcb] ${textStyle}`}>
+            <h1 className=" ">Explore</h1>
+          </div>
+        </Link>
+        {/* <div className={`text-[#CBCBCB] cursor-pointer ${textStyle}`}><h1 >Explore</h1></div> */}
         <Link href={"/schemes"}>
         <div className={`text-[#CBCBCB] flex gap-2 items-center cursor-pointer ${textStyle} `}><h1 >Schemes</h1>
          <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />

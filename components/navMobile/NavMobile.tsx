@@ -68,42 +68,42 @@ const Navmobile = () => {
               >
                 Home
               </Link>
-              {/* <Link
-                href={"/financials"}
+              <Link
+                href={"/about-our-company"}
                 className={`${
-                  pathname.includes("financials") && "text-primary"
+                  pathname.includes("about-our-company") && "text-primary"
                 } flex items-center justify-center gap-2  py-[5px]  cursor-pointer `}
                 onClick={() => {
                   setIsMobile(false);
                   document.body.classList.remove("no-scroll");
                 }}
-              > */}
+              >
                 <div className="py-[5px]  cursor-pointer">About</div>
-              {/* </Link> */}
-              {/* <Link
-                href={"/financials"}
+              </Link>
+              <Link
+                href={"/"}
                 className={`${
-                  pathname.includes("financials") && "text-primary"
+                  pathname === "/" && "text-primary" 
                 } flex items-center justify-center gap-2  py-[5px]  cursor-pointer `}
                 onClick={() => {
                   setIsMobile(false);
                   document.body.classList.remove("no-scroll");
                 }}
-              > */}
+              >
                 <div className="py-[5px]  cursor-pointer">Explore</div>
-              {/* </Link> */}
-              {/* <Link
-                href={"/financials"}
+              </Link>
+              <Link
+                href={"/schemes"}
                 className={`${
-                  pathname.includes("financials") && "text-primary"
+                  pathname.includes("schemes") && "text-primary"
                 } flex items-center justify-center gap-2  py-[5px]  cursor-pointer `}
                 onClick={() => {
                   setIsMobile(false);
                   document.body.classList.remove("no-scroll");
                 }}
-              > */}
+              >
                 <div className="py-[5px]  cursor-pointer">Schemes</div>
-              {/* </Link> */}
+              </Link>
               <Link
                 href={"/financials"}
                 className={`${

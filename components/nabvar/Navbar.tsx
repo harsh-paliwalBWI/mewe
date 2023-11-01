@@ -13,7 +13,7 @@ import { log } from "console";
 
 const Navbar =  () => {
   const pathName=usePathname()
-  console.log(pathName,"bfdg");
+  // console.log(pathName,"bfdg");
   
   return (
     <>
