@@ -27,7 +27,7 @@ const StartupList = () => {
       </div>
       <div className="px-body flex md:flex-row flex-col-reverse gap-6 sm:gap-8 md:gap-10 my-4 sm:my-12 md:my-20 justify-between">
         <div className="md:w-[60%] gap-2 sm:gap-4 md:gap-6 flex flex-col ">
-          <h3 className="text-black text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3 md:mb-4">
+          <h3 className="text-black text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 md:mb-4">
             Promoted Startups
           </h3>
 

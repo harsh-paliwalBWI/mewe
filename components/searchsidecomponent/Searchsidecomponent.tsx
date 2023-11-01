@@ -23,7 +23,7 @@ const Searchsidecomponent = () => {
             placeholder="Search"
           />
           <div className=" h-full  py-1 sm:py-2 md:py-3 pl-2 pr-2 text-[#5d5f63] ">
-            <FlatIcon className="flaticon-search text-sm sm:text-base md:text-lg" />
+            <FlatIcon className="flaticon-setting text-base sm:text-lg md:text-xl" />
           </div>
         </div>
 
@@ -36,13 +36,13 @@ const Searchsidecomponent = () => {
             <p className="opacity-60 text-black md:text-base sm:text-sm text-xs font-semibold ">
               Wade Warren
             </p>
-            <FlatIcon className="flaticon-close  md:text-base sm:text-sm text-xs text-black" />
+            <FlatIcon className="flaticon-close  md:text-base sm:text-sm text-xs text-black  cursor-pointer" />
           </div>
           <div className="flex justify-between gap-1 sm:gap-2 md:gap-3">
             <p className="opacity-60 text-black md:text-base sm:text-sm text-xs font-semibold ">
               August webinars
             </p>
-            <FlatIcon className="flaticon-close  md:text-base sm:text-sm text-xs text-black" />
+            <FlatIcon className="flaticon-close  md:text-base sm:text-sm text-xs text-black  cursor-pointer" />
           </div>
         </div>
 

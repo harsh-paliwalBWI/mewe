@@ -15,6 +15,7 @@ const WebniarCard = () => {
         {/* w-full lg: */}
       <div className="w-[42%]  flex justify-center  ">
         <div className="w-full md:w-60 lg:w-72 h-36 sm:h-44 md:h-52 lg:h-60 relative">
+        <div className="absolute bottom-0">
           <Image
             src={bg}
             alt=""
@@ -22,6 +23,7 @@ const WebniarCard = () => {
             height={1000}
             className="w-full h-full object-contain   "
           />
+          </div>
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%]  ">
           <Image
             src={man}
