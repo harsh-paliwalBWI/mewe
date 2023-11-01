@@ -58,7 +58,7 @@ const Footer = () => {
   console.log(pathName,"cbv");
   
   return (
-    <div className={`bg-[#272726] w-full h-fit  `}>
+    <div className={`bg-[#272726] w-full h-fit ${(pathName.includes("welcome") || pathName.includes("signup") || pathName.includes("signin") || pathName.includes("verification"))?"hidden":"block"}  "`}>
       <div className="px-body py-4 sm:py-8 md:py-12  gap-2 flex flex-col md:flex-row justify-between ">
         <div className=" flex gap-3 sm:gap-4 md:gap-5 items-center">
           <div className="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16  ">

@@ -1,8 +1,7 @@
-import SignUpPage from '@/components/signUpPage/SignUpPage'
-import Image from 'next/image'
+import React from 'react';
 import HomeComponent from "../components/homepage/HomeComponent";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="">
 {/* <SignUpPage/> */}

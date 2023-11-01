@@ -8,29 +8,31 @@ import FlatIcon from "../../flatIcon/flatIcon";
 const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 
 const Categories = () => {
+
+  const textStyle="lg:text-base md:text-sm text-xs  md:px-2 "
   return (
-    <div className="w-full bg-[#272726] px-body flex justify-center items-center   py-3">
-      <div className="flex justify-between gap-6  w-full md:w-[80%] lg:w-[50%]  border-2 border-white  ">
-        <Link href={"/about"}>
-        <div className="text-[#cbcbcb]"><h1 >About</h1></div>
+    <div className="w-full bg-[#272726] px-body flex justify-center items-center   py-4 ">
+      <div className="flex justify-center lg:gap-10 md:gap-4 gap-3  w-full w-[100%]  ">
+        <Link href={"/about"} className="">
+        <div className={`text-[#cbcbcb] ${textStyle}`}><h1 >About</h1></div>
         </Link>
-        <div className="text-[#cbcbcb]"><h1 >Explore</h1></div>
-        <div className="text-[#cbcbcb] flex gap-2"><h1 >Schemes</h1>
+        <div className={`text-[#cbcbcb] ${textStyle}`}><h1 >Explore</h1></div>
+        <div className={`text-[#cbcbcb] flex gap-2 items-center ${textStyle} `}><h1 >Schemes</h1>
          <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
          </div>
-         <Link href={"/promote-business"}>
-        <div className="text-[#cbcbcb] flex gap-2"><h1 >Financials</h1>
+         <Link href={"/financials"}>
+        <div className={`text-[#cbcbcb] flex gap-2 ${textStyle} `}><h1 >Financials</h1>
         <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
         </div>
         </Link>
         <Link href={"/account"}>
-          <div className="text-[#cbcbcb] cursor-pointer">
-            <h1 className="md:text-base sm:text-sm text-xs ">Account</h1>
+          <div className={`text-[#cbcbcb] ${textStyle}`}>
+            <h1 className=" ">Account</h1>
           </div>
         </Link>
         <Link href={"/welcome"}>
-          <div className="text-[#cbcbcb] cursor-pointer">
-            <h1 className="md:text-base sm:text-sm text-xs ">
+          <div className={`text-[#cbcbcb] ${textStyle}`}>
+            <h1 className=" ">
               Log in / Sign up
             </h1>
           </div>

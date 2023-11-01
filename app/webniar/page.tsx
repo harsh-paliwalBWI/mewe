@@ -1,5 +1,5 @@
-import WebniarList from '@/components/webniarlist/WebniarList'
 import React from 'react'
+import WebniarList from '@/components/webniarlist/WebniarList'
 
 const Webniar = async() => {
   return (

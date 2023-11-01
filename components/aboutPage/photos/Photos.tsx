@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import img1 from "../../../images/html-system-websites-concept.svg"
 import img2 from "../../../images/html-css-collage-concept-with-person.svg"

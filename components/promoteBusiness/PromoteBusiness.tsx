@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import checkImg from "../../images/Vector 57.svg"
 import blackCheck from "../../images/Vector 38.svg"
 import Image from 'next/image'
@@ -8,6 +9,7 @@ import premiumImg2 from "../../images/premium 2 (2).svg"
 import premiumImg4 from "../../images/blue grp.svg"
 import FlatIcon from '../flatIcon/flatIcon'
 const PromoteBusiness = () => {
+    const [isSwitched,setIsSwitched]=useState(false)
     const data=[{text:"Neque porro quisquam est"},
     {text:"Excepteur sint occaecat cupidatat"},
     {text:"Voluptate velit esse quam nihil molestiae"},
@@ -22,7 +24,7 @@ const PromoteBusiness = () => {
          culpa qui official <br />deserunt mollit anim id es</p></div>
          <div className='flex justify-center items-center gap-3'>
             <div className='text-[#a1a099] font-medium text-sm tracking-wider'><p>Monthly</p></div>
-            <div className='w-[58px] flex items-center justify-end px-1  h-[29px] bg-primary rounded-full'>
+            <div onClick={()=>setIsSwitched((prev)=>!prev)} className={`w-[58px] flex items-center  ${isSwitched?"justify-start":"justify-end"} px-1  h-[29px] bg-primary rounded-full cursor-pointer`}>
             <div className='w-[22px] h-[22px] rounded-full bg-white'></div></div>
             <div className='text-[#a1a099] font-medium text-sm tracking-wider'><p>Yearly</p></div>
             </div>

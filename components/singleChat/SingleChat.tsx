@@ -6,7 +6,7 @@ const SingleChat = () => {
   return (
     <div className='px-body'>
            <div className=' border border-black  w-[100%] relative flex-1  rounded-md px-5 py-5 mt-5 mb-20'>
-                    <div className='min-h-[100vh] h-auto w-full relative'>
+                    <div className='min-h-[80vh] h-auto w-full relative'>
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center gap-4'>
                                 <div className='w-[55px] h-[55px] rounded-full '><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>

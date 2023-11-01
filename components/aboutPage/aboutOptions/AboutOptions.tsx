@@ -13,7 +13,7 @@ interface Props {
 
 const AboutOptions:FC<Props> = ({setSelectedTab,selectedTab}) => {
   const optionStyle="flex gap-x-4 bg-[#F3F7FA] px-4 text-sm font-semibold py-4    cursor-pointer"
-  const optionTabStyle='flex w-full   justify-between xl:text-lg  text-sm font-semibold  items-center'
+  const optionTabStyle='flex w-full   justify-between xl:text-lg  text-sm font-medium  items-center'
 
   return (
     <>
@@ -50,7 +50,7 @@ const AboutOptions:FC<Props> = ({setSelectedTab,selectedTab}) => {
             <FlatIcon className="flaticon-add-user xl:text-2xl text-xl"/><span>Follow</span></button></div>
         <div className='w-[50%] border border-primary text-center rounded-full xl:py-3 py-2 text-primary'><button>Message</button></div>
     </div>
-    <div className='flex flex-col gap-5 xl:py-10 py-5'>
+    <div className='flex flex-col gap-4 xl:py-10 py-5'>
         <div 
         //   onClick={()=>setSelectedTab(1)} 
         className={`${optionTabStyle}`}>

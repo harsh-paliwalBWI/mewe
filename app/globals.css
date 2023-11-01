@@ -45,5 +45,13 @@ color:#5c636a;
     font-size: medium;
     font-weight: 600;
   }
-
+  .no-scroll {
+    overflow: hidden;
+  }
+  .header-search-conatiner input[type="text"]::placeholder{
+    color:#ced3d8;
+    
+    font-size: 14px;
+    font-weight: 400;
+  }
 /* text-[#9bb7d3] */

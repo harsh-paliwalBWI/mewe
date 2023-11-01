@@ -1,6 +1,6 @@
-import AccountPage from '@/components/accountPage/AccountPage'
-import React from 'react'
 
+import React from 'react'
+import AccountPage from '@/components/accountPage/AccountPage'
 const ProfilePage= async() => {
   return (
    <>

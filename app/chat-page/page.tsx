@@ -1,7 +1,7 @@
-import SingleChat from '@/components/singleChat/SingleChat'
-import React from 'react'
 
-const page = () => {
+import React from 'react'
+import SingleChat from '@/components/singleChat/SingleChat'
+const page = async() => {
   return (
     <div>
         <SingleChat/>

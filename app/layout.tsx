@@ -2,10 +2,8 @@ import type { Metadata } from 'next'
 import { Inter,Lexend } from 'next/font/google'
 import './globals.css'
 import Footer from "@/components/footer/Footer";
-
-
 import NavbarClient from '@/components/nabvar/Navclient';
-import { log } from 'console';
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -21,27 +19,13 @@ const lexend = Lexend({
 });
 
 export default  function RootLayout({children,}: {children: React.ReactNode}) {
-
-  
-  
-  // const pathname = children?.props?.childProp?.segment;
-  // const pathName= usePathname();
-  // const router=useRouter()
-  // if(router.pathname != "/pagename" ){
-  //   return 
-  // }
-
   return (
     <html lang="en" className={lexend.variable}>
-     
-      
       <body className="font-lexend">
           <NavbarClient />
           {children}
           <Footer />
-         
        </body>
-
     </html>
   )
 }

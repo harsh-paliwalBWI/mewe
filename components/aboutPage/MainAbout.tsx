@@ -14,7 +14,7 @@ const MainAbout = () => {
 <>
 <div className='px-body '>
     <div className='flex md:flex-row flex-col xl:gap-x-14 gap-x-7 w-full mt-6 mb-20'>
-      <div className='md:w-[40%] w-[100%]'>
+      <div className='md:w-[35%] w-[100%]'>
       <AboutOptions setSelectedTab={setSelectedTab} selectedTab={selectedTab}/>
 
       </div>
