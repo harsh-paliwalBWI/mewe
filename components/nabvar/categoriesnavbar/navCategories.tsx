@@ -15,9 +15,11 @@ const Categories = () => {
           </div>
         </Link>
         <div className={`text-[#CBCBCB] cursor-pointer ${textStyle}`}><h1 >Explore</h1></div>
+        <Link href={"/schemes"}>
         <div className={`text-[#CBCBCB] flex gap-2 items-center cursor-pointer ${textStyle} `}><h1 >Schemes</h1>
          <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
          </div>
+         </Link>
          <Link href={"/financials"}>
         <div className={`text-[#CBCBCB] flex gap-2 ${textStyle} `}><h1 >Financials</h1>
         <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
