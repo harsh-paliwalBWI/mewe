@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import checkImg from "../../images/Vector 57.svg"
+import checkImg from "../../images/Vector 37.svg"
 import blackCheck from "../../images/Vector 38.svg"
 import Image from 'next/image'
 import premiumImg from "../../images/premium 2.svg"
@@ -16,8 +16,7 @@ const PromoteBusiness = () => {
     {text:"Qui dolorem ipsum quia dolor sit amet"},
     {text:"Ut enim ad minima veniam, quis nostrum"}]
   return (
-    <div className='px-body '>
-        
+    <div className='px-body '> 
         <div className='flex justify-center items-center gap-2 sm:mt-8 mt-4 '><div><Image src={premiumImg1} alt=''/></div><h3 className='md:text-lg text-base font-semibold '>PREMIUM</h3></div>
         <div className='md:text-4xl text-xl font-semibold text-center sm:mt-3 mt-2 '><h1>Promote Your Business</h1></div>
         <div className='text-center text-[#7f7f7f] font-medium md:text-lg text-sm my-5 '><p>Excepteur sint occaecat cupidatat non proident, sunt in 
@@ -25,10 +24,10 @@ const PromoteBusiness = () => {
          <div className='flex justify-center items-center gap-3'>
             <div className='text-[#a1a099] font-medium text-sm tracking-wider'><p>Monthly</p></div>
             <div onClick={()=>setIsSwitched((prev)=>!prev)} className={`sm:w-[58px] w-[48px] flex items-center px-1  sm:h-[29px] h-[19px] ${isSwitched?"justify-start":"justify-end"}  bg-primary rounded-full cursor-pointer`}>
-            <div className='sm:w-[22px] w-[11px] h-[22px] rounded-full bg-white'></div></div>
+            <div className='sm:w-[22px] w-[11px] sm:h-[22px] h-[11px] rounded-full bg-white'></div></div>
             <div className='text-[#a1a099] font-medium text-sm tracking-wider'><p>Yearly</p></div>
             </div>
-    <div className=' rounded-tl-xl rounded-tr-xl  sm:my-20 my-5 '>
+    <div className=' rounded-tl-xl rounded-tr-xl  sm:mt-20 mt-5 sm:mb-36 mb-5'>
         <div className='flex sm:flex-row flex-col lg:flex-nowrap sm:flex-wrap  flex-nowrap lg:justify-start sm:justify-center justify-start   items-center gap-x-8 gap-y-4 '>
         <div className='lg:w-[32%] sm:w-[42%] w-[90%]  rounded-tl-xl rounded-tr-xl'>
             <div className='w-full h-[18px] bg-[#A6D6BF] rounded-tl-xl rounded-tr-xl'></div>

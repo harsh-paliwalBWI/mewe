@@ -188,7 +188,7 @@ const BusinessAccount = () => {
               id=""
               className={` ${inputStyle}
                             `}
-              rows={1}
+              rows={2}
             ></textarea>
           </div>
         </div>
@@ -370,10 +370,10 @@ const BusinessAccount = () => {
         </div>
         <div className='text-primary font-bold xl:text-lg text-base  '><h2>Photos and Videos</h2></div>
         <div className='flex items-center gap-8 my-10'>
-          <div className='sm:h-[150px] h-[100px] sm:w-[150px] w-[100px] rounded-lg bg-primary text-white text-6xl flex items-center justify-center font-bold'>+</div>
+          <div className='sm:h-[150px] h-[100px] sm:w-[150px] w-[100px] rounded-lg bg-primary text-white text-7xl flex items-center justify-center font-bold'>+</div>
           <div className='sm:h-[150px] h-[100px] sm:w-[150px] w-[100px] rounded-lg border border-primary border-dashed text-primary text-6xl flex items-center justify-center font-bold'>+</div>
         </div>
-        <div className='flex flex-col gap-10'>
+        <div className='flex flex-col gap-12'>
           <div className='text-primary font-bold xl:text-lg text-base  '><h2>Contact</h2></div>
           <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-5'>
             <div className={`${borderStyle} `}>
@@ -385,7 +385,7 @@ const BusinessAccount = () => {
               <input className={`${inputStyle}`} type="text" id="input" />
             </div>
           </div>
-          <div className='bg-primary text-white text-sm font-medium st text-center rounded-full py-4'><button>Submit</button></div>
+          <div className='bg-primary text-white text-sm font-medium  text-center rounded-full py-4'><button>Submit</button></div>
         </div>
       </div>
     </div>

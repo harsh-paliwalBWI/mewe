@@ -14,20 +14,20 @@ import Link from 'next/link'
 const ChatsPage = () => {
     return (
         <div className='w-[70%]  h-full '>
-            <div className='flex justify-between items-center gap-5 bg-white  px-4 py-3 chat-container'>
-                <div className='text-2xl font-bold' >Chats</div>
+            <div className='flex justify-between items-center gap-5 bg-white  px-4 py-3 chat-container rounded-md'>
+                <div className='text-2xl font-bold px-2' >Chats</div>
                 <div className='flex items-center justify-end gap-x-10  w-full  '>
-                    <div className='bg-[#e5eaf1]  flex items-center gap-x-4 h-fit rounded-full px-5 border w-[32%] search-container'><div> <FlatIcon className="flaticon-search md:text-lg text-[#5c636a] font-semibold" /></div><input type="text" className='bg-transparent py-1.5 ' placeholder='Search' /></div>
+                    <div className='bg-[#e5eaf1]  flex items-center gap-x-2 h-fit rounded-full px-5 border w-[32%] search-container'><div> <FlatIcon className="flaticon-search md:text-xl text-[#5c636a] font-bold" /></div><input type="text" className='bg-transparent py-1.5 ' placeholder='Search' /></div>
                     <div className='bg-primary text-lg text-white cursor-pointer px-12 py-3 rounded-md'>+ New Chat</div>
                 </div>
             </div>
-            <div className='flex sm:flex-row flex-col w-full h-full  mt-10 gap-1'>
-                <div className='sm:h-full h-auto border border-black rounded-md sm:w-[40%] w-[100%] py-6'>
-                    <div className='font-bold text-xl mb-5 px-5 '>My Chats</div>
+            <div className='flex sm:flex-row flex-col w-full h-full  mt-8 gap-1'>
+                <div className='sm:h-full h-auto border border-black rounded-md sm:w-[40%] w-[100%] pt-6'>
+                    <div className='font-bold text-2xl mb-5 px-5 '>My Chats</div>
                     <div>
                         {/* <Link href={"/chat-page"}> */}
                         <div className=' bg-[#F3F7FA] px-5'>
-                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]  py-4 '>
+                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]  py-5 '>
                                 <div className='w-[20%] rounded-full border border-primary'><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%]  w-full flex flex-col gap-1'>
                                     <div className='flex justify-between'>
@@ -44,7 +44,7 @@ const ChatsPage = () => {
                         </div>
                         {/* </Link> */}
                         <div className=' px-5'>
-                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]  py-4 '>
+                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]  py-5'>
                                 <div className='w-[20%] rounded-full '><Image src={img2} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col gap-1  w-full'>
                                     <div className='flex justify-between'>
@@ -59,7 +59,7 @@ const ChatsPage = () => {
                             </div>
                         </div>
                         <div className=' px-5'>
-                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]  py-4 '>
+                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]   py-5 '>
                                 <div className='w-[20%] rounded-full '><Image src={img3} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col gap-1 w-full'>
                                     <div className='flex justify-between'>
@@ -74,7 +74,7 @@ const ChatsPage = () => {
                             </div>
                         </div>
                         <div className=' px-5'>
-                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]  py-4 '>
+                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]   py-5'>
                                 <div className='w-[20%] rounded-full '><Image src={img4} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col gap-1 w-full'>
                                     <div className='flex justify-between'>
@@ -89,7 +89,7 @@ const ChatsPage = () => {
                             </div>
                         </div>
                         <div className=' px-5'>
-                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]  py-4 '>
+                            <div className='flex gap-4 border-b-2 border-b-[#c6c8c9]   py-5 '>
                                 <div className='w-[20%] rounded-full '><Image src={img5} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col gap-1 w-full'>
                                     <div className='flex justify-between'>
@@ -104,7 +104,7 @@ const ChatsPage = () => {
                             </div>
                         </div>
                         <div className=' px-5'>
-                            <div className='flex gap-4  py-4 '>
+                            <div className='flex gap-4   py-5 '>
                                 <div className='w-[20%] rounded-full '><Image src={img6} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col gap-1 w-full'>
                                     <div className='flex justify-between'>

@@ -43,7 +43,7 @@ const About = () => {
   ];
   return (
     <>
-      <div className="w-[100%] border border-primary bg-[#F8FAFC] p-2 sm:p-5 md:p-8 flex flex-col gap-8 justify-center">
+      <div className="w-[100%]  bg-[#F8FAFC] p-2 sm:p-5 md:p-8 flex flex-col gap-8 justify-center">
         <div className="flex flex-col gap-2">
           {DummyData.map((item: any, idx: number) => {
             return (

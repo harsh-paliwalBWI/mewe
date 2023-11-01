@@ -28,7 +28,7 @@ const VideoSection = () => {
                     <FlatIcon className="flaticon-play text-white xl:text-5xl md:text-3xl text-5xl"/>
                     </div>
                     {/* <Image src={playBtnImg} alt='' className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'/> */}
-                    {idx===0&&<div className='top-0 left-0 absolute  w-full h-full bg-[rgba(0,0,0,0.4)]'>
+                    {idx===0&&<div className='top-0 left-0 absolute  w-full h-full bg-[rgba(0,0,0,0.4)] rounded-lg'>
                     <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                     <FlatIcon className="flaticon-play text-white xl:text-5xl md:text-3xl text-5xl"/>
                     </div>

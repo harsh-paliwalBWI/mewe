@@ -12,11 +12,12 @@ import FlatIcon from "../flatIcon/flatIcon";
 
 
 const Navmobile = () => {
+
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const pathname = usePathname();
 
   return (
-    <div className={`text-center px-body  sm:hidden block `}>
+    <div className={`text-center px-body   ${(pathname.includes("welcome") || pathname.includes("signup") || pathname.includes("signin") || pathname.includes("verification"))?"hidden":"sm:hidden block"} `}>
       <div className="flex items-center justify-between py-[10px]">
       <div
           onClick={(prev) => {
@@ -67,7 +68,7 @@ const Navmobile = () => {
               >
                 Home
               </Link>
-              <Link
+              {/* <Link
                 href={"/financials"}
                 className={`${
                   pathname.includes("financials") && "text-primary"
@@ -76,10 +77,10 @@ const Navmobile = () => {
                   setIsMobile(false);
                   document.body.classList.remove("no-scroll");
                 }}
-              >
-                <div>About</div>
-              </Link>
-              <Link
+              > */}
+                <div className="py-[5px]  cursor-pointer">About</div>
+              {/* </Link> */}
+              {/* <Link
                 href={"/financials"}
                 className={`${
                   pathname.includes("financials") && "text-primary"
@@ -88,10 +89,10 @@ const Navmobile = () => {
                   setIsMobile(false);
                   document.body.classList.remove("no-scroll");
                 }}
-              >
-                <div>Explore</div>
-              </Link>
-              <Link
+              > */}
+                <div className="py-[5px]  cursor-pointer">Explore</div>
+              {/* </Link> */}
+              {/* <Link
                 href={"/financials"}
                 className={`${
                   pathname.includes("financials") && "text-primary"
@@ -100,9 +101,9 @@ const Navmobile = () => {
                   setIsMobile(false);
                   document.body.classList.remove("no-scroll");
                 }}
-              >
-                <div>Schemes</div>
-              </Link>
+              > */}
+                <div className="py-[5px]  cursor-pointer">Schemes</div>
+              {/* </Link> */}
               <Link
                 href={"/financials"}
                 className={`${

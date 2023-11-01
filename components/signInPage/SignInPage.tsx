@@ -16,10 +16,10 @@ const SignInPage = () => {
             <div className='flex py-6 justify-center '>
                 <div className='w-[57%] md:block hidden  h-[970px] pl-6 '><Image src={mainImg} alt='' height={1000} width={1000} className=' w-[100%] h-[100%] object-fill' /></div>
                 <div className='md:w-[43%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5'>
-                    <div className='flex justify-center items-center xl:text-3xl md:text-2xl text-xl font-bold md:mt-[120px] mt-[60px] mb-[60px] '><h1>Sign in to <span className='text-primary font-bold'>ME WE</span></h1></div>
-                    <div className='text-primary font-bold flex justify-center items-center xl:text-2xl lg '><h1>Add Your Contact Information</h1></div>
-                    <div className='flex justify-center items-center text-center text-[#868E97] font-semibold xl:text-sm text-xs mt-4 '><h3>We will be sending a verification code to the provided <br />contact number.</h3></div>
-                    <div className='flex w-full  items-center gap-x-3 sm:my-20 my-10'>
+                    <div className='flex justify-center items-center xl:text-4xl md:text-2xl text-xl font-bold md:mt-[120px] sm:mt-[60px] mt-[30px] sm:mb-[60px] mb-[30px] '><h1>Sign in to <span className='text-primary font-bold'>ME WE</span></h1></div>
+                    <div className='text-primary font-bold flex justify-center items-center xl:text-3xl lg '><h1>Add Your Contact Information</h1></div>
+                    <div className='flex justify-center items-center text-center text-[#868E97] font-semibold xl:text-base text-xs mt-4 '><h3>We will be sending a verification code to the provided <br />contact number.</h3></div>
+                    <div className='flex w-full  items-center gap-x-3 md:my-20 my-10'>
                         <div className='border border-[#868E97] flex items-center justify-center gap-x-3 xl:w-[20%] w-[30%] sm:py-3.5 py-4'><div className='w-[21px] h-[16px] '>
                             <Image src={falgImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] object-fill' />
                         </div>
@@ -28,7 +28,7 @@ const SignInPage = () => {
                         <div className='xl:w-[80%] w-[70%]'><input type="text" name="" id="" className='border border-[#868E97] w-full py-3 outline-0 px-5' /></div>
                     </div>
                     <Link href={'/verification'}>
-                    <div className='bg-primary text-white flex justify-center items-center py-3 rounded-lg xl:text-lg text-xs font-semibold cursor-pointer'><button className=''>Verify</button></div>
+                    <div className='bg-primary text-white flex justify-center items-center py-3 rounded-lg xl:text-xl text-xs font-semibold cursor-pointer'><button className=''>Verify</button></div>
                     </Link>
                     <div className='text-center md:text-base text-sm text-[#383838] font-semibold  mt-10 mb-8 '><h2>or Sign In with</h2></div>
                     <div className='flex items-center justify-center gap-x-6'>
