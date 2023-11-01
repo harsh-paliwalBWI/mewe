@@ -8,15 +8,18 @@ import FlatIcon from "../flatIcon/flatIcon";
 import Categories from "./categoriesnavbar/navCategories";
 import { usePathname } from "next/navigation";
 import Navmobile from "../navMobile/NavMobile";
+import { log } from "console";
 
 
 const Navbar =  () => {
   const pathName=usePathname()
+  console.log(pathName,"bfdg");
+  
   return (
     <>
     <Navmobile/>
     <>
-    <div className={`w-full sm:block hidden ${(pathName.includes("welcome") || pathName.includes("signup") || pathName.includes("signin") || pathName.includes("verification"))?"hidden":"block"}`}>
+    <div className={`w-full  ${(pathName.includes("welcome") || pathName.includes("signup") || pathName.includes("signin") || pathName.includes("verification"))?"hidden":"sm:block hidden"}`}>
       <div className="flex items-center justify-between px-[4%] py-5 cursor-pointer bg-white w-full gap-3">
         <Link href={"/"}>
           <div className="border border-primary p-[1px] rounded-lg">

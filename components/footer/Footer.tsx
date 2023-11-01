@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import logo from "../../images/ME_WE.svg";
+import logo from "../../images/image 14.svg";
 import Image from "next/image";
 import me from "../../images/me.svg";
 import we from "../../images/we.svg";
@@ -91,7 +91,8 @@ const Footer = () => {
       <div className="px-body  flex flex-col gap-3 md:flex-row justify-between   pt-4 sm:pt-8 md:pt-12 lg:pt-16">
         <div className=" flex flex-col gap-4 sm:gap-5 md:gap-6  w-full md:w-[40%]  ">
           <div className=" flex gap-2 sm:gap-3 md:gap-4  items-center ">
-            <div className=" w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 ">
+            <div className="border-2 border-primary p-[1px] rounded-xl bg-white">
+            <div className=" w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-md  rounded-xl">
               <Image
                 src={logo}
                 alt="logo"
@@ -100,6 +101,7 @@ const Footer = () => {
                 // layout="responsive"
                 className="w-full h-full"
               />
+            </div>
             </div>
             <div className=" w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16  ">
               <Image
