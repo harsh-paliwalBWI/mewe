@@ -47,7 +47,7 @@ const About = () => {
         <div className="flex flex-col gap-2">
           {DummyData.map((item: any, idx: number) => {
             return (
-              <div className="flex items-center justify-between w-full text-sm font-medium tracking-wider">
+              <div key={idx} className="flex items-center justify-between w-full text-sm font-medium tracking-wider">
                 <div>
                   <h2 className="text-[#949597] ">{item.name}</h2>
                 </div>
@@ -116,7 +116,7 @@ const About = () => {
         <div className="flex flex-col gap-2">
           {DummyData2.map((item: any, idx: number) => {
             return (
-              <div className="flex items-center justify-between w-full text-sm font-medium tracking-wider">
+              <div key={idx} className="flex items-center justify-between w-full text-sm font-medium tracking-wider">
                 <div>
                   <h2 className="text-[#949597] ">{item.name}</h2>
                 </div>

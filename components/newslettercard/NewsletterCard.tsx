@@ -12,20 +12,20 @@ import FlatIcon from "../flatIcon/flatIcon";
 
 const NewsletterCard = () => {
   return (
-    <div className="  flex flex-col lg:flex-row justify-between gap-1 sm:gap-2 md:gap-3  p-3 sm:p-5 md:p-7 bg-[#f7f9fb]">
-<div className="w-full lg:w-[41%] overflow-hidden flex justify-center">
-        <div className="w-full  lg:w-64 h-36 sm:h-48 md:h-60 lg:h-72 ">
+    <div className="  flex flex-col lg:flex-row justify-between gap-1 sm:gap-2 md:gap-3  py-3 sm:py-5 md:py-7 px-2 sm:px-4 md:px-6 bg-[#f7f9fb]">
+<div className="w-full lg:w-[41%] overflow-hidden flex justify-center ">
+        <div className="w-full  lg:w-64 h-36 sm:h-48 md:h-60 lg:h-[17rem] ">
           <Image
             src={startup}
             alt=""
             width={1000}
             height={1000}
-            className="w-full h-full object-cover  "
+            className="w-full h-full object-contain  "
           />
  
       </div>   
            </div>
-      <div className=" w-full lg:w-[55%]   ">
+      <div className=" w-full lg:w-[56%] ">
         <div className="  flex flex-col h-full gap-1 sm:gap-2 md:gap-3 justify-between ">
           <div className="  flex flex-col gap-1 sm:gap-2 md:gap-3  justify-between ">
             <h3 className=" text-black text-sm sm:text-base md:text-lg font-semibold">

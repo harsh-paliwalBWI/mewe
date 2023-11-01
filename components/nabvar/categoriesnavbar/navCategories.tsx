@@ -7,8 +7,8 @@ const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 const Categories = () => {
   const textStyle="lg:text-base md:text-sm text-xs  md:px-2 "
   return (
-    <div className="w-full bg-[#272726] px-body flex justify-center items-center   py-4 ">
-      <div className="flex justify-center lg:gap-10 md:gap-4 gap-3  w-full w-[100%]  ">
+    <div className="w-full bg-[#272726] px-body flex justify-center items-center py-2 sm:py-3 md:py-4 ">
+      <div className="flex justify-center lg:gap-10 md:gap-4 gap-3  w-[100%]    ">
          <Link href={"/about-our-company"} className="">
           <div className={`text-[#cbcbcb] ${textStyle}`}>
             <h1 className=" ">About</h1>
