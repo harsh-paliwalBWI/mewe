@@ -1,10 +1,10 @@
 @font-face {
     font-family: "flaticon_mycollection";
-    src: url("./flaticon_mycollection.ttf?3b6cc60b6fe89ae26036fa35a1aa840d") format("truetype"),
-url("./flaticon_mycollection.woff?3b6cc60b6fe89ae26036fa35a1aa840d") format("woff"),
-url("./flaticon_mycollection.woff2?3b6cc60b6fe89ae26036fa35a1aa840d") format("woff2"),
-url("./flaticon_mycollection.eot?3b6cc60b6fe89ae26036fa35a1aa840d#iefix") format("embedded-opentype"),
-url("./flaticon_mycollection.svg?3b6cc60b6fe89ae26036fa35a1aa840d#flaticon_mycollection") format("svg");
+    src: url("./flaticon_mycollection.ttf?dfaf2feaa68d819e9bd6aca560b5ece8") format("truetype"),
+url("./flaticon_mycollection.woff?dfaf2feaa68d819e9bd6aca560b5ece8") format("woff"),
+url("./flaticon_mycollection.woff2?dfaf2feaa68d819e9bd6aca560b5ece8") format("woff2"),
+url("./flaticon_mycollection.eot?dfaf2feaa68d819e9bd6aca560b5ece8#iefix") format("embedded-opentype"),
+url("./flaticon_mycollection.svg?dfaf2feaa68d819e9bd6aca560b5ece8#flaticon_mycollection") format("svg");
 }
 
 i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
@@ -78,78 +78,81 @@ i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
 .flaticon-send:before {
     content: "\f114";
 }
-.flaticon-search:before {
+.flaticon-bookmark:before {
     content: "\f115";
 }
-.flaticon-bookmark:before {
+.flaticon-plus:before {
     content: "\f116";
 }
-.flaticon-plus:before {
+.flaticon-clock:before {
     content: "\f117";
 }
-.flaticon-clock:before {
+.flaticon-close:before {
     content: "\f118";
 }
-.flaticon-close:before {
+.flaticon-help-1:before {
     content: "\f119";
 }
-.flaticon-help-1:before {
+.flaticon-email:before {
     content: "\f11a";
 }
-.flaticon-email:before {
+.flaticon-entertainment:before {
     content: "\f11b";
 }
-.flaticon-entertainment:before {
+.flaticon-food:before {
     content: "\f11c";
 }
-.flaticon-food:before {
+.flaticon-industries:before {
     content: "\f11d";
 }
-.flaticon-industries:before {
+.flaticon-linkedin:before {
     content: "\f11e";
 }
-.flaticon-linkedin:before {
+.flaticon-down-right-2:before {
     content: "\f11f";
 }
-.flaticon-down-right-2:before {
+.flaticon-map:before {
     content: "\f120";
 }
-.flaticon-map:before {
+.flaticon-education:before {
     content: "\f121";
 }
-.flaticon-education:before {
+.flaticon-help:before {
     content: "\f122";
 }
-.flaticon-help:before {
+.flaticon-heart:before {
     content: "\f123";
 }
-.flaticon-heart:before {
+.flaticon-edit:before {
     content: "\f124";
 }
-.flaticon-edit:before {
+.flaticon-fintech:before {
     content: "\f125";
 }
-.flaticon-fintech:before {
+.flaticon-down-arrow:before {
     content: "\f126";
 }
-.flaticon-down-arrow:before {
+.flaticon-placeholder:before {
     content: "\f127";
 }
-.flaticon-placeholder:before {
+.flaticon-location:before {
     content: "\f128";
 }
-.flaticon-location:before {
+.flaticon-chat:before {
     content: "\f129";
 }
-.flaticon-verify:before {
+.flaticon-exit:before {
     content: "\f12a";
 }
-.flaticon-notificaiton:before {
+.flaticon-verify:before {
     content: "\f12b";
 }
-.flaticon-chat:before {
+.flaticon-notificaiton:before {
     content: "\f12c";
 }
-.flaticon-exit:before {
+.flaticon-search:before {
     content: "\f12d";
+}
+.flaticon-realestate:before {
+    content: "\f12e";
 }

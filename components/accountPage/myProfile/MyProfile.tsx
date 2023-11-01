@@ -1,13 +1,13 @@
 import React from 'react'
 
 const MyProfile = () => {
-    const labelStyle = "text-sm text-[#868E97] font-medium tracking-wide"
+    const labelStyle = "text-base text-[#868E97] font-medium "
     const inputStyle = "border border-[#C8C8C8] rounded-md px-3 py-3.5 outline-0"
     return (
         <>
-            <div className=' h-fit py-2 flex-[0.78] '>
+            <div className=' h-fit py-2 lg:w-[58%] md:w-[68%]  w-full '>
                 <div className="w-full flex flex-col gap-7">
-                    <div className="flex md:flex-row flex-col gap-5 w-full ">
+                    <div className="flex sm:flex-row flex-col gap-5 w-full ">
                         <div className="md:w-[50%] w-full flex flex-col gap-3 ">
                             <label className={`${labelStyle}`}>
                                 Business Name*
@@ -23,7 +23,7 @@ const MyProfile = () => {
                             />
                         </div>
                     </div>
-                    <div className="flex md:flex-row flex-col gap-5 w-full ">
+                    <div className="flex sm:flex-row flex-col gap-5 w-full ">
                         <div className="md:w-[50%] w-full flex flex-col gap-3 ">
                             <label className={`${labelStyle}`}>
                                 LinkedIn URL*
@@ -50,7 +50,7 @@ const MyProfile = () => {
                             rows={5}
                         ></textarea>
                     </div>
-                    <div className="flex md:flex-row flex-col gap-5 w-full ">
+                    <div className="flex sm:flex-row flex-col gap-5 w-full ">
                         <div className="md:w-[50%] w-full flex flex-col gap-3 ">
                             <label className={`${labelStyle}`}>
                                 Current Password

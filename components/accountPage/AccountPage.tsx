@@ -10,7 +10,7 @@ const AccountPage = () => {
     const [selectedTab,setSelectedTab]=useState(1)
   return (
    <>
-   <div className='flex w-full md:flex-row flex-col gap-y-6 px-body lg:gap-x-14 gap-x-7 sm:mt-14 mt-7 sm:mb-20 mb-10 relative z-10'>
+   <div className='flex w-[100%] md:flex-row flex-col gap-y-6 px-body xl:gap-x-14 gap-x-7 sm:mt-14 mt-7 sm:mb-20 mb-10 relative z-10'>
     <ProfileOptions setSelectedTab={setSelectedTab} selectedTab={selectedTab}/>
     {/* <div className="  "> */}
         

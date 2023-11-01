@@ -6,6 +6,7 @@ import me from "../../images/me.svg";
 import we from "../../images/we.svg";
 import groupfooter from "../../images/Group footer.svg";
 import letter from "../../images/letter 1.svg";
+import { usePathname } from "next/navigation";
 
 import FlatIcon from "../flatIcon/flatIcon";
 
@@ -14,6 +15,7 @@ import instagram from "../../images/instagram.svg";
 import linkedin from "../../images/linkedin.svg";
 import copyright from "../../images/c.svg";
 import Link from "next/link";
+import { log } from "console";
 const Footer = () => {
   const DUMMY_DATA = [
     {
@@ -52,8 +54,11 @@ const Footer = () => {
     },
   ];
 
+  const pathName=usePathname()
+  console.log(pathName,"cbv");
+  
   return (
-    <div className="bg-[#272726] w-full h-fit   ">
+    <div className={`bg-[#272726] w-full h-fit  `}>
       <div className="px-body py-4 sm:py-8 md:py-12  gap-2 flex flex-col md:flex-row justify-between ">
         <div className=" flex gap-3 sm:gap-4 md:gap-5 items-center">
           <div className="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16  ">

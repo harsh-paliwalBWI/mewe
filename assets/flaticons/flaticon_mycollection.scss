@@ -2,11 +2,11 @@ $flaticon_mycollection-font: "flaticon_mycollection";
 
 @font-face {
     font-family: $flaticon_mycollection-font;
-    src: url("./flaticon_mycollection.ttf?3b6cc60b6fe89ae26036fa35a1aa840d") format("truetype"),
-url("./flaticon_mycollection.woff?3b6cc60b6fe89ae26036fa35a1aa840d") format("woff"),
-url("./flaticon_mycollection.woff2?3b6cc60b6fe89ae26036fa35a1aa840d") format("woff2"),
-url("./flaticon_mycollection.eot?3b6cc60b6fe89ae26036fa35a1aa840d#iefix") format("embedded-opentype"),
-url("./flaticon_mycollection.svg?3b6cc60b6fe89ae26036fa35a1aa840d#flaticon_mycollection") format("svg");
+    src: url("./flaticon_mycollection.ttf?dfaf2feaa68d819e9bd6aca560b5ece8") format("truetype"),
+url("./flaticon_mycollection.woff?dfaf2feaa68d819e9bd6aca560b5ece8") format("woff"),
+url("./flaticon_mycollection.woff2?dfaf2feaa68d819e9bd6aca560b5ece8") format("woff2"),
+url("./flaticon_mycollection.eot?dfaf2feaa68d819e9bd6aca560b5ece8#iefix") format("embedded-opentype"),
+url("./flaticon_mycollection.svg?dfaf2feaa68d819e9bd6aca560b5ece8#flaticon_mycollection") format("svg");
 }
 
 i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
@@ -41,31 +41,32 @@ $flaticon_mycollection-map: (
     "support": "\f112",
     "setting": "\f113",
     "send": "\f114",
-    "search": "\f115",
-    "bookmark": "\f116",
-    "plus": "\f117",
-    "clock": "\f118",
-    "close": "\f119",
-    "help-1": "\f11a",
-    "email": "\f11b",
-    "entertainment": "\f11c",
-    "food": "\f11d",
-    "industries": "\f11e",
-    "linkedin": "\f11f",
-    "down-right-2": "\f120",
-    "map": "\f121",
-    "education": "\f122",
-    "help": "\f123",
-    "heart": "\f124",
-    "edit": "\f125",
-    "fintech": "\f126",
-    "down-arrow": "\f127",
-    "placeholder": "\f128",
-    "location": "\f129",
-    "verify": "\f12a",
-    "notificaiton": "\f12b",
-    "chat": "\f12c",
-    "exit": "\f12d",
+    "bookmark": "\f115",
+    "plus": "\f116",
+    "clock": "\f117",
+    "close": "\f118",
+    "help-1": "\f119",
+    "email": "\f11a",
+    "entertainment": "\f11b",
+    "food": "\f11c",
+    "industries": "\f11d",
+    "linkedin": "\f11e",
+    "down-right-2": "\f11f",
+    "map": "\f120",
+    "education": "\f121",
+    "help": "\f122",
+    "heart": "\f123",
+    "edit": "\f124",
+    "fintech": "\f125",
+    "down-arrow": "\f126",
+    "placeholder": "\f127",
+    "location": "\f128",
+    "chat": "\f129",
+    "exit": "\f12a",
+    "verify": "\f12b",
+    "notificaiton": "\f12c",
+    "search": "\f12d",
+    "realestate": "\f12e",
 );
 
 .flaticon-notification:before {
@@ -128,9 +129,6 @@ $flaticon_mycollection-map: (
 .flaticon-send:before {
     content: map-get($flaticon_mycollection-map, "send");
 }
-.flaticon-search:before {
-    content: map-get($flaticon_mycollection-map, "search");
-}
 .flaticon-bookmark:before {
     content: map-get($flaticon_mycollection-map, "bookmark");
 }
@@ -191,15 +189,21 @@ $flaticon_mycollection-map: (
 .flaticon-location:before {
     content: map-get($flaticon_mycollection-map, "location");
 }
+.flaticon-chat:before {
+    content: map-get($flaticon_mycollection-map, "chat");
+}
+.flaticon-exit:before {
+    content: map-get($flaticon_mycollection-map, "exit");
+}
 .flaticon-verify:before {
     content: map-get($flaticon_mycollection-map, "verify");
 }
 .flaticon-notificaiton:before {
     content: map-get($flaticon_mycollection-map, "notificaiton");
 }
-.flaticon-chat:before {
-    content: map-get($flaticon_mycollection-map, "chat");
+.flaticon-search:before {
+    content: map-get($flaticon_mycollection-map, "search");
 }
-.flaticon-exit:before {
-    content: map-get($flaticon_mycollection-map, "exit");
+.flaticon-realestate:before {
+    content: map-get($flaticon_mycollection-map, "realestate");
 }

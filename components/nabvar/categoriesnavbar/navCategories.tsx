@@ -16,11 +16,13 @@ const Categories = () => {
         </Link>
         <div className="text-[#cbcbcb]"><h1 >Explore</h1></div>
         <div className="text-[#cbcbcb] flex gap-2"><h1 >Schemes</h1>
-         <FlatIcon className="flaticon-arrow-down md:text-xs text-[10px] font-semibold" />
+         <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
          </div>
+         <Link href={"/promote-business"}>
         <div className="text-[#cbcbcb] flex gap-2"><h1 >Financials</h1>
-        <FlatIcon className="flaticon-arrow-down md:text-xs text-[10px] font-semibold" />
+        <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
         </div>
+        </Link>
         <Link href={"/account"}>
           <div className="text-[#cbcbcb] cursor-pointer">
             <h1 className="md:text-base sm:text-sm text-xs ">Account</h1>

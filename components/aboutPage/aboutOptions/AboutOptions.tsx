@@ -12,18 +12,18 @@ interface Props {
   }
 
 const AboutOptions:FC<Props> = ({setSelectedTab,selectedTab}) => {
-  const optionStyle="flex gap-x-4 bg-[#F3F7FA] px-4 text-sm font-semibold py-4   tracking-wider cursor-pointer"
-  const optionTabStyle='flex w-full   justify-between text-base font-semibold tracking-wider items-center'
+  const optionStyle="flex gap-x-4 bg-[#F3F7FA] px-4 text-sm font-semibold py-4    cursor-pointer"
+  const optionTabStyle='flex w-full   justify-between xl:text-lg  text-sm font-semibold  items-center'
 
   return (
     <>
-    <div className=" md:w-[40%] w-[100%] filter-border  h-full  bg-[#F8FAFC] relative z-10">
-        <div className='w-full'><Image src={buildingImg} alt='' height={1000} width={1000} className='w-[100%] object-fill'/></div>
-        <div className=' px-8'>
+    <div className=" w-[100%] filter-border  h-fit  bg-[#F8FAFC] relative z-10">
+        <div className='w-full h-[100px] '><Image src={buildingImg} alt='' height={1000} width={1000} className='w-[100%] h-[100%] object-cover'/></div>
+        <div className=' xl:px-8 px-4'>
      {/* top section  */}
-    <div className='flex items-end gap-2 mt-[-70px] z-30'>
+    <div className='flex items-end gap-2 xl:mt-[-70px] md:mt-[-50px] sm:mt-[-70px] mt-[-30px] z-30'>
      <div className='flex justify-center '>
-     <div className='h-[145px] w-[145px] rounded-full  relative'>
+     <div className='xl:h-[145px] md:h-[100px] xl:w-[145px] md:w-[100px] sm:w-[145px] sm:h-[145px] w-[100px] h-[100px]  rounded-full  relative'>
        <Image src={logoImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] object-fill  rounded-full'/>
        <div className='h-[46px] w-[46px] absolute right-0 top-0'>
        <Image src={blueTickImg} height={1000} width={1000} alt='' className='h-[100%] w-[100%] object-fill  '/>
@@ -31,22 +31,26 @@ const AboutOptions:FC<Props> = ({setSelectedTab,selectedTab}) => {
        </div>
     </div>
     <div className='flex justify-between items-start  w-full'>
-    <div className='flex flex-col gap-2'>
-    <div className=' text-lg font-bold tracking-wider'><h2>CodeFusion</h2></div>
-    <div className=' text-xs font-semibold text-[#868E97] tracking-widest'><p>Education Services</p></div>
+    <div className='flex flex-col gap-1'>
+    <div className=' xl:text-xl text-base font-semibold '><h2>CodeFusion</h2></div>
+    <div className=' text-base font-medium text-[#868E97] '><p>Education Services</p></div>
     </div>
-    <div><Image src={bookMarkImg} alt=''/></div>
+    <div>
+        {/* <Image src={bookMarkImg} alt=''/> */}
+        <FlatIcon className="flaticon-bookmark text-black xl:text-3xl text-xl font-bold"/>
     </div>
     </div>
-    <div className='flex gap-3 my-6'>
-        <FlatIcon className="flaticon-location text-xl"/>
-        <p className='text-[#707172] text-sm tracking-wider font-semibold'>Delhi, India</p>
     </div>
-    <div className='flex text-base font-medium tracking-widest gap-3'>
-        <div className='w-[50%] text-center rounded-full bg-primary text-white py-3'><button>Follow</button></div>
-        <div className='w-[50%] border border-primary text-center rounded-full py-3 text-primary'><button>Message</button></div>
+    <div className='flex items-center gap-1 my-6'>
+        <FlatIcon className="flaticon-map xl:text-2xl text-lg"/>
+        <p className='text-[#707172] xl:text-base text-xs  font-semibold'>Delhi, India</p>
     </div>
-    <div className='flex flex-col gap-5 my-10'>
+    <div className='flex xl:text-base text-sm font-medium tracking-widest gap-3'>
+        <div className='w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  '><button className='flex items-center justify-center gap-1'>
+            <FlatIcon className="flaticon-add-user xl:text-2xl text-xl"/><span>Follow</span></button></div>
+        <div className='w-[50%] border border-primary text-center rounded-full xl:py-3 py-2 text-primary'><button>Message</button></div>
+    </div>
+    <div className='flex flex-col gap-5 xl:py-10 py-5'>
         <div 
         //   onClick={()=>setSelectedTab(1)} 
         className={`${optionTabStyle}`}>
