@@ -27,11 +27,14 @@ const Navmobile = () => {
         >
           <TfiMenuAlt className="h-[20px] w-auto"/>
         </div>
+        <Link
+                href={"/"}>
         <div className="border border-primary p-[1px] rounded-lg">
           <div className=" w-[46px] h-[46px]  ">
             <Image src={logo} alt="" className="w-full h-full object-contain " />
           </div>
           </div>
+          </Link>
       </div>
       {isMobile && (
         <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-50">
@@ -51,6 +54,7 @@ const Navmobile = () => {
               <Link  href={"/"} className=" w-[60px]  mt-[30px] mb-[10px] ml-[-5px]  cursor-pointer"
               onClick={()=>{
                 setIsMobile(false);
+                document.body.classList.remove("no-scroll");
               }}>
                <div className="border border-primary p-[1px] rounded-lg">
           <div className=" w-[56px] h-[56px]  ">

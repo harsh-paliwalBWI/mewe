@@ -87,7 +87,7 @@ const PromotedBusinessSlider = () => {
   "absolute top-0 bottom-0 my-auto bg-[#fef8fb] w-7 h-7 block text-white cursor-pointer z-20";
   return (
     <div className=' md:hidden block'>
-        <div className="flex justify-center items-center relative lg:mt-5   ">
+        <div className="flex justify-center items-center relative lg:mt-5    ">
               <div className="">
                 <button
                   className={`${arrowButtonClass} -left-4  flex items-center justify-center `}
@@ -99,10 +99,10 @@ const PromotedBusinessSlider = () => {
                 </button>
               </div>
 
-              <div className="back h-auto ">
+              <div className="back h-auto   ">
               {/* <div className="w-[50%] h-auto border border-[red] "> */}
 
-                <div className="w-[95vw] lg:w-[45vw]    h-auto">
+                <div className="w-[85vw] lg:w-[45vw]    h-auto">
                   <Slider
                     ref={slider}
                     {...settings}
@@ -117,7 +117,7 @@ const PromotedBusinessSlider = () => {
 {/* first slide start */}
 <div className='w-[100%] rounded-tl-xl rounded-tr-xl '>
             <div className='w-full h-[18px] bg-[#A6D6BF] rounded-tl-xl rounded-tr-xl'></div>
-            <div className='bg-[#fffdf3] py-5 px-5'>
+            <div className='bg-[#fffdf3] py-5 sm:px-5 px-2'>
             <div className='flex items-center justify-between'>
                 <div><Image src={premiumImg2} alt=''/></div>
                 <div><FlatIcon className="flaticon-help text-[#a1a099] text-2xl"/></div>
@@ -143,7 +143,7 @@ const PromotedBusinessSlider = () => {
         {/* second slide  start*/}
         <div className='w-[100%] rounded-tl-xl rounded-tr-xl '>
             <div className='w-full h-[18px] bg-[#4B647E] rounded-tl-xl rounded-tr-xl'></div>
-            <div className='bg-[#fffdf3] py-5 px-5'>
+            <div className='bg-[#fffdf3] py-5 sm:px-5 px-2'>
             <div className='flex items-center justify-between'>
                 <div><Image src={premiumImg} alt=''/></div>
                 <div><FlatIcon className="flaticon-help text-[#a1a099] text-3xl"/></div>
@@ -171,7 +171,7 @@ const PromotedBusinessSlider = () => {
 
         <div className='w-[100%] rounded-tl-xl rounded-tr-xl '>
             <div className='w-full h-[18px] bg-[#9BC1F9] rounded-tl-xl rounded-tr-xl'></div>
-            <div className='bg-[#fffdf3] py-5 px-5'>
+            <div className='bg-[#fffdf3] py-5 sm:px-5 px-2'>
             <div className='flex items-center justify-between'>
                 <div><Image src={premiumImg4} alt=''/></div>
                 <div><FlatIcon className="flaticon-help text-[#a1a099] text-2xl"/></div>
