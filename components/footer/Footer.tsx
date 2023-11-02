@@ -134,6 +134,10 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2 md:mt-3 ">
+
+          <a
+                href={`mailto: me.we23@gmail.com`}
+              >
             <div className="flex gap-2 sm:gap-3 md:gap-4 cursor-pointer items-center">
               <div>
                 <FlatIcon className="flaticon-email md:text-4xl sm:text-3xl text-2xl font-bold text-white  " />
@@ -142,6 +146,10 @@ const Footer = () => {
                 me.we23@gmail.com
               </p>
             </div>
+            </a>
+
+            <a
+                href={`tel:011-34-3922835`}>
             <div className="flex gap-2 sm:gap-3 md:gap-4 cursor-pointer items-center">
               <div>
                 <FlatIcon className="flaticon-phone md:text-4xl sm:text-3xl text-2xl font-bold text-white " />
@@ -150,6 +158,7 @@ const Footer = () => {
                 011-34-3922835
               </p>
             </div>
+            </a>
           </div>
         </div>
 

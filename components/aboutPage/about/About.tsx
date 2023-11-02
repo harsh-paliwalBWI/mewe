@@ -8,10 +8,10 @@ import DoubleBarChartDisplay from "@/components/doublebarchart/DoubleBarCartDisp
 const About = () => {
 
   const databar = [
-    { label: 'Jan- Mar', value1: 40, value2: 50 },
-    { label: 'Apr- Jun', value1: 30, value2: 40 },
-    { label: 'Jul- Sep', value1: 60, value2: 40 },
-    { label: 'Oct- Dec', value1: 60, value2: 70 },
+    { label: 'Jan-Mar', value1: 40, value2: 50 },
+    { label: 'Apr-Jun', value1: 30, value2: 40 },
+    { label: 'Jul-Sep', value1: 60, value2: 40 },
+    { label: 'Oct-Dec', value1: 60, value2: 70 },
   ];
 
   const width = 400;
@@ -59,8 +59,8 @@ const About = () => {
           })}
         </div>
 
-        <div className=" flex  justify-between gap-1 sm:gap-2 md:gap-3 ">
-          <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
+        <div className=" flex flex-row  justify-between gap-1 sm:gap-5 md:gap-3 ">
+          <div className="flex flex-col gap-4 sm:gap-6 md:gap-8 ">
             <h2 className="text-[#949597] text-xs sm:text-sm md:text-base">Profit</h2>
             <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-0.5 sm:gap-y-1 md:gap-y-2">
               <div className="flex gap-0.5 sm:gap-1.5 md:gap-3 items-center">
@@ -91,10 +91,10 @@ const About = () => {
         </div>
 
 
-        <div className=" flex flex-col md:flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-8">
+        <div className=" flex flex-col md:flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-2 sm:mt-5 md:mt-8">
           <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
             <h2 className="text-[#949597] text-xs sm:text-sm md:text-base">Last Financial Year Revenue</h2>
-            <div className="flex flex-col gap-0.5 sm:gap-1.5 md:gap-2.5">
+            <div className="flex md:flex-col gap-2  md:gap-2.5">
               <div className="flex gap-0.5 sm:gap-1.5 md:gap-3 items-center">
                 <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 bg-[#054a91]"></div>
                 <h2 className="text-black text-xs sm:text-sm md:text-base font-semibold">2020-2021</h2>
@@ -106,7 +106,7 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="w-[54%] h-fit">
+          <div className="w-full md:w-[54%]">
             <DoubleBarChartDisplay data={databar} width={width} height={height} margin={margin} />
           </div>
         </div>

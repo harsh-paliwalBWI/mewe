@@ -10,7 +10,7 @@ import NewsletterCard from "@/components/newslettercard/NewsletterCard";
 
 const Newsletter = () => {
   return (
-    <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-16 md:mt-24 lg:mt-32">
+    <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-16 md:mt-24 lg:mt-32 pt-5 sm:pt-0">
       <div className="flex flex-col gap-2 sm:gap-3 md:gap-4">
         <h1 className="opacity-80 text-black md:text-2xl sm:text-xl text-lg font-medium">
         Daily Digest

@@ -63,8 +63,11 @@ const DoubleBarChart: React.FC<DoubleBarChartProps> = ({
     if (dimensions.width > 0 && dimensions.height > 0) {
 
     // Calculate chart dimensions considering updated margins
-    const innerWidth = width - updatedMargin.left - updatedMargin.right;
-    const innerHeight = height - updatedMargin.top - updatedMargin.bottom;
+    // const innerWidth = width - updatedMargin.left - updatedMargin.right;
+    // const innerHeight = height - updatedMargin.top - updatedMargin.bottom;
+
+    const innerWidth = dimensions.width - 105; // Adjusted margin
+    const innerHeight = dimensions.height - 95; // Adjusted margin
 
     const chartContainer = svg
       .append("g")
@@ -133,7 +136,8 @@ const DoubleBarChart: React.FC<DoubleBarChartProps> = ({
       .attr("text-anchor", "middle")
       .attr("fill", "#054a91") // Set the label color to #054a91
       .text("Month Wise") // The text you want to display as the label
-      .style("font-weight", "bold"); // Make the text bold
+      .style("font-weight", "bold") // Make the text bold
+      .style("font-size", "14px");
 
     chartContainer
       .append("g")
@@ -166,6 +170,7 @@ const DoubleBarChart: React.FC<DoubleBarChartProps> = ({
       .style("text-anchor", "middle")
       .style("fill", "#054a91") // Set the label color to #054a91
       .style("font-weight", "bold") // Make the text bold
+      .style("font-size", "14px")
       .text("Rupees (in thousands)"); // The text you want to display as the label
 
     // // Add labels to x-axis
