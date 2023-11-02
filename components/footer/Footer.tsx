@@ -59,7 +59,7 @@ const Footer = () => {
   
   return (
     <div className={`bg-[#272726] w-full h-fit ${(pathName.includes("welcome") || pathName.includes("signup") || pathName.includes("signin") || pathName.includes("verification"))?"hidden":"block"}  "`}>
-      <div className="px-body py-3 sm:py-6 md:py-8  gap-2 flex flex-col md:flex-row justify-between ">
+      <div className="px-body py-4 sm:py-6 md:py-8 mb-2 md:mb-3 gap-2 flex flex-col md:flex-row justify-between ">
         <div className=" flex gap-3 sm:gap-4 md:gap-5 items-center">
           <div className="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16  ">
             <Image
@@ -78,7 +78,7 @@ const Footer = () => {
         </div>
         <div className="flex  items-center gap-1 rounded-full w-full md:w-[40%] border md:border-2 border-white p-1">
           <input
-            className="  outline-0 px-1 sm:px-3 md:px-5 w-full h-full text-white bg-[#272726] rounded-full text-sm sm:text-base md:text-lg"
+            className="  outline-0 px-3 sm:px-4 md:px-5 py-2 md:py-3 lg:py-4 w-full h-full text-white bg-[#272726] rounded-full text-sm sm:text-base md:text-lg"
             placeholder="Enter your email"
           />
           <div className=" p-1 sm:p-2 md:p-3 rounded-full   bg-white cursor-pointer">

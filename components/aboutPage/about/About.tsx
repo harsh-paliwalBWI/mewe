@@ -106,7 +106,7 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="w-[52%] h-fit">
+          <div className="w-[54%] h-fit">
             <DoubleBarChartDisplay data={databar} width={width} height={height} margin={margin} />
           </div>
         </div>

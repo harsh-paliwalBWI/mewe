@@ -19,7 +19,7 @@ const Searchsidecomponent = () => {
           </div>
 
           <input
-            className="   py-1 sm:py-2 md:py-3 w-full h-full text-[#5d5f63] bg-[#e7ecf4] rounded-full text-xs sm:text-sm md:text-base"
+            className=" outline-none  py-2 sm:py-2.5 md:py-3 w-full h-full text-[#5d5f63] bg-[#e7ecf4] rounded-full text-xs sm:text-sm md:text-base"
             placeholder="Search"
           />
           <div className=" h-full  py-1 sm:py-2 md:py-3 pl-2 pr-2 text-[#5d5f63] ">
