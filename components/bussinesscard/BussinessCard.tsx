@@ -56,7 +56,8 @@ const BussinessCard = () => {
           </p>
         </div>
 
-        <div className=" w-[85%] flex  justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-4 sm:px-6 md:px-8 py-1 sm:py-2 md:py-3 border border-[#a3bad6] cursor-pointer">
+        <div className="w-fit ">
+        <div className=" w-full flex  justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-[#a3bad6] cursor-pointer ">
           <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 ">
             <Image
               src={add}
@@ -71,6 +72,7 @@ const BussinessCard = () => {
           <h2 className=" text-[#326aa4] text-sm sm:text-base md:text-lg font-semibold ">
             Follow
           </h2>
+        </div>
         </div>
       </div>
     </div>

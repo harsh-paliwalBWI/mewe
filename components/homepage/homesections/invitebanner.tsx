@@ -5,7 +5,7 @@ import invitebannerbg from "../../../images/invite banner-image.svg";
 
 const InviteBanner = () => {
   return (
-    <div className="mt-16 sm:mt-24 md:mt-32">
+    <div className="mt-8 sm:mt-16 md:mt-24 lg:mt-32">
       <div className="h-auto w-full relative">
         <Image
           src={invitebannerbg}

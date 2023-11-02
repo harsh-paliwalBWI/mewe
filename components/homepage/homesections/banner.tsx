@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import Image from "next/image";
-import bannerbg from "../../../images/bannerimage.svg";
+import bannerbg from "../../../images/banner.svg";
 
 const Bannerheader = () => {
   return (
@@ -25,7 +25,7 @@ const Bannerheader = () => {
             Connect. Learn. <span className="text-[#054A91]">Grow.</span> 
           </p>
 
-          <div className=" w-[40%] flex mt-0 sm:mt-16 md:mt-32 lg:mt-48  justify-center  items-center rounded sm:rounded-md md:rounded-lg px-2 sm:px-4 md:px-6 lg:px-8 py-0.5 sm:py-1 md:py-2 bg-[#054A91] cursor-pointer">
+          <div className=" w-[40%] flex mt-0 sm:mt-5 md:mt-11 lg:mt-16  justify-center  items-center rounded sm:rounded-md md:rounded-lg px-2 sm:px-4 md:px-6 lg:px-8 py-1 sm:py-2 md:py-3 bg-[#054A91] cursor-pointer">
             <h2 className="text-xs sm:text-sm md:text-base lg:text-lg  text-white ">
               Start Now
             </h2>

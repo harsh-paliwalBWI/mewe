@@ -71,9 +71,9 @@ const PieChartDisplay: React.FC<PieChartProps> = ({ data }) => {
   useEffect(() => {
     const resizeChart = () => {
       if (chartRef.current) {
-        const width = chartRef.current?.clientWidth || 250;
-        const height = chartRef.current?.clientHeight || 250;
-
+        const width = chartRef.current?.clientWidth || 250; 
+        const height = chartRef.current?.clientWidth || 250; 
+    
         setDimensions({ width, height });
       }
     };

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Carousel } from "antd";
 
 
+
 const responsiveSettings = [
     {
       breakpoint: 576, // Extra small screens (less than 576px)
@@ -66,7 +67,8 @@ const CategoriesSlider = () => {
         </h1>
         
       </div>
-      <Carousel responsive={responsiveSettings} autoplay>
+      <Carousel responsive={responsiveSettings } autoplay  dotPosition="bottom"
+         className="dot-black">
         <div className="px-3 sm:px-4 md:px-5">
         <CategoryCard />
         </div>

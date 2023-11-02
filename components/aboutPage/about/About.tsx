@@ -59,7 +59,7 @@ const About = () => {
           })}
         </div>
 
-        <div className=" flex justify-between gap-1 sm:gap-2 md:gap-3 ">
+        <div className=" flex  justify-between gap-1 sm:gap-2 md:gap-3 ">
           <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
             <h2 className="text-[#949597] text-xs sm:text-sm md:text-base">Profit</h2>
             <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-0.5 sm:gap-y-1 md:gap-y-2">
@@ -85,13 +85,13 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="w-fit">
+          <div className="w-[40%] h-fit">
             <PieChartDisplay data={datapie} />
           </div>
         </div>
 
 
-        <div className=" flex justify-between gap-1 sm:gap-2 md:gap-3 mt-8">
+        <div className=" flex flex-col md:flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-8">
           <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
             <h2 className="text-[#949597] text-xs sm:text-sm md:text-base">Last Financial Year Revenue</h2>
             <div className="flex flex-col gap-0.5 sm:gap-1.5 md:gap-2.5">
@@ -106,7 +106,7 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="w-fit">
+          <div className="w-[52%] h-fit">
             <DoubleBarChartDisplay data={databar} width={width} height={height} margin={margin} />
           </div>
         </div>

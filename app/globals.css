@@ -64,3 +64,23 @@ color:#5c636a;
 .breathing-animation {
   animation: breathe 2s infinite ease-in-out;
 }
+
+
+  .dot-black .slick-dots li button {
+    background-color: black;
+    bottom: -2rem;
+  }
+  .dot-black .slick-dots li.slick-active button {
+    background-color: black; 
+  }
+
+
+  .dot-white .slick-dots li button {
+    background-color: white;
+    bottom: -1rem;
+  }
+  .dot-white .slick-dots li.slick-active button {
+    background-color: white; 
+  }
+
+/* text-[#9bb7d3] */

@@ -42,7 +42,8 @@ const PostCard = () => {
       </div>
 
       <div className="relative rounded sm:rounded-lg md:rounded-xl">
-        <Carousel>
+        <Carousel dotPosition="bottom"
+         className="dot-white">
           <div className="h-auto w-full  rounded sm:rounded-lg md:rounded-xl  overflow-hidden ">
             <Image
               src={img2}

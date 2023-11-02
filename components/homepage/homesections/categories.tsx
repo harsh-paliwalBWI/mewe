@@ -16,7 +16,7 @@ const Category = () => {
       <CategoriesSlider />
       </div>
       <div className="sm:block hidden">
-        <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-16 sm:mt-24 md:mt-32">
+        <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-16 md:mt-24 lg:mt-32">
           <div className="flex justify-between items-center">
             <h1 className="opacity-80 text-black md:text-4xl sm:text-3xl text-2xl font-semibold ">
               Categories
@@ -27,7 +27,9 @@ const Category = () => {
               </p>
             </Link>
           </div>
-          <div className="grid w-full  xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-5 sm:grid-cols-4   grid-cols-3 gap-y-6  sm:gap-y-8  md:gap-y-10 lg:gap-y-12   gap-x-6  sm:gap-x-8  md:gap-x-10 lg:gap-x-12   ">
+          <div className="grid w-full  xl:grid-cols-7 lg:grid-cols-7 md:grid-cols-5 sm:grid-cols-5   grid-cols-4 gap-y-6  sm:gap-y-8  md:gap-y-10 lg:gap-y-12   gap-x-6  sm:gap-x-8  md:gap-x-10 lg:gap-x-12   ">
+            <CategoryCard />
+            <CategoryCard />
             <CategoryCard />
             <CategoryCard />
             <CategoryCard />
