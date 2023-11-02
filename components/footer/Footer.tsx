@@ -55,7 +55,7 @@ const Footer = () => {
   ];
 
   const pathName=usePathname()
-  console.log(pathName,"cbv");
+  // console.log(pathName,"cbv");
   
   return (
     <div className={`bg-[#272726] w-full h-fit ${(pathName.includes("welcome") || pathName.includes("signup") || pathName.includes("signin") || pathName.includes("verification"))?"hidden":"block"}  "`}>

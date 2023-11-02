@@ -4,6 +4,7 @@ import blueTickImg from "../../../images/verify 3.svg"
 import profileImg from "../../../images/Ellipse 33.svg"
 import Image  from 'next/image'
 import FlatIcon from '@/components/flatIcon/flatIcon'
+import Link from 'next/link'
 
 interface ProfileOptionsProps {
   setSelectedTab:any // Adjust the type as needed
@@ -61,11 +62,12 @@ const ProfileOptions:FC<ProfileOptionsProps> = ({setSelectedTab,selectedTab}) =>
     <div><FlatIcon className="flaticon-support text-2xl"/></div>
     <div>Support</div>
    </div>
+   <Link  href={"/"}>
    <div className={`${optionStyle}`}>
     <div><FlatIcon className="flaticon-exit text-2xl"/></div>
     <div>Log Out</div>
    </div>
-   
+   </Link>
 
    </div>
    </div>

@@ -17,7 +17,7 @@ const ChatsPage = () => {
             <div className='flex justify-between items-center gap-5 bg-white  px-4 py-3 chat-container rounded-md'>
                 <div className='text-2xl font-bold px-2' >Chats</div>
                 <div className='flex items-center justify-end gap-x-10  w-full  '>
-                    <div className='bg-[#e5eaf1]  flex items-center gap-x-2 h-fit rounded-full px-5 border w-[32%] search-container'><div> <FlatIcon className="flaticon-search md:text-xl text-[#5c636a] font-bold" /></div><input type="text" className='bg-transparent py-1.5 ' placeholder='Search' /></div>
+                    <div className='bg-[#e5eaf1]  flex items-center gap-x-2 h-fit rounded-full px-5 border w-[32%] search-container'><div> <FlatIcon className="flaticon-search md:text-xl text-[#5c636a] font-bold" /></div><input type="text" className='bg-transparent py-1.5 outline-0 ' placeholder='Search' /></div>
                     <div className='bg-primary text-lg text-white cursor-pointer px-12 py-3 rounded-md'>+ New Chat</div>
                 </div>
             </div>
@@ -151,7 +151,7 @@ const ChatsPage = () => {
                             </div>
                             </div>
                             <div className='flex items-center w-full gap-3 mt-4 '>
-                                <div className='bg-[#4d4d4d] flex w-[88%] px-5 rounded-full py-3 msg-container'><input type="text" className='bg-transparent w-[100%]' placeholder='Type something...' /><p><FlatIcon className="flaticon-send text-white text-xl"/></p></div>
+                                <div className='bg-[#4d4d4d] flex w-[88%] px-5 rounded-full py-3 msg-container'><input type="text" className='bg-transparent w-[100%] outline-0' placeholder='Type something...' /><p><FlatIcon className="flaticon-send text-white text-xl"/></p></div>
                                 <div className='bg-[#4d4d4d] w-[54px] h-[54px] flex items-center  justify-center text-white   rounded-full'><button><FlatIcon className="flaticon-plus text-white text-2xl font-medium"/></button></div>
                             </div>
                         </div>

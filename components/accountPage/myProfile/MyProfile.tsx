@@ -40,7 +40,7 @@ const MyProfile = () => {
                             />
                         </div>
                     </div>
-                    <div className="w-full  flex flex-col gap-3 ">
+                    <div className="w-full  flex flex-col gap-3 profile-desc ">
                         <label htmlFor="" className={`${labelStyle}`}>
                             Description
                         </label>

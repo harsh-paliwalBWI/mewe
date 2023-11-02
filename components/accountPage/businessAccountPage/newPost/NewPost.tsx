@@ -1,11 +1,15 @@
 "use client"
-import React from 'react'
+import React,{FC} from 'react'
 import Image from 'next/image'
 import photoImg from "../../../../images/image (2).svg"
 import docImg from "../../../../images/doc.svg"
 import FlatIcon from '@/components/flatIcon/flatIcon'
 
-const NewPost = () => {
+interface Props{
+    setIsNewPost:any
+}
+
+const NewPost:FC<Props> = ({setIsNewPost}) => {
     const labelStyle = "md:text-base text-sm text-primary font-bold tracking-wide"
     const inputStyle = " rounded-md px-3 py-3.5 outline-0 bg-transparent"
   return (
@@ -38,14 +42,14 @@ const NewPost = () => {
                         <label htmlFor="" className={`${labelStyle}`}>
                         Description
                         </label>
-                        <div className='bg-[#F8FAFC] rounded-md '>
+                        <div className='bg-[#F8FAFC] rounded-md textarea-container'>
                         <textarea
                             name=""
                             id=""
                             className='bg-transparent px-3 py-2 w-full outline-0'
                             // className={` ${inputStyle} ${labelStyle}`}
                             placeholder='Description'
-                            rows={2}
+                            rows={6}
                         ></textarea>
                         </div>
                     </div>
@@ -58,6 +62,10 @@ const NewPost = () => {
                                 </div>
                             <div ><Image src={docImg} alt='' /></div>
                         </div>
+                        </div>
+                        <div className='flex items-center md:gap-x-10 gap-x-4 text-base'>
+                            <div className='bg-primary w-[50%] text-center text-white px-8 py-3 rounded-md cursor-pointer'><button>Post</button></div>
+                            <div onClick={()=>setIsNewPost(false)} className='bg-black w-[50%] text-center text-white px-5 py-3 rounded-md cursor-pointer'><button>Cancel</button></div>
                         </div>
                         </div>
     </div>

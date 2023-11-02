@@ -22,12 +22,12 @@ const ManagePost = () => {
     //   };
   return (
     <>
-   {isNewPost?<NewPost/>:
+   {isNewPost?<NewPost setIsNewPost={setIsNewPost}/>:
     <div className=' md:w-[60%] w-[100%]  h-fit'>
         
         <div className='flex items-center justify-between my-5'>
             <div className='text-primary font-bold sm:text-xl text-lg '><h2>My Posts</h2></div>
-            <div onClick={()=>setIsNewPost(true)} className='bg-primary font-semibold  md:text-lg sm:text-base text-sm text-white cursor-pointer sm:px-10 px-5 sm:py-3.5 py-2 rounded-md'>
+            <div onClick={()=>setIsNewPost(true)} className='bg-primary font-medium  md:text-lg sm:text-base text-sm text-white cursor-pointer sm:px-10 px-5 sm:py-3.5 py-2 rounded-md'>
                 <button>+ New Post</button></div>
         </div>
         <div className=' bg-[#F8FAFC] sm:px-8 px-4 sm:py-10 py-5'>

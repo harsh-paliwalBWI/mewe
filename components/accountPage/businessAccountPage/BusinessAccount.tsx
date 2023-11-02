@@ -3,7 +3,6 @@ import React, { useState, Fragment } from 'react'
 import { Listbox, Transition } from "@headlessui/react";
 import FlatIcon from '@/components/flatIcon/flatIcon';
 const people = [
-  { id: 1, name: 'gfgjj', unavailable: false },
   { id: 2, name: 'Kenton Towne', unavailable: false },
   { id: 3, name: 'Therese Wunsch', unavailable: false },
   { id: 4, name: 'Benedict Kessler', unavailable: true },
@@ -60,19 +59,22 @@ const BusinessAccount = () => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={selectedPerson} onChange={setSelectedPerson}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[55px] px-3 py-3 rounded-md shadow-lg bg-white text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{(selectedPerson.name&&selectedPerson.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {people.map((person) => (
                       <Listbox.Option key={person.id} value={person} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                              }`}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                              }  flex justify-between`}
                           >
                             {/* {selected && <CheckIcon />} */}
-                            {selected && "check"}
 
-                            {person.name}
+                            <span>
+                              {person.name}
+                            </span>
+                            {selected && <span>check</span>}
+
                           </li>
                         )}
                       </Listbox.Option>
@@ -89,18 +91,21 @@ const BusinessAccount = () => {
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{selectedPerson.name}</span><span>
                     <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[55px] px-3 py-3 rounded-md shadow-lg bg-white text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                    <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {people.map((person) => (
                       <Listbox.Option key={person.id} value={person} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                              }`}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                              }  flex justify-between`}
                           >
                             {/* {selected && <CheckIcon />} */}
-                            {selected && "check"}
 
-                            {person.name}
+                            <span>
+                              {person.name}
+                            </span>
+                            {selected && <span>check</span>}
+
                           </li>
                         )}
                       </Listbox.Option>
@@ -125,20 +130,21 @@ const BusinessAccount = () => {
               <Listbox value={selectedPerson} onChange={setSelectedPerson}>
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[55px] px-3 py-3 rounded-md shadow-lg bg-white text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {people.map((person) => (
-                      /* Use the `active` state to conditionally style the active option. */
-                      /* Use the `selected` state to conditionally style the selected option. */
                       <Listbox.Option key={person.id} value={person} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                              }`}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                              }  flex justify-between`}
                           >
                             {/* {selected && <CheckIcon />} */}
-                            {selected && "check"}
 
-                            {person.name}
+                            <span>
+                              {person.name}
+                            </span>
+                            {selected && <span>check</span>}
+
                           </li>
                         )}
                       </Listbox.Option>
@@ -154,20 +160,21 @@ const BusinessAccount = () => {
               <Listbox value={selectedPerson} onChange={setSelectedPerson}>
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[55px] px-3 py-3 rounded-md shadow-lg bg-white text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {people.map((person) => (
-                      /* Use the `active` state to conditionally style the active option. */
-                      /* Use the `selected` state to conditionally style the selected option. */
                       <Listbox.Option key={person.id} value={person} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                              }`}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                              }  flex justify-between`}
                           >
                             {/* {selected && <CheckIcon />} */}
-                            {selected && "check"}
 
-                            {person.name}
+                            <span>
+                              {person.name}
+                            </span>
+                            {selected && <span>check</span>}
+
                           </li>
                         )}
                       </Listbox.Option>
@@ -179,7 +186,7 @@ const BusinessAccount = () => {
           </div>
         </div>
         <div className="flex md:flex-row flex-col md:gap-9 gap-5gap-9  w-full ">
-          <div className={`${borderStyle} w-[100%]`}>
+          <div className={`${borderStyle} w-[100%] business-account-desc`}>
             <label htmlFor="" className={`${labelStyle}`}>
               Description
             </label>
@@ -199,20 +206,21 @@ const BusinessAccount = () => {
               <Listbox value={selectedPerson} onChange={setSelectedPerson}>
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[55px] px-3 py-3 rounded-md shadow-lg bg-white text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {people.map((person) => (
-                      /* Use the `active` state to conditionally style the active option. */
-                      /* Use the `selected` state to conditionally style the selected option. */
                       <Listbox.Option key={person.id} value={person} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                              }`}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                              }  flex justify-between`}
                           >
                             {/* {selected && <CheckIcon />} */}
-                            {selected && "check"}
 
-                            {person.name}
+                            <span>
+                              {person.name}
+                            </span>
+                            {selected && <span>check</span>}
+
                           </li>
                         )}
                       </Listbox.Option>
@@ -245,25 +253,26 @@ const BusinessAccount = () => {
                     <Listbox value={selectedPerson} onChange={setSelectedPerson}>
                       <div className=' '>
                         <Listbox.Button className={` w-full flex items-center justify-between text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                        <Listbox.Options className={`absolute top-[55px] px-3 py-3 rounded-md shadow-lg bg-white text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
-                          {people.map((person) => (
-                            /* Use the `active` state to conditionally style the active option. */
-                            /* Use the `selected` state to conditionally style the selected option. */
-                            <Listbox.Option key={person.id} value={person} as={Fragment} >
-                              {({ active, selected }) => (
-                                <li
-                                  className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                                    }`}
-                                >
-                                  {/* {selected && <CheckIcon />} */}
-                                  {selected && "check"}
+                        <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                    {people.map((person) => (
+                      <Listbox.Option key={person.id} value={person} as={Fragment} >
+                        {({ active, selected }) => (
+                          <li
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                              }  flex justify-between`}
+                          >
+                            {/* {selected && <CheckIcon />} */}
 
-                                  {person.name}
-                                </li>
-                              )}
-                            </Listbox.Option>
-                          ))}
-                        </Listbox.Options>
+                            <span>
+                              {person.name}
+                            </span>
+                            {selected && <span>check</span>}
+
+                          </li>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
                       </div>
                     </Listbox>
                   </div>
@@ -327,25 +336,26 @@ const BusinessAccount = () => {
                   <Listbox value={selectedPerson} onChange={setSelectedPerson}>
                     <div className=' '>
                       <Listbox.Button className={` w-full flex items-center justify-between text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                      <Listbox.Options className={`absolute top-[55px] px-3 py-3 rounded-md shadow-lg bg-white text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
-                        {people.map((person) => (
-                          /* Use the `active` state to conditionally style the active option. */
-                          /* Use the `selected` state to conditionally style the selected option. */
-                          <Listbox.Option key={person.id} value={person} as={Fragment} >
-                            {({ active, selected }) => (
-                              <li
-                                className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                                  }`}
-                              >
-                                {/* {selected && <CheckIcon />} */}
-                                {selected && "check"}
+                      <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                    {people.map((person) => (
+                      <Listbox.Option key={person.id} value={person} as={Fragment} >
+                        {({ active, selected }) => (
+                          <li
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                              }  flex justify-between`}
+                          >
+                            {/* {selected && <CheckIcon />} */}
 
-                                {person.name}
-                              </li>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
+                            <span>
+                              {person.name}
+                            </span>
+                            {selected && <span>check</span>}
+
+                          </li>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
                     </div>
                   </Listbox>
                 </div>
