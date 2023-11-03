@@ -30,7 +30,7 @@ const SignInPage = () => {
                         <div className='xl:w-[80%] w-[70%]'><input type="text" name="" id="" className='border border-[#868E97] w-full py-3 outline-0 px-5' /></div>
                     </div>
                     <Link href={'/verification'}>
-                    <div className='bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl text-base sm:text-base text-sm font-medium cursor-pointer'><button className=''>Verify</button></div>
+                    <div className='bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer'><button className=''>Verify</button></div>
                     </Link>
                     <div className='text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 '><h2>or Sign In with</h2></div>
                     <div className='flex items-center justify-center gap-x-6'>

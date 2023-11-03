@@ -27,7 +27,9 @@ const Category = () => {
               </p>
             </Link>
           </div>
-          <div className="grid w-full  xl:grid-cols-7 lg:grid-cols-7 md:grid-cols-5 sm:grid-cols-5   grid-cols-4 gap-y-6  sm:gap-y-8  md:gap-y-10 lg:gap-y-12   gap-x-6  sm:gap-x-8  md:gap-x-10 lg:gap-x-12   ">
+          <div className="grid w-full  xl:grid-cols-8 lg:grid-cols-8 md:grid-cols-6 sm:grid-cols-5   grid-cols-4 gap-y-6  sm:gap-y-8  md:gap-y-10 lg:gap-y-12   gap-x-6  sm:gap-x-8  md:gap-x-10 lg:gap-x-12   ">
+            <CategoryCard />
+            <CategoryCard />
             <CategoryCard />
             <CategoryCard />
             <CategoryCard />
