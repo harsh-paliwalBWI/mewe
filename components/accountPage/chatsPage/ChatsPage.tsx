@@ -10,15 +10,16 @@ import img5 from "../../../images/Ellipse 35.svg"
 import img6 from "../../../images/Ellipse 36.svg"
 // import Link from 'antd/es/typography/Link'
 import Link from 'next/link'
+import SingleChat from '@/components/singleChat/SingleChat'
 
 const ChatsPage = () => {
     return (
-        <div className='w-[70%]  h-full mb-32'>
-            <div className='flex justify-between items-center gap-5 bg-white  px-4 py-3 chat-container rounded-md'>
-                <div className='text-2xl font-bold px-2' >Chats</div>
-                <div className='flex items-center justify-end gap-x-10  w-full  '>
-                    <div className='bg-[#e5eaf1]  flex items-center gap-x-2 h-fit rounded-full px-5 border w-[32%] search-container'><div> <FlatIcon className="flaticon-search md:text-xl text-[#5c636a] font-bold" /></div><input type="text" className='bg-transparent py-1.5 outline-0 ' placeholder='Search' /></div>
-                    <div className='bg-primary text-lg text-white cursor-pointer px-12 py-3 rounded-md'>+ New Chat</div>
+        <div className='md:w-[70%] w-[100%] h-full md:mb-32'>
+            <div className='w-[100%] flex justify-between items-center sm:gap-5 bg-white  px-4 py-3 chat-container rounded-md '>
+                <div className='sm:text-2xl text-xl font-bold px-2 ' >Chats</div>
+                <div className='flex items-center justify-end lg:gap-x-10 gap-4 sm:w-full w-[50%] '>
+                    <div className='  hidden bg-[#e5eaf1]  sm:flex items-center gap-x-2 h-fit rounded-full px-5 border md:w-[32%] w-[50%] search-container'><div> <FlatIcon className="flaticon-search md:text-xl text-[#5c636a] font-bold" /></div><input type="text" className='bg-transparent py-1.5 outline-0 ' placeholder='Search' /></div>
+                    <div className='bg-primary md:text-lg text-sm text-white cursor-pointer lg:px-12 md:px-6  px-3 py-3 rounded-md'>+ New Chat</div>
                 </div>
             </div>
             <div className='flex sm:flex-row flex-col w-full h-full  mt-8 gap-1'>
@@ -120,7 +121,11 @@ const ChatsPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className=' border-t border-t-black border-b border-b-black border-r border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-md px-5 py-5'>
+                <div className='sm:w-[60%] w-[100%]'>
+                <SingleChat/>
+                </div>
+                {/* right section start  */}
+                {/* <div className=' border-t border-t-black border-b border-b-black border-r border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-md px-5 py-5'>
                     <div className=' h-full w-full relative'>
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center gap-4'>
@@ -156,7 +161,8 @@ const ChatsPage = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
+                {/* right section end  */}
             </div>
         </div>
     )

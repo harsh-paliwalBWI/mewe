@@ -17,7 +17,7 @@ const SignInPage = () => {
                 <div className='w-[57%] md:block hidden  h-[100%] pl-6 '><Image src={mainImg} alt='' height={1000} width={1000} className=' w-[100%] h-[100%] object-fill' /></div>
                 <div className='md:w-[43%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5  '>
                     <div className=' flex flex-col lg:gap-10 gap-5'>
-                    <div className='flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold md:mt-0 mt-10 '><h1>Sign in to <span className='text-primary font-bold'>ME WE</span></h1></div>
+                    <div className='flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold md:mt-0 mt-10 '><h1>Sign in to <span className='text-primary font-bold'>MEWE</span></h1></div>
                     <div className='text-primary font-semibold flex justify-center items-center xl:text-2xl lg:text-2xl md:text-base sm:text-xl text-base '><h1>Add Your Contact Information</h1></div>
                     </div>
                     <div className='flex justify-center items-center text-center text-[#868E97] font-medium lg:text-base sm:text-sm text-xs mt-4 '><h3>We will be sending a verification code to the provided <br />contact number.</h3></div>

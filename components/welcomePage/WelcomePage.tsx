@@ -15,7 +15,7 @@ const WelcomePage = () => {
             <div className='flex py-6 justify-center items-center  md:h-[100vh] h-auto'>
                 <div className='w-[55%] md:block hidden  h-[100%] pl-6 '><Image src={mainImg} alt='' height={1000} width={1000} className=' w-[100%] h-[100%] object-fill' /></div>
                 <div className='md:w-[45%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5 md:mt-0 mt-16 '>
-                    <div className='flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold  '><h1> Welcome <span className='font-semibold'>to</span> <span className='text-primary font-bold'>ME WE</span></h1></div>
+                    <div className='flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold  '><h1> Welcome <span className='font-semibold'>to</span> <span className='text-primary font-bold'>MEWE</span></h1></div>
                    <div className='flex justify-center items-center text-center text-[#666666] font-medium xl:text-lg lg:text-base sm:text-sm text-xs mt-6  '><h4>Full | Mischievous dramedy featuring accordion,<br /> tuba & pizzicato violin</h4></div>
                   <div className='flex flex-col gap-5 my-12'>
                     <Link href={"/signup"}>

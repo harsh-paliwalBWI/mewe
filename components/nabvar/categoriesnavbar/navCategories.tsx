@@ -51,7 +51,7 @@ const Categories = () => {
             }
           </div>
         </Link>
-        <Link href={"/account"}>
+        <Link href={{pathname: '/account', query: { tab: 'my-profile' },}}>
           <div className={`text-[#CBCBCB] ${textStyle}`}>
             <h1 className=" ">Account</h1>
             {pathName.includes("account") &&

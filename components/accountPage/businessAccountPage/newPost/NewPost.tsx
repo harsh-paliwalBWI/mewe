@@ -4,16 +4,24 @@ import Image from 'next/image'
 import photoImg from "../../../../images/image (2).svg"
 import docImg from "../../../../images/doc.svg"
 import FlatIcon from '@/components/flatIcon/flatIcon'
+import { usePathname,useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
-interface Props{
-    setIsNewPost:any
-}
 
-const NewPost:FC<Props> = ({setIsNewPost}) => {
+// interface Props{
+//     setIsNewPost:any
+// }
+
+const NewPost = () => {
+    const params=useSearchParams()
+  const currTab=params.get("tab")
+    const pathName=usePathname()
+
     const labelStyle = "md:text-base text-sm text-primary font-bold tracking-wide"
     const inputStyle = " rounded-md px-3 py-3.5 outline-0 bg-transparent"
+    // ${pathName.includes("manage-posts")?"block w-[100%]   md:mb-24 mb-5":"sm:block hidden md:w-[60%] w-full"}
   return (
-    <div className='md:w-[60%] w-full '>
+    <div className={`md:w-[60%] w-[100%]  ${currTab==="new-post"?"block":"block"}`}>
         <div className='md:text-2xl text-xl text-primary font-bold  sm:my-8 my-4'><h1>Create A Post</h1></div>
         <div className=' flex flex-col md:gap-8 gap-4'>
         <div className="flex md:flex-row flex-col md:gap-10 gap-4 w-full ">
@@ -63,9 +71,13 @@ const NewPost:FC<Props> = ({setIsNewPost}) => {
                             <div ><Image src={docImg} alt='' /></div>
                         </div>
                         </div>
-                        <div className='flex items-center md:gap-x-10 gap-x-4 text-base'>
+                        <div className='flex items-center md:gap-x-10 gap-x-4 sm:text-base text-sm'>
                             <div className='bg-primary w-[50%] text-center text-white px-8 py-3 rounded-md cursor-pointer'><button>Post</button></div>
-                            <div onClick={()=>setIsNewPost(false)} className='bg-black w-[50%] text-center text-white px-5 py-3 rounded-md cursor-pointer'><button>Cancel</button></div>
+                            <Link href={{pathname: '/account',query: { tab: 'manage-posts' },}} className='bg-black w-[50%] text-center text-white px-5 py-3 rounded-md cursor-pointer'>
+                            <div 
+                            // onClick={()=>setIsNewPost(false)}
+                             className=''><button>Cancel</button></div>
+                             </Link>
                         </div>
                         </div>
     </div>

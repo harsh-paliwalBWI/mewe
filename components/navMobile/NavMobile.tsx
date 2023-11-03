@@ -5,7 +5,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../images/image 14.svg";
+import logo from "../../images/image (1).png";
 import { usePathname } from "next/navigation";
 import {TfiMenuAlt} from "react-icons/tfi"
 import FlatIcon from "../flatIcon/flatIcon";
@@ -29,11 +29,11 @@ const Navmobile = () => {
         </div>
         <Link
                 href={"/"}>
-        <div className="border border-primary p-[1px] rounded-lg">
+        {/* <div className="border border-primary p-[1px] rounded-lg"> */}
           <div className=" w-[46px] h-[46px]  ">
             <Image src={logo} alt="" className="w-full h-full object-contain " />
           </div>
-          </div>
+          {/* </div> */}
           </Link>
       </div>
       {isMobile && (
@@ -56,11 +56,11 @@ const Navmobile = () => {
                 setIsMobile(false);
                 document.body.classList.remove("no-scroll");
               }}>
-               <div className="border border-primary p-[1px] rounded-lg">
+               {/* <div className="border border-primary p-[1px] rounded-lg"> */}
           <div className=" w-[56px] h-[56px]  ">
             <Image src={logo} alt="" className="w-full h-full object-contain " />
           </div>
-          </div>
+          {/* </div> */}
               </Link>
               <Link
                 href={"/"}

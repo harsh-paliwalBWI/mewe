@@ -1,11 +1,16 @@
+"use client"
 import React from 'react'
 import profileImg from "../../images/Ellipse 31.svg"
 import Image from 'next/image'
 import FlatIcon from '../flatIcon/flatIcon'
+import { usePathname } from 'next/navigation';
+
 const SingleChat = () => {
+  const pathName=usePathname()
+
   return (
-    <div className='px-body'>
-           <div className=' border border-black  w-[100%] relative flex-1  rounded-md px-5 py-5 mt-5 mb-20'>
+    // <div className='px-body'>
+           <div className={` border-t border-t-black border-b border-b-black border-r border-r-black w-[100%] relative flex-1 min-h-[100%]  rounded-md px-5 py-5 ${pathName.includes("chat-page")?"block  w-[100%] sm:mt-10 border border-black":"sm:block hidden  w-[100%]"}`}>
                     <div className='min-h-[80vh] h-auto w-full relative'>
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center gap-4'>
@@ -42,7 +47,7 @@ const SingleChat = () => {
                         </div>
                     </div>
                 </div>
-    </div>
+    // </div>
   )
 }
 

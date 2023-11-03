@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import logo from "../../images/image 14.svg";
+import logo from "../../images/image (1).png";
 import flag from "../../images/united-kingdom 1.svg";
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
@@ -22,11 +22,11 @@ const Navbar =  () => {
     <div className={`w-full  ${(pathName.includes("welcome") || pathName.includes("signup") || pathName.includes("signin") || pathName.includes("verification"))?"hidden":"sm:block hidden"}`}>
       <div className="flex items-center justify-between px-[4%] py-5 cursor-pointer bg-white w-full gap-3">
         <Link href={"/"}>
-          <div className="border border-primary p-[1px] rounded-lg">
-          <div className=" w-[56px] h-[56px]  ">
+          {/* <div className="border border-primary p-[1px] rounded-lg"> */}
+          <div className=" w-[64px] h-[64px]  ">
             <Image src={logo} alt="" className="w-full h-full object-contain " />
           </div>
-          </div>
+          {/* </div> */}
         </Link>
         <div className="flex justify-between  items-center gap-3 md:gap-5 w-full sm:w-[70%] md:w-[55%]  lg:w-[40%] ">
           <div className="flex px-3  items-center gap-0.5 md:gap-1 rounded-full  w-[50%] bg-[#e5eaf1] header-search-conatiner ">

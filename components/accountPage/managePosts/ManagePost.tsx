@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import NewPost from '../businessAccountPage/newPost/NewPost'
 import img from "../../../images/hotel.svg"
 import Image from 'next/image'
@@ -7,28 +7,35 @@ import logoImg from "../../../images/a5 2.svg"
 // import 'antd/dist/antd.css';
 import '@ant-design/cssinjs'
 import FlatIcon from '@/components/flatIcon/flatIcon'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 import { Carousel } from 'antd';
 // import "antd/dist/antd.css"
 
 const ManagePost = () => {
     const [isNewPost,setIsNewPost]=useState(false)
+    const pathName=usePathname()
     // const contentStyle: React.CSSProperties = {
     //     height: '160px',
     //     color: '#000',
     //     lineHeight: '160px',
     //     textAlign: 'center',
-    //     background: '#364d79',
+    //     background: '#364d79', 
     //   };
   return (
     <>
-   {isNewPost?<NewPost setIsNewPost={setIsNewPost}/>:
-    <div className=' md:w-[60%] w-[100%]  h-fit'>
+   {/* {isNewPost?<NewPost setIsNewPost={setIsNewPost}/>: */}
+    <div className={` h-fit   ${pathName.includes("manage-posts")?"block w-[100%]  sm:mt-5 md:mt-10 md:mb-24 mb-5":"sm:block hidden md:w-[60%] w-[100%]"}`}>
         
         <div className='flex items-center justify-between my-5'>
             <div className='text-primary font-bold sm:text-xl text-lg '><h2>My Posts</h2></div>
-            <div onClick={()=>setIsNewPost(true)} className='bg-primary font-medium  md:text-lg sm:text-base text-sm text-white cursor-pointer sm:px-10 px-5 sm:py-3.5 py-2 rounded-md'>
+            <Link href={{pathname: '/account',query: { tab: 'new-post' }}}>
+            <div 
+            // onClick={()=>setIsNewPost(true)}
+             className='bg-primary font-medium  md:text-lg sm:text-base text-sm text-white cursor-pointer sm:px-10 px-5 sm:py-3.5 py-2 rounded-md'>
                 <button>+ New Post</button></div>
+                </Link>
         </div>
         <div className=' bg-[#F8FAFC] sm:px-8 px-4 sm:py-10 py-5'>
           <div className='flex justify-between '>
@@ -51,7 +58,7 @@ const ManagePost = () => {
             </div>
           </div>
         <div className=' sm:h-[300px] h-[200px] w-[100%] relative '>
-        <Carousel autoplay dots={true} dotPosition='bottom' className=' h-full rounded-lg'>
+        <Carousel autoplay   className=' h-full rounded-lg'>
     
         <div className='w-[100%]  sm:h-[300px] h-[200px] rounded-lg relative'>
         <Image src={img} alt='' className='w-[100%] h-[100%] object-cover rounded-lg'/>
@@ -115,7 +122,7 @@ const ManagePost = () => {
         </div>
         </div>
     </div>
-}
+{/* } */}
     </>
   )
 }
