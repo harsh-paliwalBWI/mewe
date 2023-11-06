@@ -72,7 +72,7 @@ const Categories = () => {
        
       </div>
       <div className="md:block hidden absolute right-[4%] ">
-      <Link href={{pathname: '/account',query: { tab: 'manage-posts' },}}>
+      <Link href={{pathname: '/account',query: { tab: 'new-post' },}}>
       <div className="  justify-center  items-center rounded sm:rounded-md md:rounded-lg px-1 sm:px-2 md:px-4 lg:px-6 py-0 sm:py-0.5 md:py-1 bg-[#054A91] cursor-pointer">
             <h2 className="text-[10px] sm:text-xs md:text-sm lg:text-base   text-white ">
            Create Post
