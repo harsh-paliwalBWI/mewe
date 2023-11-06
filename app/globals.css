@@ -27,12 +27,20 @@ body {
     rgb(var(--background-start-rgb));
 } */
 .chat-container{
-  box-shadow: 0px 4px 79px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 4px 79px 6px rgba(0, 0, 0, 0.1);
 
 }
+.title-container input[type="text"]::placeholder,.location-container input[type="text"]::placeholder,.textarea-container textarea::placeholder{
+  font-size: small;
+}
+
 .msg-container input[type="text"]::placeholder{
   color: #FFFFFF;
   font-size: small;
+}
+.post-cont input[type="text"]::placeholder{
+  font-size: small;
+
 }
 .search-container input[type="text"]::placeholder{
 color:#5c636a;

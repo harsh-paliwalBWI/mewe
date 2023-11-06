@@ -10,6 +10,7 @@ import Link from 'next/link'
 
 
 
+
 const ProfileOptionsMobile = () => {
 
   const optionStyle="flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer"

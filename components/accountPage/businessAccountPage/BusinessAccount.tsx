@@ -3,6 +3,8 @@ import React, { useState, Fragment } from 'react'
 import { Listbox, Transition } from "@headlessui/react";
 import FlatIcon from '@/components/flatIcon/flatIcon';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+
 const people = [
   { id: 2, name: 'Kenton Towne', unavailable: false },
   { id: 3, name: 'Therese Wunsch', unavailable: false },
@@ -18,18 +20,29 @@ const links = [
 
 const BusinessAccount = () => {
   const [selectedPerson, setSelectedPerson] = useState(people[0])
-  const pathName=usePathname()
+  const pathName = usePathname()
+  const router = useRouter()
+
 
   const borderStyle = "border border-[#C8C8C8] rounded-md relative"
   const labelStyle = " text-sm   text-[#868E97] font-medium  px-1  bg-white absolute top-[-10px] left-[10px]"
   const inputStyle = "rounded-lg px-3 py-3 w-full outline-0"
 
   return (
-    <div className={` h-fit py-2  relative z-0 mb-10 ${pathName.includes("business-account")?"block  w-[100%] sm:mt-10":"sm:block hidden md:w-[63%] w-[100%]"} `}>
-      <div className='text-primary font-bold xl:text-2xl text-xl '><h1>Create Business Account</h1></div>
-      <div className='text-[#868E97] xl:text-base text-sm font-medium  sm:mb-8 mb-4 mt-4'><p>Fill in all the details to get started.</p></div>
-      <div className='text-primary font-bold xl:text-lg text-base  '><h2>Basic</h2></div>
-      <div className="w-full flex flex-col sm:gap-9 gap-7 sm:my-10 my-5">
+    <div className={` h-fit py-2  relative z-0 mb-10 ${pathName.includes("business-account") ? "block  w-[100%] sm:mt-5" : "sm:block hidden md:w-[63%] w-[100%]"} `}>
+      {
+        pathName.includes("business-account") && <div
+          onClick={() => {
+            console.log("XFBB");
+
+            router.replace("/account?tab=my-profile")
+          }}
+          className='mb-2'><FlatIcon className="flaticon-arrow-right rotate-180 text-2xl font-bold" /></div>
+      }
+      <div className='text-primary font-bold xl:text-xl sm:text-xl text-lg '><h1>Create Business Account</h1></div>
+      <div className='text-[#868E97] xl:text-sm text-sm font-medium  sm:mb-6 mb-4 mt-4'><p>Fill in all the details to get started.</p></div>
+      <div className='text-primary font-bold  text-base  '><h2>Basic</h2></div>
+      <div className="w-full flex flex-col sm:gap-9 gap-7 sm:my-8 my-5">
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full  ">
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Name of the Startup</label>
@@ -61,7 +74,7 @@ const BusinessAccount = () => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={selectedPerson} onChange={setSelectedPerson}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{(selectedPerson.name&&selectedPerson.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{(selectedPerson.name && selectedPerson.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {people.map((person) => (
                       <Listbox.Option key={person.id} value={person} as={Fragment} >
@@ -93,7 +106,7 @@ const BusinessAccount = () => {
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{selectedPerson.name}</span><span>
                     <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                    <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {people.map((person) => (
                       <Listbox.Option key={person.id} value={person} as={Fragment} >
                         {({ active, selected }) => (
@@ -235,8 +248,8 @@ const BusinessAccount = () => {
         </div>
       </div>
       <div>
-        <div className='text-primary font-bold xl:text-lg text-base  '><h2>Financials</h2></div>
-        <div className='w-full  sm:my-10 my-5'>
+        <div className='text-primary font-bold  text-base  '><h2>Financials</h2></div>
+        <div className='w-full  sm:my-8 my-5'>
           <div className="grid sm:grid-cols-2  grid-cols-1 md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full  ">
             <div className='flex flex-col gap-5  '>
               <div className='flex flex-col sm:gap-9 gap-7'>
@@ -256,25 +269,25 @@ const BusinessAccount = () => {
                       <div className=' '>
                         <Listbox.Button className={` w-full flex items-center justify-between text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                         <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
-                    {people.map((person) => (
-                      <Listbox.Option key={person.id} value={person} as={Fragment} >
-                        {({ active, selected }) => (
-                          <li
-                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                              }  flex justify-between`}
-                          >
-                            {/* {selected && <CheckIcon />} */}
+                          {people.map((person) => (
+                            <Listbox.Option key={person.id} value={person} as={Fragment} >
+                              {({ active, selected }) => (
+                                <li
+                                  className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                                    }  flex justify-between`}
+                                >
+                                  {/* {selected && <CheckIcon />} */}
 
-                            <span>
-                              {person.name}
-                            </span>
-                            {selected && <span>check</span>}
+                                  <span>
+                                    {person.name}
+                                  </span>
+                                  {selected && <span>check</span>}
 
-                          </li>
-                        )}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
+                                </li>
+                              )}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
                       </div>
                     </Listbox>
                   </div>
@@ -342,25 +355,25 @@ const BusinessAccount = () => {
                     <div className=' '>
                       <Listbox.Button className={` w-full flex items-center justify-between text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                       <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
-                    {people.map((person) => (
-                      <Listbox.Option key={person.id} value={person} as={Fragment} >
-                        {({ active, selected }) => (
-                          <li
-                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                              }  flex justify-between`}
-                          >
-                            {/* {selected && <CheckIcon />} */}
+                        {people.map((person) => (
+                          <Listbox.Option key={person.id} value={person} as={Fragment} >
+                            {({ active, selected }) => (
+                              <li
+                                className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
+                                  }  flex justify-between`}
+                              >
+                                {/* {selected && <CheckIcon />} */}
 
-                            <span>
-                              {person.name}
-                            </span>
-                            {selected && <span>check</span>}
+                                <span>
+                                  {person.name}
+                                </span>
+                                {selected && <span>check</span>}
 
-                          </li>
-                        )}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
+                              </li>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
                     </div>
                   </Listbox>
                 </div>
@@ -383,13 +396,13 @@ const BusinessAccount = () => {
             </div>
           </div>
         </div>
-        <div className='text-primary font-bold xl:text-lg text-base  '><h2>Photos and Videos</h2></div>
-        <div className='flex items-center gap-8 sm:my-10 my-5'>
+        <div className='text-primary font-bold  text-base  '><h2>Photos and Videos</h2></div>
+        <div className='flex items-center gap-8 sm:my-8 my-5'>
           <div className='sm:h-[150px] h-[100px] sm:w-[150px] w-[100px] rounded-lg bg-primary text-white text-7xl flex items-center justify-center font-bold'>+</div>
           <div className='sm:h-[150px] h-[100px] sm:w-[150px] w-[100px] rounded-lg border border-primary border-dashed text-primary text-6xl flex items-center justify-center font-bold'>+</div>
         </div>
-        <div className='flex flex-col sm:gap-12 gap-6'>
-          <div className='text-primary font-bold xl:text-lg text-base  '><h2>Contact</h2></div>
+        <div className='flex flex-col sm:gap-10 gap-6'>
+          <div className='text-primary font-bold  text-base  '><h2>Contact</h2></div>
           <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-7'>
             <div className={`${borderStyle} `}>
               <label className={`${labelStyle}`} htmlFor="input">Email</label>
