@@ -24,9 +24,10 @@ const SignUpPage = () => {
             height={1000}
             width={1000}
             className=" w-[100%] h-[100%] object-fill "
+            priority={true}
           />
         </div>
-        <div className="md:w-[45%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5">
+        <div className="md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5">
           <div className=" flex flex-col gap-10">
             <div className="flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold md:mt-0 mt-10 ">
               <h1>

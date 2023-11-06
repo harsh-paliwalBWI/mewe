@@ -12,16 +12,17 @@ const WelcomePage = () => {
   return (
     <>
       <div className="flex py-6 justify-center items-center  md:h-[100vh] h-auto">
-        <div className="w-[55%] md:block hidden  h-[100%] pl-6 ">
+        <div className="w-[50%] md:block hidden  h-[100%] pl-6 ">
           <Image
             src={mainImg}
             alt=""
             height={1000}
             width={1000}
             className=" w-[100%] h-[100%] object-fill"
+            priority={true}
           />
         </div>
-        <div className="md:w-[45%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5 md:mt-0 mt-16 ">
+        <div className="md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5 md:mt-0 mt-16 ">
           <div className="flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold  ">
             <h1>
               {" "}
@@ -36,12 +37,12 @@ const WelcomePage = () => {
             </h4>
           </div>
           <div className="flex flex-col gap-5 my-12">
-            <Link href={"/signup"}>
+            <Link href={"/signin"}>
               <div className=" border border-primary text-primary flex justify-center items-center py-3 rounded-full lg:text-lg sm:text-base text-xs font-semibold w-[85%] mx-auto cursor-pointer">
                 <button className="">Log In</button>
               </div>
             </Link>
-            <Link href={"/signup"}>
+            <Link href={"/signin"}>
               <div className="bg-primary text-white flex justify-center items-center py-3 rounded-full lg:text-lg sm:text-base text-xs font-semibold w-[85%] mx-auto cursor-pointer ">
                 <button className="">Sign Up</button>
               </div>

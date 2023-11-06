@@ -6,6 +6,7 @@ import Image from "next/image";
 import FlatIcon from "@/components/flatIcon/flatIcon";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { log } from "console";
 
 interface ProfileOptionsProps {
   setSelectedTab: any; // Adjust the type as needed
@@ -19,6 +20,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
   const params = useSearchParams();
   const currTab = params.get("tab");
 
+
+  console.log(currTab,"fgfhn");
+  
   const optionStyle =
     "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer";
   return (
@@ -88,7 +92,7 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
           <Link href={{ pathname: "/account", query: { tab: "manage-posts" } }}>
             <div
               className={`${optionStyle}  ${
-                currTab === "manage-posts" ? "text-primary" : "text-black"
+                (currTab === "manage-posts" ||currTab === "new-post")? "text-primary" : "text-black"
               }`}
             >
               <div>
