@@ -5,16 +5,16 @@ import * as d3 from "d3";
 // Define prop types to avoid TypeScript errors
 type DoubleBarChartProps = {
   data: { label: string; value1: number; value2: number }[];
-  width: number;
-  height: number;
+  // width: number;
+  // height: number;
   margin: { top: number; right: number; bottom: number; left: number };
 };
 
 // Function to create double bar chart
 const DoubleBarChart: React.FC<DoubleBarChartProps> = ({
   data,
-  width,
-  height,
+  // width,
+  // height,
   margin,
 }) => {
 
@@ -185,7 +185,7 @@ const DoubleBarChart: React.FC<DoubleBarChartProps> = ({
 
               }
 
-  }, [data, width, height, margin, dimensions]);
+  }, [data, margin, dimensions]);
 
   // Return the chart container
   return (

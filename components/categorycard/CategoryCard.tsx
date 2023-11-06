@@ -22,7 +22,7 @@ const CategoryCard = () => {
           />
         </div>
       </div>
-      <p className=" text-black text-base sm:text-lg md:text-xl lg:text-2xl font-medium ">Education</p>
+      <p className=" text-black text-sm sm:text-base md:text-lg lg:text-xl font-medium ">Education</p>
     </div>
   );
 };

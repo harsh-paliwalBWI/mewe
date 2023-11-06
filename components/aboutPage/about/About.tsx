@@ -14,8 +14,8 @@ const About = () => {
     { label: 'Oct-Dec', value1: 60, value2: 70 },
   ];
 
-  const width = 400;
-  const height = 250;
+  // const width = 500;
+  // const height = 250;
   const margin = { top: 0, right:0 , bottom: 30, left: 20 };
 
 
@@ -91,7 +91,7 @@ const About = () => {
         </div>
 
 
-        <div className=" flex flex-col md:flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-2 sm:mt-5 md:mt-8">
+        <div className=" flex flex-col lg:flex-row justify-between gap-2 sm:gap-2.5 md:gap-3 mt-2 sm:mt-5 md:mt-8">
           <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
             <h2 className="text-[#949597] text-xs sm:text-sm md:text-base">Last Financial Year Revenue</h2>
             <div className="flex md:flex-col gap-2  md:gap-2.5">
@@ -106,12 +106,12 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="w-full md:w-[54%]">
-            <DoubleBarChartDisplay data={databar} width={width} height={height} margin={margin} />
+          <div className="w-full sm:w-[70%]   md:w-[80%] lg:w-[54%]">
+            <DoubleBarChartDisplay data={databar}  margin={margin} />
           </div>
         </div>
 
-       
+       {/* width={width} height={height} */}
 
         <div className="flex flex-col gap-2">
           {DummyData2.map((item: any, idx: number) => {

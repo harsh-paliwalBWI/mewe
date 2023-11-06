@@ -11,8 +11,8 @@ const Categories = () => {
   const pathName = usePathname();
   const textStyle = "lg:text-base md:text-sm text-xs  md:px-2   relative"
   return (
-    <div className="w-full bg-[#272726] px-body flex justify-center items-center py-2 sm:py-3 md:py-4 ">
-      <div className="flex justify-center lg:gap-10 md:gap-4 gap-3  w-[100%]    ">
+    <div className="w-full bg-[#272726] px-body flex justify-center md:justify-start lg:justify-center items-center py-2 sm:py-3 md:py-4 ">
+      <div className="flex justify-center  gap-4 w-full  md:w-[80%] lg:w-full   relative ">
         <Link href={"/about-our-company"} className="">
           <div className={`text-[#cbcbcb] ${textStyle}`}>
             <h1 className=" ">About</h1>
@@ -31,7 +31,7 @@ const Categories = () => {
         </Link>
         <Link href={"/schemes"} className="relative">
           <div className={`text-[#CBCBCB]  ${textStyle} `}>
-            <div className="flex gap-2">
+            <div className="flex gap-1  lg:gap-2">
               <h1 >Schemes</h1>
               <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
             </div>
@@ -42,7 +42,7 @@ const Categories = () => {
         </Link>
         <Link href={"/financials"} className="relative">
           <div className={`text-[#CBCBCB]  ${textStyle} `}>
-            <div className="flex gap-2">
+            <div className="flex gap-1  lg:gap-2">
               <h1 >Financials</h1>
               <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
             </div>
@@ -69,6 +69,16 @@ const Categories = () => {
             }
           </div>
         </Link>
+       
+      </div>
+      <div className="md:block hidden absolute right-[4%] ">
+      <Link href={{pathname: '/account',query: { tab: 'manage-posts' },}}>
+      <div className="  justify-center  items-center rounded sm:rounded-md md:rounded-lg px-1 sm:px-2 md:px-4 lg:px-6 py-0 sm:py-0.5 md:py-1 bg-[#054A91] cursor-pointer">
+            <h2 className="text-[10px] sm:text-xs md:text-sm lg:text-base   text-white ">
+           Create Post
+            </h2>
+          </div>
+          </Link>
       </div>
     </div>
   );

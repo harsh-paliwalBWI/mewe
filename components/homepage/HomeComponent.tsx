@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import Image from "next/image";
 import Bannerheader from "./homesections/banner";
@@ -8,18 +8,23 @@ import Bussiness from "./homesections/bussiness";
 import Newsletter from "./homesections/newsletters";
 import Posts from "./homesections/posts";
 import Webniar from "./homesections/webniar";
+import FlatIcon from "../flatIcon/flatIcon";
+import Link from "next/link";
 
 const HomeComponent = () => {
   return (
-    <div className="w-full h-full ">
-      <Bannerheader />
-      <Category />
-      <Webniar/>
-      <Bussiness />
-      <Posts />
-      <Newsletter />
-      <InviteBanner />
-    </div>
+    <>
+      <div className="w-full h-full ">
+        <Bannerheader />
+        <Category />
+        <Webniar />
+        <Bussiness />
+        <Posts />
+        <Newsletter />
+        <InviteBanner />
+      </div>
+     
+    </>
   );
 };
 
