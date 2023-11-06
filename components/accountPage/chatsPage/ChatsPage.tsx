@@ -32,7 +32,7 @@ const ChatsPage = () => {
                         {/* <Link href={"/chat-page"}> */}
                         <div className=' bg-[#F3F7FA] px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 '>
-                                <div className='w-[20%] rounded-full border border-primary'><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
+                                <div className='w-[20%] rounded-full '><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%]  w-full flex flex-col sm:gap-1'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-base text-sm font-bold '> Formonix</h2>

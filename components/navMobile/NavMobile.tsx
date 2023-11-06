@@ -121,7 +121,7 @@ const Navmobile = () => {
                 <div>Financials</div>
               </Link>
               <Link
-                href={"/account"}
+                href={{pathname: '/account', query: { tab: 'my-profile' },}}
                 className={`${
                   pathname.includes("account") && "text-primary"
                 } flex items-center justify-center gap-2  py-[5px]  cursor-pointer `}

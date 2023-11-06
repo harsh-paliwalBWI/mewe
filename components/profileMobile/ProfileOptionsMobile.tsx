@@ -18,14 +18,16 @@ const ProfileOptionsMobile = () => {
   <>
    <div className=" sm:hidden block xl:w-[25%] md:w-[30%] w-[100%] filter-border  h-full bg-[#F8FAFC] lg:px-5 px-2  ">
     {/* top section  */}
-   <div className='flex flex-col gap-2 mt-6'>
+   <div className='flex flex-col gap-2 mt-6 '>
     <div className='flex justify-center '>
-    <div className='h-[100px] w-[100px] rounded-full  relative'>
+    <Link href={"/business-account"}>
+    <div className='h-[100px] w-[100px] rounded-full  relative cursor-pointer'>
       <Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] object-fill  rounded-full'/>
       <div className='h-[30px] w-[30px] absolute right-0 top-0'>
       <Image src={blueTickImg} height={1000} width={1000} alt='' className='h-[100%] w-[100%] object-fill  '/>
       </div>
       </div>
+      </Link>
    </div>
    <div className='flex justify-center text-base font-bold '><h2>Met Connect</h2></div>
    <div className='flex justify-center text-sm font-semibold text-[#868E97] '><p>@metconnects34805</p></div>
