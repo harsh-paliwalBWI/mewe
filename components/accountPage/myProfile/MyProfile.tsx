@@ -1,10 +1,14 @@
 "use client"
 import React, { FC } from 'react'
 import { usePathname } from 'next/navigation';
+import FlatIcon from '@/components/flatIcon/flatIcon';
+import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/router';
 
 
 
 const MyProfile = () => {
+    const router=useRouter()
     const pathName=usePathname()
 
     const labelStyle = "sm:text-base text-sm text-[#868E97] font-medium "
@@ -14,8 +18,20 @@ const MyProfile = () => {
     return (
         <>
             <div className={` h-fit py-2  ${pathName.includes("my-profile-page")?"block  w-[100%] sm:mt-5 md:mt-10 md:mb-24 mb-5":"sm:block hidden lg:w-[58%] md:w-[68%]  w-full"}`}>
+            {
+                    pathName.includes("my-profile-page")&&<div 
+                    // onClick={()=>{
+                    //     router.replace({pathname:"fgfd"})
+                    // }}
+                    onClick={() => {
+                        console.log("XFBB");
+                        
+                       router.replace("/account?tab=my-profile")
+                      }}
+                     className='mb-2'><FlatIcon className="flaticon-arrow-right rotate-180 text-2xl font-bold"/></div>
+                }
                 {
-                    pathName.includes("my-profile-page")&&<div className=''><h2 className='text-primary font-bold md:text-2xl text-xl  mb-6'>My Profile</h2></div>
+                    pathName.includes("my-profile-page")&&<div className=''><h2 className='text-primary font-bold md:text-2xl text-xl  sm:mb-6 mb-3'>My Profile</h2></div>
                 }
                 <div className="w-full flex flex-col sm:gap-7 gap-4">
                     <div className={`${mainDivStyle}`}>

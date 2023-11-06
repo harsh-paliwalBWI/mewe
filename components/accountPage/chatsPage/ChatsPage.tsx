@@ -121,11 +121,11 @@ const ChatsPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className='sm:w-[60%] w-[100%]'>
+                {/* <div className='sm:w-[60%] w-[100%]'>
                 <SingleChat/>
-                </div>
+                </div> */}
                 {/* right section start  */}
-                {/* <div className=' border-t border-t-black border-b border-b-black border-r border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-md px-5 py-5'>
+                <div className=' border-t border-t-black border-b border-b-black border-r border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-md px-5 py-5'>
                     <div className=' h-full w-full relative'>
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center gap-4'>
@@ -161,7 +161,7 @@ const ChatsPage = () => {
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
                 {/* right section end  */}
             </div>
         </div>

@@ -10,8 +10,8 @@ const SingleChat = () => {
 
   return (
     // <div className='px-body'>
-           <div className={` border-t border-t-black border-b border-b-black border-r border-r-black w-[100%] relative flex-1 min-h-[100%]  rounded-md px-5 py-5 ${pathName.includes("chat-page")?"block  w-[100%] sm:mt-10 border border-black":"sm:block hidden  w-[100%]"}`}>
-                    <div className='min-h-[80vh] h-auto w-full relative'>
+           <div className={` border-t relative border-t-black border-b border-b-black border-r border-r-black w-[100%] relative flex-1 min-h-[100%]  rounded-md px-5 py-5 ${pathName.includes("chat-page")?"block  w-[100%] sm:mt-10 border border-black":"sm:block hidden  w-[100%]"}`}>
+                    <div className=' h-full w-full relative border border-primary'>
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center gap-4'>
                                 <div className='w-[55px] h-[55px] rounded-full '><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
