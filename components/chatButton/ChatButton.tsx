@@ -1,10 +1,13 @@
 "use client";
 import React from "react";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 const ChatButton = () => {
   const pathName = usePathname();
+
+  const params = useSearchParams();
+  const currTab = params.get("tab");
 
   return (
     <Link href={{ pathname: "/account", query: { tab: "chat" } }}>
@@ -16,7 +19,11 @@ const ChatButton = () => {
           pathName.includes("verification")
             ? "hidden"
             : "block"
-        }`}
+        }
+        
+        ${currTab === "chat" ? "hidden" : "block"}
+        
+        `}
       >
         <h1 className="md:text-base sm:text-sm text-xs text-white md:tracking-widest">
           CHAT
