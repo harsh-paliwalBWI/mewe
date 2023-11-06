@@ -62,7 +62,7 @@ const Categories = () => {
         <Link href={"/welcome"}>
           <div className={`text-[#CBCBCB] ${textStyle}`}>
             <h1 className=" ">
-              Log in / Sign up
+              Log in/Sign up
             </h1>
             {pathName.includes("welcome") &&
               <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
