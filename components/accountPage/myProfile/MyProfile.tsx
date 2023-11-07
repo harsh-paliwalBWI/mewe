@@ -91,7 +91,7 @@ const MyProfile = () => {
                         </div>
                     </div>
                     <div
-                        className="md:w-[100%] sm:mt-4 mt-2 w-full rounded-full font-semibold tracking-widest bg-primary text-white text-center  py-4  text-sm font-medium cursor-pointer ">
+                        className="md:w-[100%] sm:mt-4 mt-2 w-full rounded-full font-semibold  bg-primary text-white text-center  py-4  text-sm font-medium cursor-pointer ">
                         <button>{"Save Changes"}</button>
                     </div>
                 </div>

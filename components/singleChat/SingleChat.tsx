@@ -12,6 +12,7 @@ const SingleChat = () => {
 
   return (
     <div className="">
+      <div className="flex items-center gap-2 sm:mt-5 sm:mb-5 mb-3 mt-3">
       {pathName.includes("chat-page") && (
         <div
           onClick={() => {
@@ -19,13 +20,14 @@ const SingleChat = () => {
           }}
           className=""
         >
-          <FlatIcon className="flaticon-arrow-right  sm:mt-5 sm:mb-3 mb-3 mt-3 rotate-180 text-2xl font-bold" />
+          <FlatIcon className="flaticon-arrow-right   rotate-180 text-2xl font-bold" />
         </div>
       )}
       <div>
-        <h2 className="sm:text-xl text-lg font-bold text-primary mb-5">
+        <h2 className="sm:text-xl text-lg font-bold text-primary ">
           Chat Here{" "}
         </h2>
+      </div>
       </div>
       <div
         className={` border-t  border-t-black border-b border-b-black border-r border-r-black w-[100%] relative  min-h-[100%]  rounded-md sm:px-5 px-3 sm:py-5 py-3 ${

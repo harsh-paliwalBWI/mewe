@@ -33,7 +33,7 @@ const ChatsPage = () => {
                         <div className=' bg-[#F3F7FA] px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 '>
                                 <div className='w-[20%] rounded-full '><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
-                                <div className='w-[80%]  w-full flex flex-col sm:gap-1'>
+                                <div className='  w-full flex flex-col sm:gap-1'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-base text-sm font-bold '> Formonix</h2>
                                         <div className='flex items-center  text-2xl '>
@@ -51,7 +51,7 @@ const ChatsPage = () => {
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4'>
                                 <div className='w-[20%] rounded-full '><Image src={img2} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
-                                <div className='w-[80%] flex flex-col  gap-1 w-full'>
+                                <div className=' flex flex-col  gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>Crowdstage</h2>
                                         <p className='text-xs text-primary font-bold'>01:34</p>
@@ -69,7 +69,7 @@ const ChatsPage = () => {
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]   py-4 '>
                                 <div className='w-[20%] rounded-full '><Image src={img3} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
-                                <div className='w-[80%] flex flex-col sm:gap-1 w-full'>
+                                <div className='flex flex-col sm:gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>MetConnect</h2>
                                         <div className='flex items-center  text-2xl '>
@@ -87,7 +87,7 @@ const ChatsPage = () => {
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]   py-4'>
                                 <div className='w-[20%] rounded-full '><Image src={img4} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
-                                <div className='w-[80%] flex flex-col gap-1 w-full'>
+                                <div className=' flex flex-col gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>Crystal Clear Solutions</h2>
                                         <p className='text-xs text-primary font-bold'>12:56</p>
@@ -105,7 +105,7 @@ const ChatsPage = () => {
                         <div className=' px-5'>
                             <div className='flex items-center gap-4 items-center border-b-2 border-b-[#c6c8c9]   py-4 '>
                                 <div className='w-[20%] rounded-full '><Image src={img5} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
-                                <div className='w-[80%] flex flex-col sm:gap-1 w-full'>
+                                <div className='flex flex-col sm:gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>CodeFusion</h2>
                                         <div className='flex items-center  text-2xl '>
@@ -122,7 +122,7 @@ const ChatsPage = () => {
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center  py-4 '>
                                 <div className='w-[20%] rounded-full '><Image src={img6} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
-                                <div className='w-[80%] flex flex-col sm:gap-1 w-full'>
+                                <div className=' flex flex-col sm:gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>InvestSpend</h2>
                                         <div className='flex items-center  text-2xl '>
