@@ -15,7 +15,7 @@ import ChatMobile from '@/components/chatMobile/ChatMobile'
 
 const ChatsPage = () => {
     return (
-        <div className='md:w-[70%] w-[100%] h-full md:mb-18'>
+        <div className='md:w-[70%] w-[100%] h-full md:mb-18 sm:block hidden'>
             <div className='w-[100%] flex justify-between items-center sm:gap-5 bg-white  px-4 py-3 chat-container  rounded-md '>
                 <div className='md:text-xl text-base font-bold px-2 ' >Chats</div>
                 <div className='flex items-center justify-end lg:gap-x-10 gap-4 sm:w-full w-[50%] '>

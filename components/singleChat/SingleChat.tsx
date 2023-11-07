@@ -15,7 +15,7 @@ const SingleChat = () => {
       {pathName.includes("chat-page") && (
         <div
           onClick={() => {
-            router.replace("/account?tab=chat");
+            router.replace("/all-chats");
           }}
           className=""
         >

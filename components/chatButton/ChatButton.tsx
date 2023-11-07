@@ -16,6 +16,8 @@ const ChatButton = () => {
           pathName.includes("welcome") ||
           pathName.includes("signup") ||
           pathName.includes("signin") ||
+          pathName.includes("all-chats") ||
+          pathName.includes("chat-page") ||
           pathName.includes("verification")
             ? "hidden"
             : "block"

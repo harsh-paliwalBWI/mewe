@@ -17,7 +17,7 @@ const SignUpPage = () => {
   return (
     <>
       <div className="flex py-6 justify-center md:h-[100vh] h-auto items-center">
-        <div className="w-[50%] md:block hidden  h-[100%] ">
+        <div className="w-[50%] md:block hidden  h-[100%] pl-6 ">
           <Image
             src={mainImg}
             alt=""

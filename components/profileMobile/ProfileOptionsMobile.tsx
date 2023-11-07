@@ -60,7 +60,7 @@ const ProfileOptionsMobile = () => {
     <div><FlatIcon className="flaticon-bookmark text-2xl"/></div>
     <div>Saved Startups</div>
    </div>
-   <Link href={{pathname: '/account',query: { tab: 'chat' },}}>
+   <Link href={"/all-chats"}>
    <div 
 
     className={`${optionStyle} `}>

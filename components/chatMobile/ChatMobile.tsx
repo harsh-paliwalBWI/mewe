@@ -9,18 +9,35 @@ import img4 from "../../images/Ellipse 34.svg"
 import img5 from "../../images/Ellipse 35.svg"
 import img6 from "../../images/Ellipse 36.svg"
 import Link from 'next/link'
+import { useRouter,usePathname,useSearchParams } from "next/navigation";
+
 
 
 const ChatMobile = () => {
+  const pathName = usePathname();
+  const router = useRouter();
+
+  const params = useSearchParams();
+  const currTab = params.get("tab");
   return (
     <>
-      <div className='sm:h-full h-auto border border-black rounded-md w-[100%] sm:pt-6 pt-4 md:hidden block'>
+     {pathName.includes("all-chats") && (
+        <div
+          onClick={() => {
+            router.replace("account?tab=my-profile");
+          }}
+          className=""
+        >
+          <FlatIcon className="flaticon-arrow-right  sm:mt-5 sm:mb-3 mb-3 mt-3 rotate-180 text-2xl font-bold" />
+        </div>
+      )}
+      <div className={`sm:h-full h-auto border border-black rounded-md w-[100%] sm:pt-6 pt-4  block ${currTab==="chat"?"md:hidden sm:block hidden":"block"} ${pathName.includes("all-chats") &&"mt-5"}`}>
                     <div className='font-bold sm:text-lg text-sm sm:mb-5 mb-4 px-5 '>My Chats</div>
                     <div>
                         <Link href={"/chat-page"}>
                         <div className=' bg-[#F3F7FA] px-5'>
                             <div className='flex  items-center gap-4 border-b-2 border-b-[#c6c8c9]  py-4 '>
-                                <div className='sm:w-[10%] w-[20%] rounded-full '><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
+                                <div className='w-[60px] h-[60px] rounded-full '><Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%]  w-full flex  flex-col sm:gap-1'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-base text-sm font-bold '> Formonix</h2>
@@ -38,7 +55,7 @@ const ChatMobile = () => {
                         <Link href={"/chat-page"}>
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4'>
-                                <div className='sm:w-[10%] w-[20%]  rounded-full '><Image src={img2} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
+                                <div className='w-[60px] h-[60px]  rounded-full '><Image src={img2} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col  gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>Crowdstage</h2>
@@ -55,7 +72,7 @@ const ChatMobile = () => {
                         <Link href={"/chat-page"}>
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]   py-4 '>
-                                <div className='sm:w-[10%] w-[20%]  rounded-full '><Image src={img3} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
+                                <div className='w-[60px] h-[60px]  rounded-full '><Image src={img3} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col sm:gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>MetConnect</h2>
@@ -72,7 +89,7 @@ const ChatMobile = () => {
                         <Link href={"/chat-page"}>
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center border-b-2 border-b-[#c6c8c9]   py-4'>
-                                <div className='sm:w-[10%] w-[20%]  rounded-full '><Image src={img4} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
+                                <div className='w-[60px] h-[60px]  rounded-full '><Image src={img4} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>Crystal Clear Solutions</h2>
@@ -89,7 +106,7 @@ const ChatMobile = () => {
                         <Link href={"/chat-page"}>
                         <div className=' px-5'>
                             <div className='flex items-center gap-4 items-center border-b-2 border-b-[#c6c8c9]   py-4 '>
-                                <div className='sm:w-[10%] w-[20%]  rounded-full '><Image src={img5} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
+                                <div className='w-[60px] h-[60px]  rounded-full '><Image src={img5} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col sm:gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>CodeFusion</h2>
@@ -106,7 +123,7 @@ const ChatMobile = () => {
                           <Link href={"/chat-page"}>
                         <div className=' px-5'>
                             <div className='flex gap-4 items-center  py-4 '>
-                                <div className='sm:w-[10%] w-[20%]  rounded-full '><Image src={img6} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
+                                <div className='w-[60px] h-[60px]  rounded-full '><Image src={img6} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='w-[80%] flex flex-col sm:gap-1 w-full'>
                                     <div className='flex justify-between'>
                                         <h2 className='sm:text-sm text-xs font-bold '>InvestSpend</h2>
