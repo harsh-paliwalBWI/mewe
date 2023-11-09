@@ -6,8 +6,18 @@ import webheaderimg from "../../images/webinar banner.svg";
 import StartupCard from "../startupcard/StartupCard";
 import Searchsidecomponent from "../searchsidecomponent/Searchsidecomponent";
 import WebniarCard2 from "../webniarcard2/WebniarCard2";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchWebniars } from "@/services/webniarService";
 
 const WebniarList = () => {
+
+  const { data: webinars } = useQuery({
+    queryKey: ["webniars"],
+    queryFn: () => fetchWebniars(),
+  });
+
+console.log(webinars,"PPPP")
+
   return (
     <>
       <div className="h-84 w-full bg-black  ">
@@ -26,10 +36,10 @@ const WebniarList = () => {
           <h3 className="text-black text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 md:mb-4">
           Upcoming Webinar Sessions
           </h3>
-
-          <WebniarCard2 />
-          <WebniarCard2 />
-     
+         {webinars?.map((singlewebinar: any, idx: number) => {
+          return <WebniarCard2 singlewebinar={singlewebinar} />;
+        })
+        }
         </div>
 
         <Searchsidecomponent />

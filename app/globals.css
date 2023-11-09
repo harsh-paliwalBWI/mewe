@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import "../assets/flaticons/flaticon_mycollection.css";
+@import "react-toastify/dist/ReactToastify.css";
 
 /* :root {
   --foreground-rgb: 0, 0, 0;

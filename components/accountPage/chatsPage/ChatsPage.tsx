@@ -103,7 +103,7 @@ const ChatsPage = () => {
                         {/* <Link href={"/chat-page"}> */}
                             
                         <div className=' px-5'>
-                            <div className='flex items-center gap-4 items-center border-b-2 border-b-[#c6c8c9]   py-4 '>
+                            <div className='flex items-center gap-4 border-b-2 border-b-[#c6c8c9]   py-4 '>
                                 <div className='w-[20%] rounded-full '><Image src={img5} alt='' height={1000} width={1000} className='h-[100%] w-[100%] rounded-full object-fill' /></div>
                                 <div className='flex flex-col sm:gap-1 w-full'>
                                     <div className='flex justify-between'>

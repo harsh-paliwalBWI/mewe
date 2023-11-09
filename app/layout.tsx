@@ -4,7 +4,8 @@ import "./globals.css";
 import Footer from "@/components/footer/Footer";
 import NavbarClient from "@/components/nabvar/Navclient";
 import ChatButton from "@/components/chatButton/ChatButton";
-import Providers from "../utils/provider"
+import Providers from "../utils/provider";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,8 +20,6 @@ const lexend = Lexend({
   variable: "--font-lexend",
 });
 
-
-
 export default function RootLayout({
   children,
 }: {
@@ -29,12 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={lexend.variable}>
       <body className="font-lexend">
-      <Providers>
-        <NavbarClient />
-        {children}
-        <ChatButton/>
-        <Footer />
+        <Providers>
+          <NavbarClient />
+          {children}
+          <ChatButton />
+          <Footer />
         </Providers>
+        <ToastContainer />
       </body>
     </html>
   );

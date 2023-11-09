@@ -57,7 +57,7 @@ const OtpVerfication = () => {
             </div>
           </div>
           <Link href={"/"}>
-            <div className="bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl text-base sm:text-base text-sm font-medium cursor-pointer ">
+            <div className="bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer ">
               <button className="">Verify</button>
             </div>
           </Link>
