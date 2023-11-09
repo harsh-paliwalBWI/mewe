@@ -8,7 +8,7 @@ import ChatsPage from './chatsPage/ChatsPage'
 import ProfileOptionsMobile from '../profileMobile/ProfileOptionsMobile'
 // import { useRouter } from 'next/router'
 import { useRouter,useSearchParams } from 'next/navigation'
-import { log } from 'console'
+// import { log } from 'console'
 import NewPost from './businessAccountPage/newPost/NewPost'
 
 const AccountPage = () => {
@@ -16,9 +16,9 @@ const AccountPage = () => {
   const params=useSearchParams()
   const currTab=params.get("tab")
     const [selectedTab,setSelectedTab]=useState(0)
-    console.log("hiii");
+    // console.log("hiii");
     
-    console.log(currTab,"------------");
+    // console.log(currTab,"------------");
     
   return (
    <>

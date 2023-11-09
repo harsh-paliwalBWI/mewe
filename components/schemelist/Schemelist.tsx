@@ -3,12 +3,25 @@ import React, { useState } from "react";
 import mainImg from "../../images/me we.png";
 import Image from "next/image";
 import govt from "../../images/govt of india.svg";
+import { fetchSchemes } from "@/services/schemesService";
+import {useQuery} from "@tanstack/react-query"
+import {constant} from "../../utils/constants"
+
 
 import Searchsidecomponent from "../searchsidecomponent/Searchsidecomponent";
 
 import NewsletterCard2 from "../newslettercard/NewsletterCard2";
+// import { log } from "console";
 
 const SchemeList = () => {
+  const { data: schemes, isLoading } = useQuery({
+    queryKey: ["schemes"],
+    queryFn: () => fetchSchemes(),
+  });
+  // const data=fetchSchemes()
+  // console.log("hjgh");
+  console.log(schemes,"fgffh");
+  
   return (
     <>
       <div className="px-body flex md:flex-row flex-col-reverse gap-6 sm:gap-8 md:gap-10 my-4 sm:my-12 md:my-20 justify-between">
@@ -31,9 +44,15 @@ const SchemeList = () => {
               </p>
             </div>
           </div>
-
-          <NewsletterCard2 />
-          <NewsletterCard2 />
+{
+  schemes&&schemes.length>0&&schemes.map((scheme:any,idx:number)=>{
+    console.log(idx,"idx");
+    
+    return <NewsletterCard2 scheme={scheme} idx={idx}/>
+  })
+}
+          {/* <NewsletterCard2 />
+          <NewsletterCard2 /> */}
         </div>
 
         <Searchsidecomponent />
