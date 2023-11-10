@@ -7,8 +7,12 @@ import man from "../../images/man.svg";
 
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
+import Link from "next/link";
 
-const WebniarCard2 = () => {
+const WebniarCard2 = (singlewebinar: any) => {
+  // console.log(singlewebinar,"kkkk")
+  let singlewebinardata = singlewebinar.singlewebinar;
+  // console.log(singlewebinardata, "tt");
   return (
     // flex-col lg:
     <div className="  flex flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-8 sm:mt-12 md:mt-16 lg:mt-20 bg-[#f2fff3] rounded-lg w-full">
@@ -26,7 +30,12 @@ const WebniarCard2 = () => {
           </div>
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%]  ">
             <Image
-              src={man}
+              src={
+                singlewebinardata?.image?.url &&
+                singlewebinardata?.image?.url?.includes("bwi-mewe.appspot")
+                  ? man
+                  : singlewebinardata?.image?.url
+              }
               alt=""
               width={1000}
               height={1000}
@@ -48,16 +57,19 @@ const WebniarCard2 = () => {
           <div className="  flex flex-col gap-1 sm:gap-2 md:gap-3  justify-between ">
             <div className="flex justify-between gap-1 sm:gap-2 md:gap-3 items-start">
               <h3 className=" text-black text-lg sm:text-xl md:text-[22px] font-semibold">
-                How to startup a new businesss
+                {/* How to startup a new businesss */}
+                {singlewebinardata?.title}
               </h3>
               <FlatIcon className="flaticon-bookmark md:text-3xl sm:text-2xl text-xl font-bold " />
             </div>
             <h3 className="opacity-80 text-black text-xs sm:text-sm md:text-lg font-bold">
-              By Jane cooper
+              {/* By Jane cooper */}
+              By {singlewebinardata?.by?.name}
             </h3>
             <p className=" opacity-40 text-black text-[10px] sm:text-xs md:text-sm font-semibold w-[80] ">
-              Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-              consectetur, adipisci velit, sed qu
+              {/* Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+              consectetur, adipisci velit, sed qu */}
+              {singlewebinardata?.description}
             </p>
           </div>
 
@@ -68,7 +80,8 @@ const WebniarCard2 = () => {
                   <FlatIcon className="flaticon-calander md:text-3xl sm:text-2xl text-xl font-bold text-[#054a91]  " />
                 </div>
                 <p className="opacity-80 text-black md:text-base sm:text-sm text-xs font-semibold">
-                  02/09/12
+                  {/* 02/09/12 */}
+                  {singlewebinardata?.date}
                 </p>
               </div>
               <div className="flex justify-between gap-1 sm:gap-2 md:gap-3 items-center">
@@ -77,26 +90,31 @@ const WebniarCard2 = () => {
                     <FlatIcon className="flaticon-clock md:text-3xl sm:text-2xl text-xl font-bold text-[#054a91] " />
                   </div>
                   <p className=" opacity-80 text-black md:text-base sm:text-sm text-xs font-semibold ">
-                    09:21:37 IST{" "}
+                    {/* 09:21:37  */}
+                    {singlewebinardata?.time}
+                    IST{" "}
                     <span
                       className="opacity-90 text-black text-[8px] sm:text-[10px] md:text-xs font-semibold ml-0
                   sm:ml-1 md:ml-2"
                     >
-                      (45mins)
+                      {/* (45mins) */}({singlewebinardata?.duration}mins)
                     </span>
                   </p>
                 </div>
               </div>
             </div>
             {/* px-1 sm:px-6 md:px-11 lg:px-16  */}
+            <Link href={singlewebinardata?.meetingLink} className=" w-[45%] md:w-[41%] h-fit">
+            {/* <Link href={singlewebinardata?.meetingLink ? singlewebinardata?.meetingLink : ""} target="_blank" className=" w-[45%] md:w-[41%] h-fit"> */}
             <div
-              className=" w-[45%] md:w-[41%] h-fit flex  justify-center  items-center  rounded-lg     
+              className=" flex  justify-center  items-center  rounded-lg     
             py-0.5 sm:py-1 md:py-2 lg:py-3 border-2  bg-[#054a91] cursor-pointer"
             >
               <h2 className=" text-white text-xs sm:text-sm md:text-base lg:text-lg font-medium ">
                 Book Now
               </h2>
             </div>
+            </Link>
           </div>
         </div>
       </div>

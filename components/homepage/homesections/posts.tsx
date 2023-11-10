@@ -3,6 +3,8 @@ import React from "react";
 import { Carousel } from "antd";
 
 import PostCard from "@/components/postcard/PostCard";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPosts } from "@/services/postService";
 
 const Posts = () => {
   // const responsiveSettings = [
@@ -127,6 +129,11 @@ const Posts = () => {
     },
   ];
 
+  const { data: webinars } = useQuery({
+    queryKey: ["Posts"],
+    queryFn: () => fetchPosts(),
+  });
+
   return (
     <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-16 md:mt-24 lg:mt-32">
       <div className="flex justify-between">
@@ -138,14 +145,15 @@ const Posts = () => {
         </p>
       </div>
 
-      <Carousel
-        responsive={responsiveSettings}
-        autoplay
-        className="dot-black "
-      >
-        <div className="px-2 sm:px-3 md:px-4 lg:px-5">
-          <PostCard />
-        </div>
+      <Carousel responsive={responsiveSettings} autoplay className="dot-black ">
+        {/* {webinars?.slice(0, 5).map((singlePost: any, idx: number) => {
+          return (
+            <div className="px-2 sm:px-3 md:px-4 lg:px-5">
+              <PostCard singlePost={singlePost} />
+            </div>
+          );
+        })} */}
+
         <div className="px-2 sm:px-3 md:px-4 lg:px-5">
           <PostCard />
         </div>

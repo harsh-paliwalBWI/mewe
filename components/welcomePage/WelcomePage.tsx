@@ -42,7 +42,7 @@ const WelcomePage = () => {
                 <button className="">Log In</button>
               </div>
             </Link>
-            <Link href={"/signin"}>
+            <Link href={"/signup"}>
               <div className="bg-primary text-white flex justify-center items-center py-3 rounded-full lg:text-lg sm:text-base text-xs font-semibold w-[85%] mx-auto cursor-pointer ">
                 <button className="">Sign Up</button>
               </div>

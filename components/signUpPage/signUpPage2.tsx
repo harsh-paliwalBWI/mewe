@@ -6,16 +6,15 @@ import falgImg from "../../images/Group 34168.svg";
 import googleImg from "../../images/google.svg";
 import linkedIn from "../../images/Group.svg";
 import appleImg from "../../images/Group 34165.svg";
-import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { RecaptchaVerifier, deleteUser } from "firebase/auth";
+import { RecaptchaVerifier } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 
-const SignInPage = () => {
+const SignUpPage2 = () => {
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verification, setverification] = useState(false);
   const [time, setTime] = useState(60);
@@ -25,6 +24,7 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
+
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       setLoading(true);
@@ -55,6 +55,7 @@ const SignInPage = () => {
       setLoading(false);
     }
   };
+
   const confirmOTP = () => {
     try {
       setTimerStarted(false);
@@ -62,29 +63,37 @@ const SignInPage = () => {
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
-          
+          // console.log(res, "Startup");
           // localStorage.setItem("auth", JSON.stringify(res.user.uid));
           if (res._tokenResponse.isNewUser) {
-          
-            toast.success("User does not exist, Please Signup");
-            router.replace("/welcome");
-            // console.log(res, "nhi chla");
-                      
-            deleteUser(res.user).then(() => {
-              console.log("User not created")
-            }).catch((error) => {
-              console.log("User created",error)
+            let authuser = {
+              phoneNo: phoneNumber,
+              createdAt: new Date(),
+              role: "startup",
+              mode: "otp",
+            };
+            let startup = {
+              phoneNo: phoneNumber,
+              createdAt: new Date(),
+              name: "",
+              email: "",
+              // profilePic: {
+              //   url: "",
+              // },
+            };
+            // console.log(startup, "startup info");
+            await setDoc(doc(db, `startups/${res.user.uid}`), startup, {
+              merge: true,
             });
-
+            await setDoc(doc(db, `auth/${res.user.uid}`), authuser, {
+              merge: true,
+            });
           } else {
-            localStorage.setItem("auth", JSON.stringify(res.user.uid));
-            await axios.get(`/api/login?uid=${res.user.uid}`);
-            toast.success("Welcome");
-            router.replace("/");
-            console.log(res, "chla gya");
+            // console.log("User already exist");
+            toast.success("User already exist, Please Login");
           }
 
-         
+          //   await axios.get(`/api/login?uid=${res.user.uid}`);
           setVerifying(false);
 
           setverification(false);
@@ -93,13 +102,13 @@ const SignInPage = () => {
           setTimerStarted(false);
           setOTPSent(null);
           setLoading(false);
-      
-       
+          router.replace("/welcome");
+          //   router.replace("/");
         })
         .catch((err: any) => {
           setverification(false);
-          console.log("Incorrect OTP! Sign in failed!");
-          toast.success("Incorrect OTP! Sign in failed!");
+          // console.log("Incorrect OTP! Sign in failed!");
+          toast.error("Incorrect OTP! Sign in failed!");
         });
     } catch (err) {
       console.log("error ");
@@ -119,13 +128,12 @@ const SignInPage = () => {
             priority={true}
           />
         </div>
-
         {!verification && (
           <div className="md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5  ">
             <div className=" flex flex-col lg:gap-10 gap-5">
               <div className="flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold md:mt-0 mt-10 ">
                 <h1>
-                  Sign in to{" "}
+                  Sign up to{" "}
                   <span className="text-primary font-bold">MEWE</span>
                 </h1>
               </div>
@@ -180,7 +188,7 @@ const SignInPage = () => {
             </div>
             <div id="recaptcha-container"></div>
             {/* </Link> */}
-         {/* <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
+            {/* <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
             <h2>or Sign In with</h2>
           </div>
           <div className="flex items-center justify-center gap-x-6">
@@ -208,12 +216,11 @@ const SignInPage = () => {
               />
             </div>
           </div> */}
-            </div>
+          </div>
         )}
 
-
-{verification && (
-          <div className=" md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5  ">
+        {verification && (
+          <div className="md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5  ">
             <div className=" flex flex-col lg:gap-10 gap-5">
               <div className="flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold md:mt-0 mt-10">
                 <h1>
@@ -285,4 +292,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage2;

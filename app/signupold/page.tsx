@@ -1,10 +1,10 @@
 import React from 'react'
-import SignUpPage2 from '@/components/signUpPage/signUpPage2'
+import SignUpPage from '@/components/signUpPage/SignUpPage'
 
 const SignUp = async() => {
   return (
 <>
-<SignUpPage2/>
+<SignUpPage/>
 </>
   )
 }
