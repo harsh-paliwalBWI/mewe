@@ -237,12 +237,12 @@ export interface Mewe {
                     }
                 ]
             },
-    ​
+    
             authId: { //SONAL
                 totalUnreads: number
-    ​
+    
                 //sub-collection
-    ​
+    
                 startups: [
                     authId: { //AYUSH
                         name: string
@@ -250,7 +250,7 @@ export interface Mewe {
                         lastMsg: string,
                         lastMsgAt: Date,
                         totalUnReads: number
-    ​
+    
                         //sub-collection
                         messages: [
                             docId: {

@@ -25,6 +25,7 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
+  
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       setLoading(true);

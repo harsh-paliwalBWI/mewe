@@ -48,7 +48,9 @@ const SchemeList = () => {
   schemes&&schemes.length>0&&schemes.map((scheme:any,idx:number)=>{
     console.log(idx,"idx");
     
-    return <NewsletterCard2 scheme={scheme} idx={idx}/>
+    return <div key={idx}>
+     <NewsletterCard2 scheme={scheme} idx={idx}/>
+    </div>
   })
 }
           {/* <NewsletterCard2 />

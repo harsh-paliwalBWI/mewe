@@ -30,7 +30,9 @@ const Webniar = () => {
       </div>
       <div className="grid w-full  xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1   grid-cols-1 gap-y-4  sm:gap-y-6  md:gap-y-8 lg:gap-y-10   gap-x-4  sm:gap-x-6  md:gap-x-8 lg:gap-x-10  ">
         {webinars?.slice(0, 2).map((singlewebinar: any, idx: number) => {
-          return <WebniarCard singlewebinar={singlewebinar} />;
+          return <div key={idx}>
+          <WebniarCard singlewebinar={singlewebinar} />;
+          </div>
         })}
       </div>
     </div>

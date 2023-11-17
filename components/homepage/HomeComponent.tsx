@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React,{FC} from "react";
 import Image from "next/image";
 import Bannerheader from "./homesections/banner";
 import InviteBanner from "./homesections/invitebanner";
@@ -10,8 +10,11 @@ import Posts from "./homesections/posts";
 import Webniar from "./homesections/webniar";
 import FlatIcon from "../flatIcon/flatIcon";
 import Link from "next/link";
+interface Props{
+  cookie:any
+}
 
-const HomeComponent = () => {
+const HomeComponent:FC<Props> = ({ cookie}) => {
   return (
     <>
       <div className="w-full h-full ">

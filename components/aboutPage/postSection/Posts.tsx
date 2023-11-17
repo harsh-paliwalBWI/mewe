@@ -11,9 +11,8 @@ import PostsSlider from '@/components/postsSlider/PostsSlider'
 const Posts = () => {
   return (
     <div className='w-full '>
-      {/* gfhjhj */}
       <PostsSlider/>
-        </div>
+      </div>
 
   )
 }

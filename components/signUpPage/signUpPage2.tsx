@@ -23,10 +23,13 @@ const SignUpPage2 = () => {
   const [otpSent, setOTPSent] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
+  const [name,setName]=useState("")
+  const [email,setEmail]=useState("")
+
   const router = useRouter();
 
   const signInUserWithPhoneNumber = async () => {
-    if (phoneNumber) {
+    if (phoneNumber&&name&&email) {
       setLoading(true);
       const recaptchaVerifier = new RecaptchaVerifier(
         auth,
@@ -51,7 +54,28 @@ const SignUpPage2 = () => {
           setLoading(false);
         });
     } else {
-      if (!phoneNumber) console.log("Please enter correct phone number");
+      
+      if(!name&&!email&&!phoneNumber){
+        toast.error("Please enter all the details")
+      }else if(!name&&!email){
+        toast.error("Please enter all the details")
+
+      }else if(!phoneNumber&&!email){
+        toast.error("Please enter all the details")
+      }else if(!name&&!phoneNumber){
+        toast.error("Please enter all the details")
+
+      }
+      else if(!name){
+        toast.error("Please enter name")
+
+      }else if(!email){
+        toast.error("Please enter email")
+      }else if (!phoneNumber) {
+        toast.error("Please enter correct phone number")
+
+        console.log("Please enter correct phone number");
+      }
       setLoading(false);
     }
   };
@@ -75,8 +99,8 @@ const SignUpPage2 = () => {
             let startup = {
               phoneNo: phoneNumber,
               createdAt: new Date(),
-              name: "",
-              email: "",
+              name:name,
+              email:email,
               // profilePic: {
               //   url: "",
               // },
@@ -147,7 +171,14 @@ const SignUpPage2 = () => {
                 contact number.
               </h3>
             </div>
-            <div className="flex w-full  items-center gap-x-3 md:my-10 my-8">
+            <div className="md:my-10 my-8 flex flex-col gap-6">
+            <div className="w-full border border-[#868E97] ">
+              <input value={name}  onChange={(e)=>setName(e.target.value)} type="text" className="py-3 outline-0 w-full px-5" placeholder="Name" />
+              </div>
+            <div className="w-full border border-[#868E97] ">
+              <input value={email}  onChange={(e)=>setEmail(e.target.value)} type="email" className="py-3 outline-0 w-full px-5" placeholder="Email" />
+              </div>
+            <div className="flex w-full  items-center gap-x-3 ">
               <div className="border border-[#868E97] flex items-center justify-center gap-x-3 xl:w-[20%] w-[30%] sm:py-3.5 py-4">
                 <div className="w-[21px] h-[16px] ">
                   <Image
@@ -175,6 +206,7 @@ const SignUpPage2 = () => {
                   }}
                 />
               </div>
+            </div>
             </div>
             {/* <Link href={"/verification"}> */}
             <div

@@ -16,7 +16,7 @@ const theme = createTheme({
 
 const Loader = () => {
   return (
-    <div className='flex items-center justify-center'>
+    <div className=''>
       <ThemeProvider theme={theme}>
         {/* Use the 'style' prop to set the color manually */}
         <CircularProgress style={{ color: theme.palette.primary.main }} />

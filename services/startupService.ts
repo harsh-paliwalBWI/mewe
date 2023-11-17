@@ -1,62 +1,96 @@
+import { auth, db } from "../config/firebase-config";
+import { getCookie } from "cookies-next";
+import {collection,getDocs,doc,getDoc,addDoc,setDoc} from "firebase/firestore";
 
-import { log } from "console";
-import {auth,db} from "../config/firebase-config";
-import { collection, getDocs,doc,getDoc, addDoc, setDoc } from "firebase/firestore";
-
-export const getStartUpData = async () => {
-    // console.log(cookieData,"ghdhfdh-------");
-
-    // let cookie;
-
-    // if (cookieData) {
-    //     cookie = cookieData;
-    // } else {
-    //     cookie = { value: getCookie('uid') }
-    // }
-    // console.log(cookie,"cookie");
-
+export const getStartUpData = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie("uid") };
+    }
     let uid;
-    // console.log(auth,"auth");
-
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
     }
-    // console.log(uid,"uid ----------")
-    // if (cookie?.value) {
-    //     uid = cookie?.value;
-    // }
-
+    if (cookie) {
+        uid = cookie;
+    }
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
     if (uid) {
         const docRef = doc(db, "startups", uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            // console.log({ ...docSnap.data(), id: docSnap.id },"from function");
-            
-            return JSON.parse(JSON.stringify({ ...docSnap.data(), id: docSnap.id }));
+            return await JSON.parse(
+                JSON.stringify({ ...docSnap.data(), id: docSnap.id })
+            );
         } else {
+            console.log("No such document!");
             return false;
         }
     } else {
         return null;
     }
-   
 };
 
-export const addAdvanceDetails=async(advanceDetails:any)=>{
+export const addAdvanceDetails = async (advanceDetails: any,email:any) => {
+    console.log(advanceDetails,email);
     const refDoc = doc(db, `startups/${auth.currentUser?.uid}/details/advance`);
-   return await setDoc(refDoc, advanceDetails, { merge: true });  
-}
- 
-export const fetchBusinessAccountDetails=async()=>{
-    // console.log("hii");
-    const docRef = doc(db,`startups/${auth.currentUser?.uid}/details/advance`);
- const data=await getDoc(docRef).then((docs)=>{
+    const refDoc2 = doc(db, `startups/${auth.currentUser?.uid}`);
+    const details = {
+        name: advanceDetails.name,
+        email:email,
+        basic: {
+            name: advanceDetails.name,
+            category: {
+                id: advanceDetails.category.id,
+                name: advanceDetails.category.name,
+            },
+        },
+    };
+    await setDoc(refDoc2, details, { merge: true });
+    await setDoc(refDoc, advanceDetails, { merge: true });
+};
+
+export const isBusinessAccountExistOrNot = async () => {
+    const docRef = doc(db, `startups/${auth.currentUser?.uid}/details/advance`);
+    const data = await getDoc(docRef).then((docs) => {
         if (docs.exists()) {
-        return  {...docs.data()}
-      } else {
-        return null
-      }
-})
-return  JSON.parse(JSON.stringify(data));
-}
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return data;
+};
+
+export const fetchBusinessAccountDetails = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie("uid") };
+    }
+    let uid;
+    if (auth.currentUser?.uid) {
+        uid = auth.currentUser?.uid;
+    }
+    if (cookie) {
+        uid = cookie;
+    }
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+    const docRef = doc(db, `startups/${uid}/details/advance`);
+    const data = await getDoc(docRef).then(async (docs) => {
+        if (docs.exists()) {
+            return await JSON.parse(JSON.stringify({ ...docs.data() }));
+        } else {
+            return null;
+        }
+    });
+    return data;
+};

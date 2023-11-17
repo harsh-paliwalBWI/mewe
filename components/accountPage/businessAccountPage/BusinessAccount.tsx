@@ -1,118 +1,122 @@
 "use client"
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import { Listbox, Transition } from "@headlessui/react";
 import FlatIcon from '@/components/flatIcon/flatIcon';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import {toast} from "react-toastify"
-import { addAdvanceDetails, fetchBusinessAccountDetails } from '@/services/startupService';
-import { useQuery } from '@tanstack/react-query';
-const people = [
-  { id: 2, name: 'Kenton Towne', unavailable: false },
-  { id: 3, name: 'Therese Wunsch', unavailable: false },
-  { id: 4, name: 'Benedict Kessler', unavailable: true },
-  { id: 5, name: 'Katelyn Rohan', unavailable: false },]
+import { toast } from "react-toastify"
+import { addAdvanceDetails, fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import Loader from '@/components/loader/Loader';
+
+const dummyCategory = [
+  { id: "2", name: 'Category1', unavailable: false },
+  { id: "3", name: 'Category2', unavailable: false },
+  { id: "4", name: 'Category3', unavailable: true },
+  { id: "5", name: 'Category4', unavailable: false },]
+
+const dummyCompanySize = [
+  { id: 2, name: 10, unavailable: false },
+  { id: 3, name: 20, unavailable: false },
+  { id: 4, name: 39, unavailable: true },
+  { id: 5, name: 67, unavailable: false },]
+
+const dummyCities = [
+  { id: 2, name: 'city1', unavailable: false },
+  { id: 3, name: 'city2', unavailable: false },
+  { id: 4, name: 'city3', unavailable: true },
+  { id: 5, name: 'city4', unavailable: false },]
+
+const dummyIndustry = [
+  { id: 2, name: 'Industry1', unavailable: false },
+  { id: 3, name: 'Industry2', unavailable: false },
+  { id: 4, name: 'Industry3', unavailable: true },
+  { id: 5, name: 'Industry4', unavailable: false },]
+
+const dummyYearOfFormation = [
+  { id: 2, name: '1999', unavailable: false },
+  { id: 3, name: '1998', unavailable: false },
+  { id: 4, name: '1997', unavailable: true },
+  { id: 5, name: '1996', unavailable: false },]
 
 
-  const dummyCategory = [
-    { id: "2", name: 'Category1', unavailable: false },
-    { id: "3", name: 'Category2', unavailable: false },
-    { id: "4", name: 'Category3', unavailable: true },
-    { id: "5", name: 'Category4', unavailable: false },]
+const dummyTypeOfInvestment = [
+  { id: 2, name: 'Investment type1', unavailable: false },
+  { id: 3, name: 'Investment type2', unavailable: false },
+  { id: 4, name: 'Investment type3', unavailable: true },
+  { id: 5, name: 'Investment type4', unavailable: false },]
 
-    const dummyCompanySize = [
-      { id: 2, name: 10, unavailable: false },
-      { id: 3, name: 20, unavailable: false },
-      { id: 4, name: 39, unavailable: true },
-      { id: 5, name: 67, unavailable: false },]
-
-      const dummyCities = [
-        { id: 2, name: 'city1', unavailable: false },
-        { id: 3, name: 'city2', unavailable: false },
-        { id: 4, name: 'city3', unavailable: true },
-        { id: 5, name: 'city4', unavailable: false },]
-
-        const dummyIndustry = [
-          { id: 2, name: 'Industry1', unavailable: false },
-          { id: 3, name: 'Industry2', unavailable: false },
-          { id: 4, name: 'Industry3', unavailable: true },
-          { id: 5, name: 'Industry4', unavailable: false },]
-
-          const dummyYearOfFormation = [
-            { id: 2, name: '1999', unavailable: false },
-            { id: 3, name: '1998', unavailable: false },
-            { id: 4, name: '1997', unavailable: true },
-            { id: 5, name: '1996', unavailable: false },]
-
-
-            const dummyTypeOfInvestment = [
-              { id: 2, name: 'Investment type1', unavailable: false },
-              { id: 3, name: 'Investment type2', unavailable: false },
-              { id: 4, name: 'Investment type3', unavailable: true },
-              { id: 5, name: 'Investment type4', unavailable: false },]
-
-
-const links = [
-  { href: '/account-settings', label: 'Account settings' },
-  { href: '/support', label: 'Support' },
-  { href: '/license', label: 'License' },
-  { href: '/sign-out', label: 'Sign out' },
-]
+const borderStyle = "border border-[#C8C8C8] rounded-md relative"
+const labelStyle = " text-sm   text-[#868E97] font-medium  px-1  bg-white absolute top-[-10px] left-[10px]"
+const inputStyle = "rounded-lg px-3 py-3 w-full outline-0 text-sm"
 
 const BusinessAccount = () => {
-  const [selectedPerson, setSelectedPerson] = useState(people[0])
-  const [category,setCategory]=useState(dummyCategory[0])
-  const [companySize,setCompanySize]=useState(dummyCompanySize[0])
-  const [city,setCity]=useState(dummyCities[0])
-  const [industry,setIndustry]=useState(dummyIndustry[0])
-  const [yearOfFormation,setYearOfFormation]=useState(dummyYearOfFormation[0])
-  const [typeOfInvestement,setTypeOfInvestment]=useState(dummyTypeOfInvestment[0])
+  const [isClient, setIsClient] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const queryClient = useQueryClient()
+  const [industry, setIndustry] = useState(dummyIndustry[0])
   const pathName = usePathname()
   const router = useRouter()
 
-  const { data: businessAccountData} = useQuery({
-    queryKey: ["businessAccountData"],
-    queryFn: () => fetchBusinessAccountDetails(),
-  });
-console.log(businessAccountData,"account data");
+  const {data:existOrNot}=useQuery({
+    queryKey:["businessAccountExistOrNot"],
+    queryFn:()=>isBusinessAccountExistOrNot()
+  })
+  // console.log(existOrNot,"on not");
+  
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(null),
 
-  const [state,setState]=useState({
-    name:businessAccountData?businessAccountData?.name:"",
-    founderName:"",
-    coFounderName:"",
-    linkedInUrl:"",
-    description:"",
-    address:"",
-    currentFinancialIncome:"",
-    currentValuation:"",
-    amount:"",
-    typeOfInvestement:"",
-    panNo:""
+  });
+
+  // console.log("startUpData", startUpData);
+  const { data: businessAccountData } = useQuery({
+    queryKey: ["businessAccountData"],
+    queryFn: () => fetchBusinessAccountDetails(null),
+    keepPreviousData: true
+  });
+  // console.log(businessAccountData, "account data");
+
+  const [companySize, setCompanySize] = useState(businessAccountData ? {name: businessAccountData.companySize} : dummyCompanySize[0])
+  const [city, setCity] = useState(businessAccountData ? {name: businessAccountData.city} : dummyCities[0])
+  const [yearOfFormation, setYearOfFormation] = useState(businessAccountData ? {name: businessAccountData.yearOfFormation} : dummyYearOfFormation[0])
+  const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? {name: businessAccountData.typeOfInvestement} : dummyTypeOfInvestment[0])
+  const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : dummyCategory[0])
+
+const [phoneNumber,setPhoneNumber]=useState(startUpData?.phoneNo)
+const [email,setEmail]=useState(startUpData?.email)
+  const [state, setState] = useState({
+    name: businessAccountData?.name,
+    founderName: businessAccountData?.founderName,
+    coFounderName: businessAccountData ? businessAccountData?.coFounderName : "",
+    linkedInUrl: businessAccountData ? businessAccountData?.social?.linkedin : "",
+    description: businessAccountData ? businessAccountData?.description : "",
+    address: businessAccountData ? businessAccountData?.address?.line1 : "",
+    currentFinancialIncome: businessAccountData ? businessAccountData?.currentFinancialIncome : "",
+    currentValuation: businessAccountData ? businessAccountData?.currentValuation : "",
+    amount: businessAccountData ? businessAccountData?.amount : "",
+    typeOfInvestement: businessAccountData ? businessAccountData?.typeOfInvestement : "",
+    panNo: businessAccountData ? businessAccountData?.panNo : ""
   })
 
-
-  const borderStyle = "border border-[#C8C8C8] rounded-md relative"
-  const labelStyle = " text-sm   text-[#868E97] font-medium  px-1  bg-white absolute top-[-10px] left-[10px]"
-  const inputStyle = "rounded-lg px-3 py-3 w-full outline-0"
-
-
-
-
-
-  const onSubmitHandler=()=>{
-    const  accountInfo={
-      // advance: {
-        name:state.name,
+  const onSubmitHandler = async () => {
+    setLoading(true)
+    try {
+      const accountInfo = {
+        name: state.name,
         founderName: state.founderName,
         coFounderName: state.coFounderName,
         social: {
-            linkedin: state.linkedInUrl,},
+          linkedin: state.linkedInUrl,
+        },
         category: {
-            id: category.id,
-            name:category.name},
+          id: category.id,
+          name: category.name
+        },
         address: {
-            line1: state.address,
-            },
+          line1: state.address,
+        },
         city: city.name,
         companySize: +companySize.name,
         yearOfFormation: +yearOfFormation.name,
@@ -122,19 +126,55 @@ console.log(businessAccountData,"account data");
         currentValuation: +state.currentValuation,
         typeOfInvestement: typeOfInvestement.name,
         amount: +state.amount,
-    // }
+      }
+      await addAdvanceDetails(accountInfo,email)
+      await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
+      await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
+      if(existOrNot){
+        toast.success("Changes saved successfully.")
+      }else{
+        toast.success("Business account created.")
+
+      }
+      setLoading(false)
+    } catch (error) {
+      toast.error("Some error occured")
+      setLoading(false)
     }
-addAdvanceDetails(accountInfo)
-    console.log(accountInfo,"account info");
-    toast.success("Business accounT created.")
   }
+
+  useEffect(() => {
+    if (businessAccountData) {
+        setState({
+          name: businessAccountData?.name,
+          founderName: businessAccountData?.founderName,
+          coFounderName:businessAccountData?.coFounderName ,
+          linkedInUrl: businessAccountData?.social?.linkedin ,
+          description:  businessAccountData?.description ,
+          address: businessAccountData?.address?.line1 ,
+          currentFinancialIncome: businessAccountData?.currentFinancialIncome,
+          currentValuation:  businessAccountData?.currentValuation ,
+          amount: businessAccountData?.amount ,
+          typeOfInvestement:businessAccountData?.typeOfInvestement ,
+          panNo:businessAccountData?.panNo 
+        });
+      setCity(businessAccountData ? {name: businessAccountData.city} : dummyCities[0])
+    setYearOfFormation(businessAccountData ? {name: businessAccountData.yearOfFormation} : dummyYearOfFormation[0])
+    setTypeOfInvestment(businessAccountData ? {name: businessAccountData.typeOfInvestement} : dummyTypeOfInvestment[0])
+  setCompanySize(businessAccountData ? {name: businessAccountData.companySize} : dummyCompanySize[0])
+setCategory(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : dummyCategory[0])
+    }
+    if(startUpData){
+setPhoneNumber(startUpData?.phoneNo)
+setEmail(startUpData.email)
+    }
+}, [businessAccountData,existOrNot,startUpData]);
+
   return (
     <div className={` h-fit py-2  relative z-0 mb-10 ${pathName.includes("business-account") ? "block  w-[100%] sm:mt-5" : "sm:block hidden md:w-[63%] w-[100%]"} `}>
       {
         pathName.includes("business-account") && <div
           onClick={() => {
-            console.log("XFBB");
-
             router.replace("/account?tab=my-profile")
           }}
           className='mb-2'><FlatIcon className="flaticon-arrow-right rotate-180 text-2xl font-bold" /></div>
@@ -174,7 +214,7 @@ addAdvanceDetails(accountInfo)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={category} onChange={setCategory}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{(category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {dummyCategory.map((category) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
@@ -184,12 +224,10 @@ addAdvanceDetails(accountInfo)
                               }  flex justify-between`}
                           >
                             {/* {selected && <CheckIcon />} */}
-
                             <span>
                               {category.name}
                             </span>
                             {selected && <span>check</span>}
-
                           </li>
                         )}
                       </Listbox.Option>
@@ -204,7 +242,7 @@ addAdvanceDetails(accountInfo)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={companySize} onChange={setCompanySize}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{companySize.name}</span><span>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{companySize.name}</span><span>
                     <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {dummyCompanySize.map((company) => (
@@ -244,7 +282,7 @@ addAdvanceDetails(accountInfo)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={city} onChange={setCity}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start `}><span>{city.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{city.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {dummyCities.map((city) => (
                       <Listbox.Option key={city.id} value={city} as={Fragment} >
@@ -253,7 +291,7 @@ addAdvanceDetails(accountInfo)
                             className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
                               }  flex justify-between`}
                           >
-                            {/* {selected && <CheckIcon />} */}
+                     
 
                             <span>
                               {city.name}
@@ -269,7 +307,7 @@ addAdvanceDetails(accountInfo)
               </Listbox>
             </div>
           </div>
-          <div className='border border-[#C8C8C8] md:w-[50%] w-full relative flex items-center rounded-md '>
+          {/* <div className='border border-[#C8C8C8] md:w-[50%] w-full relative flex items-center rounded-md '>
             <p className={`${labelStyle}`}>Industry</p>
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={industry} onChange={setIndustry}>
@@ -283,7 +321,7 @@ addAdvanceDetails(accountInfo)
                             className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
                               }  flex justify-between`}
                           >
-                            {/* {selected && <CheckIcon />} */}
+                           
 
                             <span>
                               {industry.name}
@@ -298,7 +336,7 @@ addAdvanceDetails(accountInfo)
                 </div>
               </Listbox>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="flex md:flex-row flex-col md:gap-9 gap-5 gap-9  w-full ">
           <div className={`${borderStyle} w-[100%] business-account-desc`}>
@@ -306,7 +344,7 @@ addAdvanceDetails(accountInfo)
               Description
             </label>
             <textarea
-            value={state.description} onChange={(e) => setState({ ...state, description: e.target.value })}
+              value={state.description} onChange={(e) => setState({ ...state, description: e.target.value })}
               name=""
               id=""
               className={`${inputStyle}`}
@@ -320,7 +358,7 @@ addAdvanceDetails(accountInfo)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={yearOfFormation} onChange={setYearOfFormation}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start`}><span>{yearOfFormation.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{yearOfFormation.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                     {dummyYearOfFormation.map((year) => (
                       <Listbox.Option key={year.id} value={year} as={Fragment} >
@@ -415,7 +453,7 @@ addAdvanceDetails(accountInfo)
                   </div>
                 </div> */}
               </div>
-              <div className='text-center text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add Another year</span></button></div>
+              {/* <div className='text-center text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 cursor-pointer'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add Another year</span></button></div> */}
             </div>
             <div>
               <div className='flex flex-col sm:gap-9 gap-5  '>
@@ -428,8 +466,8 @@ addAdvanceDetails(accountInfo)
                     &#8377;
                   </div>
                 </div>
-                <div className={`text-sm text-[#868E97] font-medium `}>Profit</div>
-                <div className='flex md:gap-8 sm:gap-4 gap-2 w-full '>
+                {/* <div className={`text-sm text-[#868E97] font-medium `}>Profit</div> */}
+                {/* <div className='flex md:gap-8 sm:gap-4 gap-2 w-full '>
                   <div className={`${borderStyle} w-[85%] `}>
                     <label className={`${labelStyle}`} htmlFor="input">Enter product name</label>
                     <input className={`${inputStyle}`} type="text" id="input" />
@@ -439,19 +477,19 @@ addAdvanceDetails(accountInfo)
                       <input type="text" className='py-3 sm:px-5 px-3 outline-0 w-[100%] border border-[#C8C8C8] rounded-md' placeholder='%' />
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
-              <div className='text-center text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 sm:mt-4 mt-6'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add product</span></button></div>
+              {/* <div className='text-center cursor-pointer text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 sm:mt-4 mt-6'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add product</span></button></div> */}
             </div>
           </div>
-          <div className='grid lg:grid-cols-2 grid-cols-1 sm:grid-cols-2  md:gap-9 gap-7  w-full  sm:mt-12 mt-7 '>
+          <div className='grid lg:grid-cols-2 grid-cols-1 sm:grid-cols-2  md:gap-9 gap-7  w-full  sm:mt-7 mt-7 '>
             <div className='flex flex-col sm:gap-9 gap-7 '>
               <div className='border border-[#C8C8C8]  relative flex items-center rounded-md '>
                 <p className={`${labelStyle}`}>Type of Investment Required</p>
                 <div className='  relative w-full py-3 px-4 rounded-md '>
                   <Listbox value={typeOfInvestement} onChange={setTypeOfInvestment}>
                     <div className=' '>
-                      <Listbox.Button className={` w-full flex items-center justify-between text-start`}><span>{typeOfInvestement.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{typeOfInvestement.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                       <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                         {dummyTypeOfInvestment.map((investment) => (
                           <Listbox.Option key={investment.id} value={investment} as={Fragment} >
@@ -501,19 +539,36 @@ addAdvanceDetails(accountInfo)
         </div> */}
         <div className='flex flex-col sm:gap-10 gap-6'>
           {/* <div className='text-primary font-bold  text-base  '><h2>Contact</h2></div> */}
-          {/* <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-7'>
+          <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-7'>
             <div className={`${borderStyle} `}>
               <label className={`${labelStyle}`} htmlFor="input">Email</label>
-              <input className={`${inputStyle}`} type="text" id="input" />
+              <input value={email} onChange={(e)=>setEmail(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
             </div>
-            <div className={`${borderStyle} `}>
+            <div className={`${borderStyle}  `}>
               <label className={`${labelStyle}`} htmlFor="input">Phone Number</label>
-              <input className={`${inputStyle}`} type="text" id="input" />
+              <input  value={phoneNumber} disabled={true} className={`${inputStyle} `} type="text" id="input" />
             </div>
-          </div> */}
-          <div onClick={async()=>{
+          </div>
+          <div
+            onClick={async () => {
+              await onSubmitHandler()
+            }}
+            className='bg-primary text-white text-sm font-medium  text-center rounded-full py-4 cursor-pointer'
+          >
+            <button style={{ height: "100%", position: "relative", }}>
+              {loading && (
+                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                  <Loader />
+                </div>
+              )}
+              {!loading && (existOrNot?"Save changes": "Submit")}
+            </button>
+          </div>
+
+          {/* <div onClick={async()=>{
             await onSubmitHandler()
-          }} className='bg-primary text-white text-sm font-medium  text-center rounded-full py-4'><button>Submit</button></div>
+          }} className='bg-primary text-white text-sm font-medium  text-center rounded-full py-4 cursor-pointer'><button>Submit</button>
+          </div> */}
         </div>
       </div>
     </div>

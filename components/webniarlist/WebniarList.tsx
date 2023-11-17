@@ -37,7 +37,9 @@ console.log(webinars,"PPPP")
           Upcoming Webinar Sessions
           </h3>
          {webinars?.map((singlewebinar: any, idx: number) => {
-          return <WebniarCard2 singlewebinar={singlewebinar} />;
+          return <div key={idx}>
+          <WebniarCard2 singlewebinar={singlewebinar} idx={idx}/>;
+          </div>
         })
         }
         </div>

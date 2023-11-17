@@ -9,13 +9,13 @@ import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
 import Link from "next/link";
 
-const WebniarCard2 = (singlewebinar: any) => {
+const WebniarCard2 = (singlewebinar: any,idx:number) => {
   // console.log(singlewebinar,"kkkk")
   let singlewebinardata = singlewebinar.singlewebinar;
   // console.log(singlewebinardata, "tt");
   return (
     // flex-col lg:
-    <div className="  flex flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-8 sm:mt-12 md:mt-16 lg:mt-20 bg-[#f2fff3] rounded-lg w-full">
+    <div key={idx} className="  flex flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-8 sm:mt-12 md:mt-16 lg:mt-20 bg-[#f2fff3] rounded-lg w-full">
       {/* w-full lg: */}
       <div className="w-[35%]  flex justify-center ">
         <div className="w-full md:w-60 lg:w-72 h-36 sm:h-44 md:h-52 lg:h-60 relative  ">
