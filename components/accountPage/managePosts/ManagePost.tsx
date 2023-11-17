@@ -85,7 +85,7 @@ const ManagePost = () => {
 
   return (
     <>
-      <div className={` h-fit  ${pathName.includes("manage-posts") ? "block w-[100%]  sm:mt-5 md:mt-10 md:mb-24 mb-5" : "sm:block hidden md:w-[60%] w-[100%]"}`}>
+      <div className={` h-fit ${pathName.includes("manage-posts") ? "block w-[100%]  sm:mt-5 md:mt-10 md:mb-24 mb-5" : "sm:block hidden md:w-[60%] w-[100%]"}`}>
         {
           pathName.includes("manage-posts") && <div
             onClick={() => {
@@ -107,8 +107,9 @@ const ManagePost = () => {
           </Link>
         </div>
         {/* new start  */}
-        <div className="  w-full  h-fit">
-          <div className="flex flex-col gap-8">
+        {/* {postsData && postsData.length > 0? */}
+        <div className="  w-full   h-fit">
+          <div className="flex flex-col gap-8 ">
             {postsData && postsData.length > 0 && postsData.map((post: any, idx: number) => {
               const commentTime = post.createdAt.toDate();
               // Calculate the duration
@@ -305,20 +306,27 @@ const ManagePost = () => {
                                   formattedTime2 = commentTime.format("MMMM D, YYYY"); // Show full date if more than a week
                                 }
                                 return <div key={idx} className="mt-4 ">
-                                  <div className="flex  items-start gap-4 ">
+                                  <div className="flex  items-start gap-2 ">
                                     <div className="flex items-start gap-4 ">
                                       <div className="h-10 w-10 rounded-full"><Image src={msg.createdBy?.image?.url} alt="" height={1000} width={1000} className="h-[100%] w-[100%] rounded-full" /></div>
                                       <div className=" flex flex-col gap-1 ">
-                                        {
-                                          msg.createdBy?.name &&
-                                          <p className="text-sm text-primary">{msg.createdBy?.name ? msg.createdBy?.name : ""}</p>
-                                        }
-                                        <p className="text-sm">{msg.message}</p>
+                                      <div className=" flex flex-col gap-1 ">
+                                    <div className="flex gap-3 items-center ">
+                                    {
+                                      msg.createdBy?.name &&
+                                      <p className="text-sm text-primary">{msg.createdBy?.name ? msg.createdBy?.name : ""}</p>
+                                    }
+                                    <div>
+                                  <p className="text-xs text-[#636464]">{formattedTime2}</p>
+                                    </div>
+                                    </div>
+                                    <p className="text-sm">{msg.message}</p>
+                                  </div>
                                       </div>
                                     </div>
-                                    <div className="">
+                                    {/* <div className="">
                                       <p className="text-xs text-[#636464]">{formattedTime2}</p>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
                               })
@@ -374,6 +382,9 @@ const ManagePost = () => {
             </div>
           </Modal>
         </div>
+        {/* :
+        <div className='w-full h-[100%] border border-[red] flex justify-center items-center'><h1>No posts yet</h1></div>
+        } */}
         {/* new end  */}
       </div>
     </>

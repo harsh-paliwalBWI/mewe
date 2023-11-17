@@ -33,7 +33,7 @@ const NewPost = () => {
 
 
   const labelStyle = "lg:text-base text-sm text-primary font-semibold ";
-  const inputStyle = " rounded-md px-3 py-3 outline-0 bg-transparent";
+  const inputStyle = " rounded-md px-3 py-3 outline-0 bg-transparent text-sm w-full";
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
@@ -178,7 +178,7 @@ const NewPost = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 type="text"
                 className={`${inputStyle}`}
-                placeholder="Write a Post Title"
+                placeholder="Write a Post Title "
               />
             </div>
           </div>

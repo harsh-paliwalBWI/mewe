@@ -13,6 +13,7 @@ import { RecaptchaVerifier } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
+import Loader from "../loader/Loader";
 
 const SignUpPage2 = () => {
   const [phoneNumber, setPhoneNumber] = useState<any>("");
@@ -82,6 +83,7 @@ const SignUpPage2 = () => {
 
   const confirmOTP = () => {
     try {
+      setLoading(true)
       setTimerStarted(false);
       setVerifying(true);
       otpSent
@@ -101,9 +103,6 @@ const SignUpPage2 = () => {
               createdAt: new Date(),
               name:name,
               email:email,
-              // profilePic: {
-              //   url: "",
-              // },
             };
             // console.log(startup, "startup info");
             await setDoc(doc(db, `startups/${res.user.uid}`), startup, {
@@ -114,28 +113,29 @@ const SignUpPage2 = () => {
             });
           } else {
             // console.log("User already exist");
-            toast.success("User already exist, Please Login");
+            toast.error("User already exist, Please Login");
           }
-
           //   await axios.get(`/api/login?uid=${res.user.uid}`);
           setVerifying(false);
-
           setverification(false);
           setTime(60);
           setOTP("");
           setTimerStarted(false);
           setOTPSent(null);
           setLoading(false);
-          router.replace("/welcome");
+          router.replace("/");
           //   router.replace("/");
         })
         .catch((err: any) => {
           setverification(false);
-          // console.log("Incorrect OTP! Sign in failed!");
-          toast.error("Incorrect OTP! Sign in failed!");
+          setLoading(false);
+
+          toast.error("Incorrect OTP! Sign in failed !");
         });
     } catch (err) {
-      console.log("error ");
+      setLoading(false);
+      toast.error(`${err}`)
+      // console.log("error ");
     }
   };
 
@@ -209,15 +209,32 @@ const SignUpPage2 = () => {
             </div>
             </div>
             {/* <Link href={"/verification"}> */}
-            <div
+            {/* <div
               className="bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer"
               onClick={async () => {
                 await signInUserWithPhoneNumber();
-                //   setPhoneNumber("");
               }}
             >
               <button className="">Verify</button>
+            </div> */}
+
+
+            <div
+              onClick={async () => {
+               await signInUserWithPhoneNumber()
+              }}
+              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 '
+            >
+              <button style={{ height: "100%", position: "relative", }}>
+                {loading && (
+                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                    <Loader />
+                  </div>
+                )}
+                {!loading && "Verify"}
+              </button>
             </div>
+
             <div id="recaptcha-container"></div>
             {/* </Link> */}
             {/* <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
@@ -311,12 +328,29 @@ const SignUpPage2 = () => {
               </div>
             </div>
 
+
             <div
+              onClick={() => confirmOTP()}
+              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 '
+            >
+              <button style={{ height: "100%", position: "relative", }}>
+                {loading && (
+                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                    <Loader />
+                  </div>
+                )}
+                {!loading && "Verify"}
+              </button>
+            </div>
+
+
+
+            {/* <div
               className="bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer "
               onClick={() => confirmOTP()}
             >
               <button className="">Verify</button>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

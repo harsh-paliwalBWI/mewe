@@ -18,7 +18,7 @@ export default async function Home() {
   fetchBusinessAccountDetails(cookie?.value)
 );
   const dehydratedState = dehydrate(queryClient);
-console.log(cookie,"cookie");
+// console.log(cookie,"cookie");
 
   return (
     <Hydrate state={dehydratedState}>

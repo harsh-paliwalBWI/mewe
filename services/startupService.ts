@@ -36,27 +36,45 @@ export const getStartUpData = async (cookieData: any) => {
     }
 };
 
-export const addAdvanceDetails = async (advanceDetails: any,email:any) => {
-    console.log(advanceDetails,email);
-    const refDoc = doc(db, `startups/${auth.currentUser?.uid}/details/advance`);
-    const refDoc2 = doc(db, `startups/${auth.currentUser?.uid}`);
-    const details = {
-        name: advanceDetails.name,
-        email:email,
-        basic: {
-            name: advanceDetails.name,
-            category: {
-                id: advanceDetails.category.id,
-                name: advanceDetails.category.name,
-            },
-        },
-    };
-    await setDoc(refDoc2, details, { merge: true });
-    await setDoc(refDoc, advanceDetails, { merge: true });
-};
+// export const addAdvanceDetails = async (advanceDetails: any,email:any) => {
+//     console.log(advanceDetails,email);
+    
+//     const refDoc = doc(db, `startups/${auth.currentUser?.uid}/details/advance`);
+//     const refDoc2 = doc(db, `startups/${auth.currentUser?.uid}`);
+//     const details = {
+//         name: advanceDetails.name,
+//         email:email,
+//         basic: {
+//             name: advanceDetails.name,
+//             category: {
+//                 id: advanceDetails.category.id,
+//                 name: advanceDetails.category.name,
+//             },
+//         },
+//     };
+//     await setDoc(refDoc2, details, { merge: true });
+//     // await setDoc(refDoc, advanceDetails, { merge: true });
+// };
 
-export const isBusinessAccountExistOrNot = async () => {
-    const docRef = doc(db, `startups/${auth.currentUser?.uid}/details/advance`);
+export const isBusinessAccountExistOrNot = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie("uid") };
+    }
+    let uid;
+    if (auth.currentUser?.uid) {
+        uid = auth.currentUser?.uid;
+    }
+    if (cookie) {
+        uid = cookie;
+    }
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+    if(uid){
+    const docRef = doc(db, `startups/${uid}/details/advance`);
     const data = await getDoc(docRef).then((docs) => {
         if (docs.exists()) {
             return true;
@@ -65,6 +83,10 @@ export const isBusinessAccountExistOrNot = async () => {
         }
     });
     return data;
+}else {
+    return false
+}
+    
 };
 
 export const fetchBusinessAccountDetails = async (cookieData: any) => {

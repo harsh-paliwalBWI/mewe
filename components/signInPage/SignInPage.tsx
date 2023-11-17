@@ -14,6 +14,7 @@ import { RecaptchaVerifier, deleteUser } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
+import Loader from "../loader/Loader";
 
 const SignInPage = () => {
   const [phoneNumber, setPhoneNumber] = useState<any>("");
@@ -25,7 +26,7 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
-  
+
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       setLoading(true);
@@ -48,34 +49,37 @@ const SignInPage = () => {
           setLoading(false);
         })
         .catch((error) => {
-          console.log(error + "...please reload");
+          toast.error(`${error}`)
+          console.log(error + "...Please eload");
           setLoading(false);
         });
     } else {
-      if (!phoneNumber) console.log("Please enter correct phone number");
+      if (!phoneNumber) {
+        // console.log("Please enter correct phone number");
+        toast.error("Please enter phone number first !")
+      }
       setLoading(false);
     }
   };
   const confirmOTP = () => {
+    setLoading(true)
     try {
       setTimerStarted(false);
       setVerifying(true);
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
-          
           // localStorage.setItem("auth", JSON.stringify(res.user.uid));
           if (res._tokenResponse.isNewUser) {
-          
-            toast.success("User does not exist, Please Signup");
+            toast.error("User does not exist, Please Signup");
             router.replace("/welcome");
-            // console.log(res, "nhi chla");
-                      
-            deleteUser(res.user).then(() => {
-              console.log("User not created")
-            }).catch((error) => {
-              console.log("User created",error)
-            });
+            // console.log(res, "nhi chla");       
+            deleteUser(res.user)
+              .then(() => {
+                console.log("User not created")
+              }).catch((error) => {
+                console.log("User created", error)
+              });
 
           } else {
             localStorage.setItem("auth", JSON.stringify(res.user.uid));
@@ -84,26 +88,24 @@ const SignInPage = () => {
             router.replace("/");
             console.log(res, "chla gya");
           }
-
-         
           setVerifying(false);
-
           setverification(false);
           setTime(60);
           setOTP("");
           setTimerStarted(false);
           setOTPSent(null);
           setLoading(false);
-      
-       
         })
         .catch((err: any) => {
           setverification(false);
-          console.log("Incorrect OTP! Sign in failed!");
-          toast.success("Incorrect OTP! Sign in failed!");
-        });
+          // console.log("Incorrect OTP! Sign in failed!");
+          toast.error("Incorrect OTP! Sign in failed!");
+        })
+
     } catch (err) {
       console.log("error ");
+      setLoading(false);
+
     }
   };
 
@@ -171,17 +173,23 @@ const SignInPage = () => {
             </div>
             {/* <Link href={"/verification"}> */}
             <div
-              className="bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer"
               onClick={async () => {
                 await signInUserWithPhoneNumber();
-                //   setPhoneNumber("");
               }}
+              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium font-medium  text-center rounded-lg py-3 cursor-pointer'
             >
-              <button className="">Verify</button>
+              <button style={{ height: "100%", position: "relative", }}>
+                {loading && (
+                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                    <Loader />
+                  </div>
+                )}
+                {!loading && "Verify"}
+              </button>
             </div>
             <div id="recaptcha-container"></div>
             {/* </Link> */}
-         {/* <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
+            {/* <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
             <h2>or Sign In with</h2>
           </div>
           <div className="flex items-center justify-center gap-x-6">
@@ -209,11 +217,11 @@ const SignInPage = () => {
               />
             </div>
           </div> */}
-            </div>
+          </div>
         )}
 
 
-{verification && (
+        {verification && (
           <div className=" md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5  ">
             <div className=" flex flex-col lg:gap-10 gap-5">
               <div className="flex justify-center items-center lg:text-4xl sm:text-2xl text-xl font-bold md:mt-0 mt-10">
@@ -251,15 +259,15 @@ const SignInPage = () => {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                                e.target.value +
-                                otp.substring(digit)
+                              e.target.value +
+                              otp.substring(digit)
                             );
                           } else {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                                " " +
-                                otp.substring(digit)
+                              " " +
+                              otp.substring(digit)
                             );
                           }
                         }}
@@ -272,12 +280,20 @@ const SignInPage = () => {
                 <h4>Resend code ({time > 9 ? time : "0" + time} sec)</h4>
               </div>
             </div>
-
             <div
-              className="bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer "
-              onClick={() => confirmOTP()}
+              onClick={async () => {
+                confirmOTP()
+              }}
+              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 '
             >
-              <button className="">Verify</button>
+              <button style={{ height: "100%", position: "relative", }}>
+                {loading && (
+                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                    <Loader />
+                  </div>
+                )}
+                {!loading && "Verify"}
+              </button>
             </div>
           </div>
         )}

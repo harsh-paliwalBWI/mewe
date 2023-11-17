@@ -225,16 +225,21 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                                 <div className="flex items-start gap-4 ">
                                   <div className="h-10 w-10 rounded-full"><Image src={msg.createdBy?.image?.url} alt="" height={1000} width={1000} className="h-[100%] w-[100%] rounded-full" /></div>
                                   <div className=" flex flex-col gap-1 ">
+                                    <div className="flex gap-3 items-center ">
                                     {
                                       msg.createdBy?.name &&
                                       <p className="text-sm text-primary">{msg.createdBy?.name ? msg.createdBy?.name : ""}</p>
                                     }
+                                    <div>
+                                  <p className="text-xs text-[#636464]">{formattedTime2}</p>
+                                    </div>
+                                    </div>
                                     <p className="text-sm">{msg.message}</p>
                                   </div>
                                 </div>
-                                <div className="">
+                                {/* <div className="border border-[red]">
                                   <p className="text-xs text-[#636464]">{formattedTime2}</p>
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           })

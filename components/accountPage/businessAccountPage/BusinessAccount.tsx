@@ -5,9 +5,11 @@ import FlatIcon from '@/components/flatIcon/flatIcon';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify"
-import { addAdvanceDetails, fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
+import {  fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Loader from '@/components/loader/Loader';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/config/firebase-config';
 
 const dummyCategory = [
   { id: "2", name: 'Category1', unavailable: false },
@@ -60,17 +62,18 @@ const BusinessAccount = () => {
 
   const {data:existOrNot}=useQuery({
     queryKey:["businessAccountExistOrNot"],
-    queryFn:()=>isBusinessAccountExistOrNot()
+    queryFn:()=>isBusinessAccountExistOrNot(null)
   })
-  // console.log(existOrNot,"on not");
+  console.log(existOrNot,"on not");
   
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(null),
+    keepPreviousData: true
 
   });
 
-  // console.log("startUpData", startUpData);
+  console.log("startUpData", startUpData?.name);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(null),
@@ -78,17 +81,18 @@ const BusinessAccount = () => {
   });
   // console.log(businessAccountData, "account data");
 
-  const [companySize, setCompanySize] = useState(businessAccountData ? {name: businessAccountData.companySize} : dummyCompanySize[0])
-  const [city, setCity] = useState(businessAccountData ? {name: businessAccountData.city} : dummyCities[0])
-  const [yearOfFormation, setYearOfFormation] = useState(businessAccountData ? {name: businessAccountData.yearOfFormation} : dummyYearOfFormation[0])
-  const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? {name: businessAccountData.typeOfInvestement} : dummyTypeOfInvestment[0])
-  const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : dummyCategory[0])
+  const [companySize, setCompanySize] = useState(businessAccountData ? {name: businessAccountData.companySize} : {name:""})
+  const [city, setCity] = useState(businessAccountData ? {name: businessAccountData.city} :{name:""} )
+  const [yearOfFormation, setYearOfFormation] = useState(businessAccountData ? {name: businessAccountData.yearOfFormation} : {name:""})
+  const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? {name: businessAccountData.typeOfInvestement} : {name:""})
+  const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id:"", name:"" })
 
 const [phoneNumber,setPhoneNumber]=useState(startUpData?.phoneNo)
 const [email,setEmail]=useState(startUpData?.email)
+const [name,setName]=useState(startUpData?.name)
   const [state, setState] = useState({
-    name: businessAccountData?.name,
-    founderName: businessAccountData?.founderName,
+    // name: startUpData?.name,
+    founderName: businessAccountData?businessAccountData?.founderName:"",
     coFounderName: businessAccountData ? businessAccountData?.coFounderName : "",
     linkedInUrl: businessAccountData ? businessAccountData?.social?.linkedin : "",
     description: businessAccountData ? businessAccountData?.description : "",
@@ -100,11 +104,29 @@ const [email,setEmail]=useState(startUpData?.email)
     panNo: businessAccountData ? businessAccountData?.panNo : ""
   })
 
+ const  addAdvanceDetails = async (advanceDetails: any,email:any) => {
+    console.log(advanceDetails,email);
+    const refDoc = doc(db, `startups/${startUpData?.id}/details/advance`);
+    const refDoc2 = doc(db, `startups/${startUpData?.id}`);
+    const details = {
+        name: advanceDetails.name,
+        email:email,
+        basic: {
+            name: advanceDetails.name,
+            category: {
+                id: advanceDetails.category.id,
+                name: advanceDetails.category.name,
+            },
+        },
+    };
+    await setDoc(refDoc2, details, { merge: true });
+    await setDoc(refDoc, advanceDetails, { merge: true });
+};
   const onSubmitHandler = async () => {
     setLoading(true)
     try {
       const accountInfo = {
-        name: state.name,
+        name: name,
         founderName: state.founderName,
         coFounderName: state.coFounderName,
         social: {
@@ -127,6 +149,11 @@ const [email,setEmail]=useState(startUpData?.email)
         typeOfInvestement: typeOfInvestement.name,
         amount: +state.amount,
       }
+      // validation start 
+
+      // if(!state.name&&!state.founderName&&state.coFounderName&&state.linkedInUrl&&category.name&&state.address&&city.name&&companySize.name&&yearOfFormation.name
+      //   &&state.description&&state.panNo&&state.currentFinancialIncome&&state.currentValuation&&state.amount&&email)
+      // validation end 
       await addAdvanceDetails(accountInfo,email)
       await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
@@ -146,8 +173,8 @@ const [email,setEmail]=useState(startUpData?.email)
   useEffect(() => {
     if (businessAccountData) {
         setState({
-          name: businessAccountData?.name,
-          founderName: businessAccountData?.founderName,
+          // name: startUpData?.name,
+          founderName:businessAccountData? businessAccountData?.founderName:"",
           coFounderName:businessAccountData?.coFounderName ,
           linkedInUrl: businessAccountData?.social?.linkedin ,
           description:  businessAccountData?.description ,
@@ -158,15 +185,16 @@ const [email,setEmail]=useState(startUpData?.email)
           typeOfInvestement:businessAccountData?.typeOfInvestement ,
           panNo:businessAccountData?.panNo 
         });
-      setCity(businessAccountData ? {name: businessAccountData.city} : dummyCities[0])
-    setYearOfFormation(businessAccountData ? {name: businessAccountData.yearOfFormation} : dummyYearOfFormation[0])
-    setTypeOfInvestment(businessAccountData ? {name: businessAccountData.typeOfInvestement} : dummyTypeOfInvestment[0])
-  setCompanySize(businessAccountData ? {name: businessAccountData.companySize} : dummyCompanySize[0])
-setCategory(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : dummyCategory[0])
+      setCity(businessAccountData ? {name: businessAccountData.city} :{name:""})
+    setYearOfFormation(businessAccountData ? {name: businessAccountData.yearOfFormation} :{name:""})
+    setTypeOfInvestment(businessAccountData ? {name: businessAccountData.typeOfInvestement} : {name:""})
+  setCompanySize(businessAccountData ? {name: businessAccountData.companySize} :{name:""})
+setCategory(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id:"", name:"" })
     }
     if(startUpData){
 setPhoneNumber(startUpData?.phoneNo)
 setEmail(startUpData.email)
+setName(startUpData?.name)
     }
 }, [businessAccountData,existOrNot,startUpData]);
 
@@ -186,7 +214,13 @@ setEmail(startUpData.email)
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full  ">
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Name of the Startup</label>
-            <input value={state.name} onChange={(e) => setState({ ...state, name: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
+
+            // value={state.name} 
+            // onChange={(e) => setState({ ...state, name: e.target.value })} 
+            className={`${inputStyle}`} type="text" id="input" />
           </div>
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Founder Name</label>
@@ -214,14 +248,14 @@ setEmail(startUpData.email)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={category} onChange={setCategory}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCategory.map((category) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                              }  flex justify-between`}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                              }  flex justify-between px-2 py-1 shadow rounded-md `}
                           >
                             {/* {selected && <CheckIcon />} */}
                             <span>
@@ -242,15 +276,15 @@ setEmail(startUpData.email)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={companySize} onChange={setCompanySize}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{companySize.name}</span><span>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span> {(companySize?.name && companySize.name) || "Select"}</span><span>
                     <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCompanySize.map((company) => (
                       <Listbox.Option key={company.id} value={company} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                              }  flex justify-between`}
+                          className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                        }  flex justify-between px-2 py-1 shadow rounded-md `}
                           >
                             {/* {selected && <CheckIcon />} */}
 
@@ -282,14 +316,14 @@ setEmail(startUpData.email)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={city} onChange={setCity}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{city.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{(city?.name && city.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCities.map((city) => (
                       <Listbox.Option key={city.id} value={city} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                              }  flex justify-between`}
+                          className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                        }  flex justify-between px-2 py-1 shadow rounded-md `}
                           >
                      
 
@@ -358,14 +392,14 @@ setEmail(startUpData.email)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={yearOfFormation} onChange={setYearOfFormation}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{yearOfFormation.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(yearOfFormation?.name && yearOfFormation.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyYearOfFormation.map((year) => (
                       <Listbox.Option key={year.id} value={year} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                              }  flex justify-between`}
+                          className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                        }  flex justify-between px-2 py-1 shadow rounded-md `}
                           >
                             {/* {selected && <CheckIcon />} */}
 
@@ -489,14 +523,14 @@ setEmail(startUpData.email)
                 <div className='  relative w-full py-3 px-4 rounded-md '>
                   <Listbox value={typeOfInvestement} onChange={setTypeOfInvestment}>
                     <div className=' '>
-                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{typeOfInvestement.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                      <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
+                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{(typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                      <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                         {dummyTypeOfInvestment.map((investment) => (
                           <Listbox.Option key={investment.id} value={investment} as={Fragment} >
                             {({ active, selected }) => (
                               <li
-                                className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                                  }  flex justify-between`}
+                              className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                            }  flex justify-between px-2 py-1 shadow rounded-md `}
                               >
                                 {/* {selected && <CheckIcon />} */}
 
