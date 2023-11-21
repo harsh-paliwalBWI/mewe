@@ -4,10 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import FlatIcon from "../../flatIcon/flatIcon";
 import { usePathname } from "next/navigation";
+import { getStartUpData } from "@/services/startupService";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { getCookie } from "cookies-next";
+
 
 const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 
-const Categories = () => {
+const Categories = ({ cookie }: any) => {
+  const cookies = { value: getCookie("uid") };
+
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(cookies),
+  });
+
+  // console.log(startUpData,"from nav");
+  
   const pathName = usePathname();
   const textStyle = "lg:text-base md:text-sm text-xs  md:px-2   relative";
   return (

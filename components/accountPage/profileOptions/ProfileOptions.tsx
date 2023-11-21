@@ -53,7 +53,7 @@ const router = useRouter()
       })
       .catch((error) => {
         // An error happened.
-        console.log("error", error);
+        // console.log("error", error);
 
         toast.error("cannot Logout at the moment");
       });
@@ -66,7 +66,7 @@ const router = useRouter()
   // console.log("startUpData",startUpData);
 
   const uploadImage = async (userPic: any) => {
-    console.log("inside fhfdh");
+    // console.log("inside fhfdh");
 
     setIsModalOpen(true);
     if (userPic) {
@@ -105,11 +105,8 @@ const router = useRouter()
     await uploadImage(userPic);
   }
   useEffect(() => {
-    console.log("inside use effect");
-    
-    // if (typeof window !== 'undefined') {
+    // console.log("inside use effect");
       setClient(true)
-    // }
 }, []);
 
   return (
@@ -120,7 +117,7 @@ const router = useRouter()
           <div className="flex justify-center ">
             <div className="h-[100px] w-[100px] rounded-full  relative">
               <Image
-                src={startUpData?.basic?.coverPic?.url}
+                src={(client&&startUpData?.basic?.coverPic?.url)?startUpData?.basic?.coverPic?.url:""}
                 alt=""
                 height={1000}
                 width={1000}

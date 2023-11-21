@@ -11,14 +11,15 @@ export default async function Home() {
   const cookie = cookies().get("uid");
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({ queryKey: ["schemes"], queryFn: fetchSchemes });
+// console.log(cookie,"cookie vcbch");
+
   await queryClient.prefetchQuery(["startUpData"], () =>
-    getStartUpData(cookie?.value)
+    getStartUpData(cookie)
   );
   await queryClient.prefetchQuery(["businessAccountData"], () =>
-  fetchBusinessAccountDetails(cookie?.value)
+  fetchBusinessAccountDetails(cookie)
 );
   const dehydratedState = dehydrate(queryClient);
-// console.log(cookie,"cookie");
 
   return (
     <Hydrate state={dehydratedState}>

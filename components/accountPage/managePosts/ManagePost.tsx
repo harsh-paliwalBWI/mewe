@@ -107,7 +107,12 @@ const ManagePost = () => {
           </Link>
         </div>
         {/* new start  */}
-        {/* {postsData && postsData.length > 0? */}
+      
+        {
+      postsData && postsData.length <= 0?
+     ( <div className="md:text-2xl text-xl text-center md:h-[70vh] h-[20vh] flex items-center justify-center text-primary ">
+      <h1>No posts yet !</h1></div>):(
+
         <div className="  w-full   h-fit">
           <div className="flex flex-col gap-8 ">
             {postsData && postsData.length > 0 && postsData.map((post: any, idx: number) => {
@@ -382,10 +387,9 @@ const ManagePost = () => {
             </div>
           </Modal>
         </div>
-        {/* :
-        <div className='w-full h-[100%] border border-[red] flex justify-center items-center'><h1>No posts yet</h1></div>
-        } */}
-        {/* new end  */}
+      )
+          }
+       
       </div>
     </>
   )
