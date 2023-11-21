@@ -11,12 +11,19 @@ import NewPost from './businessAccountPage/newPost/NewPost'
 import { useQuery } from '@tanstack/react-query'
 import { getStartUpData } from '@/services/startupService'
 import { toast } from 'react-toastify'
+import { cookies } from "next/dist/client/components/headers";
+import { getCookie } from "cookies-next";
 
-interface Props {
-  cookie: any
-}
-const AccountPage: FC<Props> = ({ cookie }) => {
-  // console.log(cookie);
+// interface Props {
+//   cookie: any
+// }
+const AccountPage = () => {
+
+const cookies = { value: getCookie("uid") };
+// console.log(cookies,"from account page bmbm");
+// console.log(cookies?.value,"value");
+
+
   const router = useRouter()
   const params = useSearchParams()
   const currTab = params.get("tab")
@@ -24,9 +31,12 @@ const AccountPage: FC<Props> = ({ cookie }) => {
   const [toastShown, setToastShown] = useState(false);
   // console.log("hiii");
   // console.log(currTab,"------------");
+
+
+
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(null),
+    queryFn: () => getStartUpData(cookies?.value),
   });
   // console.log("startUpData", startUpData);
 
@@ -40,7 +50,7 @@ const AccountPage: FC<Props> = ({ cookie }) => {
   return (
     <>
       <div className='flex w-[100%] md:flex-row flex-col gap-y-6 px-body xl:gap-x-14 gap-x-7 md:mt-14 mt-7 md:mb-20 mb-10 relative z-10'>
-        <ProfileOptions cookie={cookie} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
+        <ProfileOptions  setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
         <ProfileOptionsMobile />
         {
           currTab === "my-profile" && <MyProfile />

@@ -3,7 +3,10 @@ import { getCookie } from "cookies-next";
 import {collection,getDocs,doc,getDoc,addDoc,setDoc} from "firebase/firestore";
 
 export const getStartUpData = async (cookieData: any) => {
+    console.log(cookieData,"cookie data");
     let cookie;
+    
+    
     if (cookieData) {
         cookie = cookieData;
     } else {

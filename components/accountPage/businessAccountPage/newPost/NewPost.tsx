@@ -92,18 +92,23 @@ const NewPost = () => {
 
   const onPostHandler = async () => {
     try {
+      console.log("inside try");
+      
       setLoading(true)
       if (title && location && description && images.length > 0) {
+        console.log("inside first if");
         if (startUpData.id) {
+        console.log("inside second if");
+
           const postData = {
             createdAt: new Date(),
             createdBy: {
               id: startUpData.id,
               name: startUpData.name,
               image: {
-                mob: startUpData?.basic?.coverPic?.mob,
-                url: startUpData?.basic?.coverPic?.url,
-                thumb: startUpData?.basic?.coverPic?.thumb
+                mob: startUpData?.basic?.coverPic?.mob?startUpData?.basic?.coverPic?.mob:"",
+                url: startUpData?.basic?.coverPic?.url?startUpData?.basic?.coverPic?.url:"",
+                thumb:startUpData?.basic?.coverPic?.thumb?startUpData?.basic?.coverPic?.thumb:""
               }
             },
             title: title,
@@ -138,6 +143,8 @@ const NewPost = () => {
         // toast.error("Please fill all the fields")
       }
     } catch (error) {
+      console.log(error);
+      
       setLoading(false)
       toast.error(`${error}`);
     }

@@ -19,17 +19,13 @@ import { CircularProgress } from "@mui/material";
 interface ProfileOptionsProps {
   setSelectedTab: any;
   selectedTab: any;
-  cookie: any
+  // cookie: any
 
 }
 
 const optionStyle = "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer";
 
-const ProfileOptions: FC<ProfileOptionsProps> = ({
-  setSelectedTab,
-  selectedTab,
-  cookie
-}) => {
+const ProfileOptions: FC<ProfileOptionsProps> = ({setSelectedTab,selectedTab}) => {
   const params = useSearchParams();
   const currTab = params.get("tab");
   const [loading, setLoading] = useState(false);
