@@ -208,10 +208,9 @@ const ChatMobile = () => {
           </div>
           <div className=" ">
             {chats?.map((singlechat) => (
-              <Link href={"/chat-page"}>
+              <Link href={"/chat-page"} key={(singlechat as any)?.id}>
                 <div
                   className=" hover:bg-[#F3F7FA] px-5 "
-                  key={(singlechat as any)?.id}
                   onClick={() => handleChange(singlechat)}
                 >
                   <div className="flex  items-center gap-4 border-b-2 border-b-[#c6c8c9]  py-4 ">
