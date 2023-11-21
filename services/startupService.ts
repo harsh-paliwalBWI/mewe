@@ -10,6 +10,7 @@ export const getStartUpData = async (cookieData: any) => {
         cookie = { value: getCookie('uid') }
     }
 
+    console.log("COOKIE BEFORE UID", cookie);
 
     let uid;
     if (auth.currentUser?.uid) {
@@ -19,8 +20,8 @@ export const getStartUpData = async (cookieData: any) => {
         uid = cookie?.value;
     }
     // console.log(uid,"uid");
-    console.log("UID",uid);
-    
+    console.log("UID", uid);
+
     if (uid) {
         const docRef = doc(db, "startups", uid);
         const docSnap = await getDoc(docRef);

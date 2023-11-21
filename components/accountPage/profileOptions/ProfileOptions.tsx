@@ -44,9 +44,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
       .then(async () => {
         toast.success("Logged out");
         await axios.post(`/api/logout`);
-        queryClient.invalidateQueries({ queryKey: ["startUpData"] });
-        queryClient.refetchQueries({ queryKey: ["startUpData"] });
-        // Sign-out successful.
+        await queryClient.invalidateQueries({ queryKey: ["startUpData"] });
+        await queryClient.refetchQueries({ queryKey: ["startUpData"] });
+        queryClient.setQueryData(["startUpData"], null);
         router.replace("/");
       })
       .catch((error) => {

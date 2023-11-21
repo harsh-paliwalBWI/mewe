@@ -55,9 +55,9 @@ const SignInPage = () => {
         const startUp = docSnap.data();
         const docId = docSnap.id;
         startUpExistOrNot = startUp ? true : false;
-        console.log("startUpExistOrNot", startUpExistOrNot);
-        localStorage.setItem("auth", JSON.stringify(docId));
-        await axios.post(`/api/login?uid=${docId}`);
+        // console.log("startUpExistOrNot", startUpExistOrNot);
+        // localStorage.setItem("auth", JSON.stringify(docId));
+        // await axios.post(`/api/login?uid=${docId}`);
       } else {
         // console.log('No matching document found');
       }
