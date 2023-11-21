@@ -109,7 +109,7 @@ const [name,setName]=useState(startUpData?.name)
   })
 
  const  addAdvanceDetails = async (advanceDetails: any,email:any) => {
-    console.log(advanceDetails,email);
+    // console.log(advanceDetails,email);
     const refDoc = doc(db, `startups/${startUpData?.id}/details/advance`);
     const refDoc2 = doc(db, `startups/${startUpData?.id}`);
     const details = {

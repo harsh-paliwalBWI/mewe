@@ -65,15 +65,7 @@ const Categories = ({ cookie }: any) => {
             )}
           </div>
         </Link>
-        <Link
-          onClick={(e) => {
-            if (!startUpData) {
-              e.preventDefault();
-              toast.error("Sign in first.");
-            }
-          }}
-          href={{ pathname: "/account", query: { tab: "my-profile" } }}
-        >
+        <Link href={{pathname: '/account', query: { tab: 'my-profile' },}}>
           <div className={`text-[#CBCBCB] ${textStyle}`}>
             <h1 className=" ">Account</h1>
             {pathName.includes("account") && (
@@ -83,12 +75,15 @@ const Categories = ({ cookie }: any) => {
         </Link>
         <Link href={"/welcome"}>
           <div className={`text-[#CBCBCB] ${textStyle}`}>
-            <h1 className=" ">Log in/Sign up</h1>
-            {pathName.includes("welcome") && (
+            <h1 className=" ">
+              Log in/Sign up
+            </h1>
+            {pathName.includes("welcome") &&
               <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
-            )}
+            }
           </div>
         </Link>
+       
       </div>
       <div className="md:block hidden absolute right-[4%] ">
         <Link href={{ pathname: "/account", query: { tab: "new-post" } }}>

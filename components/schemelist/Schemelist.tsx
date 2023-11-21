@@ -20,7 +20,7 @@ const SchemeList = () => {
   });
   // const data=fetchSchemes()
   // console.log("hjgh");
-  console.log(schemes,"fgffh");
+  // console.log(schemes,"fgffh");
   
   return (
     <>
@@ -46,7 +46,7 @@ const SchemeList = () => {
           </div>
 {
   schemes&&schemes.length>0&&schemes.map((scheme:any,idx:number)=>{
-    console.log(idx,"idx");
+    // console.log(idx,"idx");
     
     return <div key={idx}>
      <NewsletterCard2 scheme={scheme} idx={idx}/>
