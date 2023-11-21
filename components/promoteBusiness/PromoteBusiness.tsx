@@ -27,12 +27,24 @@ const PromoteBusiness = () => {
         <div className='md:text-4xl text-xl font-semibold text-center sm:mt-3 mt-2 '><h1>Promote Your Business</h1></div>
         <div className='text-center text-[#7f7f7f] font-medium md:text-lg text-sm my-5 '><p>Excepteur sint occaecat cupidatat non proident, sunt in 
          culpa qui official <br />deserunt mollit anim id es</p></div>
-         <div className='flex justify-center items-center gap-3'>
-            <div className='text-[#a1a099] font-medium text-sm tracking-wider'><p>Monthly</p></div>
+         {/* <div className='flex justify-center items-center gap-3'>
+            <div className={` font-medium text-sm tracking-wider ${isSwitched&&"text-primary"}`}><p>Monthly</p></div>
             <div onClick={()=>setIsSwitched((prev)=>!prev)} className={`sm:w-[58px] w-[48px] flex items-center px-1  sm:h-[29px] h-[19px] ${isSwitched?"justify-start":"justify-end"}  bg-primary rounded-full cursor-pointer`}>
             <div className='sm:w-[22px] w-[11px] sm:h-[22px] h-[11px] rounded-full bg-white'></div></div>
             <div className='text-[#a1a099] font-medium text-sm tracking-wider'><p>Yearly</p></div>
-            </div>
+            </div> */}
+            <div className='flex justify-center items-center gap-3 '>
+    <div className={`  w-[100px] flex justify-end  ${isSwitched ? 'text-primary text-base font-bold' : 'text-[#a1a099] text-sm font-medium'}`}>
+        <p>Monthly</p>
+    </div>
+    <div onClick={() => setIsSwitched((prev) => !prev)} className={`sm:w-[58px] w-[48px] flex items-center px-1 sm:h-[29px] h-[19px] ${isSwitched ? 'justify-start' : 'justify-end'} bg-primary rounded-full cursor-pointer`}>
+        <div className='sm:w-[22px] w-[11px] sm:h-[22px] h-[11px] rounded-full bg-white'></div>
+    </div>
+    <div className={`text-[#a1a099]   ${isSwitched ? 'text-[#a1a099] text-sm font-medium' : 'text-primary text-base font-bold'}`}>
+        <p>Yearly</p>
+    </div>
+</div>
+
     <div className=' rounded-tl-xl rounded-tr-xl  md:mt-20 mt-7 md:mb-36 mb-5 sm:mt-10 sm:mb-10'>
     <PromotedBusinessSlider/>
         <>
