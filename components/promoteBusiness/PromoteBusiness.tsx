@@ -40,7 +40,7 @@ const PromoteBusiness = () => {
     <div onClick={() => setIsSwitched((prev) => !prev)} className={`sm:w-[58px] w-[48px] flex items-center px-1 sm:h-[29px] h-[19px] ${isSwitched ? 'justify-start' : 'justify-end'} bg-primary rounded-full cursor-pointer`}>
         <div className='sm:w-[22px] w-[11px] sm:h-[22px] h-[11px] rounded-full bg-white'></div>
     </div>
-    <div className={`text-[#a1a099]   ${isSwitched ? 'text-[#a1a099] text-sm font-medium' : 'text-primary text-base font-bold'}`}>
+    <div className={` w-[100px] flex justify-start   ${isSwitched ? 'text-[#a1a099] text-sm font-medium' : 'text-primary text-base font-bold'}`}>
         <p>Yearly</p>
     </div>
 </div>

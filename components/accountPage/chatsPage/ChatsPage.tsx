@@ -237,10 +237,11 @@ const ChatsPage = () => {
         </div>
       </div>
 
-      <div className="flex sm:flex-row flex-col w-full h-[80vh]  sm:mt-6 mt-3 gap-1">
+      <div className="flex sm:flex-row flex-col w-full h-[80vh]  sm:mt-6 mt-3 gap-1 ">
         {/* left section start  */}
-        <div className="md:block hidden overflow-y-scroll sm:h-full h-auto border border-black rounded-lg md:w-[40%] w-[100%] sm:pt-6 pt-4">
+        <div className="md:block hidden  sm:h-full h-auto border border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
           {/* <Link href={"/chat-page"}> */}
+          <div className=" h-full w-full overflow-y-scroll ">
 
           {searchlist.length !== 0 ? (
             <>
@@ -307,7 +308,7 @@ const ChatsPage = () => {
           <div className=" ">
             {chats?.map((singlechat) => (
               <div
-                className=" hover:bg-[#F3F7FA] px-5"
+                className=" hover:bg-[#F3F7FA] px-5 "
                 key={(singlechat as any)?.id}
                 onClick={() => handleChange(singlechat)}
               >
@@ -363,8 +364,9 @@ const ChatsPage = () => {
               </div>
             ))}
           </div>
+          </div>
         </div>
-        <div className="md:block hidden border-t border-t-black border-b border-b-black border-r border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-lg px-5 py-5 ">
+        <div className="md:block hidden border-t border-t-black border-b border-b-black border-r border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-xl px-5 py-5 ">
           {data.chatId !== "null" ? (
             <div className=" h-full w-full relative ">
               <div className="flex items-center justify-between">

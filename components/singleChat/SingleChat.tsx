@@ -177,7 +177,7 @@ const SingleChat = () => {
         </div>
       </div>
       <div
-        className={` border-t  border-t-black border-b border-b-black border-r border-r-black w-[100%] relative  min-h-[100%]  rounded-md sm:px-5 px-3 sm:py-5 py-3 ${
+        className={` border-t  border-t-black border-b border-b-black border-r border-r-black w-[100%] relative  min-h-[100%]  rounded-xl sm:px-5 px-3 sm:py-5 py-3 ${
           pathName.includes("chat-page")
             ? "block  w-[100%]  border border-black"
             : "sm:block hidden  w-[100%]"
