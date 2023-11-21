@@ -5,36 +5,57 @@ import profileImg from "../../../images/Ellipse 33.svg";
 import Image from "next/image";
 import FlatIcon from "@/components/flatIcon/flatIcon";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { log } from "console";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { db } from "@/config/firebase-config";
+import { auth, db } from "@/config/firebase-config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getStartUpData } from "@/services/startupService";
 import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
+import { signOut } from "firebase/auth";
+import axios from "axios";
 
 interface ProfileOptionsProps {
   setSelectedTab: any;
   selectedTab: any;
-  cookie: any
-
+  cookie: any;
 }
 
-const optionStyle = "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer";
+const optionStyle =
+  "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer";
 
 const ProfileOptions: FC<ProfileOptionsProps> = ({
   setSelectedTab,
   selectedTab,
-  cookie
+  cookie,
 }) => {
+  const router = useRouter();
   const params = useSearchParams();
   const currTab = params.get("tab");
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  async function handleLogout() {
+    signOut(auth)
+      .then(async () => {
+        toast.success("Logged out");
+        await axios.post(`/api/logout`);
+        queryClient.invalidateQueries({ queryKey: ["startUpData"] });
+        queryClient.refetchQueries({ queryKey: ["startUpData"] });
+        // Sign-out successful.
+        router.replace("/");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log("error", error);
+
+        toast.error("cannot Logout at the moment");
+      });
+  }
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
@@ -44,8 +65,8 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
 
   const uploadImage = async (userPic: any) => {
     console.log("inside fhfdh");
-    
-    setIsModalOpen(true)
+
+    setIsModalOpen(true);
     if (userPic) {
       setLoading(true);
       let timeStamp = new Date().getMilliseconds();
@@ -61,9 +82,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
                 coverPic: {
                   mob: downloadURL,
                   url: downloadURL,
-                  thumb: downloadURL
-                }
-              }
+                  thumb: downloadURL,
+                },
+              },
             },
             { merge: true }
           );
@@ -72,9 +93,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
           toast.success("Profile pic updated successfully.");
         });
       });
-      setIsModalOpen(false)
+      setIsModalOpen(false);
     } else {
-      setIsModalOpen(false)
+      setIsModalOpen(false);
     }
   };
 
@@ -106,13 +127,23 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
                 />
               </div>
               <div className="absolute bottom-1 right-1  rounded-full ">
-                <input placeholder='Destination Image' type='file' accept="image/*" onChange={async (e) => {
-                  if (!e.target.files) return;
-                  await uploadTask(e.target.files[0])
-                }}
-                  id="profile-Image" className='w-full hover:cursor-pointer   outline-none  hidden rounded-md  ' />
-                <label htmlFor='profile-Image' className='hover:cursor-pointer h-[20px] w-[20px] rounded-full  bg-white flex justify-center items-center '>
-                  <FlatIcon className="text-primary flaticon-edit text-lg" /></label>
+                <input
+                  placeholder="Destination Image"
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    if (!e.target.files) return;
+                    await uploadTask(e.target.files[0]);
+                  }}
+                  id="profile-Image"
+                  className="w-full hover:cursor-pointer   outline-none  hidden rounded-md  "
+                />
+                <label
+                  htmlFor="profile-Image"
+                  className="hover:cursor-pointer h-[20px] w-[20px] rounded-full  bg-white flex justify-center items-center "
+                >
+                  <FlatIcon className="text-primary flaticon-edit text-lg" />
+                </label>
               </div>
             </div>
             <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
@@ -131,12 +162,11 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
                 {/* Met Connect */}
               </h2>
             </div>
-          </Link> 
+          </Link>
           <div className="flex w-[100%] h-auto  lg:px-5 px-2 justify-center lg:text-sm text-xs font-semibold text-[#868E97] ">
             <p className="">
               {/* @metconnects34805 */}
               {startUpData?.email}
-
             </p>
           </div>
         </div>
@@ -144,8 +174,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
           {/* option  */}
           <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
             <div
-              className={`${optionStyle} ${currTab === "my-profile" ? "text-primary" : "text-black"
-                }`}
+              className={`${optionStyle} ${
+                currTab === "my-profile" ? "text-primary" : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-user text-2xl" />
@@ -157,8 +188,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
             href={{ pathname: "/account", query: { tab: "business-account" } }}
           >
             <div
-              className={`${optionStyle}  ${currTab === "business-account" ? "text-primary" : "text-black"
-                }`}
+              className={`${optionStyle}  ${
+                currTab === "business-account" ? "text-primary" : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-office text-2xl" />
@@ -168,8 +200,11 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
           </Link>
           <Link href={{ pathname: "/account", query: { tab: "manage-posts" } }}>
             <div
-              className={`${optionStyle}  ${(currTab === "manage-posts" || currTab === "new-post") ? "text-primary" : "text-black"
-                }`}
+              className={`${optionStyle}  ${
+                currTab === "manage-posts" || currTab === "new-post"
+                  ? "text-primary"
+                  : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-post text-2xl" />
@@ -185,8 +220,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
           </div>
           <Link href={{ pathname: "/account", query: { tab: "chat" } }}>
             <div
-              className={`${optionStyle}  ${currTab === "chat" ? "text-primary" : "text-black"
-                }`}
+              className={`${optionStyle}  ${
+                currTab === "chat" ? "text-primary" : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-chat text-2xl" />
@@ -206,14 +242,10 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
             </div>
             <div>Support</div>
           </div> */}
-          <Link href={"/"}>
-            <div className={`${optionStyle}`}>
-              <div>
-                <FlatIcon className="flaticon-exit text-2xl" />
-              </div>
-              <div>Log Out</div>
-            </div>
-          </Link>
+          <button onClick={handleLogout} className={`${optionStyle}`}>
+            <FlatIcon className="flaticon-exit text-2xl" />
+            <div>Log Out</div>
+          </button>
         </div>
       </div>
     </>

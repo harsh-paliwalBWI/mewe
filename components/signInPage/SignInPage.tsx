@@ -13,12 +13,21 @@ import { useRouter } from "next/navigation";
 import { RecaptchaVerifier, deleteUser } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
-import { collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import Loader from "../loader/Loader";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getStartUpData } from "@/services/startupService";
 
 const SignInPage = () => {
+  const queryClient = useQueryClient();
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verification, setverification] = useState(false);
   const [time, setTime] = useState(60);
@@ -37,19 +46,18 @@ const SignInPage = () => {
 
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
-      let startUpExistOrNot: any
-      const startupsRef = collection(db, 'startups');
-      const q = query(startupsRef, where('phoneNo', '==', phoneNumber));
+      let startUpExistOrNot: any;
+      const startupsRef = collection(db, "startups");
+      const q = query(startupsRef, where("phoneNo", "==", phoneNumber));
       const querySnapshot = await getDocs(q);
       if (querySnapshot.size > 0) {
         const docSnap = querySnapshot.docs[0];
         const startUp = docSnap.data();
-        const docId = docSnap.id
-        console.log(startUp, docSnap.id, "user");
-        startUpExistOrNot = startUp ? true : false
+        const docId = docSnap.id;
+        startUpExistOrNot = startUp ? true : false;
         console.log("startUpExistOrNot", startUpExistOrNot);
         localStorage.setItem("auth", JSON.stringify(docId));
-        await axios.get(`/api/login?uid=${docId}`);
+        await axios.post(`/api/login?uid=${docId}`);
       } else {
         // console.log('No matching document found');
       }
@@ -66,7 +74,11 @@ const SignInPage = () => {
           }
         );
         const formattedPhoneNumber = `+91${phoneNumber}`;
-        await signInWithPhoneNumber(auth, formattedPhoneNumber, recaptchaVerifier)
+        await signInWithPhoneNumber(
+          auth,
+          formattedPhoneNumber,
+          recaptchaVerifier
+        )
           .then((confirmationResult) => {
             setOTPSent(confirmationResult);
 
@@ -74,51 +86,34 @@ const SignInPage = () => {
             setLoading(false);
           })
           .catch((error) => {
-            toast.error(`${error}`)
+            toast.error(`${error}`);
             console.log(error + "...Please eload");
             setLoading(false);
           });
       } else {
-        router.push("/signup")
-        toast.error("New user please Signup first !")
+        router.push("/signup");
+        toast.error("New user please Signup first !");
         console.log("new user ");
-
       }
     } else {
       if (!phoneNumber) {
         // console.log("Please enter correct phone number");
-        toast.error("Please enter phone number first !")
+        toast.error("Please enter phone number first !");
       }
       setLoading(false);
     }
   };
 
   const confirmOTP = () => {
-    setLoading(true)
+    setLoading(true);
     try {
       setTimerStarted(false);
       setVerifying(true);
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
-
-          // console.log("INSIDE THEN");
-
-          // localStorage.setItem("auth", JSON.stringify(res.user.uid));
-          // if (res._tokenResponse.isNewUser) {
-          //   toast.error("User does not exist, Please Signup");
-          //   router.replace("/welcome");
-          //   // console.log(res, "nhi chla");       
-          //   deleteUser(res.user)
-          //     .then(() => {
-          //       console.log("User not created")
-          //     }).catch((error) => {
-          //       console.log("User created", error)
-          //     });
-
-          // } else {
-          // localStorage.setItem("auth", JSON.stringify(res.user.uid));
-          // await axios.get(`/api/login?uid=${res.user.uid}`);
+          await axios.post(`/api/login?uid=${res?.user?.uid}`);
+          await queryClient?.refetchQueries({ queryKey: ["startUpData"] });
           toast.success("Welcome");
           router.replace("/");
           setVerifying(false);
@@ -132,7 +127,7 @@ const SignInPage = () => {
         .catch((err: any) => {
           setverification(false);
           toast.error("Incorrect OTP! Sign in failed!");
-        })
+        });
     } catch (err) {
       console.log("error ");
       setLoading(false);
@@ -206,11 +201,18 @@ const SignInPage = () => {
               onClick={async () => {
                 await signInUserWithPhoneNumber();
               }}
-              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium font-medium  text-center rounded-lg py-3 cursor-pointer'
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium font-medium  text-center rounded-lg py-3 cursor-pointer"
             >
-              <button style={{ height: "100%", position: "relative", }}>
+              <button style={{ height: "100%", position: "relative" }}>
                 {loading && (
-                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
                     <Loader />
                   </div>
                 )}
@@ -250,7 +252,6 @@ const SignInPage = () => {
           </div>
         )}
 
-
         {verification && (
           <div className=" md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5  ">
             <div className=" flex flex-col lg:gap-10 gap-5">
@@ -289,15 +290,15 @@ const SignInPage = () => {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                              e.target.value +
-                              otp.substring(digit)
+                                e.target.value +
+                                otp.substring(digit)
                             );
                           } else {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                              " " +
-                              otp.substring(digit)
+                                " " +
+                                otp.substring(digit)
                             );
                           }
                         }}
@@ -312,13 +313,20 @@ const SignInPage = () => {
             </div>
             <div
               onClick={async () => {
-                confirmOTP()
+                confirmOTP();
               }}
-              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 '
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 "
             >
-              <button style={{ height: "100%", position: "relative", }}>
+              <button style={{ height: "100%", position: "relative" }}>
                 {loading && (
-                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
                     <Loader />
                   </div>
                 )}
