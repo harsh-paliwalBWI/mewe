@@ -36,40 +36,23 @@ const cookies = { value: getCookie("uid") };
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(cookies?.value),
+    queryFn: () => getStartUpData(cookies),
   });
   // console.log("startUpData", startUpData);
 
-  useEffect(() => {
-    setToastShown(true);
-    if (!startUpData && toastShown) {
-      toast.error('Please sign in first !');
-      router.push('/signin');
-    }
-  }, [startUpData, toastShown]);
   return (
     <>
       <div className='flex w-[100%] md:flex-row flex-col gap-y-6 px-body xl:gap-x-14 gap-x-7 md:mt-14 mt-7 md:mb-20 mb-10 relative z-10'>
         <ProfileOptions  setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
         <ProfileOptionsMobile />
-        {
-          currTab === "my-profile" && <MyProfile />
-        }
-        {
-          currTab === "business-account" && <BusinessAccount />
-        }
-        {
-          currTab === "manage-posts" && <ManagePost />
-        }
-        {
-          currTab === "chat" && <ChatsPage />
-        }
-        {
-          currTab === "new-post" && <NewPost />
-        }
+        {currTab === "my-profile" && <MyProfile />}
+        {currTab === "business-account" && <BusinessAccount />}
+        {currTab === "manage-posts" && <ManagePost />}
+        {currTab === "chat" && <ChatsPage />}
+        {currTab === "new-post" && <NewPost />}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AccountPage
+export default AccountPage;

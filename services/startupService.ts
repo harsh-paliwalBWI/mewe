@@ -1,6 +1,6 @@
 import { auth, db } from "../config/firebase-config";
 import { getCookie } from "cookies-next";
-import {collection,getDocs,doc,getDoc,addDoc,setDoc} from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, setDoc } from "firebase/firestore";
 
 export const getStartUpData = async (cookieData: any) => {
     console.log(cookieData,"cookie data");
@@ -10,20 +10,21 @@ export const getStartUpData = async (cookieData: any) => {
     if (cookieData) {
         cookie = cookieData;
     } else {
-        cookie = { value: getCookie("uid") };
+        cookie = { value: getCookie('uid') }
     }
+
+    console.log("COOKIE BEFORE UID", cookie);
+
     let uid;
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
-    }
-    if (cookie) {
-        uid = cookie;
     }
     if (cookie?.value) {
         uid = cookie?.value;
     }
     // console.log(uid,"uid");
-    
+    console.log("UID", uid);
+
     if (uid) {
         const docRef = doc(db, "startups", uid);
         const docSnap = await getDoc(docRef);
@@ -43,7 +44,7 @@ export const getStartUpData = async (cookieData: any) => {
 
 // export const addAdvanceDetails = async (advanceDetails: any,email:any) => {
 //     console.log(advanceDetails,email);
-    
+
 //     const refDoc = doc(db, `startups/${auth.currentUser?.uid}/details/advance`);
 //     const refDoc2 = doc(db, `startups/${auth.currentUser?.uid}`);
 //     const details = {
@@ -62,36 +63,43 @@ export const getStartUpData = async (cookieData: any) => {
 // };
 
 export const isBusinessAccountExistOrNot = async (cookieData: any) => {
+    
+
+    console.log(cookieData,"cookie data");
     let cookie;
+    
+    
     if (cookieData) {
         cookie = cookieData;
     } else {
-        cookie = { value: getCookie("uid") };
+        cookie = { value: getCookie('uid') }
     }
+
+    console.log("COOKIE BEFORE UID", cookie);
+
     let uid;
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
     }
-    if (cookie) {
-        uid = cookie;
-    }
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    if(uid){
-    const docRef = doc(db, `startups/${uid}/details/advance`);
-    const data = await getDoc(docRef).then((docs) => {
-        if (docs.exists()) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-    return data;
-}else {
-    return false
-}
-    
+    // console.log(uid,"uid");
+    // console.log("UID", uid);
+    if (uid) {
+        const docRef = doc(db, `startups/${uid}/details/advance`);
+        const data = await getDoc(docRef).then((docs) => {
+            if (docs.exists()) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        return data;
+    } else {
+        return false
+    }
+
 };
 
 export const fetchBusinessAccountDetails = async (cookieData: any) => {

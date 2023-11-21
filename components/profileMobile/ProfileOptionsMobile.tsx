@@ -1,7 +1,7 @@
 
 
 "use client"
-import React,{useState,FC} from 'react'
+import React,{useState,FC, useEffect} from 'react'
 import blueTickImg from "../../images/verify 3.svg"
 import profileImg from "../../images/Ellipse 33.svg"
 import Image  from 'next/image'
@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { db } from "@/config/firebase-config";
 import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
+import { getCookie } from "cookies-next";
 
 
 
@@ -22,10 +23,13 @@ const ProfileOptionsMobile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
+  const cookies = { value: getCookie("uid") };
+  const [client, setClient] = useState(false)
+
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(null),
+    queryFn: () => getStartUpData(cookies),
   });
   // console.log("startUpData",startUpData);
   // console.log("hiii");
@@ -76,6 +80,13 @@ const ProfileOptionsMobile = () => {
     // console.log("clicked");
     await uploadImageFromMobile(userPic);
   }
+  useEffect(() => {
+    console.log("inside use effect");
+    
+    // if (typeof window !== 'undefined') {
+      setClient(true)
+    // }
+}, []);
 
   const optionStyle="flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer"
   return (
@@ -142,14 +153,14 @@ const ProfileOptionsMobile = () => {
           <Link href={"/about"}>
             <div className="flex  justify-center lg:text-base text-sm font-bold ">
               <h2>
-                {startUpData?.name} 
+                {client&&startUpData?.name} 
              
               </h2>
             </div>
           </Link> 
           <div className="flex w-[100%]  h-auto  lg:px-5 px-2 justify-center lg:text-sm text-xs font-semibold text-[#868E97] ">
             <p className="">
-              {startUpData?.email}
+              {client&&startUpData?.email}
             </p>
           </div>
         </div>

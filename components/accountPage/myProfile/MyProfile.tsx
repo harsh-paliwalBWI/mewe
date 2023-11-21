@@ -11,6 +11,8 @@ import { db } from '@/config/firebase-config';
 import { log } from 'console';
 import { toast } from 'react-toastify';
 import Loader from '@/components/loader/Loader';
+import { getCookie } from "cookies-next";
+
 
 const dummyCategory = [
     { id: "2", name: 'Category1', unavailable: false },
@@ -24,19 +26,22 @@ const divStyle = "flex flex-col sm:gap-3 gap-2"
 const mainDivStyle = "grid sm:grid-cols-2 grid-cols-1 sm:gap-5 gap-3  w-full "
 
 const MyProfile = () => {
-    const [isClient, setIsCilent] = useState(false)
+    const cookies = { value: getCookie("uid") };
+    console.log(cookies,"my profile page");
+    
+    const [client, setClient] = useState(false)
     const router = useRouter()
     const pathName = usePathname()
     const [loading, setLoading] = useState(false)
     const { data: startUpData } = useQuery({
         queryKey: ["startUpData"],
-        queryFn: () => getStartUpData(null),
+        queryFn: () => getStartUpData(cookies),
     });
-    // console.log("startUpData", startUpData);
+    console.log("startUpData", startUpData);
 
     const { data: businessAccountData } = useQuery({
         queryKey: ["businessAccountData"],
-        queryFn: () => fetchBusinessAccountDetails(null),
+        queryFn: () => fetchBusinessAccountDetails(cookies),
     });
 
     // console.log("advacne", businessAccountData);
@@ -90,7 +95,12 @@ const MyProfile = () => {
 
 
     useEffect(() => {
+        console.log("inside use effect");
         if (startUpData) {
+        // setIsCilent(true)
+
+            console.log("inside if");
+            
             setProfileInfo({
                 name: startUpData?.name,
                 linkedInUrl: businessAccountData && businessAccountData?.social?.linkedin,
@@ -100,12 +110,18 @@ const MyProfile = () => {
 
             const startupCategory = startUpData?.basic?.category;
             setCategory(startupCategory ? { id: startupCategory.id, name: startupCategory.name } : { id:"", name:"" });
+        }else{
+            console.log("inside else");
         }
     }, [startUpData, businessAccountData]);
 
-    // useEffect(() => {
-    //     setIsCilent(true)
-    // }, [])
+    useEffect(() => {
+        console.log("inside use effect");
+        
+        // if (typeof window !== 'undefined') {
+          setClient(true)
+        // }
+    }, []);
     return (
         <>
             <div className={` h-fit py-2  ${pathName.includes("my-profile-page") ? "block  w-[100%] sm:mt-5 md:mt-5 md:mb-24 mb-5" : "sm:block hidden lg:w-[58%] md:w-[68%]  w-full"}`}>
@@ -117,7 +133,10 @@ const MyProfile = () => {
                         className='mb-2'><FlatIcon className="flaticon-arrow-right rotate-180 text-2xl font-bold" /></div>
                 }
                 {
-                    pathName.includes("my-profile-page") && <div className=''><h2 className='text-primary font-bold sm:text-xl text-lg  sm:mb-6 mb-3'>My Profile</h2></div>
+                    pathName.includes("my-profile-page") && 
+                    // <div className=''>
+                        <h2 className='text-primary font-bold sm:text-xl text-lg  sm:mb-6 mb-3'>My Profile</h2>
+                        // </div>
                 }
                 <div className="w-full flex flex-col sm:gap-7 gap-4">
                     <div className={`${mainDivStyle}`}>
@@ -125,7 +144,7 @@ const MyProfile = () => {
                             <label className={`${labelStyle}`}>
                                 Business Name*
                             </label>
-                            <input value={ profileInfo.name} onChange={(e) => setProfileInfo({ ...profileInfo, name: e.target.value })} className={`${inputStyle}`}
+                            <input value={ client&&profileInfo.name} onChange={(e) => setProfileInfo({ ...profileInfo, name: e.target.value })} className={`${inputStyle}`}
                             />
                         </div>
                         <div className={`${divStyle}`}>
@@ -136,7 +155,7 @@ const MyProfile = () => {
                                 <div className='  relative w-full  px-4 rounded-md   '>
                                     <Listbox value={category} onChange={setCategory}>
                                         <div className=' '>
-                                            <Listbox.Button className={` w-full flex justify-between items-center text-start  py-3 text-sm`}><span>{(category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                                            <Listbox.Button className={` w-full flex justify-between items-center text-start  py-3 text-sm`}><span>{(client&&category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                                             <Listbox.Options className={`absolute top-[50px] px-3  rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
                                                 {dummyCategory.map((category) => (
                                                     <Listbox.Option key={category.id} value={category} as={Fragment} >
@@ -175,7 +194,7 @@ const MyProfile = () => {
                             <label className={`${labelStyle}`}>
                                 Email*
                             </label>
-                            <input value={profileInfo.email} onChange={(e) => setProfileInfo({ ...profileInfo, email: e.target.value })} className={`${inputStyle}`}
+                            <input value={client&&profileInfo.email} onChange={(e) => setProfileInfo({ ...profileInfo, email: e.target.value })} className={`${inputStyle}`}
                             />
                         </div>
                     </div>
@@ -184,7 +203,7 @@ const MyProfile = () => {
                             Description
                         </label>
                         <textarea
-                            value={profileInfo.description} onChange={(e) => setProfileInfo({ ...profileInfo, description: e.target.value })}
+                            value={client&&profileInfo.description} onChange={(e) => setProfileInfo({ ...profileInfo, description: e.target.value })}
                             name=""
                             id=""
                             className={`text-black ${inputStyle} `}
