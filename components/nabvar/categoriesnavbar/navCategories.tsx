@@ -10,10 +10,10 @@ import { toast } from "react-toastify";
 
 const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 
-const Categories = () => {
+const Categories = ({ cookie }: any) => {
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(null),
+    queryFn: () => getStartUpData(cookie),
   });
   const pathName = usePathname();
   const textStyle = "lg:text-base md:text-sm text-xs  md:px-2   relative";

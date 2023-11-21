@@ -113,6 +113,7 @@ const SignInPage = () => {
         .confirm(OTP)
         .then(async (res: any) => {
           await axios.post(`/api/login?uid=${res?.user?.uid}`);
+          await queryClient?.invalidateQueries({ queryKey: ["startUpData"] });
           await queryClient?.refetchQueries({ queryKey: ["startUpData"] });
           toast.success("Welcome");
           router.replace("/");

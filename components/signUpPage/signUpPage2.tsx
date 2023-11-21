@@ -15,7 +15,7 @@ import { auth, db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 import Loader from "../loader/Loader";
 import axios from "axios";
-
+import { useQueryClient } from "@tanstack/react-query";
 
 const SignUpPage2 = () => {
   const [phoneNumber, setPhoneNumber] = useState<any>("");
@@ -26,13 +26,14 @@ const SignUpPage2 = () => {
   const [otpSent, setOTPSent] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
-  const [name,setName]=useState("")
-  const [email,setEmail]=useState("")
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const signInUserWithPhoneNumber = async () => {
-    if (phoneNumber&&name&&email) {
+    if (phoneNumber && name && email) {
       setLoading(true);
       const recaptchaVerifier = new RecaptchaVerifier(
         auth,
@@ -53,30 +54,25 @@ const SignUpPage2 = () => {
           setLoading(false);
         })
         .catch((error) => {
-          toast.error(`${error}`)
+          toast.error(`${error}`);
           console.log(error + "...please reload");
           setLoading(false);
         });
     } else {
-      
-      if(!name&&!email&&!phoneNumber){
-        toast.error("Please enter all the details")
-      }else if(!name&&!email){
-        toast.error("Please enter all the details")
-
-      }else if(!phoneNumber&&!email){
-        toast.error("Please enter all the details")
-      }else if(!name&&!phoneNumber){
-        toast.error("Please enter all the details")
-
-      }
-      else if(!name){
-        toast.error("Please enter name")
-
-      }else if(!email){
-        toast.error("Please enter email")
-      }else if (!phoneNumber) {
-        toast.error("Please enter correct phone number")
+      if (!name && !email && !phoneNumber) {
+        toast.error("Please enter all the details");
+      } else if (!name && !email) {
+        toast.error("Please enter all the details");
+      } else if (!phoneNumber && !email) {
+        toast.error("Please enter all the details");
+      } else if (!name && !phoneNumber) {
+        toast.error("Please enter all the details");
+      } else if (!name) {
+        toast.error("Please enter name");
+      } else if (!email) {
+        toast.error("Please enter email");
+      } else if (!phoneNumber) {
+        toast.error("Please enter correct phone number");
 
         console.log("Please enter correct phone number");
       }
@@ -86,7 +82,7 @@ const SignUpPage2 = () => {
 
   const confirmOTP = () => {
     try {
-      setLoading(true)
+      setLoading(true);
       setTimerStarted(false);
       setVerifying(true);
       otpSent
@@ -104,8 +100,8 @@ const SignUpPage2 = () => {
             let startup = {
               phoneNo: phoneNumber,
               createdAt: new Date(),
-              name:name,
-              email:email,
+              name: name,
+              email: email,
             };
             // console.log(startup, "startup info");
             await setDoc(doc(db, `startups/${res.user.uid}`), startup, {
@@ -115,9 +111,10 @@ const SignUpPage2 = () => {
               merge: true,
             });
             localStorage.setItem("auth", JSON.stringify(res.user.uid));
-            await axios.get(`/api/login?uid=${res.user.uid}`);
+            await axios.post(`/api/login?uid=${res?.user?.uid}`);
+            await queryClient?.invalidateQueries({ queryKey: ["startUpData"] });
+            await queryClient?.refetchQueries({ queryKey: ["startUpData"] });
             toast.success("Welcome");
-          
           } else {
             // console.log("User already exist");
             toast.error("User already exist, Please Sign in.");
@@ -137,13 +134,13 @@ const SignUpPage2 = () => {
         .catch((err: any) => {
           setverification(false);
           setLoading(false);
-console.log(err);
+          console.log(err);
 
           toast.error("Incorrect OTP! Sign in failed !");
         });
     } catch (err) {
       setLoading(false);
-      toast.error(`${err}`)
+      toast.error(`${err}`);
       console.log("error ");
     }
   };
@@ -181,41 +178,53 @@ console.log(err);
               </h3>
             </div>
             <div className="md:my-10 my-8 flex flex-col gap-6">
-            <div className="w-full border border-[#868E97] ">
-              <input value={name}  onChange={(e)=>setName(e.target.value)} type="text" className="py-3 outline-0 w-full px-5" placeholder="Name" />
-              </div>
-            <div className="w-full border border-[#868E97] ">
-              <input value={email}  onChange={(e)=>setEmail(e.target.value)} type="email" className="py-3 outline-0 w-full px-5" placeholder="Email" />
-              </div>
-            <div className="flex w-full  items-center gap-x-3 ">
-              <div className="border border-[#868E97] flex items-center justify-center gap-x-3 xl:w-[20%] w-[30%] sm:py-3.5 py-4">
-                <div className="w-[21px] h-[16px] ">
-                  <Image
-                    src={falgImg}
-                    alt=""
-                    height={1000}
-                    width={1000}
-                    className="h-[100%] w-[100%] object-fill"
-                  />
-                </div>
-                <p className="sm:text-sm text-xs text-gray-500 font-semibold">
-                  +91
-                </p>
-              </div>
-              <div className="xl:w-[80%] w-[70%]">
+              <div className="w-full border border-[#868E97] ">
                 <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   type="text"
-                  name=""
-                  id=""
-                  className="border border-[#868E97] w-full py-3 outline-0 px-5"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    setPhoneNumber(e.target.value);
-                    // console.log(e.target.value);
-                  }}
+                  className="py-3 outline-0 w-full px-5"
+                  placeholder="Name"
                 />
               </div>
-            </div>
+              <div className="w-full border border-[#868E97] ">
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  className="py-3 outline-0 w-full px-5"
+                  placeholder="Email"
+                />
+              </div>
+              <div className="flex w-full  items-center gap-x-3 ">
+                <div className="border border-[#868E97] flex items-center justify-center gap-x-3 xl:w-[20%] w-[30%] sm:py-3.5 py-4">
+                  <div className="w-[21px] h-[16px] ">
+                    <Image
+                      src={falgImg}
+                      alt=""
+                      height={1000}
+                      width={1000}
+                      className="h-[100%] w-[100%] object-fill"
+                    />
+                  </div>
+                  <p className="sm:text-sm text-xs text-gray-500 font-semibold">
+                    +91
+                  </p>
+                </div>
+                <div className="xl:w-[80%] w-[70%]">
+                  <input
+                    type="text"
+                    name=""
+                    id=""
+                    className="border border-[#868E97] w-full py-3 outline-0 px-5"
+                    value={phoneNumber}
+                    onChange={(e) => {
+                      setPhoneNumber(e.target.value);
+                      // console.log(e.target.value);
+                    }}
+                  />
+                </div>
+              </div>
             </div>
             {/* <Link href={"/verification"}> */}
             {/* <div
@@ -227,16 +236,22 @@ console.log(err);
               <button className="">Verify</button>
             </div> */}
 
-
             <div
               onClick={async () => {
-               await signInUserWithPhoneNumber()
+                await signInUserWithPhoneNumber();
               }}
-              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 '
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 "
             >
-              <button style={{ height: "100%", position: "relative", }}>
+              <button style={{ height: "100%", position: "relative" }}>
                 {loading && (
-                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
                     <Loader />
                   </div>
                 )}
@@ -337,22 +352,26 @@ console.log(err);
               </div>
             </div>
 
-
             <div
               onClick={() => confirmOTP()}
-              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 '
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 "
             >
-              <button style={{ height: "100%", position: "relative", }}>
+              <button style={{ height: "100%", position: "relative" }}>
                 {loading && (
-                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
                     <Loader />
                   </div>
                 )}
                 {!loading && "Verify"}
               </button>
             </div>
-
-
 
             {/* <div
               className="bg-primary text-white flex justify-center items-center py-3 rounded-lg lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer "
