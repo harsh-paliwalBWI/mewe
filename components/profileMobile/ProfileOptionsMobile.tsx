@@ -81,11 +81,8 @@ const ProfileOptionsMobile = () => {
     await uploadImageFromMobile(userPic);
   }
   useEffect(() => {
-    console.log("inside use effect");
-    
-    // if (typeof window !== 'undefined') {
-      setClient(true)
-    // }
+    // console.log("inside use effect");
+          setClient(true)
 }, []);
 
   const optionStyle="flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer"

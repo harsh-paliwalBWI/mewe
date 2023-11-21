@@ -27,7 +27,7 @@ const mainDivStyle = "grid sm:grid-cols-2 grid-cols-1 sm:gap-5 gap-3  w-full "
 
 const MyProfile = () => {
     const cookies = { value: getCookie("uid") };
-    console.log(cookies,"my profile page");
+    // console.log(cookies,"my profile page");
     
     const [client, setClient] = useState(false)
     const router = useRouter()
@@ -37,7 +37,7 @@ const MyProfile = () => {
         queryKey: ["startUpData"],
         queryFn: () => getStartUpData(cookies),
     });
-    console.log("startUpData", startUpData);
+    // console.log("startUpData", startUpData);
 
     const { data: businessAccountData } = useQuery({
         queryKey: ["businessAccountData"],
@@ -95,11 +95,11 @@ const MyProfile = () => {
 
 
     useEffect(() => {
-        console.log("inside use effect");
+        // console.log("inside use effect");
         if (startUpData) {
         // setIsCilent(true)
 
-            console.log("inside if");
+            // console.log("inside if");
             
             setProfileInfo({
                 name: startUpData?.name,
@@ -116,11 +116,9 @@ const MyProfile = () => {
     }, [startUpData, businessAccountData]);
 
     useEffect(() => {
-        console.log("inside use effect");
-        
-        // if (typeof window !== 'undefined') {
+        // console.log("inside use effect");
           setClient(true)
-        // }
+      
     }, []);
     return (
         <>
@@ -144,7 +142,7 @@ const MyProfile = () => {
                             <label className={`${labelStyle}`}>
                                 Business Name*
                             </label>
-                            <input value={ client&&profileInfo.name} onChange={(e) => setProfileInfo({ ...profileInfo, name: e.target.value })} className={`${inputStyle}`}
+                            <input value={(client&&profileInfo.name)?profileInfo.name:""} onChange={(e) => setProfileInfo({ ...profileInfo, name: e.target.value })} className={`${inputStyle}`}
                             />
                         </div>
                         <div className={`${divStyle}`}>
@@ -187,14 +185,14 @@ const MyProfile = () => {
                             <label className={`${labelStyle}`}>
                                 LinkedIn URL*
                             </label>
-                            <input value={profileInfo.linkedInUrl} onChange={(e) => setProfileInfo({ ...profileInfo, linkedInUrl: e.target.value })} className={`${inputStyle}`}
+                            <input value={(client&&profileInfo.linkedInUrl)?profileInfo.linkedInUrl:""} onChange={(e) => setProfileInfo({ ...profileInfo, linkedInUrl: e.target.value })} className={`${inputStyle}`}
                             />
                         </div>
                         <div className={`${divStyle}`}>
                             <label className={`${labelStyle}`}>
                                 Email*
                             </label>
-                            <input value={client&&profileInfo.email} onChange={(e) => setProfileInfo({ ...profileInfo, email: e.target.value })} className={`${inputStyle}`}
+                            <input value={(client&&profileInfo.email)?profileInfo.email:""} onChange={(e) => setProfileInfo({ ...profileInfo, email: e.target.value })} className={`${inputStyle}`}
                             />
                         </div>
                     </div>
@@ -203,7 +201,7 @@ const MyProfile = () => {
                             Description
                         </label>
                         <textarea
-                            value={client&&profileInfo.description} onChange={(e) => setProfileInfo({ ...profileInfo, description: e.target.value })}
+                            value={(client&&profileInfo.description)?profileInfo.description:""} onChange={(e) => setProfileInfo({ ...profileInfo, description: e.target.value })}
                             name=""
                             id=""
                             className={`text-black ${inputStyle} `}

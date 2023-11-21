@@ -68,22 +68,22 @@ const BusinessAccount = () => {
     queryKey:["businessAccountExistOrNot"],
     queryFn:()=>isBusinessAccountExistOrNot(cookies)
   })
-  console.log(existOrNot,"on not");
+  // console.log(existOrNot,"on not");
   
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
-    keepPreviousData: true
+    // keepPreviousData: true
 
   });
 
-  console.log("startUpData", startUpData?.name);
+  // console.log("startUpData", startUpData?.name);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(cookies),
-    keepPreviousData: true
+    // keepPreviousData: true
   });
-  // console.log(businessAccountData, "account data");
+  console.log(businessAccountData, "account data");
 
   const [companySize, setCompanySize] = useState(businessAccountData ? {name: businessAccountData.companySize} : {name:""})
   const [city, setCity] = useState(businessAccountData ? {name: businessAccountData.city} :{name:""} )
@@ -223,24 +223,24 @@ useEffect(() => {
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Name of the Startup</label>
             <input 
-            value={isClient&&name} 
+            value={(isClient&&name)?name:""} 
             onChange={(e) => setName(e.target.value)} 
             className={`${inputStyle}`} type="text" id="input" />
           </div>
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Founder Name</label>
-            <input value={isClient&&state.founderName} onChange={(e) => setState({ ...state, founderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={(isClient&&state.founderName)?state.founderName:""} onChange={(e) => setState({ ...state, founderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
         </div>
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full ">
           <div className={`${borderStyle} sm:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Co- Founder Name</label>
-            <input value={isClient&&state.coFounderName} onChange={(e) => setState({ ...state, coFounderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={(isClient&&state.coFounderName)?state.coFounderName:""} onChange={(e) => setState({ ...state, coFounderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
           <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full sm:w-[50%] w-full `}>
             <div className={`w-[100%]`}>
               <label className={`${labelStyle}`} htmlFor="input">LinkedIN URL</label>
-              <input value={isClient&&state.linkedInUrl} onChange={(e) => setState({ ...state, linkedInUrl: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+              <input value={(isClient&&state.linkedInUrl)?state.linkedInUrl:""} onChange={(e) => setState({ ...state, linkedInUrl: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
             </div>
             <div className='  px-4'>
               <FlatIcon className="flaticon-help-1 text-[#9bb7d3] text-xl" />
@@ -312,7 +312,7 @@ useEffect(() => {
 
           <div className={`${borderStyle} w-[100%]`}>
             <label className={`${labelStyle}`} htmlFor="input">Address</label>
-            <input value={isClient&&state.address} onChange={(e) => setState({ ...state, address: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={(isClient&&state.address)?state.address:""} onChange={(e) => setState({ ...state, address: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
         </div>
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full relative ">
@@ -383,7 +383,7 @@ useEffect(() => {
               Description
             </label>
             <textarea
-              value={isClient&&state.description} onChange={(e) => setState({ ...state, description: e.target.value })}
+              value={(isClient&&state.description)?state.description:""} onChange={(e) => setState({ ...state, description: e.target.value })}
               name=""
               id=""
               className={`${inputStyle}`}
@@ -433,7 +433,7 @@ useEffect(() => {
                 <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                   <div className={`w-[100%]`}>
                     <label className={`${labelStyle}`} htmlFor="input">Current Financial Income</label>
-                    <input value={isClient&&state.currentFinancialIncome} onChange={(e) => setState({ ...state, currentFinancialIncome: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                    <input value={(isClient&&state.currentFinancialIncome)?state.currentFinancialIncome:""} onChange={(e) => setState({ ...state, currentFinancialIncome: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                   </div>
                   <div className='px-4 text-xl text-[#9bb7d3]'>
                     &#8377;
@@ -499,7 +499,7 @@ useEffect(() => {
                 <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                   <div className={`w-[100%]`}>
                     <label className={`${labelStyle}`} htmlFor="input">Current Valuation</label>
-                    <input value={isClient&&state.currentValuation} onChange={(e) => setState({ ...state, currentValuation: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                    <input value={(isClient&&state.currentValuation)?state.currentValuation:""} onChange={(e) => setState({ ...state, currentValuation: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                   </div>
                   <div className='px-4 text-xl text-[#9bb7d3]'>
                     &#8377;
@@ -555,14 +555,14 @@ useEffect(() => {
               </div>
               <div className={`${borderStyle} `}>
                 <label className={`${labelStyle}`} htmlFor="input">Pan Number</label>
-                <input value={isClient&&state.panNo} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+                <input value={(isClient&&state.panNo)?state.panNo:""} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
               </div>
             </div>
             <div>
               <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                 <div className={`w-[100%]`}>
                   <label className={`${labelStyle}`} htmlFor="input">Amount</label>
-                  <input value={isClient&&state.amount} onChange={(e) => setState({ ...state, amount: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                  <input value={(isClient&&state.amount)?state.amount:""} onChange={(e) => setState({ ...state, amount: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                 </div>
                 <div className='px-4 text-xl text-[#9bb7d3]'>
                   &#8377;
@@ -581,11 +581,11 @@ useEffect(() => {
           <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-7'>
             <div className={`${borderStyle} `}>
               <label className={`${labelStyle}`} htmlFor="input">Email</label>
-              <input value={isClient&&email} onChange={(e)=>setEmail(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
+              <input value={(isClient&&email)?email:""} onChange={(e)=>setEmail(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
             </div>
             <div className={`${borderStyle}  `}>
               <label className={`${labelStyle}`} htmlFor="input">Phone Number</label>
-              <input  value={isClient&&phoneNumber} disabled={true} className={`${inputStyle} `} type="text" id="input" />
+              <input  value={(isClient&&phoneNumber)?phoneNumber:""} disabled={true} className={`${inputStyle} `} type="text" id="input" />
             </div>
           </div>
           <div

@@ -3,18 +3,14 @@ import { getCookie } from "cookies-next";
 import { collection, getDocs, doc, getDoc, addDoc, setDoc } from "firebase/firestore";
 
 export const getStartUpData = async (cookieData: any) => {
-    console.log(cookieData,"cookie data");
+    // console.log(cookieData,"cookie data from starup data");
     let cookie;
-    
-    
     if (cookieData) {
         cookie = cookieData;
     } else {
         cookie = { value: getCookie('uid') }
     }
-
-    console.log("COOKIE BEFORE UID", cookie);
-
+    // console.log("COOKIE BEFORE UID", cookie);
     let uid;
     if (auth.currentUser?.uid) {
         uid = auth.currentUser?.uid;
@@ -23,7 +19,7 @@ export const getStartUpData = async (cookieData: any) => {
         uid = cookie?.value;
     }
     // console.log(uid,"uid");
-    console.log("UID", uid);
+    // console.log("UID", uid);
 
     if (uid) {
         const docRef = doc(db, "startups", uid);
@@ -34,7 +30,7 @@ export const getStartUpData = async (cookieData: any) => {
                 JSON.stringify({ ...docSnap.data(), id: docSnap.id })
             );
         } else {
-            console.log("No such document!");
+            // console.log("No such document!");
             return false;
         }
     } else {
@@ -65,7 +61,7 @@ export const getStartUpData = async (cookieData: any) => {
 export const isBusinessAccountExistOrNot = async (cookieData: any) => {
     
 
-    console.log(cookieData,"cookie data");
+    // console.log(cookieData,"cookie data from business");
     let cookie;
     
     
@@ -75,12 +71,12 @@ export const isBusinessAccountExistOrNot = async (cookieData: any) => {
         cookie = { value: getCookie('uid') }
     }
 
-    console.log("COOKIE BEFORE UID", cookie);
+    // console.log("COOKIE BEFORE UID", cookie);
 
     let uid;
-    if (auth.currentUser?.uid) {
-        uid = auth.currentUser?.uid;
-    }
+    // if (auth.currentUser?.uid) {
+    //     uid = auth.currentUser?.uid;
+    // }
     if (cookie?.value) {
         uid = cookie?.value;
     }
@@ -103,22 +99,24 @@ export const isBusinessAccountExistOrNot = async (cookieData: any) => {
 };
 
 export const fetchBusinessAccountDetails = async (cookieData: any) => {
+    // console.log(cookieData,"cookie data from starup data");
     let cookie;
     if (cookieData) {
         cookie = cookieData;
     } else {
-        cookie = { value: getCookie("uid") };
+        cookie = { value: getCookie('uid') }
     }
+    // console.log("COOKIE BEFORE UID", cookie);
     let uid;
-    if (auth.currentUser?.uid) {
-        uid = auth.currentUser?.uid;
-    }
-    if (cookie) {
-        uid = cookie;
-    }
+    // if (auth.currentUser?.uid) {
+    //     uid = auth.currentUser?.uid;
+    // }
     if (cookie?.value) {
         uid = cookie?.value;
     }
+    // console.log(uid,"uid");
+    // console.log("UID", uid);
+  
     const docRef = doc(db, `startups/${uid}/details/advance`);
     const data = await getDoc(docRef).then(async (docs) => {
         if (docs.exists()) {
