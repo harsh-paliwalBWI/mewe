@@ -64,7 +64,7 @@ const BusinessAccount = () => {
     queryKey:["businessAccountExistOrNot"],
     queryFn:()=>isBusinessAccountExistOrNot(null)
   })
-  console.log(existOrNot,"on not");
+  // console.log(existOrNot,"on not");
   
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
@@ -73,7 +73,7 @@ const BusinessAccount = () => {
 
   });
 
-  console.log("startUpData", startUpData?.name);
+  // console.log("startUpData", startUpData?.name);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(null),
@@ -105,7 +105,7 @@ const [name,setName]=useState(startUpData?.name)
   })
 
  const  addAdvanceDetails = async (advanceDetails: any,email:any) => {
-    console.log(advanceDetails,email);
+    // console.log(advanceDetails,email);
     const refDoc = doc(db, `startups/${startUpData?.id}/details/advance`);
     const refDoc2 = doc(db, `startups/${startUpData?.id}`);
     const details = {

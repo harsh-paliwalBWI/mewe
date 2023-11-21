@@ -29,26 +29,51 @@ const SignUpPage2 = () => {
 
   const router = useRouter();
 
+  // const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier >(new RecaptchaVerifier(
+  //   auth,
+  //   "recaptcha-container",
+  //   {
+  //     size: "invisible",
+  //     callback: (response: any) => {
+  //       console.log(response);
+  //     },
+  //   }
+  // ));
+
+
+
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber&&name&&email) {
       setLoading(true);
-      const recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: (response: any) => {
-            console.log(response);
-          },
-        }
-      );
+
+      
+      // if (!recaptchaVerifier) {
+        // recaptchaVerifier.clear();
+        const newRecaptchaVerifier = new RecaptchaVerifier(
+          auth,
+          "recaptcha-container",
+          {
+            size: "invisible",
+            callback: (response: any) => {
+              console.log(response);
+            },
+          }
+        );
+        // setRecaptchaVerifier(newRecaptchaVerifier);
+      // }
+
+    
+    
+    
+
       const formattedPhoneNumber = `+91${phoneNumber}`;
-      await signInWithPhoneNumber(auth, formattedPhoneNumber, recaptchaVerifier)
+      await signInWithPhoneNumber(auth, formattedPhoneNumber, newRecaptchaVerifier)
         .then((confirmationResult) => {
           setOTPSent(confirmationResult);
 
           setverification(true);
           setLoading(false);
+          startTimer();
         })
         .catch((error) => {
           console.log(error + "...please reload");
@@ -81,6 +106,51 @@ const SignUpPage2 = () => {
     }
   };
 
+  const startTimer = () => {
+    setTimerStarted(true);
+    const interval = setInterval(() => {
+      setTime((prevTime) => prevTime - 1);
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(interval);
+      setTimerStarted(false);
+    }, 60000); 
+  };
+
+  // const resendCode =async () => {
+  //   try {
+  //     setTime(60);
+  //     startTimer();
+  //     console.log(recaptchaVerifier, "kkk");
+
+  //     // Clear existing recaptchaVerifier instance
+  //     recaptchaVerifier.clear();
+      
+  //     // Create a new RecaptchaVerifier instance
+  //     const newRecaptchaVerifier = new RecaptchaVerifier(
+  //         auth,
+  //         "recaptcha-container",
+  //         {
+  //             size: "invisible",
+  //             callback: (response: any) => {
+  //                 console.log(response);
+  //             },
+  //         }
+  //     );
+
+  //     // Set the new recaptchaVerifier
+  //     setRecaptchaVerifier(newRecaptchaVerifier);
+  //     console.log(recaptchaVerifier, "ggg");
+
+  //     // Sign in with the phone number again using the new recaptchaVerifier
+  //     await signInUserWithPhoneNumber();
+  // } catch (error) {
+  //     console.error("Error resending code:", error);
+  // }
+
+
+  // };
+
   const confirmOTP = () => {
     try {
       setLoading(true)
@@ -104,6 +174,11 @@ const SignUpPage2 = () => {
               name:name,
               email:email,
             };
+
+           
+
+
+
             // console.log(startup, "startup info");
             await setDoc(doc(db, `startups/${res.user.uid}`), startup, {
               merge: true,
@@ -111,11 +186,16 @@ const SignUpPage2 = () => {
             await setDoc(doc(db, `auth/${res.user.uid}`), authuser, {
               merge: true,
             });
+         
+
+            toast.success("Startup register Sucessfully");
+
           } else {
             // console.log("User already exist");
             toast.error("User already exist, Please Login");
           }
           //   await axios.get(`/api/login?uid=${res.user.uid}`);
+         
           setVerifying(false);
           setverification(false);
           setTime(60);
@@ -236,6 +316,7 @@ const SignUpPage2 = () => {
             </div>
 
             <div id="recaptcha-container"></div>
+
             {/* </Link> */}
             {/* <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
             <h2>or Sign In with</h2>
@@ -324,7 +405,16 @@ const SignUpPage2 = () => {
                 })}
               </div>
               <div className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6">
-                <h4>Resend code ({time > 9 ? time : "0" + time} sec)</h4>
+                {timerStarted ? (
+                  <h4>Resend code ({time > 9 ? time : "0" + time} sec)</h4>
+                ) : (
+                  <button
+                    className="underline underline-offset-2 cursor-pointer"
+                    // onClick={resendCode}
+                  >
+                    Resend code
+                  </button>
+                )}
               </div>
             </div>
 

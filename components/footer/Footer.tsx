@@ -197,7 +197,7 @@ const Footer = () => {
       </div>
       {/* <div className="border-b-[1.5px] border-[#e4e4e5] border-line"></div> */}
 
-      <div className="w-full h-auto   relative bottom-0 z-50">
+      <div className="w-full h-auto   relative bottom-0 z-30">
         <Image
           src={groupfooter}
           alt="groupfooter"

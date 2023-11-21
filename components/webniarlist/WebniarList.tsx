@@ -16,7 +16,7 @@ const WebniarList = () => {
     queryFn: () => fetchWebniars(),
   });
 
-console.log(webinars,"PPPP")
+// console.log(webinars,"PPPP")
 
   return (
     <>

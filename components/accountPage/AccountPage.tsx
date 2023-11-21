@@ -34,7 +34,7 @@ const AccountPage: FC<Props> = ({ cookie }) => {
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(null),
 });
-console.log("startUpData", startUpData);
+// console.log("startUpData", startUpData);
 
 useEffect(() => {
   setToastShown(true);

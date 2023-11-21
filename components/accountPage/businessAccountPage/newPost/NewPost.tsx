@@ -40,7 +40,7 @@ const NewPost = () => {
     queryFn: () => getStartUpData(null),
   });
 
-  console.log(startUpData, "from new post page ");
+  // console.log(startUpData, "from new post page ");
   // console.log("hii");
 
   const removeImage = (indexToRemove: number) => {
@@ -62,7 +62,7 @@ const NewPost = () => {
       const storageRef = ref(storage, `${(userPic.name)}___${timeStamp}`);
       await uploadBytes(storageRef, userPic).then(async (snapshot) => {
         await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
-          console.log(downloadURL, "url");
+          // console.log(downloadURL, "url");
 
           let imgObj = {
             mob: downloadURL,

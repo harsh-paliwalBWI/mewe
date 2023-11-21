@@ -6,6 +6,7 @@ import NavbarClient from "@/components/nabvar/Navclient";
 import ChatButton from "@/components/chatButton/ChatButton";
 import Providers from "../utils/provider";
 import { ToastContainer } from "react-toastify";
+import ChatContextProvider from  "../utils/ChatContext"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,12 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={lexend.variable}>
       <body className="font-lexend">
+        <ChatContextProvider>
         <Providers>
           <NavbarClient />
           {children}
           <ChatButton />
           <Footer />
         </Providers>
+        </ChatContextProvider>
         <ToastContainer />
       </body>
     </html>

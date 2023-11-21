@@ -10,11 +10,12 @@ import { log } from "console";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { db } from "@/config/firebase-config";
+import { auth, db } from "@/config/firebase-config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getStartUpData } from "@/services/startupService";
 import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
+import {signOut} from "firebase/auth"
 
 interface ProfileOptionsProps {
   setSelectedTab: any;
@@ -205,7 +206,7 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
             <div>Support</div>
           </div> */}
           <Link href={"/"}>
-            <div className={`${optionStyle}`}>
+            <div className={`${optionStyle}`} onClick={()=>signOut(auth)}>
               <div>
                 <FlatIcon className="flaticon-exit text-2xl" />
               </div>

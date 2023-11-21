@@ -30,7 +30,7 @@ querySnapshot.forEach((doc) => {
   const dataObj=doc.data()
   arr.push(dataObj)
 });
-console.log(arr,"commeyn arr");
+// console.log(arr,"commeyn arr");
 }
 
 

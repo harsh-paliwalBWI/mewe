@@ -10,22 +10,29 @@ import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
 import { Carousel } from "antd";
 
-// export function calculateTimeDifference(createdAt:any) {
-//   const now = new Date();
-//   const timeDifference = now - createdAt;
+// function calculateTimeDifference(createdAt) {
+ 
+//   const parsedDate = new Date(createdAt.replace(' at', ''));
 
-//   // Calculate days, hours, minutes, and seconds
-//   const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-//   const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  
+ 
+//   const currentDate = new Date();
+
+//   // Calculate time difference in milliseconds
+//   const timeDifference = currentDate - parsedDate;
+
+//   // Calculate days and hours
+//   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+//   const hoursDifference = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
 //   // Construct the result string
 //   let result = '';
-//   if (days > 0) {
-//     result += `${days} Days `;
+//   if (daysDifference > 0) {
+//       result += `${daysDifference} Days `;
 //   }
-//   if (hours > 0) {
-//     result += `${hours} Hours `;
+//   if (hoursDifference > 0) {
+//       result += `${hoursDifference} Hours `;
 //   }
+
 //   result += 'ago';
 
 //   return result;
@@ -39,7 +46,7 @@ const PostCard = (singlePost: any) => {
   
   
   let singlePostdata = singlePost.singlePost;
-  console.log(singlePostdata,"ffff")
+  // console.log(singlePostdata,"ffff")
   return (
     <div className="flex flex-col justify-center gap-1 sm:gap-2 md:gap-3  bg-[#f7f9fb] p-4 sm:p-6 md:p-8 ">
       <div className=" flex items-center justify-between ">

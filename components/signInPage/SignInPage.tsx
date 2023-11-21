@@ -13,7 +13,14 @@ import { useRouter } from "next/navigation";
 import { RecaptchaVerifier, deleteUser } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import Loader from "../loader/Loader";
 
 const SignInPage = () => {
@@ -27,42 +34,81 @@ const SignInPage = () => {
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
 
+  const doesUserExist = async (formattedPhoneNumber: any) => {
+    try {
+       console.log(formattedPhoneNumber,"gdf")
+       const querySnapshot = query(
+        collection(db, "startups"),
+        where("phoneNo", "==", formattedPhoneNumber)
+      );
+
+      const res = await getDocs(querySnapshot);
+      console.log(res, "number");
+      console.log(res.docs, "number");
+      console.log(res.docs.length, "number");
+      if (res.docs.length > 0) {
+        console.log( "kese chala ye");
+        return true;
+      } else {
+        toast.error("User does not exist, Please Signup");
+        console.log( "abcdefghijklmnopqrstuvwxyz");
+        router.replace("/welcome");
+        setLoading(false);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error checking startup existence:", error);
+      return false;
+    }
+  };
+
+ 
+
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       setLoading(true);
-      const recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: (response: any) => {
-            console.log(response);
-          },
-        }
-      );
       const formattedPhoneNumber = `+91${phoneNumber}`;
-      await signInWithPhoneNumber(auth, formattedPhoneNumber, recaptchaVerifier)
-        .then((confirmationResult) => {
-          setOTPSent(confirmationResult);
+      const userExists = await doesUserExist(phoneNumber);
 
-          setverification(true);
-          setLoading(false);
-        })
-        .catch((error) => {
-          toast.error(`${error}`)
-          console.log(error + "...Please eload");
-          setLoading(false);
-        });
+      if (userExists) {
+        const recaptchaVerifier = new RecaptchaVerifier(
+          auth,
+          "recaptcha-container",
+          {
+            size: "invisible",
+            callback: (response: any) => {
+              console.log(response);
+            },
+          }
+        );
+
+        await signInWithPhoneNumber(
+          auth,
+          formattedPhoneNumber,
+          recaptchaVerifier
+        )
+          .then((confirmationResult) => {
+            setOTPSent(confirmationResult);
+
+            setverification(true);
+            setLoading(false);
+          })
+          .catch((error) => {
+            toast.error(`${error}`);
+            console.log(error + "...Please reload");
+            setLoading(false);
+          });
+      }
     } else {
       if (!phoneNumber) {
         // console.log("Please enter correct phone number");
-        toast.error("Please enter phone number first !")
+        toast.error("Please enter phone number first !");
       }
       setLoading(false);
     }
   };
   const confirmOTP = () => {
-    setLoading(true)
+    setLoading(true);
     try {
       setTimerStarted(false);
       setVerifying(true);
@@ -73,20 +119,20 @@ const SignInPage = () => {
           if (res._tokenResponse.isNewUser) {
             toast.error("User does not exist, Please Signup");
             router.replace("/welcome");
-            // console.log(res, "nhi chla");       
+            // console.log(res, "nhi chla");
             deleteUser(res.user)
               .then(() => {
-                console.log("User not created")
-              }).catch((error) => {
-                console.log("User created", error)
+                console.log("User not created");
+              })
+              .catch((error) => {
+                console.log("User created", error);
               });
-
           } else {
             localStorage.setItem("auth", JSON.stringify(res.user.uid));
             await axios.get(`/api/login?uid=${res.user.uid}`);
             toast.success("Welcome");
             router.replace("/");
-            console.log(res, "chla gya");
+            // console.log(res, "chla gya");
           }
           setVerifying(false);
           setverification(false);
@@ -100,12 +146,10 @@ const SignInPage = () => {
           setverification(false);
           // console.log("Incorrect OTP! Sign in failed!");
           toast.error("Incorrect OTP! Sign in failed!");
-        })
-
+        });
     } catch (err) {
       console.log("error ");
       setLoading(false);
-
     }
   };
 
@@ -176,11 +220,18 @@ const SignInPage = () => {
               onClick={async () => {
                 await signInUserWithPhoneNumber();
               }}
-              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium font-medium  text-center rounded-lg py-3 cursor-pointer'
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium text-center rounded-lg py-3 cursor-pointer"
             >
-              <button style={{ height: "100%", position: "relative", }}>
+              <button style={{ height: "100%", position: "relative" }}>
                 {loading && (
-                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
                     <Loader />
                   </div>
                 )}
@@ -220,7 +271,6 @@ const SignInPage = () => {
           </div>
         )}
 
-
         {verification && (
           <div className=" md:w-[50%] sm:w-[70%] w-[100%]  xl:px-20 md:px-10 px-5  ">
             <div className=" flex flex-col lg:gap-10 gap-5">
@@ -259,15 +309,15 @@ const SignInPage = () => {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                              e.target.value +
-                              otp.substring(digit)
+                                e.target.value +
+                                otp.substring(digit)
                             );
                           } else {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                              " " +
-                              otp.substring(digit)
+                                " " +
+                                otp.substring(digit)
                             );
                           }
                         }}
@@ -282,13 +332,20 @@ const SignInPage = () => {
             </div>
             <div
               onClick={async () => {
-                confirmOTP()
+                confirmOTP();
               }}
-              className='bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 '
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium cursor-pointer  text-center rounded-lg py-3 "
             >
-              <button style={{ height: "100%", position: "relative", }}>
+              <button style={{ height: "100%", position: "relative" }}>
                 {loading && (
-                  <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
                     <Loader />
                   </div>
                 )}
