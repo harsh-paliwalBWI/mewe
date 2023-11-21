@@ -53,7 +53,7 @@ const MyProfile = () => {
     const [category, setCategory] = useState(startUpData?.basic?.category ?
         { id: startUpData.basic.category.id, name: startUpData.basic.category.name }
         :
-        dummyCategory[0])
+        { id:"", name:"" })
 
 
     const onSaveChangesHandler = async () => {
@@ -99,7 +99,7 @@ const MyProfile = () => {
             });
 
             const startupCategory = startUpData?.basic?.category;
-            setCategory(startupCategory ? { id: startupCategory.id, name: startupCategory.name } : dummyCategory[0]);
+            setCategory(startupCategory ? { id: startupCategory.id, name: startupCategory.name } : { id:"", name:"" });
         }
     }, [startUpData, businessAccountData]);
 

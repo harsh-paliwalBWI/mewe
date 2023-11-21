@@ -18,6 +18,8 @@ const ProfilePage= async() => {
   fetchBusinessAccountDetails(cookie?.value)
 );
   const dehydratedState = dehydrate(queryClient);
+  console.log(cookie,"cookie from account page");
+  
   return (
    <>
    <Hydrate state={dehydratedState}>

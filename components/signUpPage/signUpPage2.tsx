@@ -14,6 +14,8 @@ import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 import Loader from "../loader/Loader";
+import axios from "axios";
+
 
 const SignUpPage2 = () => {
   const [phoneNumber, setPhoneNumber] = useState<any>("");
@@ -51,6 +53,7 @@ const SignUpPage2 = () => {
           setLoading(false);
         })
         .catch((error) => {
+          toast.error(`${error}`)
           console.log(error + "...please reload");
           setLoading(false);
         });
@@ -111,10 +114,15 @@ const SignUpPage2 = () => {
             await setDoc(doc(db, `auth/${res.user.uid}`), authuser, {
               merge: true,
             });
+            localStorage.setItem("auth", JSON.stringify(res.user.uid));
+            await axios.get(`/api/login?uid=${res.user.uid}`);
+            toast.success("Welcome");
+          
           } else {
             // console.log("User already exist");
-            toast.error("User already exist, Please Login");
+            toast.error("User already exist, Please Sign in.");
           }
+          // localStorage.setItem("auth", JSON.stringify(res.user.uid));
           //   await axios.get(`/api/login?uid=${res.user.uid}`);
           setVerifying(false);
           setverification(false);
@@ -129,13 +137,14 @@ const SignUpPage2 = () => {
         .catch((err: any) => {
           setverification(false);
           setLoading(false);
+console.log(err);
 
           toast.error("Incorrect OTP! Sign in failed !");
         });
     } catch (err) {
       setLoading(false);
       toast.error(`${err}`)
-      // console.log("error ");
+      console.log("error ");
     }
   };
 

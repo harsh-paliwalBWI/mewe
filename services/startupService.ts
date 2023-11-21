@@ -19,6 +19,8 @@ export const getStartUpData = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
+    // console.log(uid,"uid");
+    
     if (uid) {
         const docRef = doc(db, "startups", uid);
         const docSnap = await getDoc(docRef);

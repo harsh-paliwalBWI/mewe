@@ -43,6 +43,8 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
   // console.log("startUpData",startUpData);
 
   const uploadImage = async (userPic: any) => {
+    console.log("inside fhfdh");
+    
     setIsModalOpen(true)
     if (userPic) {
       setLoading(true);
@@ -82,7 +84,7 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
 
   return (
     <>
-      <div className="sm:block hidden xl:w-[25%] md:w-[30%] w-[100%] filter-border  h-full bg-[#F8FAFC] lg:px-5 px-2  ">
+      <div className="sm:block  hidden xl:w-[25%] md:w-[30%] w-[100%] filter-border  h-full bg-[#F8FAFC] lg:px-5 px-2  ">
         {/* top section  */}
         <div className="flex flex-col gap-2 mt-6">
           <div className="flex justify-center ">
@@ -123,15 +125,15 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({
             </Modal>
           </div>
           <Link href={"/about"}>
-            <div className="flex justify-center lg:text-base text-sm font-bold ">
+            <div className="flex  justify-center lg:text-base text-sm font-bold ">
               <h2>
                 {startUpData?.name}
                 {/* Met Connect */}
               </h2>
             </div>
-          </Link>
-          <div className="flex justify-center lg:text-sm text-xs font-semibold text-[#868E97] ">
-            <p>
+          </Link> 
+          <div className="flex w-[100%] h-auto  lg:px-5 px-2 justify-center lg:text-sm text-xs font-semibold text-[#868E97] ">
+            <p className="">
               {/* @metconnects34805 */}
               {startUpData?.email}
 

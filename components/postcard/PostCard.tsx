@@ -39,7 +39,7 @@ const PostCard = (singlePost: any) => {
   
   
   let singlePostdata = singlePost.singlePost;
-  console.log(singlePostdata,"ffff")
+  // console.log(singlePostdata,"ffff")
   return (
     <div className="flex flex-col justify-center gap-1 sm:gap-2 md:gap-3  bg-[#f7f9fb] p-4 sm:p-6 md:p-8 ">
       <div className=" flex items-center justify-between ">
