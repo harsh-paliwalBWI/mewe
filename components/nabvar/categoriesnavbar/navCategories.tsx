@@ -3,46 +3,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FlatIcon from "../../flatIcon/flatIcon";
-import { signOut } from "firebase/auth";
-import { auth } from "@/config/firebase-config";
-import { usePathname, useRouter } from "next/navigation";
-import axios from "axios";
+import { usePathname } from "next/navigation";
 
-// const data = ["About", "Explore", "Schemes", "Financials", "Account"];
-
-export const checkUserLogin = () => {
-  const uid = auth.currentUser?.uid;
-  // console.log(uid, "kkkkkk");
-  if (uid) {
-    return true;
-  }
-
-  return false;
-};
+const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 
 const Categories = () => {
-
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    signOut(auth)
-      .then(async () => {
-        // console.log(auth.currentUser?.uid);
-        await axios.get("/api/logout");
-        if (pathName === "/") {
-          router.refresh();
-        } else {
-          router.push("/");
-        }
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
-  };
-
-  // console.log(auth.currentUser?.uid, "nnnnnnn");
-  // console.log(checkUserLogin(), "lllll");
   const pathName = usePathname();
   const textStyle = "lg:text-base md:text-sm text-xs  md:px-2   relative";
   return (
@@ -86,7 +51,7 @@ const Categories = () => {
             )}
           </div>
         </Link>
-        <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
+        <Link href={{pathname: '/account', query: { tab: 'my-profile' },}}>
           <div className={`text-[#CBCBCB] ${textStyle}`}>
             <h1 className=" ">Account</h1>
             {pathName.includes("account") && (
@@ -94,32 +59,17 @@ const Categories = () => {
             )}
           </div>
         </Link>
-
-        {!checkUserLogin() ? (
-          <Link href={"/welcome"}>
-            <div className={`text-[#CBCBCB] ${textStyle}`}>
-              <h1 className=" ">Log in/Sign up</h1>
-              {pathName.includes("welcome") && (
-                <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
-              )}
-            </div>
-          </Link>
-        ) : (
-          <Link href={"/"}>
-            <div
-              className={`text-[#CBCBCB] ${textStyle}`}
-              onClick={(e) => {
-                e.preventDefault();
-                handleLogout();
-              }}
-            >
-              <h1 className=" ">Log Out</h1>
-              {pathName.includes("welcome") && (
-                <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
-              )}
-            </div>
-          </Link>
-        )}
+        <Link href={"/welcome"}>
+          <div className={`text-[#CBCBCB] ${textStyle}`}>
+            <h1 className=" ">
+              Log in/Sign up
+            </h1>
+            {pathName.includes("welcome") &&
+              <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
+            }
+          </div>
+        </Link>
+       
       </div>
       <div className="md:block hidden absolute right-[4%] ">
         <Link href={{ pathname: "/account", query: { tab: "new-post" } }}>

@@ -10,6 +10,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Loader from '@/components/loader/Loader';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase-config';
+import { getCookie } from "cookies-next";
+
 
 const dummyCategory = [
   { id: "2", name: 'Category1', unavailable: false },
@@ -53,6 +55,7 @@ const labelStyle = " text-sm   text-[#868E97] font-medium  px-1  bg-white absolu
 const inputStyle = "rounded-lg px-3 py-3 w-full outline-0 text-sm"
 
 const BusinessAccount = () => {
+  const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false)
   const queryClient = useQueryClient()
@@ -60,15 +63,16 @@ const BusinessAccount = () => {
   const pathName = usePathname()
   const router = useRouter()
 
+ 
   const {data:existOrNot}=useQuery({
     queryKey:["businessAccountExistOrNot"],
-    queryFn:()=>isBusinessAccountExistOrNot(null)
+    queryFn:()=>isBusinessAccountExistOrNot(cookies)
   })
   // console.log(existOrNot,"on not");
   
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(null),
+    queryFn: () => getStartUpData(cookies),
     keepPreviousData: true
 
   });
@@ -76,7 +80,7 @@ const BusinessAccount = () => {
   // console.log("startUpData", startUpData?.name);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
-    queryFn: () => fetchBusinessAccountDetails(null),
+    queryFn: () => fetchBusinessAccountDetails(cookies),
     keepPreviousData: true
   });
   // console.log(businessAccountData, "account data");
@@ -198,6 +202,10 @@ setName(startUpData?.name)
     }
 }, [businessAccountData,existOrNot,startUpData]);
 
+useEffect(() => {
+  setIsClient(true)
+}, [])
+
   return (
     <div className={` h-fit py-2  relative z-0 mb-10 ${pathName.includes("business-account") ? "block  w-[100%] sm:mt-5" : "sm:block hidden md:w-[63%] w-[100%]"} `}>
       {
@@ -215,27 +223,24 @@ setName(startUpData?.name)
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Name of the Startup</label>
             <input 
-            value={name} 
+            value={isClient&&name} 
             onChange={(e) => setName(e.target.value)} 
-
-            // value={state.name} 
-            // onChange={(e) => setState({ ...state, name: e.target.value })} 
             className={`${inputStyle}`} type="text" id="input" />
           </div>
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Founder Name</label>
-            <input value={state.founderName} onChange={(e) => setState({ ...state, founderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={isClient&&state.founderName} onChange={(e) => setState({ ...state, founderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
         </div>
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full ">
           <div className={`${borderStyle} sm:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Co- Founder Name</label>
-            <input value={state.coFounderName} onChange={(e) => setState({ ...state, coFounderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={isClient&&state.coFounderName} onChange={(e) => setState({ ...state, coFounderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
           <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full sm:w-[50%] w-full `}>
             <div className={`w-[100%]`}>
               <label className={`${labelStyle}`} htmlFor="input">LinkedIN URL</label>
-              <input value={state.linkedInUrl} onChange={(e) => setState({ ...state, linkedInUrl: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+              <input value={isClient&&state.linkedInUrl} onChange={(e) => setState({ ...state, linkedInUrl: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
             </div>
             <div className='  px-4'>
               <FlatIcon className="flaticon-help-1 text-[#9bb7d3] text-xl" />
@@ -248,7 +253,7 @@ setName(startUpData?.name)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={category} onChange={setCategory}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name&&isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCategory.map((category) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
@@ -276,7 +281,7 @@ setName(startUpData?.name)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={companySize} onChange={setCompanySize}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span> {(companySize?.name && companySize.name) || "Select"}</span><span>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span> {(isClient&&companySize?.name && companySize.name) || "Select"}</span><span>
                     <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCompanySize.map((company) => (
@@ -307,7 +312,7 @@ setName(startUpData?.name)
 
           <div className={`${borderStyle} w-[100%]`}>
             <label className={`${labelStyle}`} htmlFor="input">Address</label>
-            <input value={state.address} onChange={(e) => setState({ ...state, address: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={isClient&&state.address} onChange={(e) => setState({ ...state, address: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
         </div>
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full relative ">
@@ -316,7 +321,7 @@ setName(startUpData?.name)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={city} onChange={setCity}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{(city?.name && city.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{(isClient&&city?.name && city.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCities.map((city) => (
                       <Listbox.Option key={city.id} value={city} as={Fragment} >
@@ -378,7 +383,7 @@ setName(startUpData?.name)
               Description
             </label>
             <textarea
-              value={state.description} onChange={(e) => setState({ ...state, description: e.target.value })}
+              value={isClient&&state.description} onChange={(e) => setState({ ...state, description: e.target.value })}
               name=""
               id=""
               className={`${inputStyle}`}
@@ -392,7 +397,7 @@ setName(startUpData?.name)
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={yearOfFormation} onChange={setYearOfFormation}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(yearOfFormation?.name && yearOfFormation.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(isClient&&yearOfFormation?.name && yearOfFormation.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyYearOfFormation.map((year) => (
                       <Listbox.Option key={year.id} value={year} as={Fragment} >
@@ -428,7 +433,7 @@ setName(startUpData?.name)
                 <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                   <div className={`w-[100%]`}>
                     <label className={`${labelStyle}`} htmlFor="input">Current Financial Income</label>
-                    <input value={state.currentFinancialIncome} onChange={(e) => setState({ ...state, currentFinancialIncome: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                    <input value={isClient&&state.currentFinancialIncome} onChange={(e) => setState({ ...state, currentFinancialIncome: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                   </div>
                   <div className='px-4 text-xl text-[#9bb7d3]'>
                     &#8377;
@@ -494,7 +499,7 @@ setName(startUpData?.name)
                 <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                   <div className={`w-[100%]`}>
                     <label className={`${labelStyle}`} htmlFor="input">Current Valuation</label>
-                    <input value={state.currentValuation} onChange={(e) => setState({ ...state, currentValuation: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                    <input value={isClient&&state.currentValuation} onChange={(e) => setState({ ...state, currentValuation: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                   </div>
                   <div className='px-4 text-xl text-[#9bb7d3]'>
                     &#8377;
@@ -523,7 +528,7 @@ setName(startUpData?.name)
                 <div className='  relative w-full py-3 px-4 rounded-md '>
                   <Listbox value={typeOfInvestement} onChange={setTypeOfInvestment}>
                     <div className=' '>
-                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{(typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{(isClient&&typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                       <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                         {dummyTypeOfInvestment.map((investment) => (
                           <Listbox.Option key={investment.id} value={investment} as={Fragment} >
@@ -550,14 +555,14 @@ setName(startUpData?.name)
               </div>
               <div className={`${borderStyle} `}>
                 <label className={`${labelStyle}`} htmlFor="input">Pan Number</label>
-                <input value={state.panNo} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+                <input value={isClient&&state.panNo} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
               </div>
             </div>
             <div>
               <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                 <div className={`w-[100%]`}>
                   <label className={`${labelStyle}`} htmlFor="input">Amount</label>
-                  <input value={state.amount} onChange={(e) => setState({ ...state, amount: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                  <input value={isClient&&state.amount} onChange={(e) => setState({ ...state, amount: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                 </div>
                 <div className='px-4 text-xl text-[#9bb7d3]'>
                   &#8377;
@@ -576,11 +581,11 @@ setName(startUpData?.name)
           <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-7'>
             <div className={`${borderStyle} `}>
               <label className={`${labelStyle}`} htmlFor="input">Email</label>
-              <input value={email} onChange={(e)=>setEmail(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
+              <input value={isClient&&email} onChange={(e)=>setEmail(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
             </div>
             <div className={`${borderStyle}  `}>
               <label className={`${labelStyle}`} htmlFor="input">Phone Number</label>
-              <input  value={phoneNumber} disabled={true} className={`${inputStyle} `} type="text" id="input" />
+              <input  value={isClient&&phoneNumber} disabled={true} className={`${inputStyle} `} type="text" id="input" />
             </div>
           </div>
           <div

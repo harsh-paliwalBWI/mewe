@@ -19,11 +19,15 @@ import {
   getDoc,
   getDocs,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 import Loader from "../loader/Loader";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getStartUpData } from "@/services/startupService";
 
 const SignInPage = () => {
+  const queryClient = useQueryClient();
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verification, setverification] = useState(false);
   const [time, setTime] = useState(60);
@@ -34,43 +38,31 @@ const SignInPage = () => {
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
 
-  const doesUserExist = async (formattedPhoneNumber: any) => {
-    try {
-       console.log(formattedPhoneNumber,"gdf")
-       const querySnapshot = query(
-        collection(db, "startups"),
-        where("phoneNo", "==", formattedPhoneNumber)
-      );
-
-      const res = await getDocs(querySnapshot);
-      console.log(res, "number");
-      console.log(res.docs, "number");
-      console.log(res.docs.length, "number");
-      if (res.docs.length > 0) {
-        console.log( "kese chala ye");
-        return true;
-      } else {
-        toast.error("User does not exist, Please Signup");
-        console.log( "abcdefghijklmnopqrstuvwxyz");
-        router.replace("/welcome");
-        setLoading(false);
-        return false;
-      }
-    } catch (error) {
-      console.error("Error checking startup existence:", error);
-      return false;
-    }
-  };
-
- 
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(null),
+  });
+  console.log("startUpData", startUpData?.data);
 
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
-      setLoading(true);
-      const formattedPhoneNumber = `+91${phoneNumber}`;
-      const userExists = await doesUserExist(phoneNumber);
-
-      if (userExists) {
+      let startUpExistOrNot: any;
+      const startupsRef = collection(db, "startups");
+      const q = query(startupsRef, where("phoneNo", "==", phoneNumber));
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.size > 0) {
+        const docSnap = querySnapshot.docs[0];
+        const startUp = docSnap.data();
+        const docId = docSnap.id;
+        startUpExistOrNot = startUp ? true : false;
+        // console.log("startUpExistOrNot", startUpExistOrNot);
+        // localStorage.setItem("auth", JSON.stringify(docId));
+        // await axios.post(`/api/login?uid=${docId}`);
+      } else {
+        // console.log('No matching document found');
+      }
+      if (startUpExistOrNot) {
+        setLoading(true);
         const recaptchaVerifier = new RecaptchaVerifier(
           auth,
           "recaptcha-container",
@@ -81,7 +73,7 @@ const SignInPage = () => {
             },
           }
         );
-
+        const formattedPhoneNumber = `+91${phoneNumber}`;
         await signInWithPhoneNumber(
           auth,
           formattedPhoneNumber,
@@ -95,9 +87,13 @@ const SignInPage = () => {
           })
           .catch((error) => {
             toast.error(`${error}`);
-            console.log(error + "...Please reload");
+            console.log(error + "...Please eload");
             setLoading(false);
           });
+      } else {
+        router.push("/signup");
+        toast.error("New user please Signup first !");
+        console.log("new user ");
       }
     } else {
       if (!phoneNumber) {
@@ -107,6 +103,7 @@ const SignInPage = () => {
       setLoading(false);
     }
   };
+
   const confirmOTP = () => {
     setLoading(true);
     try {
@@ -115,25 +112,11 @@ const SignInPage = () => {
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
-          // localStorage.setItem("auth", JSON.stringify(res.user.uid));
-          if (res._tokenResponse.isNewUser) {
-            toast.error("User does not exist, Please Signup");
-            router.replace("/welcome");
-            // console.log(res, "nhi chla");
-            deleteUser(res.user)
-              .then(() => {
-                console.log("User not created");
-              })
-              .catch((error) => {
-                console.log("User created", error);
-              });
-          } else {
-            localStorage.setItem("auth", JSON.stringify(res.user.uid));
-            await axios.get(`/api/login?uid=${res.user.uid}`);
-            toast.success("Welcome");
-            router.replace("/");
-            // console.log(res, "chla gya");
-          }
+          await axios.post(`/api/login?uid=${res?.user?.uid}`);
+          await queryClient?.invalidateQueries({ queryKey: ["startUpData"] });
+          await queryClient?.refetchQueries({ queryKey: ["startUpData"] });
+          toast.success("Welcome");
+          router.replace("/");
           setVerifying(false);
           setverification(false);
           setTime(60);
@@ -144,7 +127,6 @@ const SignInPage = () => {
         })
         .catch((err: any) => {
           setverification(false);
-          // console.log("Incorrect OTP! Sign in failed!");
           toast.error("Incorrect OTP! Sign in failed!");
         });
     } catch (err) {
@@ -220,7 +202,7 @@ const SignInPage = () => {
               onClick={async () => {
                 await signInUserWithPhoneNumber();
               }}
-              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium text-center rounded-lg py-3 cursor-pointer"
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium font-medium  text-center rounded-lg py-3 cursor-pointer"
             >
               <button style={{ height: "100%", position: "relative" }}>
                 {loading && (

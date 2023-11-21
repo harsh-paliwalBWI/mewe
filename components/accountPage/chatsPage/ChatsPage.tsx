@@ -76,7 +76,6 @@ const ChatsPage = () => {
       msg: text,
       by: currUser?.uid,
     };
-
     await addDoc(
       collection(db, `chat/${currUser?.uid}/startups/${data.chatId}/messages`),
       messagedoc
