@@ -240,9 +240,10 @@ const ChatsPage = () => {
       <div className="flex sm:flex-row flex-col w-full h-[80vh]  sm:mt-6 mt-3 gap-1 ">
         {/* left section start  */}
         <div className="md:block hidden  sm:h-full h-auto border border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
+          
+      
           {/* <Link href={"/chat-page"}> */}
-          <div className=" h-full w-full overflow-y-scroll ">
-
+          <div className=" h-full w-full overflow-y-scroll  relative ">
           {searchlist.length !== 0 ? (
             <>
               <div className="font-bold sm:text-lg text-base sm:mb-4 mb-3 px-5 ">
@@ -302,7 +303,7 @@ const ChatsPage = () => {
           // </div>
           null}
 
-          <div className="font-bold sm:text-lg text-base sm:mb-5 mb-4 px-5 ">
+          <div className="font-bold sm:text-lg text-base sm:mb-5 mb-4 px-5   ">
             My Chats
           </div>
           <div className=" ">

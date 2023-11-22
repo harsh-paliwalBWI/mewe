@@ -127,19 +127,19 @@ color:#5c636a;
     }
   }
   .overflow-y-scroll::-webkit-scrollbar {
-    width: 6px;
-    height: 98%;
+    width: 4px;
+    /* height: 98%; */
   }
 
   .overflow-y-scroll::-webkit-scrollbar-thumb {
-    background-color: #4d4d4d;
-    border-radius: 6px;
+    background-color: #054A91;
+    border-radius: 4px;
     
   }
 
   .overflow-y-scroll::-webkit-scrollbar-track {
     background-color: #F3F7FA;
-    border-radius: 6px;
+    border-radius: 4px;
   }
 
 /* text-[#9bb7d3] */
