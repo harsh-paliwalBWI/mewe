@@ -8,6 +8,7 @@ import { constant } from "@/utils/constants";
 
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
+import Link from "next/link";
 
 interface Props{
   scheme:any
@@ -43,12 +44,14 @@ const NewsletterCard2:FC<Props> = ({scheme,idx}) => {
               {/* Ut enim ad minima veniam, quis nostrum exercitationem ullam
               corporis suscipit laboriosam, nisi ut al */}
           </div>
-          <div className="w-full  bg-[#054A91] rounded-[5px] flex justify-between px-1 sm:px-2 md:px-3 py-1 sm:py-2 md:py-3 cursor-pointer">
+          <Link href={`${scheme?.link}`} target="_blank">
+          <div className="w-full   bg-[#054A91] rounded-[5px] flex justify-between px-1 sm:px-2 md:px-3 py-1 sm:py-2 md:py-3 cursor-pointer">
             <div className="text-white text-sm sm:text-base md:text-lg font-normal cursor-pointer">
               Continue Reading
             </div>
             <FlatIcon className="flaticon-down-arrow md:text-xl sm:text-lg text-base text-white  -rotate-90" />
           </div>
+          </Link>
         </div>
       </div>
     </div>
