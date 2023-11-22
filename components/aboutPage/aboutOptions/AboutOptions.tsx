@@ -138,7 +138,7 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Posts</h2>
-              <h2 className="text-[#868E97]">{postsData?.length}</h2>
+              <h2 className="text-[#868E97]">{postsData? postsData?.length: "-"}</h2>
             </div>
           </div>
         </div>
