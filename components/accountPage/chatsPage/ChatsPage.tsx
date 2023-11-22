@@ -22,6 +22,7 @@ import {
   getDataofstartup,
   handleSearch,
   handleSelect,
+  getDisplayDate
 } from "@/services/chatService";
 import {
   Timestamp,
@@ -47,7 +48,7 @@ const ChatsPage = () => {
   const [chats, setChats] = useState([]);
   const { dispatch } = useContext(ChatContext);
   const { data } = useContext(ChatContext);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [text, setText] = useState("");
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -80,6 +81,8 @@ const ChatsPage = () => {
       collection(db, `chat/${currUser?.uid}/startups/${data.chatId}/messages`),
       messagedoc
     );
+
+    setText("");
 
     if (currUser?.uid) {
       await NewCreation(data.chatId, currUser?.uid);
@@ -127,7 +130,7 @@ const ChatsPage = () => {
       console.error("User ID is undefined. Unable to update document.");
     }
 
-    setText("");
+    
   };
 
   useEffect(() => {
@@ -396,13 +399,29 @@ const ChatsPage = () => {
                   className="flex flex-col gap-4   overflow-y-scroll  h-[55vh] w-[35vw]"
                   ref={messagesContainerRef}
                 >
-                  {messages.map((mg: any) => (
+                  {messages.map((mg: any, index: number) => (
+                  <div key={mg?.id}>
+                    {/* Display date block if date has changed */}
+                    {index === 0 ||
+                    getDisplayDate(mg?.createdAt) !==
+                      getDisplayDate(messages[index - 1]?.createdAt) ? (
+                      <div className="flex items-center justify-center my-6">
+                        <div
+                          className="text-center text-xs  md:text-sm bg-[#E8E8E8] text-gray-500 
+                      px-4 py-1 md:px-5 md:py-1.5 border-2 border-text-gray-500  w-fit rounded-full"
+                        >
+                          {getDisplayDate(mg?.createdAt)}
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {/* Render message */}
                     <div
                       className={`flex w-[97%]  ${
                         mg?.by === data.chatId ? "" : "justify-end"
                       }`}
-                      key={mg?.id}
                     >
+                      {/* Differentiate messages based on sender */}
                       {mg?.by === data.chatId && (
                         <div className="w-[50%] flex  gap-2">
                           <div className="w-[40px] h-[40px] rounded-full aspect-square ">
@@ -436,6 +455,7 @@ const ChatsPage = () => {
                         </div>
                       )}
 
+                      {/* Differentiate messages based on receiver */}
                       {mg?.by !== data.chatId && (
                         <div className="w-[50%] flex gap-2 justify-end">
                           <div className={`relative bg-[#F3F7FA]  w-fit pr-12`}>
@@ -469,7 +489,8 @@ const ChatsPage = () => {
                         </div>
                       )}
                     </div>
-                  ))}
+                  </div>
+                ))}
                 </div>
 
                 <div className="flex items-center w-full gap-3 mt-4 ">

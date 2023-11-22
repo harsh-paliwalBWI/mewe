@@ -182,3 +182,26 @@ export const NewCreation = async (selectedUser: any, currentUser: any) => {
   } catch (err) {}
 };
 
+
+export const getDisplayDate = (dateString: string) => {
+  const messageDate = new Date(dateString);
+  const currentDate = new Date();
+
+  if (
+    messageDate.getDate() === currentDate.getDate() &&
+    messageDate.getMonth() === currentDate.getMonth() &&
+    messageDate.getFullYear() === currentDate.getFullYear()
+  ) {
+    return "Today";
+  } else if (
+    messageDate.getDate() === currentDate.getDate() - 1 &&
+    messageDate.getMonth() === currentDate.getMonth() &&
+    messageDate.getFullYear() === currentDate.getFullYear()
+  ) {
+    return "Yesterday";
+  } else {
+    return `${
+      messageDate.getMonth() + 1
+    }/${messageDate.getDate()}/${messageDate.getFullYear()}`;
+  }
+};

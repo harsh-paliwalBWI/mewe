@@ -17,6 +17,7 @@ import {
   getDataofstartup,
   handleSearch,
   handleSelect,
+  getDisplayDate
 } from "../../services/chatService";
 import {
   Timestamp,
@@ -42,7 +43,7 @@ const SingleChat = () => {
   const [err, setErr] = useState(false);
   const { dispatch } = useContext(ChatContext);
   const { data } = useContext(ChatContext);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [text, setText] = useState("");
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -113,6 +114,8 @@ const SingleChat = () => {
 
     setText("");
   };
+
+  
 
   useEffect(() => {
     if (currUser?.uid) {
@@ -210,7 +213,100 @@ const SingleChat = () => {
                 className="flex flex-col gap-4  max-h-[60vh]  overflow-y-scroll "
                 ref={messagesContainerRef}
               >
-                {messages.map((mg: any) => (
+                {messages.map((mg: any, index: number) => (
+                  <div key={mg?.id}>
+                    {/* Display date block if date has changed */}
+                    {index === 0 ||
+                    getDisplayDate(mg?.createdAt) !==
+                      getDisplayDate(messages[index - 1]?.createdAt) ? (
+                      <div className="flex items-center justify-center my-6">
+                        <div
+                          className="text-center text-xs sm:text-sm md:text-base lg:text-lg text-gray-500 
+                      px-4 py-1 sm:px-5 sm:py-1.5 md:px-6 md:py-2 md:p-2 border-2 border-text-gray-500  w-fit rounded-full"
+                        >
+                          {getDisplayDate(mg?.createdAt)}
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {/* Render message */}
+                    <div
+                      className={`flex w-[97%]  ${
+                        mg?.by === data.chatId ? "" : "justify-end"
+                      }`}
+                    >
+                      {/* Differentiate messages based on sender */}
+                      {mg?.by === data.chatId && (
+                        <div className="w-[50%] flex  gap-2">
+                          <div className="w-[40px] h-[40px] rounded-full aspect-square ">
+                            <Image
+                              src={data.user?.coverPic}
+                              alt=""
+                              height={1000}
+                              width={1000}
+                              className="h-[100%] w-[100%] rounded-full object-fill"
+                            />
+                          </div>
+                          <div className={`relative bg-[#F3F7FA]  w-fit pr-12`}>
+                            <div className="text-sm font-medium p-3 rounded-md w-full ">
+                              <p className="w-full">{mg?.msg}</p>
+                            </div>
+                            <div className="flex text-xs items-center absolute bottom-[3px] right-[5px]">
+                              <div>
+                                <FlatIcon className="flaticon-readed text-primary text-2xl" />
+                              </div>
+                              <p className="text-xs font-semibold text-primary">
+                                {new Date(mg?.createdAt).getHours() > 9
+                                  ? new Date(mg?.createdAt).getHours()
+                                  : "0" + new Date(mg?.createdAt).getHours()}
+                                :
+                                {new Date(mg?.createdAt).getMinutes() > 9
+                                  ? new Date(mg?.createdAt).getMinutes()
+                                  : "0" + new Date(mg?.createdAt).getMinutes()}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Differentiate messages based on receiver */}
+                      {mg?.by !== data.chatId && (
+                        <div className="w-[50%] flex gap-2 justify-end">
+                          <div className={`relative bg-[#F3F7FA]  w-fit pr-12`}>
+                            <div className="text-sm font-medium p-3 rounded-md w-full ">
+                              <p className="w-full">{mg?.msg}</p>
+                            </div>
+                            <div className="flex text-xs items-center absolute bottom-[3px] right-[5px]">
+                              <div>
+                                <FlatIcon className="flaticon-readed text-primary text-2xl" />
+                              </div>
+                              <p className="text-xs font-semibold text-primary">
+                                {new Date(mg?.createdAt).getHours() > 9
+                                  ? new Date(mg?.createdAt).getHours()
+                                  : "0" + new Date(mg?.createdAt).getHours()}
+                                :
+                                {new Date(mg?.createdAt).getMinutes() > 9
+                                  ? new Date(mg?.createdAt).getMinutes()
+                                  : "0" + new Date(mg?.createdAt).getMinutes()}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="w-[40px] h-[40px] rounded-full aspect-square ">
+                            <Image
+                              src={startUpData?.basic?.coverPic?.url}
+                              alt=""
+                              height={1000}
+                              width={1000}
+                              className="h-[100%] w-[100%] rounded-full object-fill"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                {/* {messages.map((mg: any) => (
                   <div
                     className={`flex w-[97%]  ${
                       mg?.by === data.chatId ? "" : "justify-end"
@@ -283,7 +379,7 @@ const SingleChat = () => {
                       </div>
                     )}
                   </div>
-                ))}
+                ))} */}
 
                 {/* <div className="flex items-end gap-4">
                 <div className="w-[40px] h-[40px] rounded-full ">

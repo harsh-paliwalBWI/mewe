@@ -45,7 +45,7 @@ const ChatButton = () => {
         `}
       >
         <h1 className="md:text-base sm:text-sm text-xs text-white md:tracking-widest">
-          CHAT
+          MY CHATS
         </h1>
       </div>
     </Link>
