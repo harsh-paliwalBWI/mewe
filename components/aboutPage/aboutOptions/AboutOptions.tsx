@@ -96,7 +96,7 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
           <div className="flex items-center gap-1 my-6">
             <FlatIcon className="flaticon-map xl:text-2xl text-lg" />
             <p className="text-[#707172] xl:text-base text-xs  font-medium capitalize">
-            {businessAccountData?.city ? businessAccountData?.city : " "}
+            {businessAccountData?.city ? businessAccountData?.city : "Your Startup City"}
             </p>
           </div>
           <div className="flex xl:text-base text-sm font-medium tracking-widest gap-3">

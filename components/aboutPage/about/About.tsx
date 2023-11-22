@@ -18,11 +18,7 @@ const About = () => {
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
 
-  // const { data: existOrNot } = useQuery({
-  //   queryKey: ["businessAccountExistOrNot"],
-  //   queryFn: () => isBusinessAccountExistOrNot(cookies),
-  // });
-  // console.log(existOrNot, "on not");
+
 
   // const { data: startUpData } = useQuery({
   //   queryKey: ["startUpData"],
