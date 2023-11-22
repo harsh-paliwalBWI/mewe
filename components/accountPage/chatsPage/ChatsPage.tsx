@@ -239,7 +239,7 @@ const ChatsPage = () => {
 
       <div className="flex sm:flex-row flex-col w-full h-[80vh]  sm:mt-6 mt-3 gap-1 ">
         {/* left section start  */}
-        <div className="md:block hidden  sm:h-full h-auto border border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
+        <div className="md:block hidden  sm:h-full h-auto border-2 border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
           
       
           {/* <Link href={"/chat-page"}> */}
@@ -367,7 +367,7 @@ const ChatsPage = () => {
           </div>
           </div>
         </div>
-        <div className="md:block hidden border-t border-t-black border-b border-b-black border-r border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-xl px-5 py-5 ">
+        <div className="md:block hidden border-t-2 border-t-black border-b-2 border-b-black border-r-2 border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-xl px-5 py-5 ">
           {data.chatId !== "null" ? (
             <div className=" h-full w-full relative ">
               <div className="flex items-center justify-between">

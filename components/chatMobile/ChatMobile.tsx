@@ -141,9 +141,9 @@ const ChatMobile = () => {
       </div>
 
       <div
-        className={`sm:h-full max-h-[80vh] h-auto border border-black rounded-xl w-[100%] sm:pt-6 pt-4 mt-4  pb-2`}
+        className={` h-auto border-2 border-black rounded-xl w-[100%] py-3 mt-4`}
       >
-        <div className=" overflow-y-scroll h-full w-full">
+        <div className=" overflow-y-scroll sm:h-full  max-h-[80vh]  h-auto w-full  py-3">
           {searchlist.length !== 0 ? (
             <>
               <div className="font-bold sm:text-lg text-base md:mb-5 sm:mb-4 mb-3 px-5 ">
