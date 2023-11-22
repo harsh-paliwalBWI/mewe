@@ -2,7 +2,7 @@
 import React from 'react'
 import AccountPage from '@/components/accountPage/AccountPage'
 import getQueryClient from '@/utils/getQueryClient';
-import { fetchBusinessAccountDetails, getStartUpData } from '@/services/startupService';
+import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
 import { dehydrate } from "@tanstack/react-query"
 import Hydrate from "../../utils/hydrate.client"
 import { cookies } from "next/dist/client/components/headers";
@@ -16,6 +16,9 @@ const ProfilePage= async() => {
   );
   await queryClient.prefetchQuery(["businessAccountData"], () =>
   fetchBusinessAccountDetails(cookie)
+);
+await queryClient.prefetchQuery(["businessAccountExistOrNot"], () =>
+isBusinessAccountExistOrNot(cookie)
 );
   const dehydratedState = dehydrate(queryClient);
   // console.log(cookie,"cookie from account page");

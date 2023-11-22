@@ -9,7 +9,7 @@ import ProfileOptionsMobile from '../profileMobile/ProfileOptionsMobile'
 import { useRouter, useSearchParams } from 'next/navigation'
 import NewPost from './businessAccountPage/newPost/NewPost'
 import { useQuery } from '@tanstack/react-query'
-import { getStartUpData } from '@/services/startupService'
+import { getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService'
 import { toast } from 'react-toastify'
 import { cookies } from "next/dist/client/components/headers";
 import { getCookie } from "cookies-next";
@@ -32,13 +32,13 @@ const cookies = { value: getCookie("uid") };
   // console.log("hiii");
   // console.log(currTab,"------------");
 
-
-
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
   });
   // console.log("startUpData", startUpData);
+
+  
 
   return (
     <>

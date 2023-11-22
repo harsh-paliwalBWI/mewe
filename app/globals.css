@@ -32,6 +32,13 @@ color:#5c636a;
   font-size: medium;
   font-weight: 400;
 }
+@media screen and (max-width: 480px) {
+  .search-container input[type="text"]::placeholder{
+    color:#5c636a;
+      font-size: small;
+      font-weight: 400;
+    }
+}
 
 .percentage-placeholder input[type="text"]::placeholder{
   color:#9bb7d3;

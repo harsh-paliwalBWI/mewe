@@ -63,12 +63,7 @@ const BusinessAccount = () => {
   const pathName = usePathname()
   const router = useRouter()
 
- 
-  const {data:existOrNot}=useQuery({
-    queryKey:["businessAccountExistOrNot"],
-    queryFn:()=>isBusinessAccountExistOrNot(cookies)
-  })
-  // console.log(existOrNot,"on not");
+  
   
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
@@ -83,7 +78,16 @@ const BusinessAccount = () => {
     queryFn: () => fetchBusinessAccountDetails(cookies),
     // keepPreviousData: true
   });
-  console.log(businessAccountData, "account data");
+  // console.log(businessAccountData, "account data");
+
+  const {data:existOrNot}=useQuery({
+    queryKey:["businessAccountExistOrNot"],
+    queryFn:()=>isBusinessAccountExistOrNot(cookies)
+  })
+  
+  console.log(cookies,"cookie");
+  
+  console.log(existOrNot,"on not");
 
   const [companySize, setCompanySize] = useState(businessAccountData ? {name: businessAccountData.companySize} : {name:""})
   const [city, setCity] = useState(businessAccountData ? {name: businessAccountData.city} :{name:""} )
@@ -161,6 +165,8 @@ const [name,setName]=useState(startUpData?.name)
       await addAdvanceDetails(accountInfo,email)
       await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
+      await queryClient.invalidateQueries({ queryKey: ['businessAccountExistOrNot'] })
+      await queryClient.refetchQueries({ queryKey: ['businessAccountExistOrNot'] })
       if(existOrNot){
         toast.success("Changes saved successfully.")
       }else{

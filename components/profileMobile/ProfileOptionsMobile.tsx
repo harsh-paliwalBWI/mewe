@@ -108,8 +108,10 @@ const ProfileOptionsMobile = () => {
 
 
 <div className="flex flex-col gap-2 mt-6">
-          <div className="flex justify-center ">
-            <div className="h-[100px] w-[100px] rounded-full  relative">
+<div className="flex justify-center relative">
+          <div className="flex justify-center relative z-10 ">
+          <Link href={"/about"}>
+            <div className="h-[100px] w-[100px] rounded-full  ">
               <Image
                 src={startUpData?.basic?.coverPic?.url}
                 alt=""
@@ -126,7 +128,9 @@ const ProfileOptionsMobile = () => {
                   className="h-[100%] w-[100%] object-fill  "
                 />
               </div>
-              <div className="absolute bottom-1 right-1  rounded-full ">
+              </div>
+              </Link>
+              <div className="absolute bottom-1 right-1  rounded-full z-30 ">
                 <input placeholder='' type='file' accept="image/*" onChange={async (e) => {
                   if (!e.target.files) return;
                   // console.log(e.target.files[0]);
@@ -137,8 +141,10 @@ const ProfileOptionsMobile = () => {
                 <label htmlFor='profile-ImageMobile' className='hover:cursor-pointer h-[20px] w-[20px] rounded-full  bg-white flex justify-center items-center '>
                   <FlatIcon className="text-primary flaticon-edit text-lg" /></label>
               </div>
-            </div>
-            <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
+            
+          
+          </div>
+          <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
               <div className="flex flex-col gap-2 justify-center items-center">
                 <CircularProgress className="!text-white"></CircularProgress>
                 <p className="text-white font-medium text-lg">
@@ -147,14 +153,14 @@ const ProfileOptionsMobile = () => {
               </div>
             </Modal>
           </div>
-          <Link href={"/about"}>
+          {/* <Link href={"/about"}> */}
             <div className="flex  justify-center lg:text-base text-sm font-bold ">
               <h2>
                 {client&&startUpData?.name} 
              
               </h2>
             </div>
-          </Link> 
+          {/* </Link>  */}
           <div className="flex w-[100%]  h-auto  lg:px-5 px-2 justify-center lg:text-sm text-xs font-semibold text-[#868E97] ">
             <p className="">
               {client&&startUpData?.email}

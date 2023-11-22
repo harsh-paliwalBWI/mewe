@@ -103,7 +103,7 @@ const ChatMobile = () => {
   return (
     <div
       className={`block  ${
-        currTab === "chat" ? "md:hidden sm:block hidden" : "block"
+        currTab === "chat" ? "lg:hidden sm:block hidden  " : "block"
       } ${pathName.includes("all-chats") && "mt-5"}`}
     >
       {pathName.includes("all-chats") && (
@@ -117,17 +117,17 @@ const ChatMobile = () => {
         </div>
       )}
 
-      <div className="w-[100%] flex justify-between items-center sm:gap-5 bg-white  px-4 py-3 chat-container  rounded-md ">
-        <div className="md:text-xl text-base font-bold px-2 ">Chats</div>
-        <div className="flex items-center justify-end lg:gap-x-10 gap-4 sm:w-full w-[50%] ">
-          <div className="  hidden bg-[#e5eaf1]  sm:flex items-center gap-x-2 h-fit rounded-full px-5 border md:w-[32%] w-[50%] search-container">
-            <div>
+      <div className="w-[100%] flex justify-between items-center sm:gap-5 bg-white  md:px-4 px-2 py-3 chat-container  rounded-md ">
+        <div className="md:text-xl text-base font-bold md:px-2 ">Chats</div>
+        <div className="flex items-center justify-end lg:gap-x-10 sm:gap-4 gap-2 sm:w-full w-[80%]  ">
+          <div className={`bg-[#e5eaf1] flex items-center gap-x-2 h-fit rounded-full md:px-5 px-2 border   ${currTab==="chat"?"lg:w-[32%] w-[50%]":"md:w-[32%] w-[60%]"} search-container `}>
+            <div className="">
               {" "}
               <FlatIcon className="flaticon-search md:text-xl text-[#5c636a] font-bold" />
             </div>
             <input
               type="text"
-              className="bg-transparent py-1.5 outline-0 "
+              className="bg-transparent sm:text-sm text-xs py-1.5 outline-0  rounded-full w-[100%]"
               placeholder="Search"
               onKeyDown={handleKey}
               onChange={(e) => setUsername(e.target.value)}
@@ -141,9 +141,9 @@ const ChatMobile = () => {
       </div>
 
       <div
-        className={` h-auto border-2 border-black rounded-xl w-[100%] py-3 mt-4`}
+        className={` h-auto border-2 border-black rounded-xl w-[100%] py-3 mt-4 `}
       >
-        <div className=" overflow-y-scroll sm:h-full  max-h-[80vh]  h-auto w-full  py-3">
+        <div className={` overflow-y-scroll sm:h-full  ${currTab === "chat" ? "max-h-[75vh] " : "max-h-[80vh]"}  h-auto w-full  py-3`}>
           {searchlist.length !== 0 ? (
             <>
               <div className="font-bold sm:text-lg text-base md:mb-5 sm:mb-4 mb-3 px-5 ">
@@ -225,7 +225,7 @@ const ChatMobile = () => {
                     </div>
                     <div className="w-full flex  flex-col sm:gap-1">
                       <div className="flex justify-between">
-                        <h2 className="sm:text-base text-sm font-bold ">
+                        <h2 className="lg:text-base text-sm font-bold ">
                           {" "}
                           {(singlechat as any)?.name || ""}
                         </h2>

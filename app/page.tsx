@@ -4,7 +4,7 @@ import getQueryClient from "../utils/getQueryClient";
 import Hydrate from "../utils/hydrate.client"
 import { fetchSchemes } from '@/services/schemesService';
 import { dehydrate } from "@tanstack/react-query"
-import { fetchBusinessAccountDetails, getStartUpData } from '@/services/startupService';
+import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
 import { cookies } from "next/dist/client/components/headers";
 
 export default async function Home() {
@@ -18,6 +18,9 @@ export default async function Home() {
   );
   await queryClient.prefetchQuery(["businessAccountData"], () =>
   fetchBusinessAccountDetails(cookie)
+);
+await queryClient.prefetchQuery(["businessAccountExistOrNot"], () =>
+isBusinessAccountExistOrNot(cookie)
 );
   const dehydratedState = dehydrate(queryClient);
 

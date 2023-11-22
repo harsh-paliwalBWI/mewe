@@ -212,11 +212,11 @@ const ChatsPage = () => {
     <div className="md:w-[70%] w-[100%] h-[90vh] lg:h-full md:mb-18 sm:block hidden ">
       <ChatMobile />
 
-      <div className="md:block hidden">
+      <div className="lg:block hidden ">
         <div className=" w-[100%] flex justify-between items-center sm:gap-5 bg-white  px-4 py-3 chat-container  rounded-md ">
           <div className="md:text-xl text-base font-bold px-2 ">Chats</div>
           <div className="flex items-center justify-end lg:gap-x-10 gap-4 sm:w-full w-[50%] ">
-            <div className="  hidden bg-[#e5eaf1]  sm:flex items-center gap-x-2 h-fit rounded-full px-5 border md:w-[32%] w-[50%] search-container">
+            <div className="  hidden bg-[#e5eaf1]  sm:flex items-center gap-x-2 h-fit rounded-full px-5 border lg:w-[32%] w-[50%] search-container">
               <div>
                 {" "}
                 <FlatIcon className="flaticon-search md:text-xl text-[#5c636a] font-bold" />
@@ -239,7 +239,7 @@ const ChatsPage = () => {
 
       <div className="flex sm:flex-row flex-col w-full h-[80vh]  sm:mt-6 mt-3 gap-1 ">
         {/* left section start  */}
-        <div className="md:block hidden  sm:h-full h-auto border-2 border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
+        <div className="lg:block hidden  sm:h-full h-auto border-2 border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
           
       
           {/* <Link href={"/chat-page"}> */}
@@ -325,7 +325,7 @@ const ChatsPage = () => {
                   </div>
                   <div className="  w-full flex flex-col sm:gap-1">
                     <div className="flex justify-between">
-                      <h2 className="sm:text-base text-sm font-bold ">
+                      <h2 className="xl:text-base text-sm font-bold ">
                         {" "}
                         {(singlechat as any)?.name || ""}
                       </h2>
@@ -367,7 +367,7 @@ const ChatsPage = () => {
           </div>
           </div>
         </div>
-        <div className="md:block hidden border-t-2 border-t-black border-b-2 border-b-black border-r-2 border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-xl px-5 py-5 ">
+        <div className="lg:block hidden border-t-2 border-t-black border-b-2 border-b-black border-r-2 border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-xl px-5 py-5 ">
           {data.chatId !== "null" ? (
             <div className=" h-full w-full relative ">
               <div className="flex items-center justify-between">
