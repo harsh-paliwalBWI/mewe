@@ -54,23 +54,16 @@ export const getStartUpData = async (cookieData: any) => {
 // };
 
 export const isBusinessAccountExistOrNot = async (cookieData: any) => {
-    // console.log("hii");
-    // console.log("cookieData",cookieData);
-
     let cookie;
     if (cookieData) {
         cookie = cookieData;
     } else {
         cookie = { value: getCookie('uid') }
     }
-    // console.log("log before cookie");
-    //     console.log("COOKIE BEFORE UID", cookie);
     let uid;
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    // console.log("UIS",uid);
-
     if (uid) {
         const docRef = doc(db, `startups/${uid}/details/advance`);
         const data = await getDoc(docRef).then((docs) => {
@@ -98,13 +91,19 @@ export const fetchBusinessAccountDetails = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    const docRef = doc(db, `startups/${uid}/details/advance`);
-    const data = await getDoc(docRef).then(async (docs) => {
-        if (docs.exists()) {
-            return await JSON.parse(JSON.stringify({ ...docs.data() }));
-        } else {
-            return null;
-        }
-    });
-    return data;
+    if (uid) {
+        const docRef = doc(db, `startups/${uid}/details/advance`);
+        const data = await getDoc(docRef).then(async (docs) => {
+            if (docs.exists()) {
+                // console.log("logged data", JSON.parse(JSON.stringify({ ...docs.data() })));
+                return await JSON.parse(JSON.stringify({ ...docs.data() }));
+            } else {
+                return null;
+            }
+        });
+        return data;
+    } else {
+        return null;
+    }
+
 };
