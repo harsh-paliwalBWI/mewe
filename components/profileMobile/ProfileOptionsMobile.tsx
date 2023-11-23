@@ -8,7 +8,7 @@ import Image  from 'next/image'
 import FlatIcon from '@/components/flatIcon/flatIcon'
 import Link from 'next/link'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getStartUpData } from '@/services/startupService'
+import { getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService'
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -33,6 +33,13 @@ const ProfileOptionsMobile = () => {
   });
   // console.log("startUpData",startUpData);
   // console.log("hiii");
+
+  const { data: existOrNot } = useQuery({
+    queryKey: ["businessAccountExistOrNot"],
+    queryFn: () => isBusinessAccountExistOrNot(cookies),
+  });
+  // console.log(existOrNot, "on not");
+  const targetPath = existOrNot ? "/about" : "";
 
 
   const uploadImageFromMobile = async (userPic: any) => {
@@ -110,7 +117,7 @@ const ProfileOptionsMobile = () => {
 <div className="flex flex-col gap-2 mt-6">
 <div className="flex justify-center relative">
           <div className="flex justify-center relative z-10 ">
-          <Link href={"/about"}>
+          <Link href={targetPath}>
             <div className="h-[100px] w-[100px] rounded-full  ">
               <Image
                 src={startUpData?.basic?.coverPic?.url}
