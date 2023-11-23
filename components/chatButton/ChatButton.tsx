@@ -29,7 +29,7 @@ const ChatButton = () => {
   return (
     <Link href={{ pathname: targetPath, query: queryParams }}>
       <div
-        className={`fixed bottom-0 right-3 px-1 sm:px-2 md:px-4 lg:px-6 py-1 sm:py-2 md:py-3 bg-[#054A91] cursor-pointer  rounded-t sm:rounded-t-lg  md:rounded-t-xl w-[15%] flex justify-center gap-1 sm:gap-2 md:gap-3 z-40 shadow-inner  shadow-white border border-[#054A91] ${
+        className={`fixed bottom-0 right-3 px-1 sm:px-2 md:px-4 lg:px-6 py-1 sm:py-2 md:py-3 bg-[#054A91] cursor-pointer  rounded-t sm:rounded-t-lg  md:rounded-t-xl w-[25%] sm:w-[20%] md:w-[18%] lg:w-[15%] flex justify-center gap-1 sm:gap-2 md:gap-3 z-40 shadow-inner  shadow-white border border-[#054A91] ${
           pathName.includes("welcome") ||
           pathName.includes("signup") ||
           pathName.includes("signin") ||
