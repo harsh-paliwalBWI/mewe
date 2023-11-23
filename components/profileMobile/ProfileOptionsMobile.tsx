@@ -37,14 +37,12 @@ const ProfileOptionsMobile = () => {
 
   const uploadImageFromMobile = async (userPic: any) => {
   //  console.log(userPic);
-   
+  const startUpId = await startUpData?.id;
     setIsModalOpen(true)
-
-    if (userPic) {
-      // console.log(isModalOpen);
+try{
+    if (userPic&&startUpId) {
       setLoading(true);
       let timeStamp = new Date().getMilliseconds();
-      const startUpId = await startUpData.id;
       const storage = getStorage();
       const storageRef = ref(storage, `${userPic.name}___${timeStamp}`);
       await uploadBytes(storageRef, userPic).then(async (snapshot) => {
@@ -65,7 +63,6 @@ const ProfileOptionsMobile = () => {
           await queryClient.invalidateQueries({ queryKey: ["startUpData"] });
           await queryClient.refetchQueries({ queryKey: ["startUpData"] });
           toast.success("Profile pic updated successfully.");
-         
         });
       });
       setIsModalOpen(false)
@@ -73,15 +70,17 @@ const ProfileOptionsMobile = () => {
       toast.error("Something went wrong !");
       setIsModalOpen(false)
     }
+  }catch(error){
+    toast.error("Something went wrong !");
+      setIsModalOpen(false)
+  }
   };
 
 
   async function uploadTask(userPic: any) {
-    // console.log("clicked");
     await uploadImageFromMobile(userPic);
   }
   useEffect(() => {
-    // console.log("inside use effect");
           setClient(true)
 }, []);
 
@@ -89,24 +88,6 @@ const ProfileOptionsMobile = () => {
   return (
   <>
    <div className=" sm:hidden block xl:w-[25%] md:w-[30%] w-[100%] filter-border  h-full bg-[#F8FAFC] lg:px-5 px-2  ">
-    {/* top section  */}
-    {/* <Link href={"/about"}>
-   <div className='flex flex-col gap-2 mt-6 '>
-    <div className='flex justify-center '>
-   
-    <div className='h-[100px] w-[100px] rounded-full  relative cursor-pointer'>
-      <Image src={profileImg} alt='' height={1000} width={1000} className='h-[100%] w-[100%] object-fill  rounded-full'/>
-      <div className='h-[30px] w-[30px] absolute right-0 top-0'>
-      <Image src={blueTickImg} height={1000} width={1000} alt='' className='h-[100%] w-[100%] object-fill  '/>
-      </div>
-      </div>
-     
-   </div>
-   <div className='flex justify-center text-base font-bold '><h2>Met Connect</h2></div>
-   <div className='flex justify-center text-sm font-semibold text-[#868E97] '><p>@metconnects34805</p></div>
-   </div> </Link> */}
-
-
 <div className="flex flex-col gap-2 mt-6">
 <div className="flex justify-center relative">
           <div className="flex justify-center relative z-10 ">

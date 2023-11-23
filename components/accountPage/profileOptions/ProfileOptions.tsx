@@ -70,7 +70,7 @@ const router = useRouter()
     queryKey: ["businessAccountExistOrNot"],
     queryFn: () => isBusinessAccountExistOrNot(cookies),
   });
-  console.log(existOrNot, "on not");
+  // console.log(existOrNot, "on not");
   const targetPath = existOrNot ? "/about" : "";
 
   // const { data: businessAccountData } = useQuery({
@@ -79,13 +79,14 @@ const router = useRouter()
   // });
   // console.log(businessAccountData, "on not");
   const uploadImage = async (userPic: any) => {
-    // console.log("inside fhfdh");
-
     setIsModalOpen(true);
-    if (userPic) {
+    // console.log(userPic,"fhfhgfj");
+    const startUpId = await startUpData?.id;
+    
+try{
+    if (userPic&&startUpId) {
       setLoading(true);
       let timeStamp = new Date().getMilliseconds();
-      const startUpId = await startUpData.id;
       const storage = getStorage();
       const storageRef = ref(storage, `${userPic.name}___${timeStamp}`);
       await uploadBytes(storageRef, userPic).then(async (snapshot) => {
@@ -110,8 +111,13 @@ const router = useRouter()
       });
       setIsModalOpen(false);
     } else {
+toast.error("Something went wrong !")
       setIsModalOpen(false);
     }
+  }catch(error){
+    setIsModalOpen(false);
+toast.error("Something went wrong !")
+  }
   };
 
   async function uploadTask(userPic: any) {

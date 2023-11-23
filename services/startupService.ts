@@ -95,7 +95,7 @@ export const fetchBusinessAccountDetails = async (cookieData: any) => {
         const docRef = doc(db, `startups/${uid}/details/advance`);
         const data = await getDoc(docRef).then(async (docs) => {
             if (docs.exists()) {
-                console.log("logged data", JSON.parse(JSON.stringify({ ...docs.data() })));
+                // console.log("logged data", JSON.parse(JSON.stringify({ ...docs.data() })));
                 return await JSON.parse(JSON.stringify({ ...docs.data() }));
             } else {
                 return null;
