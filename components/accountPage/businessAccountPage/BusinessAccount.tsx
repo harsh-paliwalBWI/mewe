@@ -72,7 +72,7 @@ const BusinessAccount = () => {
 
   });
 
-  // console.log("startUpData", startUpData?.name);
+  // console.log("startUpData", startUpData);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(cookies),
@@ -85,9 +85,9 @@ const BusinessAccount = () => {
     queryFn:()=>isBusinessAccountExistOrNot(cookies)
   })
   
-  console.log(cookies,"cookie");
+  // console.log(cookies,"cookie");
   
-  console.log(existOrNot,"on not");
+  // console.log(existOrNot,"on not");
 
   const [companySize, setCompanySize] = useState(businessAccountData ? {name: businessAccountData.companySize} : {name:""})
   const [city, setCity] = useState(businessAccountData ? {name: businessAccountData.city} :{name:""} )
