@@ -12,7 +12,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { auth, db } from "@/config/firebase-config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getStartUpData } from "@/services/startupService";
+import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from "@/services/startupService";
 import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
 import { signOut } from "firebase/auth";
@@ -41,6 +41,7 @@ const cookies = { value: getCookie("uid") };
   const [isModalOpen, setIsModalOpen] = useState(false);
 const router = useRouter()
 
+
   async function handleLogout() {
     signOut(auth)
       .then(async () => {
@@ -65,6 +66,18 @@ const router = useRouter()
   });
   // console.log("startUpData",startUpData);
 
+    const { data: existOrNot } = useQuery({
+    queryKey: ["businessAccountExistOrNot"],
+    queryFn: () => isBusinessAccountExistOrNot(cookies),
+  });
+  console.log(existOrNot, "on not");
+  const targetPath = existOrNot ? "/about" : "";
+
+  // const { data: businessAccountData } = useQuery({
+  //   queryKey: ["businessAccountData"],
+  //   queryFn: () => fetchBusinessAccountDetails(cookies),
+  // });
+  // console.log(businessAccountData, "on not");
   const uploadImage = async (userPic: any) => {
     // console.log("inside fhfdh");
 
@@ -116,7 +129,7 @@ const router = useRouter()
         <div className="flex flex-col gap-2 mt-6">
           <div className="flex justify-center relative">
           <div className="flex justify-center relative ">
-          <Link href={"/about"}>
+          <Link href={targetPath}>
             <div className="h-[100px] w-[100px] rounded-full  z-10">
               <Image
                 src={(client&&startUpData?.basic?.coverPic?.url)?startUpData?.basic?.coverPic?.url:""}
