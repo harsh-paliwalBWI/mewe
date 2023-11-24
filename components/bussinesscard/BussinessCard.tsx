@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { FC } from "react";
 
 // import CategoryCard from "./categoryCard/CategoryCard";
 import img from "../../../images/ME_WE.svg";
@@ -10,10 +10,89 @@ import verify from "../../images/verify 2.svg";
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
 import Link from "next/link";
+import { log } from "console";
+import { useQuery } from "@tanstack/react-query";
+import { getStartUpData } from "@/services/startupService";
+import { getCookie } from "cookies-next";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/config/firebase-config";
+import {toast} from "react-toastify"
 
-const BussinessCard = () => {
+
+interface Props{
+  startup:any
+}
+const BussinessCard:FC<Props> = ({startup}) => {
+  // console.log(startup,"from card");
+  const cookies = { value: getCookie("uid") };
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(cookies),
+});
+console.log("startUpData", startUpData);
+// console.log("following ----------", startUpData?.following[0]["JhQnjMNGMvWAaogXUCkT5JZdCpL2"],);
+
+
+const onFollowHandler = async (data: any) => {
+  console.log(data, "from follow");
+  const docid = startUpData?.id;
+ // for following start
+  if (docid) {
+      const docRef = doc(db, `startups/${docid}`);
+      const docSnap = await getDoc(docRef);
+      const existingFollowing = docSnap.data()?.following || [];
+      const newFollowingObj = {
+        // [data?.docId]: {
+          docId:data?.docId,
+              name: data?.name || "",
+              coverPic: {
+                  mob: data?.basic?.coverPic?.mob || "",
+                  url: data?.basic?.coverPic?.url || "",
+                  thumb: data?.basic?.coverPic?.thumb || ""
+              },
+              category: {
+                  id: data?.basic?.category?.id || "",
+                  name: data?.basic?.category?.name || ""
+              // },
+          }
+      };
+      const updatedFollowing = [...existingFollowing, newFollowingObj];
+      await setDoc(docRef, { following: updatedFollowing }, { merge: true });
+      // for following end 
+    }
+      // for followers start
+      const followersId= data?.docId;
+
+      if (followersId) {
+        const docRef = doc(db, `startups/${followersId}`);
+        const docSnap = await getDoc(docRef);
+        const existingFollowers = docSnap.data()?.followers || [];
+        const newFollowerObj = {
+          // [startUpData?.id]: {
+            docId:startUpData?.id,
+                name: startUpData?.name || "",
+                coverPic: {
+                    mob: startUpData?.basic?.coverPic?.mob || "",
+                    url: startUpData?.basic?.coverPic?.url || "",
+                    thumb: startUpData?.basic?.coverPic?.thumb || ""
+                },
+                category: {
+                    id: startUpData?.basic?.category?.id || "",
+                    name: startUpData?.basic?.category?.name || ""
+                },
+            // }
+        };
+        const updatedFollowers = [...existingFollowers, newFollowerObj];
+        await setDoc(docRef, { followers: updatedFollowers }, { merge: true });
+  }
+      // for followers end 
+    toast.success("Started following .")  
+
+}
+
+  
   return (
-    <Link href={"/about"}>
+    // <Link href={"/about"}>
     <div className="flex flex-col justify-between items-center gap-1 sm:gap-2 md:gap-3  bg-[#f6f9fd] rounded-[5px] ">
       <div className="relative rounded-[5px] w-full h-auto flex items-center justify-center  ">
         <Image
@@ -45,7 +124,10 @@ const BussinessCard = () => {
 
       <div className="flex flex-col  gap-2 sm:gap-3 md:gap-4   items-center w-full mt-5 sm:mt-7 md:mt-9 mb-3">
         <h2 className=" md:text-xl sm:text-lg text-base font-medium text-black ">
-          Formonix
+          {/* Formonix */}
+          {
+            startup?.name
+          }
         </h2>
         <div className="flex flex-col gap-1.5 sm:gap-2 md:gap-3 items-center justify-center">
           <p className="opacity-40 text-black  text-xs sm:text-sm md:text-[15px] font-normal text-center">
@@ -69,14 +151,17 @@ const BussinessCard = () => {
             />
           </div>
 
-          <h2 className=" text-[#326aa4] text-sm sm:text-base md:text-lg font-semibold ">
+          <div onClick={async()=>await onFollowHandler(startup)} className=" text-[#326aa4] text-sm sm:text-base md:text-lg font-semibold ">
+            <button>
             Follow
-          </h2>
+
+            </button>
+          </div>
         </div>
         </div>
       </div>
     </div>
-    </Link>
+    // </Link>
   );
 };
 

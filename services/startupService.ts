@@ -11,9 +11,9 @@ export const getStartUpData = async (cookieData: any) => {
         cookie = { value: getCookie('uid') }
     }
     let uid;
-    if (auth.currentUser?.uid) {
-        uid = auth.currentUser?.uid;
-    }
+    // if (auth.currentUser?.uid) {
+    //     uid = auth.currentUser?.uid;
+    // }
     if (cookie?.value) {
         uid = cookie?.value;
     }
@@ -22,9 +22,7 @@ export const getStartUpData = async (cookieData: any) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            return await JSON.parse(
-                JSON.stringify({ ...docSnap.data(), id: docSnap.id })
-            );
+            return await JSON.parse(JSON.stringify({ ...docSnap.data(), id: docSnap.id }));
         } else {
             return false;
         }

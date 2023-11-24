@@ -7,11 +7,6 @@ export const fetchPosts = async () => {
 
   const res = await getDocs(querySnapshot);
   let arr: any = [];
-//  get comment start 
-
-// const querySnapshot2 = await getDocs(collection(db, `posts/${docId}/comments`));
-
-// ebd 
   res.forEach((doc) => {
 //  console.log(doc.data(),doc.id,"iiii")
  let obj={...doc.data(),id:doc.id}
@@ -32,5 +27,7 @@ querySnapshot.forEach((doc) => {
 });
 // console.log(arr,"commeyn arr");
 }
+
+
 
 
