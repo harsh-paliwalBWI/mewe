@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 // import CategoryCard from "./categoryCard/CategoryCard";
 import img from "../../../images/ME_WE.svg";
@@ -11,14 +11,17 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllStartUps } from "@/services/homeService";
 import { log } from "console";
+import { getCookie } from "cookies-next";
 
 
 const Bussiness = () => {
+  const cookies = { value: getCookie("uid") };
+
   const { data:allStartUpsData } = useQuery({
     queryKey: ["allStartUpsData"],
     queryFn: () => fetchAllStartUps(),
 });
-// console.log("allStartUpsData-------",allStartUpsData);
+console.log("allStartUpsData-------",allStartUpsData);
 // console.log(allStartUpsData.slice(0,4),"----------");
 
 
@@ -29,7 +32,7 @@ const Bussiness = () => {
         <h1 className="opacity-80 text-black md:text-4xl sm:text-3xl text-2xl font-semibold ">
         Promoted Businesses
         </h1>
-        <Link href={"/startup-listing"}>
+        <Link href={"/all-businesses"}>
         <p className="opacity-80 text-black md:text-xl sm:text-lg text-base font-medium underline underline-offset-2 cursor-pointer">
           View all
         </p>
