@@ -16,8 +16,7 @@ import {
   NewCreation,
   getDataofstartup,
   handleSearch,
-  handleSelect,
-  getDisplayDate
+  getDisplayDate,
 } from "../../services/chatService";
 import {
   Timestamp,
@@ -52,6 +51,12 @@ const SingleChat = () => {
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(null),
   });
+
+  const handleKey2 = async (e: any) => {
+    if (e.code === "Enter") {
+      await handleSend();
+    }
+  };
 
   const handleSend = async () => {
     let messagedoc = {
@@ -114,8 +119,6 @@ const SingleChat = () => {
 
     setText("");
   };
-
-  
 
   useEffect(() => {
     if (currUser?.uid) {
@@ -437,6 +440,7 @@ const SingleChat = () => {
                     placeholder="Type something..."
                     onChange={(e) => setText(e.target.value)}
                     value={text}
+                    onKeyDown={handleKey2}
                   />
                   <div className="" onClick={async () => await handleSend()}>
                     <FlatIcon className="flaticon-send text-white sm:text-xl text-base" />

@@ -21,7 +21,7 @@ import {
   NewCreation,
   getDataofstartup,
   handleSearch,
-  handleSelect,
+
 } from "../../services/chatService";
 import {
   Timestamp,
@@ -37,6 +37,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import { getCookie } from "cookies-next";
 
 const ChatMobile = () => {
   const pathName = usePathname();
@@ -51,18 +52,80 @@ const ChatMobile = () => {
   const { dispatch } = useContext(ChatContext);
   const { data } = useContext(ChatContext);
 
+  const cookies = { value: getCookie("uid") };
   const currUser = auth.currentUser;
 
   const handleKey = async (e: any) => {
     if (e.code === "Enter") {
-      const searchResult: any = await handleSearch(username);
+      const searchResult: any = await handleSearch(username, cookies );
+      console.log(searchResult.arr,"eeeeee")
       setsearchlist(searchResult.arr || []);
+      console.log(searchlist,"ffffffff")
     }
   };
 
   const handleChange = (u: any) => {
-    console.log(u, "gggg");
+    // console.log(u, "gggg");
     dispatch({ type: "CHANGE_USER", payload: u });
+  };
+
+  const handleSelect = async (selectedUser: any) => {
+    const currentUser = auth.currentUser?.uid;
+    // console.log(currentUser,"currentUser")
+    try {
+      const q = doc(db, `chat/${currentUser}/startups/${selectedUser}`);
+      const res = await getDoc(q);
+      // console.log(res.data(),"res")
+
+      
+      if (!res.exists()) {
+        const otherstartupdata = await getDataofstartup(selectedUser);
+        // console.log(otherstartupdata, "hhhhhhhhh");
+        let chatstartup = {
+          coverPic: otherstartupdata?.basic?.coverPic?.url
+            ? otherstartupdata?.basic?.coverPic?.url
+            : avatarimg,
+          lastMsgAt: Date(),
+          name: otherstartupdata?.name,
+          lastMsg: "",
+          totalUnReads: 0,
+        };
+        let chatobj = {
+          totalUnreads: 0,
+        };
+
+        const mainDoc = await getDoc(doc(db, `chat/${currentUser}`));
+        if (!mainDoc.exists()) {
+          await setDoc(doc(db, `chat/${currentUser}`), chatobj, {
+            merge: true,
+          });
+        }
+
+        await setDoc(
+          doc(db, `chat/${currentUser}/startups/${selectedUser}`),
+          chatstartup,
+          {
+            merge: true,
+          }
+        );
+      }
+
+    try {
+      const chatDoc = await getDoc(q);
+      if (chatDoc.exists()) {
+        const chatData = { id: chatDoc.id, ...chatDoc.data() };
+        // console.log("Chat Data:", chatData);
+        dispatch({ type: "CHANGE_USER", payload: chatData });
+      } else {
+        console.log("Chat document not found");
+      }
+    } catch (error) {
+      console.error("Error getting chat document:", error);
+    }
+ 
+   
+
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -72,14 +135,14 @@ const ChatMobile = () => {
           collection(db, "chat", currUser?.uid, "startups")
           // orderBy("lastMsgAt", "desc")
         );
-        console.log("Current", "kkkk");
+        // console.log("Current", "kkkk");
         const chatsarr = onSnapshot(q, (querySnapshot) => {
           const chatscol: any = [];
           querySnapshot.forEach((doc) => {
             let obj = { ...doc.data(), id: doc.id };
             chatscol.push(obj);
           });
-          console.log("Current", chatscol, "kkkk");
+          // console.log("Current", chatscol, "kkkk");
           chatscol.sort((a: any, b: any) => {
             const dateA: any = new Date(a.lastMsgAt);
             const dateB: any = new Date(b.lastMsgAt);
@@ -150,10 +213,10 @@ const ChatMobile = () => {
                 Search Result
               </div>
               <div className=" mb-4 sm:mb-6 md:mb-8">
-                <div className=" hover:bg-[#F3F7FA] px-5 ">
+                <div className="  px-5 ">
                   {searchlist.map((item, index) => (
                     <div
-                      className="flex  items-center gap-4 border-b-2 border-b-[#c6c8c9]  py-4  "
+                      className="flex hover:bg-[#F3F7FA] items-center gap-4 border-b-2 border-b-[#c6c8c9]  py-4  "
                       key={index}
                       onClick={() => {
                         handleSelect((item as any)?.id);
@@ -165,7 +228,7 @@ const ChatMobile = () => {
                     >
                       <div className="w-[60px] h-[60px] rounded-full aspect-square">
                         <Image
-                          src={(item as any)?.basic?.coverPic?.url || avatarimg}
+                          src={(item as any)?.coverPic?.url || avatarimg}
                           alt=""
                           height={1000}
                           width={1000}

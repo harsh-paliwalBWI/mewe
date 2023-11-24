@@ -10,134 +10,65 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import avatarimg from "../images/avatar.png"
+import avatarimg from "../images/avatar.png";
+import { getCookie } from "cookies-next";
 
-export const handleSearch = async (username: any) => {
+const currUser = auth.currentUser;
+
+export const handleSearch = async (username: any, cookieData: any) => {
+  let cookie;
+  if (cookieData) {
+    cookie = cookieData;
+  } else {
+    cookie = { value: getCookie("uid") };
+  }
+  let uid: any;
+  if (cookie?.value) {
+    uid = cookie?.value;
+  }
+
   return new Promise(async (resolve) => {
-    const q = query(collection(db, "startups"), where("name", "==", username));
-    // console.log(q, "hhh");
-    const querySnapshot = q;
-    const res = await getDocs(querySnapshot);
-    // console.log(res.docs.length);
-    if (res.docs) {
-      let arr = [];
-      for (const startupn of res.docs) {
-        const data: any = startupn.data();
-        arr.push({ ...data, id: startupn?.id });
-      }
-      // console.log(arr);
-      resolve({ status: true, arr });
-    }
+    console.log(uid, "curr");
 
-    return resolve({
-      status: false,
-    });
+    if (uid) {
+      const userDocRef = doc(db, "startups", uid);
+
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (userDocSnapshot.exists()) {
+        const followingArray = userDocSnapshot.data()?.following;
+
+        if (followingArray && Array.isArray(followingArray)) {
+          const filteredStartups = followingArray.filter((startup) =>
+            startup.name.includes(username)
+          );
+          console.log(filteredStartups, "asdfgh");
+          resolve({ status: true, arr: filteredStartups });
+        } else {
+          resolve({ status: false });
+        }
+      } else {
+        resolve({ status: false });
+      }
+    } else {
+      resolve({ status: false });
+    }
   });
 };
 
 export const getDataofstartup = async (selectedUser: any) => {
-    if (selectedUser) {
-      const docRef = doc(db, "startups", selectedUser);
-      const docSnap = await getDoc(docRef);
-  
-      if (docSnap.exists()) {
-        return JSON.parse(JSON.stringify({ ...docSnap.data(), id: docSnap.id }));
-      } else {
-        return false;
-      }
+  if (selectedUser) {
+    const docRef = doc(db, "startups", selectedUser);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return JSON.parse(JSON.stringify({ ...docSnap.data(), id: docSnap.id }));
     } else {
-      return null;
+      return false;
     }
-  };
-
-export const handleSelect = async (selectedUser: any) => {
-  // console.log((selectedUser), "---------");
-  const currentUser = auth.currentUser?.uid;
-  try {
-    const q = doc(db, `chat/ ${currentUser}/startups/${selectedUser}`);
-    const res = await getDoc(q);
-
-    if (!res.exists()) {
-      const otherstartupdata = await getDataofstartup(selectedUser);
-      console.log(otherstartupdata,"hhhhhhhhh")
-      let chatstartup = {
-        coverPic: (otherstartupdata?.basic?.coverPic?.url)? otherstartupdata?.basic?.coverPic?.url:avatarimg,
-        lastMsgAt: Date(),
-        name: otherstartupdata?.name,
-        lastMsg: "",
-        totalUnReads: 0,
-      };
-      let chatobj = {
-        totalUnreads: 0,
-      };
-
-      // let msgarr: {
-      //     lastMsgAt: Date(),
-      //     type: 'text',
-      //     msg: "",
-      //     by: "",
-      // }
-
-      const mainDoc = await getDoc(doc(db, `chat/${currentUser}`));
-      if (!mainDoc.exists()) {
-        await setDoc(doc(db, `chat/${currentUser}`), chatobj, {
-          merge: true,
-        });
-      }
-
-      await setDoc(
-        doc(db, `chat/${currentUser}/startups/${selectedUser}`),
-        chatstartup,
-        {
-          merge: true,
-        }
-      );
-    }
-    
-      // else {
-
-      //   const otherstartupdata = await getDataofstartup(selectedUser);
-      //   console.log(otherstartupdata)
-      //   let chatstartup = {
-      //     coverPic: (otherstartupdata?.basic?.coverPic?.url)? otherstartupdata?.basic?.coverPic?.url:avatarimg,
-      //     lastMsgAt: Date(),
-      //     name: otherstartupdata?.name,
-      //     lastMsg: "",
-      //     totalUnReads: 0,
-      //   };
-      //   let chatobj = {
-      //     totalUnreads: 0,
-      //   };
-  
-      //   // let msgarr: {
-      //   //     lastMsgAt: Date(),
-      //   //     type: 'text',
-      //   //     msg: "",
-      //   //     by: "",
-      //   // }
-  
-      //   const mainDoc = await getDoc(doc(db, `chat/${currentUser}`));
-      //   if (!mainDoc.exists()) {
-      //     await setDoc(doc(db, `chat/${currentUser}`), chatobj, {
-      //       merge: true,
-      //     });
-      //   }
-  
-      //   await setDoc(
-      //     doc(db, `chat/${currentUser}/startups/${selectedUser}`),
-      //     chatstartup,
-      //     {
-      //       merge: true,
-      //     }
-      //   );
-
-      // }
-  } catch (err) {
-    // console.log(err,"yyyyyy")
+  } else {
+    return null;
   }
-
-  //   setUser(null);
-  // setUsername("");
 };
 
 export const NewCreation = async (selectedUser: any, currentUser: any) => {
@@ -174,14 +105,8 @@ export const NewCreation = async (selectedUser: any, currentUser: any) => {
         }
       );
     }
-
-
-
-
-
   } catch (err) {}
 };
-
 
 export const getDisplayDate = (dateString: string) => {
   const messageDate = new Date(dateString);

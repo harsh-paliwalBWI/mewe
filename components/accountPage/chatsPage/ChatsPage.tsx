@@ -21,8 +21,7 @@ import {
   NewCreation,
   getDataofstartup,
   handleSearch,
-  handleSelect,
-  getDisplayDate
+  getDisplayDate,
 } from "@/services/chatService";
 import {
   Timestamp,
@@ -38,6 +37,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import { getCookie } from "cookies-next";
 
 const ChatsPage = () => {
   const [username, setUsername] = useState("");
@@ -53,15 +53,23 @@ const ChatsPage = () => {
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
   const currUser = auth.currentUser;
+  const cookies = { value: getCookie("uid") };
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(null),
   });
 
   const handleKey = async (e: any) => {
+    if (e.code === "Enter" && username) {
+      const searchResult: any = await handleSearch(username, cookies);
+      console.log(searchResult.arr,"eeeeee")
+      setsearchlist(searchResult.arr);
+      }
+  };
+
+  const handleKey2 = async (e: any) => {
     if (e.code === "Enter") {
-      const searchResult: any = await handleSearch(username);
-      setsearchlist(searchResult.arr || []);
+      await handleSend();
     }
   };
 
@@ -93,7 +101,7 @@ const ChatsPage = () => {
           lastMsg: text,
           lastMsgAt: messagedoc.createdAt,
         });
-        console.log("Document successfully updated!");
+        // console.log("Document successfully updated!");
 
         const docRef2 = doc(db, "chat", data.chatId, "startups", currUser?.uid);
 
@@ -111,15 +119,15 @@ const ChatsPage = () => {
           const updatedLastMsg = docRefSnapshot.exists()
             ? docRefSnapshot.data().lastMsg
             : null;
-          console.log(updatedLastMsg, "rrrrrr");
+          // console.log(updatedLastMsg, "rrrrrr");
 
           await updateDoc(docRef2, {
             lastMsg: updatedLastMsg,
             lastMsgAt: messagedoc.createdAt,
           });
 
-          console.log(updatedLastMsg, "aaaa");
-          console.log("Document successfully updated! 2");
+          // console.log(updatedLastMsg, "aaaa");
+          // console.log("Document successfully updated! 2");
         } catch (e) {
           console.error("Error updating document: ", e);
         }
@@ -129,8 +137,61 @@ const ChatsPage = () => {
     } else {
       console.error("User ID is undefined. Unable to update document.");
     }
+  };
 
-    
+  const handleSelect = async (selectedUser: any) => {
+    const currentUser = auth.currentUser?.uid;
+    console.log(currentUser, "currentUser");
+    try {
+      const q = doc(db, `chat/${currentUser}/startups/${selectedUser}`);
+      const res = await getDoc(q);
+      // console.log(res.data(),"res")
+
+      if (!res.exists()) {
+        const otherstartupdata = await getDataofstartup(selectedUser);
+        // console.log(otherstartupdata, "hhhhhhhhh");
+        let chatstartup = {
+          coverPic: otherstartupdata?.basic?.coverPic?.url
+            ? otherstartupdata?.basic?.coverPic?.url
+            : avatarimg,
+          lastMsgAt: Date(),
+          name: otherstartupdata?.name,
+          lastMsg: "",
+          totalUnReads: 0,
+        };
+        let chatobj = {
+          totalUnreads: 0,
+        };
+
+        const mainDoc = await getDoc(doc(db, `chat/${currentUser}`));
+        if (!mainDoc.exists()) {
+          await setDoc(doc(db, `chat/${currentUser}`), chatobj, {
+            merge: true,
+          });
+        }
+
+        await setDoc(
+          doc(db, `chat/${currentUser}/startups/${selectedUser}`),
+          chatstartup,
+          {
+            merge: true,
+          }
+        );
+      }
+
+      try {
+        const chatDoc = await getDoc(q);
+        if (chatDoc.exists()) {
+          const chatData = { id: chatDoc.id, ...chatDoc.data() };
+          console.log("Chat Data:", chatData);
+          dispatch({ type: "CHANGE_USER", payload: chatData });
+        } else {
+          console.log("Chat document not found");
+        }
+      } catch (error) {
+        console.error("Error getting chat document:", error);
+      }
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -157,7 +218,7 @@ const ChatsPage = () => {
           setChats(chatscol);
         });
       }
-      console.log("This is called");
+      // console.log("This is called");
     };
     currUser?.uid && getChats();
   }, [currUser?.uid]);
@@ -243,45 +304,46 @@ const ChatsPage = () => {
       <div className="flex sm:flex-row flex-col w-full h-[80vh]  sm:mt-6 mt-3 gap-1 ">
         {/* left section start  */}
         <div className="lg:block hidden  sm:h-full h-auto border-2 border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
-          
-      
           {/* <Link href={"/chat-page"}> */}
           <div className=" h-full w-full overflow-y-scroll  relative ">
-          {searchlist.length !== 0 ? (
-            <>
-              <div className="font-bold sm:text-lg text-base sm:mb-4 mb-3 px-5 ">
-                Search Result
-              </div>
-              <div className="mb-4 sm:mb-6 md:mb-8">
-                <div className=" hover:bg-[#F3F7FA] px-5">
-                  {searchlist.map((item, index) => (
-                    <div
-                      className="flex gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 "
-                      key={index}
-                      onClick={() => {
-                        handleSelect((item as any)?.id);
-                        // console.log((item as any)?.id, "kkkgkk");
-                        () => handleChange(item);
-                        setUsername("");
-                        setsearchlist([]);
-                      }}
-                    >
-                      <div className="w-[20%] aspect-square rounded-full ">
-                        <Image
-                          src={(item as any)?.basic?.coverPic?.url || avatarimg}
-                          alt=""
-                          height={1000}
-                          width={1000}
-                          className="h-[100%] w-[100%] rounded-full object-fill"
-                        />
-                      </div>
-                      <div className="  w-full flex flex-col sm:gap-1">
-                        <div className="flex justify-between">
-                          <h2 className="sm:text-base text-sm font-bold ">
-                            {" "}
-                            {(item as any)?.name || ""}
-                          </h2>
-                          {/* <div className="flex items-center  text-2xl ">
+            {searchlist.length !== 0 ? (
+              <>
+                <div className="font-bold sm:text-lg text-base sm:mb-4 mb-3 px-5 ">
+                  Search Result
+                </div>
+                <div className="mb-4 sm:mb-6 md:mb-8">
+                  <div className="  px-5">
+                    {searchlist.map((item, index) => (
+                      <div
+                        className="flex hover:bg-[#F3F7FA] gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 "
+                        key={index}
+                        onClick={() => {
+                          handleSelect((item as any)?.docId);
+                          // console.log((item as any)?.docId, "kkkgkk");
+                          console.log(item as any, "cvcvcv");
+                          // () => handleChange(item);
+                          setUsername("");
+                          setsearchlist([]);
+                        }}
+                      >
+                        <div className="w-[20%] aspect-square rounded-full ">
+                          <Image
+                            src={
+                              (item as any).coverPic?.url || avatarimg
+                            }
+                            alt=""
+                            height={1000}
+                            width={1000}
+                            className="h-[100%] w-[100%] rounded-full object-fill"
+                          />
+                        </div>
+                        <div className="  w-full flex flex-col sm:gap-1">
+                          <div className="flex justify-between">
+                            <h2 className="sm:text-base text-sm font-bold ">
+                              {" "}
+                              {(item as any)?.name || ""}
+                            </h2>
+                            {/* <div className="flex items-center  text-2xl ">
                           <FlatIcon className="flaticon-readed text-primary" />
                           <p className="text-xs text-primary font-bold">
                           {new Date((item as any)?.lastMsgAt).getHours()}:
@@ -290,84 +352,88 @@ const ChatsPage = () => {
                           ).getMinutes()}
                           </p>
                         </div> */}
-                        </div>
+                          </div>
 
-                        {/* <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1">
+                          {/* <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1">
                          {(item as any)?.lastMsg || ""}
                       </p> */}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : // <div className="h-full w-full flex justify-center items-center">
-          //   <h1>No Startup Found With This Name</h1>{" "}
-          // </div>
-          null}
-
-          <div className="font-bold sm:text-lg text-base sm:mb-5 mb-4 px-5   ">
-            My Chats
-          </div>
-          <div className=" ">
-            {chats?.map((singlechat) => (
-              <div
-                className=" hover:bg-[#F3F7FA] px-5 "
-                key={(singlechat as any)?.id}
-                onClick={() => handleChange(singlechat)}
-              >
-                <div className="flex gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 ">
-                  <div className="w-[20%] aspect-square rounded-full ">
-                    <Image
-                      src={(singlechat as any)?.coverPic || avatarimg}
-                      alt=""
-                      height={1000}
-                      width={1000}
-                      className="h-[100%] w-[100%] rounded-full object-fill"
-                    />
+                    ))}
                   </div>
-                  <div className="  w-full flex flex-col sm:gap-1">
-                    <div className="flex justify-between">
-                      <h2 className="xl:text-base text-sm font-bold ">
-                        {" "}
-                        {(singlechat as any)?.name || ""}
-                      </h2>
-                      <div className="flex items-center  text-2xl ">
-                        <FlatIcon className="flaticon-readed text-primary" />
-                        <p className="text-xs text-primary font-bold">
+                </div>
+              </>
+            ) : // <div className="h-full w-full flex justify-center items-center">
+            //   <h1>No Startup Found With This Name</h1>{" "}
+            // </div>
+            null}
+
+            <div className="font-bold sm:text-lg text-base sm:mb-5 mb-4 px-5   ">
+              My Chats
+            </div>
+            <div className=" ">
+              {chats?.map((singlechat) => (
+                <div
+                  className=" hover:bg-[#F3F7FA] px-5 "
+                  key={(singlechat as any)?.id}
+                  onClick={() => {
+                    handleChange(singlechat);
+                    console.log(singlechat, "ppppp");
+                  }}
+                >
+                  <div className="flex gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 ">
+                    <div className="w-[20%] aspect-square rounded-full ">
+                      <Image
+                        src={(singlechat as any)?.coverPic || avatarimg}
+                        alt=""
+                        height={1000}
+                        width={1000}
+                        className="h-[100%] w-[100%] rounded-full object-fill"
+                      />
+                    </div>
+                    <div className="  w-full flex flex-col sm:gap-1">
+                      <div className="flex justify-between">
+                        <h2 className="xl:text-base text-sm font-bold ">
                           {" "}
-                          {new Date((singlechat as any)?.lastMsgAt).getHours() >
-                          9
-                            ? new Date(
-                                (singlechat as any)?.lastMsgAt
-                              ).getHours()
-                            : "0" +
-                              new Date(
-                                (singlechat as any)?.lastMsgAt
-                              ).getHours()}
-                          :
-                          {new Date(
-                            (singlechat as any)?.lastMsgAt
-                          ).getMinutes() > 9
-                            ? new Date(
-                                (singlechat as any)?.lastMsgAt
-                              ).getMinutes()
-                            : "0" +
-                              new Date(
-                                (singlechat as any)?.lastMsgAt
-                              ).getMinutes()}
-                        </p>
+                          {(singlechat as any)?.name || ""}
+                        </h2>
+                        <div className="flex items-center  text-2xl ">
+                          <FlatIcon className="flaticon-readed text-primary" />
+                          <p className="text-xs text-primary font-bold">
+                            {" "}
+                            {new Date(
+                              (singlechat as any)?.lastMsgAt
+                            ).getHours() > 9
+                              ? new Date(
+                                  (singlechat as any)?.lastMsgAt
+                                ).getHours()
+                              : "0" +
+                                new Date(
+                                  (singlechat as any)?.lastMsgAt
+                                ).getHours()}
+                            :
+                            {new Date(
+                              (singlechat as any)?.lastMsgAt
+                            ).getMinutes() > 9
+                              ? new Date(
+                                  (singlechat as any)?.lastMsgAt
+                                ).getMinutes()
+                              : "0" +
+                                new Date(
+                                  (singlechat as any)?.lastMsgAt
+                                ).getMinutes()}
+                          </p>
+                        </div>
                       </div>
-                    </div>
 
-                    <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1">
-                      {(singlechat as any)?.lastMsg}
-                    </p>
+                      <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1">
+                        {(singlechat as any)?.lastMsg}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className="lg:block hidden border-t-2 border-t-black border-b-2 border-b-black border-r-2 border-r-black sm:w-[60%] w-[100%] relative flex-1 min-h-[100%]  rounded-xl px-5 py-5 ">
@@ -400,97 +466,103 @@ const ChatsPage = () => {
                   ref={messagesContainerRef}
                 >
                   {messages.map((mg: any, index: number) => (
-                  <div key={mg?.id}>
-                    {/* Display date block if date has changed */}
-                    {index === 0 ||
-                    getDisplayDate(mg?.createdAt) !==
-                      getDisplayDate(messages[index - 1]?.createdAt) ? (
-                      <div className="flex items-center justify-center my-6">
-                        <div
-                          className="text-center text-xs  md:text-sm bg-[#E8E8E8] text-gray-500 
+                    <div key={mg?.id}>
+                      {/* Display date block if date has changed */}
+                      {index === 0 ||
+                      getDisplayDate(mg?.createdAt) !==
+                        getDisplayDate(messages[index - 1]?.createdAt) ? (
+                        <div className="flex items-center justify-center my-6">
+                          <div
+                            className="text-center text-xs  md:text-sm bg-[#E8E8E8] text-gray-500 
                       px-4 py-1 md:px-5 md:py-1.5 border-2 border-text-gray-500  w-fit rounded-full"
-                        >
-                          {getDisplayDate(mg?.createdAt)}
+                          >
+                            {getDisplayDate(mg?.createdAt)}
+                          </div>
                         </div>
+                      ) : null}
+
+                      {/* Render message */}
+                      <div
+                        className={`flex w-[97%]  ${
+                          mg?.by === data.chatId ? "" : "justify-end"
+                        }`}
+                      >
+                        {/* Differentiate messages based on sender */}
+                        {mg?.by === data.chatId && (
+                          <div className="w-[50%] flex  gap-2">
+                            <div className="w-[40px] h-[40px] rounded-full aspect-square ">
+                              <Image
+                                src={data.user?.coverPic}
+                                alt=""
+                                height={1000}
+                                width={1000}
+                                className="h-[100%] w-[100%] rounded-full object-fill"
+                              />
+                            </div>
+                            <div
+                              className={`relative bg-[#F3F7FA]  w-fit pr-12`}
+                            >
+                              <div className="text-sm font-medium p-3 rounded-md w-full ">
+                                <p className="w-full">{mg?.msg}</p>
+                              </div>
+                              <div className="flex text-xs items-center absolute bottom-[3px] right-[5px]">
+                                <div>
+                                  <FlatIcon className="flaticon-readed text-primary text-2xl" />
+                                </div>
+                                <p className="text-xs font-semibold text-primary">
+                                  {new Date(mg?.createdAt).getHours() > 9
+                                    ? new Date(mg?.createdAt).getHours()
+                                    : "0" + new Date(mg?.createdAt).getHours()}
+                                  :
+                                  {new Date(mg?.createdAt).getMinutes() > 9
+                                    ? new Date(mg?.createdAt).getMinutes()
+                                    : "0" +
+                                      new Date(mg?.createdAt).getMinutes()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Differentiate messages based on receiver */}
+                        {mg?.by !== data.chatId && (
+                          <div className="w-[50%] flex gap-2 justify-end">
+                            <div
+                              className={`relative bg-[#F3F7FA]  w-fit pr-12`}
+                            >
+                              <div className="text-sm font-medium p-3 rounded-md w-full ">
+                                <p className="w-full">{mg?.msg}</p>
+                              </div>
+                              <div className="flex text-xs items-center absolute bottom-[3px] right-[5px]">
+                                <div>
+                                  <FlatIcon className="flaticon-readed text-primary text-2xl" />
+                                </div>
+                                <p className="text-xs font-semibold text-primary">
+                                  {new Date(mg?.createdAt).getHours() > 9
+                                    ? new Date(mg?.createdAt).getHours()
+                                    : "0" + new Date(mg?.createdAt).getHours()}
+                                  :
+                                  {new Date(mg?.createdAt).getMinutes() > 9
+                                    ? new Date(mg?.createdAt).getMinutes()
+                                    : "0" +
+                                      new Date(mg?.createdAt).getMinutes()}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="w-[40px] h-[40px] rounded-full aspect-square ">
+                              <Image
+                                src={startUpData?.basic?.coverPic?.url}
+                                alt=""
+                                height={1000}
+                                width={1000}
+                                className="h-[100%] w-[100%] rounded-full object-fill"
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    ) : null}
-
-                    {/* Render message */}
-                    <div
-                      className={`flex w-[97%]  ${
-                        mg?.by === data.chatId ? "" : "justify-end"
-                      }`}
-                    >
-                      {/* Differentiate messages based on sender */}
-                      {mg?.by === data.chatId && (
-                        <div className="w-[50%] flex  gap-2">
-                          <div className="w-[40px] h-[40px] rounded-full aspect-square ">
-                            <Image
-                              src={data.user?.coverPic}
-                              alt=""
-                              height={1000}
-                              width={1000}
-                              className="h-[100%] w-[100%] rounded-full object-fill"
-                            />
-                          </div>
-                          <div className={`relative bg-[#F3F7FA]  w-fit pr-12`}>
-                            <div className="text-sm font-medium p-3 rounded-md w-full ">
-                              <p className="w-full">{mg?.msg}</p>
-                            </div>
-                            <div className="flex text-xs items-center absolute bottom-[3px] right-[5px]">
-                              <div>
-                                <FlatIcon className="flaticon-readed text-primary text-2xl" />
-                              </div>
-                              <p className="text-xs font-semibold text-primary">
-                                {new Date(mg?.createdAt).getHours() > 9
-                                  ? new Date(mg?.createdAt).getHours()
-                                  : "0" + new Date(mg?.createdAt).getHours()}
-                                :
-                                {new Date(mg?.createdAt).getMinutes() > 9
-                                  ? new Date(mg?.createdAt).getMinutes()
-                                  : "0" + new Date(mg?.createdAt).getMinutes()}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Differentiate messages based on receiver */}
-                      {mg?.by !== data.chatId && (
-                        <div className="w-[50%] flex gap-2 justify-end">
-                          <div className={`relative bg-[#F3F7FA]  w-fit pr-12`}>
-                            <div className="text-sm font-medium p-3 rounded-md w-full ">
-                              <p className="w-full">{mg?.msg}</p>
-                            </div>
-                            <div className="flex text-xs items-center absolute bottom-[3px] right-[5px]">
-                              <div>
-                                <FlatIcon className="flaticon-readed text-primary text-2xl" />
-                              </div>
-                              <p className="text-xs font-semibold text-primary">
-                                {new Date(mg?.createdAt).getHours() > 9
-                                  ? new Date(mg?.createdAt).getHours()
-                                  : "0" + new Date(mg?.createdAt).getHours()}
-                                :
-                                {new Date(mg?.createdAt).getMinutes() > 9
-                                  ? new Date(mg?.createdAt).getMinutes()
-                                  : "0" + new Date(mg?.createdAt).getMinutes()}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="w-[40px] h-[40px] rounded-full aspect-square ">
-                            <Image
-                              src={startUpData?.basic?.coverPic?.url}
-                              alt=""
-                              height={1000}
-                              width={1000}
-                              className="h-[100%] w-[100%] rounded-full object-fill"
-                            />
-                          </div>
-                        </div>
-                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
                 </div>
 
                 <div className="flex items-center w-full gap-3 mt-4 ">
@@ -501,6 +573,7 @@ const ChatsPage = () => {
                       placeholder="Type something..."
                       onChange={(e) => setText(e.target.value)}
                       value={text}
+                      onKeyDown={handleKey2}
                     />
                     <div onClick={async () => await handleSend()}>
                       <FlatIcon className="flaticon-send text-white text-xl" />
