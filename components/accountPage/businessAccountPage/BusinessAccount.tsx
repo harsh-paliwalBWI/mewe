@@ -45,7 +45,7 @@ const dummyYearOfFormation = [
 
 
 const dummyTypeOfInvestment = [
-  { id: 2, name: 'Investment type1', unavailable: false },
+  { id: 2, name: 'Equity', unavailable: false },
   { id: 3, name: 'Investment type2', unavailable: false },
   { id: 4, name: 'Investment type3', unavailable: true },
   { id: 5, name: 'Investment type4', unavailable: false },]
@@ -58,6 +58,7 @@ const BusinessAccount = () => {
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false)
+  
   const queryClient = useQueryClient()
   const [industry, setIndustry] = useState(dummyIndustry[0])
   const pathName = usePathname()
@@ -94,7 +95,7 @@ const BusinessAccount = () => {
   const [yearOfFormation, setYearOfFormation] = useState(businessAccountData ? {name: businessAccountData.yearOfFormation} : {name:""})
   const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? {name: businessAccountData.typeOfInvestement} : {name:""})
   const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id:"", name:"" })
-
+  const [equityPercentage,setEquityPercetnage]=useState(businessAccountData ? businessAccountData?.equityPercentage : "")
 const [phoneNumber,setPhoneNumber]=useState(startUpData?.phoneNo)
 const [email,setEmail]=useState(startUpData?.email)
 const [name,setName]=useState(startUpData?.name)
@@ -113,7 +114,7 @@ const [name,setName]=useState(startUpData?.name)
   })
 
  const  addAdvanceDetails = async (advanceDetails: any,email:any) => {
-    // console.log(advanceDetails,email);
+    console.log(advanceDetails);
     const refDoc = doc(db, `startups/${startUpData?.id}/details/advance`);
     const refDoc2 = doc(db, `startups/${startUpData?.id}`);
     const details = {
@@ -155,6 +156,7 @@ const [name,setName]=useState(startUpData?.name)
         currentFinancialIncome: +state.currentFinancialIncome,
         currentValuation: +state.currentValuation,
         typeOfInvestement: typeOfInvestement.name,
+        equityPercentage:+equityPercentage,
         amount: +state.amount,
       }
       // validation start 
@@ -167,6 +169,8 @@ const [name,setName]=useState(startUpData?.name)
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
       await queryClient.invalidateQueries({ queryKey: ['businessAccountExistOrNot'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountExistOrNot'] })
+      await queryClient.invalidateQueries({ queryKey: ['startUpData'] })
+      await queryClient.refetchQueries({ queryKey: ['startUpData'] })
       if(existOrNot){
         toast.success("Changes saved successfully.")
       }else{
@@ -195,6 +199,7 @@ const [name,setName]=useState(startUpData?.name)
           typeOfInvestement:businessAccountData?.typeOfInvestement ,
           panNo:businessAccountData?.panNo 
         });
+ setEquityPercetnage(businessAccountData ? businessAccountData?.equityPercentage : "")
       setCity(businessAccountData ? {name: businessAccountData.city} :{name:""})
     setYearOfFormation(businessAccountData ? {name: businessAccountData.yearOfFormation} :{name:""})
     setTypeOfInvestment(businessAccountData ? {name: businessAccountData.typeOfInvestement} : {name:""})
@@ -527,18 +532,19 @@ useEffect(() => {
               {/* <div className='text-center cursor-pointer text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 sm:mt-4 mt-6'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add product</span></button></div> */}
             </div>
           </div>
-          <div className='grid lg:grid-cols-2 grid-cols-1 sm:grid-cols-2  md:gap-9 gap-7  w-full  sm:mt-7 mt-7 '>
+          <div className='grid lg:grid-cols-2 grid-cols-1 sm:grid-cols-2  md:gap-9 gap-7  w-full  sm:mt-4 mt-7  '>
             <div className='flex flex-col sm:gap-9 gap-7 '>
               <div className='border border-[#C8C8C8]  relative flex items-center rounded-md '>
                 <p className={`${labelStyle}`}>Type of Investment Required</p>
                 <div className='  relative w-full py-3 px-4 rounded-md '>
                   <Listbox value={typeOfInvestement} onChange={setTypeOfInvestment}>
                     <div className=' '>
-                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{(isClient&&typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                      <Listbox.Button  className={` w-full flex items-center justify-between text-start text-sm`}><span>{(isClient&&typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                       <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                         {dummyTypeOfInvestment.map((investment) => (
-                          <Listbox.Option key={investment.id} value={investment} as={Fragment} >
+                          <Listbox.Option  key={investment.id} value={investment} as={Fragment} >
                             {({ active, selected }) => (
+                            
                               <li
                               className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
                             }  flex justify-between px-2 py-1 shadow rounded-md `}
@@ -559,11 +565,30 @@ useEffect(() => {
                   </Listbox>
                 </div>
               </div>
-              <div className={`${borderStyle} `}>
+              {/* <div className={`${borderStyle} `}>
                 <label className={`${labelStyle}`} htmlFor="input">Pan Number</label>
                 <input value={(isClient&&state.panNo)?state.panNo:""} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
-              </div>
+              </div> */}
             </div>
+
+{
+  typeOfInvestement.name==="Equity"&&
+  <div>
+   <div className='flex md:gap-8 sm:gap-4 gap-2 w-full '>
+                  <div className={`${borderStyle} w-[85%] `}>
+                    <label className={`${labelStyle}`} htmlFor="input">Equity Percentage</label>
+                    <input value={equityPercentage} onChange={(e)=>setEquityPercetnage(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
+                  </div>
+                  <div className=' w-[15%]  '>
+                    <div className='percentage-placeholder font-semibold text-base text-[#9bb7d3] py-3  flex justify-center border border-[#C8C8C8]  rounded-md'>
+                    %
+                      {/* <input  type="text" className='py-3 sm:px-5 px-3 outline-0 w-[100%] border border-[#C8C8C8] rounded-md' placeholder='%' /> */}
+                    </div>
+                  </div>
+                </div>
+                </div> 
+}
+
             <div>
               <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                 <div className={`w-[100%]`}>
@@ -575,6 +600,10 @@ useEffect(() => {
                 </div>
               </div>
             </div>
+            <div className={`${borderStyle} `}>
+                <label className={`${labelStyle}`} htmlFor="input">Pan Number</label>
+                <input value={(isClient&&state.panNo)?state.panNo:""} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+              </div>
           </div>
         </div>
         {/* <div className='text-primary font-bold  text-base  '><h2>Photos and Videos</h2></div>
@@ -582,7 +611,7 @@ useEffect(() => {
           <div className='sm:h-[150px] h-[100px] sm:w-[150px] w-[100px] rounded-lg bg-primary text-white text-7xl flex items-center justify-center font-bold'>+</div>
           <div className='sm:h-[150px] h-[100px] sm:w-[150px] w-[100px] rounded-lg border border-primary border-dashed text-primary text-6xl flex items-center justify-center font-bold'>+</div>
         </div> */}
-        <div className='flex flex-col sm:gap-10 gap-6'>
+        <div className='flex flex-col sm:gap-10 gap-6 mt-7 '>
           {/* <div className='text-primary font-bold  text-base  '><h2>Contact</h2></div> */}
           <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-7'>
             <div className={`${borderStyle} `}>

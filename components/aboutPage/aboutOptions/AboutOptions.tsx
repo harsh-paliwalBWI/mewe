@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC,useState,useEffect } from "react";
 import logoImg from "../../../images/a5 1.png";
 import Image from "next/image";
 import blueTickImg from "../../../images/verify 3.svg";
@@ -20,17 +20,18 @@ interface Props {
 }
 
 const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
-  const optionStyle =
-    "flex gap-x-4 bg-[#F3F7FA] px-4 text-sm font-semibold py-4    cursor-pointer";
-  const optionTabStyle =
-    "flex w-full   justify-between xl:text-lg  text-sm font-medium  items-center";
+  const [client, setClient] = useState(false)
+
+  const cookies = { value: getCookie("uid") };
+
+  const optionStyle ="flex gap-x-4 bg-[#F3F7FA] px-4 text-sm font-semibold py-4 cursor-pointer";
+  const optionTabStyle ="flex w-full justify-between xl:text-lg text-sm font-medium items-center";
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(null),
+    queryFn: () => getStartUpData(cookies),
   });
-  // console.log("startUpData", startUpData);
-  const cookies = { value: getCookie("uid") };
+  console.log("startUpData", startUpData);
 
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
@@ -42,6 +43,11 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
     queryKey: ["postsData"],
     queryFn: () => fetchPosts(),
   });
+  useEffect(() => {
+    // console.log("inside use effect");
+    setClient(true)
+
+}, []);
 
   return (
     <>
@@ -61,7 +67,7 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
             <div className="flex justify-center ">
               <div className="xl:h-[145px] md:h-[100px] xl:w-[145px] md:w-[100px] sm:w-[100px] sm:h-[100px] w-[100px] h-[100px]  rounded-full  relative">
                 <Image
-                  src={startUpData?.basic?.coverPic?.url}
+                  src={(client&&startUpData?.basic?.coverPic?.url)?startUpData?.basic?.coverPic?.url:""}
                   alt=""
                   height={1000}
                   width={1000}
@@ -81,25 +87,24 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
             <div className="flex justify-between items-start  w-full">
               <div className="flex flex-col gap-1">
                 <div className=" xl:text-lg lg:text-base text-sm font-semibold ">
-                  <h2>{startUpData?.name}</h2>
+                  <h2>{(client&&startUpData?.name)?startUpData?.name:""}</h2>
                 </div>
                 <div className=" lg:text-base text-sm font-medium text-[#868E97] ">
-                  <p>{businessAccountData?.category?.name ? businessAccountData?.category?.name : " "}</p>
+                  <p>{(client&&businessAccountData?.category?.name) ? businessAccountData?.category?.name : " "}</p>
                 </div>
               </div>
-              <div>
-                {/* <Image src={bookMarkImg} alt=''/> */}
+              {/* <div>
                 <FlatIcon className="flaticon-bookmark text-black xl:text-3xl text-xl font-bold" />
-              </div>
+              </div> */}
             </div>
           </div>
-          <div className="flex items-center gap-1 my-6">
+          <div className="flex items-center gap-1 mt-6">
             <FlatIcon className="flaticon-map xl:text-2xl text-lg" />
             <p className="text-[#707172] xl:text-base text-xs  font-medium capitalize">
-            {businessAccountData?.city ? businessAccountData?.city : "Your Startup City"}
+            {(client&&businessAccountData?.city) ? businessAccountData?.city : "Your Startup City"}
             </p>
           </div>
-          <div className="flex xl:text-base text-sm font-medium tracking-widest gap-3">
+          {/* <div className="flex xl:text-base text-sm font-medium tracking-widest gap-3">
             <div className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  ">
               <button className="flex items-center justify-center gap-1">
                 <FlatIcon className="flaticon-add-user xl:text-2xl text-xl" />
@@ -109,15 +114,15 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
             <div className="w-[50%] border border-primary text-center rounded-full xl:py-3 py-2 text-primary">
               <button>Message</button>
             </div>
-          </div>
-          <div className="flex flex-col gap-4 xl:py-10 py-5">
+          </div> */}
+          <div className="flex flex-col gap-4 xl:pb-10 py-5">
             <div
               //   onClick={()=>setSelectedTab(1)}
               className={`flex w-full xl:text-lg  text-sm font-medium ${businessAccountData?.description ? "flex-col justify-start items-start" : "flex-row justify-between  items-center"}`}
             >
               <h2 className="text-primary">About</h2>
               {/* {businessAccountData?.description ? <br></br>:null} */}
-              <h2 className="text-[#868E97] text-xs sm:text-sm md:text-base">{businessAccountData?.description ? businessAccountData?.description : "-"}</h2>
+              <h2 className="text-[#868E97] text-xs sm:text-sm md:text-base">{(client&&businessAccountData?.description) ? businessAccountData?.description : "-"}</h2>
             </div>
             <div
               //   onClick={()=>setSelectedTab(2)}
@@ -138,7 +143,21 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Posts</h2>
-              <h2 className="text-[#868E97]">{postsData? postsData?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{(client&&postsData)? postsData?.length: "-"}</h2>
+            </div>
+            <div
+              //   onClick={()=>setSelectedTab(4)}
+              className={`${optionTabStyle}`}
+            >
+              <h2 className="text-primary">Followers</h2>
+              <h2 className="text-[#868E97]">{(client&&startUpData)? startUpData.followers?.length: "-"}</h2>
+            </div>
+            <div
+              //   onClick={()=>setSelectedTab(4)}
+              className={`${optionTabStyle}`}
+            >
+              <h2 className="text-primary">Followings</h2>
+              <h2 className="text-[#868E97]">{(client&&startUpData)? startUpData.following?.length: "-"}</h2>
             </div>
           </div>
         </div>

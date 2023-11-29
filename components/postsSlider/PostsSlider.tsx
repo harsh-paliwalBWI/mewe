@@ -67,7 +67,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
     <>
     {
       postsData && postsData.length <= 0?
-     ( <div className="md:text-2xl text-xl text-center md:h-[60vh] h-[20vh] flex items-center justify-center text-primary ">
+     ( <div className="text-base text-center md:h-[58vh] h-[30vh] bg-[#F8FAFC] flex items-center justify-center text-primary ">
       <h1>No posts yet !</h1></div>):(
     
     <div className="  w-full  h-fit ">
