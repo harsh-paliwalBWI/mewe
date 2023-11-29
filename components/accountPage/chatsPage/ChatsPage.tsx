@@ -43,7 +43,8 @@ const ChatsPage = () => {
   const [username, setUsername] = useState("");
   // const [user, setUser] = useState([]:any);
   const [searchlist, setsearchlist] = useState([]);
-  const [err, setErr] = useState(false);
+  // const [err, setErr] = useState(false);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
   const [chats, setChats] = useState([]);
   const { dispatch } = useContext(ChatContext);
@@ -62,9 +63,20 @@ const ChatsPage = () => {
   const handleKey = async (e: any) => {
     if (e.code === "Enter" && username) {
       const searchResult: any = await handleSearch(username, cookies);
-      console.log(searchResult.arr,"eeeeee")
+      console.log(searchResult.arr, "eeeeee");
       setsearchlist(searchResult.arr);
-      }
+      setSearchPerformed(true)
+    }
+  };
+
+  const newsearch = async () => {
+    if (username) {
+      const searchResult: any = await handleSearch(username, cookies);
+      console.log(searchResult.arr, "eeeeee");
+      setsearchlist(searchResult.arr);
+      console.log(searchlist, "ffffffff");
+      setSearchPerformed(true)
+    }
   };
 
   const handleKey2 = async (e: any) => {
@@ -294,7 +306,10 @@ const ChatsPage = () => {
                 value={username}
               />
             </div>
-            <div className="bg-primary md:text-base sm:text-sm text-xs text-white cursor-pointer lg:px-10 md:px-6  px-3 md:py-3 py-2 rounded-md">
+            <div
+              className="bg-primary md:text-base sm:text-sm text-xs text-white cursor-pointer lg:px-10 md:px-6  px-3 md:py-3 py-2 rounded-md"
+              onClick={async () => await newsearch()}
+            >
               + New Chat
             </div>
           </div>
@@ -306,44 +321,44 @@ const ChatsPage = () => {
         <div className="lg:block hidden  sm:h-full h-auto border-2 border-black rounded-xl md:w-[40%] w-[100%] sm:pt-6 pt-4 pb-2">
           {/* <Link href={"/chat-page"}> */}
           <div className=" h-full w-full overflow-y-scroll  relative ">
-            {searchlist.length !== 0 ? (
-              <>
-                <div className="font-bold sm:text-lg text-base sm:mb-4 mb-3 px-5 ">
-                  Search Result
-                </div>
-                <div className="mb-4 sm:mb-6 md:mb-8">
-                  <div className="  px-5">
-                    {searchlist.map((item, index) => (
-                      <div
-                        className="flex hover:bg-[#F3F7FA] gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 "
-                        key={index}
-                        onClick={() => {
-                          handleSelect((item as any)?.docId);
-                          // console.log((item as any)?.docId, "kkkgkk");
-                          console.log(item as any, "cvcvcv");
-                          // () => handleChange(item);
-                          setUsername("");
-                          setsearchlist([]);
-                        }}
-                      >
-                        <div className="w-[20%] aspect-square rounded-full ">
-                          <Image
-                            src={
-                              (item as any).coverPic?.url || avatarimg
-                            }
-                            alt=""
-                            height={1000}
-                            width={1000}
-                            className="h-[100%] w-[100%] rounded-full object-fill"
-                          />
-                        </div>
-                        <div className="  w-full flex flex-col sm:gap-1">
-                          <div className="flex justify-between">
-                            <h2 className="sm:text-base text-sm font-bold ">
-                              {" "}
-                              {(item as any)?.name || ""}
-                            </h2>
-                            {/* <div className="flex items-center  text-2xl ">
+            {searchPerformed ? (
+              searchlist.length !== 0  ? (
+                <>
+                  <div className="font-bold sm:text-lg text-base sm:mb-4 mb-3 px-5 ">
+                    Search Result
+                  </div>
+                  <div className="mb-4 sm:mb-6 md:mb-8">
+                    <div className="  px-5">
+                      {searchlist.map((item, index) => (
+                        <div
+                          className="flex hover:bg-[#F3F7FA] gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 "
+                          key={index}
+                          onClick={() => {
+                            handleSelect((item as any)?.docId);
+                            // console.log((item as any)?.docId, "kkkgkk");
+                            console.log(item as any, "cvcvcv");
+                            // () => handleChange(item);
+                            setUsername("");
+                            setsearchlist([]);
+                            setSearchPerformed(false)
+                          }}
+                        >
+                          <div className="w-[20%] aspect-square rounded-full ">
+                            <Image
+                              src={(item as any).coverPic?.url || avatarimg}
+                              alt=""
+                              height={1000}
+                              width={1000}
+                              className="h-[100%] w-[100%] rounded-full object-fill"
+                            />
+                          </div>
+                          <div className="  w-full flex flex-col sm:gap-1">
+                            <div className="flex justify-between">
+                              <h2 className="sm:text-base text-sm font-bold ">
+                                {" "}
+                                {(item as any)?.name || ""}
+                              </h2>
+                              {/* <div className="flex items-center  text-2xl ">
                           <FlatIcon className="flaticon-readed text-primary" />
                           <p className="text-xs text-primary font-bold">
                           {new Date((item as any)?.lastMsgAt).getHours()}:
@@ -352,21 +367,30 @@ const ChatsPage = () => {
                           ).getMinutes()}
                           </p>
                         </div> */}
-                          </div>
+                            </div>
 
-                          {/* <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1">
+                            {/* <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1">
                          {(item as any)?.lastMsg || ""}
                       </p> */}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </>
-            ) : // <div className="h-full w-full flex justify-center items-center">
-            //   <h1>No Startup Found With This Name</h1>{" "}
-            // </div>
-            null}
+                </>
+              ) : (
+                <>
+                  <>
+                    <div className="font-bold sm:text-lg text-base sm:mb-4 mb-3 px-5">
+                      Search Result
+                    </div>
+                    <div className="h-12 sm:h-16 md:h-20 w-full flex justify-center items-center">
+                      <h1>No Startup Found With This Name</h1>{" "}
+                    </div>
+                  </>
+                </>
+              )
+            ) : null}
 
             <div className="font-bold sm:text-lg text-base sm:mb-5 mb-4 px-5   ">
               My Chats

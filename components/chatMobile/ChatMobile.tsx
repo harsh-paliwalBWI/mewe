@@ -47,6 +47,7 @@ const ChatMobile = () => {
 
   const [username, setUsername] = useState("");
   const [searchlist, setsearchlist] = useState([]);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
   const [chats, setChats] = useState([]);
   const { dispatch } = useContext(ChatContext);
@@ -56,11 +57,21 @@ const ChatMobile = () => {
   const currUser = auth.currentUser;
 
   const handleKey = async (e: any) => {
-    if (e.code === "Enter") {
-      const searchResult: any = await handleSearch(username, cookies );
-      console.log(searchResult.arr,"eeeeee")
-      setsearchlist(searchResult.arr || []);
-      console.log(searchlist,"ffffffff")
+    if (e.code === "Enter" && username) {
+      const searchResult: any = await handleSearch(username, cookies);
+      console.log(searchResult.arr, "eeeeee");
+      setsearchlist(searchResult.arr);
+      setSearchPerformed(true)
+    }
+  };
+
+  const newsearch = async () => {
+    if (username) {
+      const searchResult: any = await handleSearch(username, cookies);
+      console.log(searchResult.arr, "eeeeee");
+      setsearchlist(searchResult.arr);
+      console.log(searchlist, "ffffffff");
+      setSearchPerformed(true)
     }
   };
 
@@ -197,7 +208,7 @@ const ChatMobile = () => {
               value={username}
             />
           </div>
-          <div className="bg-primary md:text-base sm:text-sm text-xs text-white cursor-pointer lg:px-10 md:px-6  px-3 md:py-3 py-2 rounded-md">
+          <div className="bg-primary md:text-base sm:text-sm text-xs text-white cursor-pointer lg:px-10 md:px-6  px-3 md:py-3 py-2 rounded-md" onClick={async()=>await newsearch()}>
             + New Chat
           </div>
         </div>
@@ -207,7 +218,8 @@ const ChatMobile = () => {
         className={` h-auto border-2 border-black rounded-xl w-[100%] py-3 mt-4 `}
       >
         <div className={` overflow-y-scroll sm:h-full  ${currTab === "chat" ? "max-h-[75vh] " : "max-h-[80vh]"}  h-auto w-full  py-3`}>
-          {searchlist.length !== 0 ? (
+          {searchPerformed ? (
+              searchlist.length !== 0  ? (
             <>
               <div className="font-bold sm:text-lg text-base md:mb-5 sm:mb-4 mb-3 px-5 ">
                 Search Result
@@ -224,6 +236,7 @@ const ChatMobile = () => {
                         // () => handleChange(item);
                         setUsername("");
                         setsearchlist([]);
+                        setSearchPerformed(false)
                       }}
                     >
                       <div className="w-[60px] h-[60px] rounded-full aspect-square">
@@ -261,10 +274,19 @@ const ChatMobile = () => {
                 </div>
               </div>
             </>
-          ) : // <div className="h-full w-full flex justify-center items-center">
-          //   <h1>No Startup Found With This Name</h1>{" "}
-          // </div>
-          null}
+          ) : (
+            <>
+              <>
+                <div className="font-bold sm:text-lg text-base sm:mb-4 mb-3 px-5">
+                  Search Result
+                </div>
+                <div className="h-12 sm:h-16 md:h-20 w-full flex justify-center items-center">
+                  <h1>No Startup Found With This Name</h1>{" "}
+                </div>
+              </>
+            </>
+          )
+        ) : null}
 
           <div className="font-bold sm:text-lg text-sm sm:mb-4 mb-3 px-5 ">
             My Chats
