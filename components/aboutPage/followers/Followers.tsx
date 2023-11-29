@@ -23,7 +23,7 @@ const Followers = () => {
     });
 
     const onRemoveHandler = async (data: any) => {
-        console.log("from remove", data);
+        // console.log("from remove", data);
         setIsModalOpen(true)
         try {
             const docid = startUpData?.id;

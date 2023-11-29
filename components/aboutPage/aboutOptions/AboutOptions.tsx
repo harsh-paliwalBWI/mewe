@@ -31,7 +31,7 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
   });
-  console.log("startUpData", startUpData);
+  // console.log("startUpData", startUpData);
 
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],

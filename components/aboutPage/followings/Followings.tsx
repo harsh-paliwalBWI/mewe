@@ -24,7 +24,7 @@ const Followings = () => {
     //   console.log("from followings",startUpData);
 
     const onUnfollowHandler = async (data: any) => {
-        console.log(data, "from unfollow");
+        // console.log(data, "from unfollow");
         setIsModalOpen(true)
         try {
             const docid = startUpData?.id;

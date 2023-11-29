@@ -36,7 +36,7 @@ const BussinessCard: FC<Props> = ({ startup }) => {
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
   });
-  console.log("startUpData", startUpData);
+  // console.log("startUpData", startUpData);
 
   const isFollowing = startUpData?.following?.some(
     (item: any) => item.docId === startup.docId

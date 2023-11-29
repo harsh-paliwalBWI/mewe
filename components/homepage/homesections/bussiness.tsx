@@ -21,7 +21,7 @@ const Bussiness = () => {
     queryKey: ["allStartUpsData"],
     queryFn: () => fetchAllStartUps(),
 });
-console.log("allStartUpsData-------",allStartUpsData);
+// console.log("allStartUpsData-------",allStartUpsData);
 // console.log(allStartUpsData.slice(0,4),"----------");
 
 
