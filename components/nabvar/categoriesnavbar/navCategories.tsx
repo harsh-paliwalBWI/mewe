@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FlatIcon from "../../flatIcon/flatIcon";
@@ -13,16 +13,23 @@ const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 
 const Categories = ({ cookie }: any) => {
   const cookies = { value: getCookie("uid") };
+  const [isClient, setIsClient] = useState(false);
 
   // const { data: startUpData } = useQuery({
   //   queryKey: ["startUpData"],
   //   queryFn: () => getStartUpData(cookies),
   // });
 
-  console.log(cookies?.value, "from nav");
+  // console.log(cookies?.value, "from nav");
 
   const pathName = usePathname();
   const textStyle = "lg:text-base md:text-sm text-xs  md:px-2   relative";
+
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return (
     <div className="w-full bg-[#272726] px-body flex justify-center md:justify-start lg:justify-center items-center py-2 sm:py-3 md:py-4 ">
       <div className="flex justify-center  gap-4 w-full  md:w-[80%] lg:w-full   relative ">
@@ -72,7 +79,7 @@ const Categories = ({ cookie }: any) => {
             )}
           </div>
         </Link>
-        {!cookies?.value ? (
+        { isClient && !cookies?.value ? (
           <Link href={"/welcome"}>
             <div className={`text-[#CBCBCB] ${textStyle}`}>
               <h1 className=" ">Log in/Sign up</h1>
@@ -81,7 +88,7 @@ const Categories = ({ cookie }: any) => {
               )}
             </div>
           </Link>
-        ) : null}
+         ) : null}
       </div>
       <div className="md:block hidden absolute right-[4%] ">
         <Link href={{ pathname: "/account", query: { tab: "new-post" } }}>
