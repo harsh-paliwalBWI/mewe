@@ -5,12 +5,14 @@ import FlatIcon from '@/components/flatIcon/flatIcon';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify"
-import {  fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
+import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Loader from '@/components/loader/Loader';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase-config';
 import { getCookie } from "cookies-next";
+import Modal from '@/components/Modal/modal';
+import { CircularProgress } from '@mui/material';
 
 
 const dummyCategory = [
@@ -58,14 +60,14 @@ const BusinessAccount = () => {
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false)
-  
+
   const queryClient = useQueryClient()
   const [industry, setIndustry] = useState(dummyIndustry[0])
   const pathName = usePathname()
   const router = useRouter()
 
-  
-  
+
+
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
@@ -81,27 +83,27 @@ const BusinessAccount = () => {
   });
   // console.log(businessAccountData, "account data");
 
-  const {data:existOrNot}=useQuery({
-    queryKey:["businessAccountExistOrNot"],
-    queryFn:()=>isBusinessAccountExistOrNot(cookies)
+  const { data: existOrNot } = useQuery({
+    queryKey: ["businessAccountExistOrNot"],
+    queryFn: () => isBusinessAccountExistOrNot(cookies)
   })
-  
+
   // console.log(cookies,"cookie");
-  
+
   // console.log(existOrNot,"on not");
 
-  const [companySize, setCompanySize] = useState(businessAccountData ? {name: businessAccountData.companySize} : {name:""})
-  const [city, setCity] = useState(businessAccountData ? {name: businessAccountData.city} :{name:""} )
-  const [yearOfFormation, setYearOfFormation] = useState(businessAccountData ? {name: businessAccountData.yearOfFormation} : {name:""})
-  const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? {name: businessAccountData.typeOfInvestement} : {name:""})
-  const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id:"", name:"" })
-  const [equityPercentage,setEquityPercetnage]=useState(businessAccountData ? businessAccountData?.equityPercentage : "")
-const [phoneNumber,setPhoneNumber]=useState(startUpData?.phoneNo)
-const [email,setEmail]=useState(startUpData?.email)
-const [name,setName]=useState(startUpData?.name)
+  const [companySize, setCompanySize] = useState(businessAccountData ? { name: businessAccountData.companySize } : { name: "" })
+  const [city, setCity] = useState(businessAccountData ? { name: businessAccountData.city } : { name: "" })
+  const [yearOfFormation, setYearOfFormation] = useState(businessAccountData ? { name: businessAccountData.yearOfFormation } : { name: "" })
+  const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? { name: businessAccountData.typeOfInvestement } : { name: "" })
+  const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id: "", name: "" })
+  const [equityPercentage, setEquityPercetnage] = useState(businessAccountData ? businessAccountData?.equityPercentage : "")
+  const [phoneNumber, setPhoneNumber] = useState(startUpData?.phoneNo)
+  const [email, setEmail] = useState(startUpData?.email)
+  const [name, setName] = useState(startUpData?.name)
   const [state, setState] = useState({
     // name: startUpData?.name,
-    founderName: businessAccountData?businessAccountData?.founderName:"",
+    founderName: businessAccountData ? businessAccountData?.founderName : "",
     coFounderName: businessAccountData ? businessAccountData?.coFounderName : "",
     linkedInUrl: businessAccountData ? businessAccountData?.social?.linkedin : "",
     description: businessAccountData ? businessAccountData?.description : "",
@@ -113,24 +115,24 @@ const [name,setName]=useState(startUpData?.name)
     panNo: businessAccountData ? businessAccountData?.panNo : ""
   })
 
- const  addAdvanceDetails = async (advanceDetails: any,email:any) => {
-    console.log(advanceDetails);
+  const addAdvanceDetails = async (advanceDetails: any, email: any) => {
+    // console.log(advanceDetails);
     const refDoc = doc(db, `startups/${startUpData?.id}/details/advance`);
     const refDoc2 = doc(db, `startups/${startUpData?.id}`);
     const details = {
+      name: advanceDetails.name,
+      email: email,
+      basic: {
         name: advanceDetails.name,
-        email:email,
-        basic: {
-            name: advanceDetails.name,
-            category: {
-                id: advanceDetails.category.id,
-                name: advanceDetails.category.name,
-            },
+        category: {
+          id: advanceDetails.category.id,
+          name: advanceDetails.category.name,
         },
+      },
     };
     await setDoc(refDoc2, details, { merge: true });
     await setDoc(refDoc, advanceDetails, { merge: true });
-};
+  };
   const onSubmitHandler = async () => {
     setLoading(true)
     try {
@@ -156,7 +158,7 @@ const [name,setName]=useState(startUpData?.name)
         currentFinancialIncome: +state.currentFinancialIncome,
         currentValuation: +state.currentValuation,
         typeOfInvestement: typeOfInvestement.name,
-        equityPercentage:+equityPercentage,
+        equityPercentage: +equityPercentage,
         amount: +state.amount,
       }
       // validation start 
@@ -164,16 +166,16 @@ const [name,setName]=useState(startUpData?.name)
       // if(!state.name&&!state.founderName&&state.coFounderName&&state.linkedInUrl&&category.name&&state.address&&city.name&&companySize.name&&yearOfFormation.name
       //   &&state.description&&state.panNo&&state.currentFinancialIncome&&state.currentValuation&&state.amount&&email)
       // validation end 
-      await addAdvanceDetails(accountInfo,email)
+      await addAdvanceDetails(accountInfo, email)
       await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
       await queryClient.invalidateQueries({ queryKey: ['businessAccountExistOrNot'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountExistOrNot'] })
       await queryClient.invalidateQueries({ queryKey: ['startUpData'] })
       await queryClient.refetchQueries({ queryKey: ['startUpData'] })
-      if(existOrNot){
+      if (existOrNot) {
         toast.success("Changes saved successfully.")
-      }else{
+      } else {
         toast.success("Business account created.")
 
       }
@@ -186,36 +188,36 @@ const [name,setName]=useState(startUpData?.name)
 
   useEffect(() => {
     if (businessAccountData) {
-        setState({
-          // name: startUpData?.name,
-          founderName:businessAccountData? businessAccountData?.founderName:"",
-          coFounderName:businessAccountData?.coFounderName ,
-          linkedInUrl: businessAccountData?.social?.linkedin ,
-          description:  businessAccountData?.description ,
-          address: businessAccountData?.address?.line1 ,
-          currentFinancialIncome: businessAccountData?.currentFinancialIncome,
-          currentValuation:  businessAccountData?.currentValuation ,
-          amount: businessAccountData?.amount ,
-          typeOfInvestement:businessAccountData?.typeOfInvestement ,
-          panNo:businessAccountData?.panNo 
-        });
- setEquityPercetnage(businessAccountData ? businessAccountData?.equityPercentage : "")
-      setCity(businessAccountData ? {name: businessAccountData.city} :{name:""})
-    setYearOfFormation(businessAccountData ? {name: businessAccountData.yearOfFormation} :{name:""})
-    setTypeOfInvestment(businessAccountData ? {name: businessAccountData.typeOfInvestement} : {name:""})
-  setCompanySize(businessAccountData ? {name: businessAccountData.companySize} :{name:""})
-setCategory(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id:"", name:"" })
+      setState({
+        // name: startUpData?.name,
+        founderName: businessAccountData ? businessAccountData?.founderName : "",
+        coFounderName: businessAccountData?.coFounderName,
+        linkedInUrl: businessAccountData?.social?.linkedin,
+        description: businessAccountData?.description,
+        address: businessAccountData?.address?.line1,
+        currentFinancialIncome: businessAccountData?.currentFinancialIncome,
+        currentValuation: businessAccountData?.currentValuation,
+        amount: businessAccountData?.amount,
+        typeOfInvestement: businessAccountData?.typeOfInvestement,
+        panNo: businessAccountData?.panNo
+      });
+      setEquityPercetnage(businessAccountData ? businessAccountData?.equityPercentage : "")
+      setCity(businessAccountData ? { name: businessAccountData.city } : { name: "" })
+      setYearOfFormation(businessAccountData ? { name: businessAccountData.yearOfFormation } : { name: "" })
+      setTypeOfInvestment(businessAccountData ? { name: businessAccountData.typeOfInvestement } : { name: "" })
+      setCompanySize(businessAccountData ? { name: businessAccountData.companySize } : { name: "" })
+      setCategory(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id: "", name: "" })
     }
-    if(startUpData){
-setPhoneNumber(startUpData?.phoneNo)
-setEmail(startUpData.email)
-setName(startUpData?.name)
+    if (startUpData) {
+      setPhoneNumber(startUpData?.phoneNo)
+      setEmail(startUpData.email)
+      setName(startUpData?.name)
     }
-}, [businessAccountData,existOrNot,startUpData]);
+  }, [businessAccountData, existOrNot, startUpData]);
 
-useEffect(() => {
-  setIsClient(true)
-}, [])
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     <div className={` h-fit py-2  relative z-0 mb-10 ${pathName.includes("business-account") ? "block  w-[100%] sm:mt-5" : "sm:block hidden md:w-[63%] w-[100%]"} `}>
@@ -233,25 +235,25 @@ useEffect(() => {
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full  ">
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Name of the Startup</label>
-            <input 
-            value={(isClient&&name)?name:""} 
-            onChange={(e) => setName(e.target.value)} 
-            className={`${inputStyle}`} type="text" id="input" />
+            <input
+              value={(isClient && name) ? name : ""}
+              onChange={(e) => setName(e.target.value)}
+              className={`${inputStyle}`} type="text" id="input" />
           </div>
           <div className={`${borderStyle} md:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Founder Name</label>
-            <input value={(isClient&&state.founderName)?state.founderName:""} onChange={(e) => setState({ ...state, founderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={(isClient && state.founderName) ? state.founderName : ""} onChange={(e) => setState({ ...state, founderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
         </div>
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full ">
           <div className={`${borderStyle} sm:w-[50%] w-full`}>
             <label className={`${labelStyle}`} htmlFor="input">Co- Founder Name</label>
-            <input value={(isClient&&state.coFounderName)?state.coFounderName:""} onChange={(e) => setState({ ...state, coFounderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={(isClient && state.coFounderName) ? state.coFounderName : ""} onChange={(e) => setState({ ...state, coFounderName: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
           <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full sm:w-[50%] w-full `}>
             <div className={`w-[100%]`}>
               <label className={`${labelStyle}`} htmlFor="input">LinkedIN URL</label>
-              <input value={(isClient&&state.linkedInUrl)?state.linkedInUrl:""} onChange={(e) => setState({ ...state, linkedInUrl: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+              <input value={(isClient && state.linkedInUrl) ? state.linkedInUrl : ""} onChange={(e) => setState({ ...state, linkedInUrl: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
             </div>
             <div className='  px-4'>
               <FlatIcon className="flaticon-help-1 text-[#9bb7d3] text-xl" />
@@ -264,7 +266,7 @@ useEffect(() => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={category} onChange={setCategory}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name&&isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name && isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCategory.map((category) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
@@ -292,15 +294,15 @@ useEffect(() => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={companySize} onChange={setCompanySize}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span> {(isClient&&companySize?.name && companySize.name) || "Select"}</span><span>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span> {(isClient && companySize?.name && companySize.name) || "Select"}</span><span>
                     <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCompanySize.map((company) => (
                       <Listbox.Option key={company.id} value={company} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                          className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
-                        }  flex justify-between px-2 py-1 shadow rounded-md `}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                              }  flex justify-between px-2 py-1 shadow rounded-md `}
                           >
                             {/* {selected && <CheckIcon />} */}
 
@@ -323,7 +325,7 @@ useEffect(() => {
 
           <div className={`${borderStyle} w-[100%]`}>
             <label className={`${labelStyle}`} htmlFor="input">Address</label>
-            <input value={(isClient&&state.address)?state.address:""} onChange={(e) => setState({ ...state, address: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            <input value={(isClient && state.address) ? state.address : ""} onChange={(e) => setState({ ...state, address: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
           </div>
         </div>
         <div className="flex sm:flex-row flex-col md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full relative ">
@@ -332,16 +334,16 @@ useEffect(() => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={city} onChange={setCity}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{(isClient&&city?.name && city.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{(isClient && city?.name && city.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCities.map((city) => (
                       <Listbox.Option key={city.id} value={city} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                          className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
-                        }  flex justify-between px-2 py-1 shadow rounded-md `}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                              }  flex justify-between px-2 py-1 shadow rounded-md `}
                           >
-                     
+
 
                             <span>
                               {city.name}
@@ -394,7 +396,7 @@ useEffect(() => {
               Description
             </label>
             <textarea
-              value={(isClient&&state.description)?state.description:""} onChange={(e) => setState({ ...state, description: e.target.value })}
+              value={(isClient && state.description) ? state.description : ""} onChange={(e) => setState({ ...state, description: e.target.value })}
               name=""
               id=""
               className={`${inputStyle}`}
@@ -408,14 +410,14 @@ useEffect(() => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={yearOfFormation} onChange={setYearOfFormation}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(isClient&&yearOfFormation?.name && yearOfFormation.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(isClient && yearOfFormation?.name && yearOfFormation.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyYearOfFormation.map((year) => (
                       <Listbox.Option key={year.id} value={year} as={Fragment} >
                         {({ active, selected }) => (
                           <li
-                          className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
-                        }  flex justify-between px-2 py-1 shadow rounded-md `}
+                            className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                              }  flex justify-between px-2 py-1 shadow rounded-md `}
                           >
                             {/* {selected && <CheckIcon />} */}
 
@@ -438,13 +440,13 @@ useEffect(() => {
       <div>
         <div className='text-primary font-bold  text-base  '><h2>Financials</h2></div>
         <div className='w-full  sm:my-8 my-5'>
-          <div className="grid sm:grid-cols-2  grid-cols-1 md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-7 w-full  ">
+          <div className="grid sm:grid-cols-2  grid-cols-1 md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-2 w-full  ">
             <div className='flex flex-col gap-5  '>
               <div className='flex flex-col sm:gap-9 gap-7'>
                 <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                   <div className={`w-[100%]`}>
                     <label className={`${labelStyle}`} htmlFor="input">Current Financial Income</label>
-                    <input value={(isClient&&state.currentFinancialIncome)?state.currentFinancialIncome:""} onChange={(e) => setState({ ...state, currentFinancialIncome: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                    <input value={(isClient && state.currentFinancialIncome) ? state.currentFinancialIncome : ""} onChange={(e) => setState({ ...state, currentFinancialIncome: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                   </div>
                   <div className='px-4 text-xl text-[#9bb7d3]'>
                     &#8377;
@@ -510,7 +512,7 @@ useEffect(() => {
                 <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                   <div className={`w-[100%]`}>
                     <label className={`${labelStyle}`} htmlFor="input">Current Valuation</label>
-                    <input value={(isClient&&state.currentValuation)?state.currentValuation:""} onChange={(e) => setState({ ...state, currentValuation: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                    <input value={(isClient && state.currentValuation) ? state.currentValuation : ""} onChange={(e) => setState({ ...state, currentValuation: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                   </div>
                   <div className='px-4 text-xl text-[#9bb7d3]'>
                     &#8377;
@@ -532,22 +534,22 @@ useEffect(() => {
               {/* <div className='text-center cursor-pointer text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 sm:mt-4 mt-6'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add product</span></button></div> */}
             </div>
           </div>
-          <div className='grid lg:grid-cols-2 grid-cols-1 sm:grid-cols-2  md:gap-9 gap-7  w-full  sm:mt-4 mt-7  '>
+          <div className='grid lg:grid-cols-2 grid-cols-1 md:grid-cols-2  sm:gap-y-9 gap-y-7  md:gap-x-9 gap-x-5 w-full  sm:mt-4 mt-7'>
             <div className='flex flex-col sm:gap-9 gap-7 '>
               <div className='border border-[#C8C8C8]  relative flex items-center rounded-md '>
                 <p className={`${labelStyle}`}>Type of Investment Required</p>
                 <div className='  relative w-full py-3 px-4 rounded-md '>
                   <Listbox value={typeOfInvestement} onChange={setTypeOfInvestment}>
                     <div className=' '>
-                      <Listbox.Button  className={` w-full flex items-center justify-between text-start text-sm`}><span>{(isClient&&typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{(isClient && typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                       <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                         {dummyTypeOfInvestment.map((investment) => (
-                          <Listbox.Option  key={investment.id} value={investment} as={Fragment} >
+                          <Listbox.Option key={investment.id} value={investment} as={Fragment} >
                             {({ active, selected }) => (
-                            
+
                               <li
-                              className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
-                            }  flex justify-between px-2 py-1 shadow rounded-md `}
+                                className={`${active ? 'bg-blue-500 text-white cursor-pointer' : 'bg-white text-black cursor-pointer'
+                                  }  flex justify-between px-2 py-1 shadow rounded-md `}
                               >
                                 {/* {selected && <CheckIcon />} */}
 
@@ -570,30 +572,28 @@ useEffect(() => {
                 <input value={(isClient&&state.panNo)?state.panNo:""} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
               </div> */}
             </div>
-
-{
-  typeOfInvestement.name==="Equity"&&
-  <div>
-   <div className='flex md:gap-8 sm:gap-4 gap-2 w-full '>
+            {
+              typeOfInvestement.name === "Equity" &&
+              <div>
+                <div className='flex md:gap-8 sm:gap-4 gap-2 w-full '>
                   <div className={`${borderStyle} w-[85%] `}>
                     <label className={`${labelStyle}`} htmlFor="input">Equity Percentage</label>
-                    <input value={equityPercentage} onChange={(e)=>setEquityPercetnage(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
+                    <input value={equityPercentage} onChange={(e) => setEquityPercetnage(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
                   </div>
                   <div className=' w-[15%]  '>
-                    <div className='percentage-placeholder font-semibold text-base text-[#9bb7d3] py-3  flex justify-center border border-[#C8C8C8]  rounded-md'>
-                    %
+                    <div className='percentage-placeholder font-semibold text-base text-[#9bb7d3] py-2.5  flex justify-center border border-[#C8C8C8]  rounded-md'>
+                      %
                       {/* <input  type="text" className='py-3 sm:px-5 px-3 outline-0 w-[100%] border border-[#C8C8C8] rounded-md' placeholder='%' /> */}
                     </div>
                   </div>
                 </div>
-                </div> 
-}
-
+              </div>
+            }
             <div>
               <div className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}>
                 <div className={`w-[100%]`}>
                   <label className={`${labelStyle}`} htmlFor="input">Amount</label>
-                  <input value={(isClient&&state.amount)?state.amount:""} onChange={(e) => setState({ ...state, amount: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
+                  <input value={(isClient && state.amount) ? state.amount : ""} onChange={(e) => setState({ ...state, amount: e.target.value })} className={`${inputStyle}  w-[100%]`} type="text" id="input" />
                 </div>
                 <div className='px-4 text-xl text-[#9bb7d3]'>
                   &#8377;
@@ -601,9 +601,9 @@ useEffect(() => {
               </div>
             </div>
             <div className={`${borderStyle} `}>
-                <label className={`${labelStyle}`} htmlFor="input">Pan Number</label>
-                <input value={(isClient&&state.panNo)?state.panNo:""} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
-              </div>
+              <label className={`${labelStyle}`} htmlFor="input">Pan Number</label>
+              <input value={(isClient && state.panNo) ? state.panNo : ""} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
+            </div>
           </div>
         </div>
         {/* <div className='text-primary font-bold  text-base  '><h2>Photos and Videos</h2></div>
@@ -616,11 +616,11 @@ useEffect(() => {
           <div className='grid sm:grid-cols-2 grid-cols-1  md:gap-9 gap-7'>
             <div className={`${borderStyle} `}>
               <label className={`${labelStyle}`} htmlFor="input">Email</label>
-              <input value={(isClient&&email)?email:""} onChange={(e)=>setEmail(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
+              <input value={(isClient && email) ? email : ""} onChange={(e) => setEmail(e.target.value)} className={`${inputStyle}`} type="text" id="input" />
             </div>
             <div className={`${borderStyle}  `}>
               <label className={`${labelStyle}`} htmlFor="input">Phone Number</label>
-              <input  value={(isClient&&phoneNumber)?phoneNumber:""} disabled={true} className={`${inputStyle} `} type="text" id="input" />
+              <input value={(isClient && phoneNumber) ? phoneNumber : ""} disabled={true} className={`${inputStyle} `} type="text" id="input" />
             </div>
           </div>
           <div
@@ -630,15 +630,23 @@ useEffect(() => {
             className='bg-primary text-white text-sm font-medium  text-center rounded-full py-4 cursor-pointer'
           >
             <button style={{ height: "100%", position: "relative", }}>
-              {loading && (
+              {/* Save changes */}
+              {/* {loading && (
                 <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
                   <Loader />
                 </div>
-              )}
-              {!loading && (existOrNot?"Save changes": "Submit")}
+              )} */}
+              {existOrNot ? "Save changes" : "Submit"}
             </button>
           </div>
-
+          <Modal isOpen={loading} setOpen={setLoading}>
+            <div className="flex flex-col gap-2 justify-center items-center">
+              <CircularProgress className="!text-white"></CircularProgress>
+              <p className="text-white font-medium text-lg">
+                Processing...
+              </p>
+            </div>
+          </Modal>
           {/* <div onClick={async()=>{
             await onSubmitHandler()
           }} className='bg-primary text-white text-sm font-medium  text-center rounded-full py-4 cursor-pointer'><button>Submit</button>

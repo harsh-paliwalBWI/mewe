@@ -25,6 +25,8 @@ import {
 import Loader from "../loader/Loader";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getStartUpData } from "@/services/startupService";
+import { getCookie } from "cookies-next";
+
 
 const SignInPage = () => {
   const queryClient = useQueryClient();
@@ -37,16 +39,18 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
+  const cookies = { value: getCookie("uid") };
+
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(null),
+    queryFn: () => getStartUpData(cookies),
   });
-  console.log("startUpData", startUpData?.data);
 
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       let startUpExistOrNot: any;
+      let isBlocked;
       const startupsRef = collection(db, "startups");
       const q = query(startupsRef, where("phoneNo", "==", phoneNumber));
       const querySnapshot = await getDocs(q);
@@ -55,41 +59,44 @@ const SignInPage = () => {
         const startUp = docSnap.data();
         const docId = docSnap.id;
         startUpExistOrNot = startUp ? true : false;
-        // console.log("startUpExistOrNot", startUpExistOrNot);
-        // localStorage.setItem("auth", JSON.stringify(docId));
-        // await axios.post(`/api/login?uid=${docId}`);
+        isBlocked = startUp.blockedByAdmin
+        console.log(startUp);
+        console.log("isBlocked", isBlocked);
       } else {
         // console.log('No matching document found');
       }
       if (startUpExistOrNot) {
-        setLoading(true);
-        const recaptchaVerifier = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container",
-          {
-            size: "invisible",
-            callback: (response: any) => {
-              console.log(response);
-            },
-          }
-        );
-        const formattedPhoneNumber = `+91${phoneNumber}`;
-        await signInWithPhoneNumber(
-          auth,
-          formattedPhoneNumber,
-          recaptchaVerifier
-        )
-          .then((confirmationResult) => {
-            setOTPSent(confirmationResult);
-
-            setverification(true);
-            setLoading(false);
-          })
-          .catch((error) => {
-            toast.error(`${error}`);
-            console.log(error + "...Please eload");
-            setLoading(false);
-          });
+        if (!isBlocked) {
+          setLoading(true);
+          const recaptchaVerifier = new RecaptchaVerifier(
+            auth,
+            "recaptcha-container",
+            {
+              size: "invisible",
+              callback: (response: any) => {
+                console.log(response);
+              },
+            }
+          );
+          const formattedPhoneNumber = `+91${phoneNumber}`;
+          await signInWithPhoneNumber(
+            auth,
+            formattedPhoneNumber,
+            recaptchaVerifier
+          )
+            .then((confirmationResult) => {
+              setOTPSent(confirmationResult);
+              setverification(true);
+              setLoading(false);
+            })
+            .catch((error) => {
+              toast.error(`${error}`);
+              console.log(error + "...Please eload");
+              setLoading(false);
+            });
+        } else {
+          toast.error("You have been blocked by admin.")
+        }
       } else {
         router.push("/signup");
         toast.error("New user please Signup first !");
@@ -291,15 +298,15 @@ const SignInPage = () => {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                                e.target.value +
-                                otp.substring(digit)
+                              e.target.value +
+                              otp.substring(digit)
                             );
                           } else {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                                " " +
-                                otp.substring(digit)
+                              " " +
+                              otp.substring(digit)
                             );
                           }
                         }}

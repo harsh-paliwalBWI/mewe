@@ -5,7 +5,7 @@ import FlatIcon from '@/components/flatIcon/flatIcon';
 import { useRouter } from 'next/navigation';
 import { Listbox, Transition } from "@headlessui/react";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchBusinessAccountDetails, getStartUpData } from '@/services/startupService';
+import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase-config';
 import { log } from 'console';
@@ -50,6 +50,11 @@ const MyProfile = () => {
 
     // console.log("advacne", businessAccountData);
 
+    const { data: existOrNot } = useQuery({
+        queryKey: ["businessAccountExistOrNot"],
+        queryFn: () => isBusinessAccountExistOrNot(cookies)
+      })
+//   console.log(existOrNot,"on not");
 
 
     const [profileInfo, setProfileInfo] = useState({
@@ -237,25 +242,25 @@ const MyProfile = () => {
                         className="md:w-[100%] sm:mt-4 mt-2 w-full rounded-full font-semibold  bg-primary text-white text-center  py-4  text-sm font-medium cursor-pointer "
                     >
                         <button style={{ height: "100%", position: "relative", }}>
-                    
-                            {loading && (
+                        Save Changes
+                            {/* {loading && (
                                 <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
                                     <Loader />
                                 </div>
                             )}
-                            {!loading && "Save Changes"}
+                            {!loading && "Save Changes"} */}
                         </button>
                     </div>
                 </div>
             </div>
-            {/* <Modal isOpen={loading} setOpen={setLoading}>
+             <Modal isOpen={loading} setOpen={setLoading}>
                 <div className="flex flex-col gap-2 justify-center items-center">
                     <CircularProgress className="!text-white"></CircularProgress>
                     <p className="text-white font-medium text-lg">
                        Saving changes..
                     </p>
                 </div>
-            </Modal> */}
+            </Modal> 
         </>
     )
 }

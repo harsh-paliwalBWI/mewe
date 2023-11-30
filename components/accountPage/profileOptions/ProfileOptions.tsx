@@ -157,7 +157,7 @@ toast.error("Something went wrong !")
             </div>
             </Link>
             
-                <div className="absolute bottom-1 right-1  rounded-full z-30 ">
+                <div className="absolute bottom-1 right-1  rounded-full  ">
                 <input
                   placeholder="Destination Image"
                   type="file"
