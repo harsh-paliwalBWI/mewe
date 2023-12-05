@@ -27,7 +27,7 @@ interface Props {
 const BussinessCard: FC<Props> = ({ startup }) => {
   const [isClient, setIsClient] = useState(false);
 
-  // console.log(startup,"from card");
+  console.log(startup,"from card");
   const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -149,7 +149,7 @@ const BussinessCard: FC<Props> = ({ startup }) => {
   //   setIsClient(true);
   // }, []);
   return (
-    // <Link href={"/about"}>
+    <Link href={`/startup/${startup?.slug?.name}`}>
     <div className="flex flex-col justify-between items-center gap-1 sm:gap-2 md:gap-3  bg-[#f6f9fd] rounded-[5px] ">
       <div className="relative rounded-[5px] w-full h-auto flex items-center justify-center  ">
         <Image
@@ -237,7 +237,7 @@ const BussinessCard: FC<Props> = ({ startup }) => {
                   </Modal>
       </div>
     </div>
-    // </Link>
+     </Link>
   );
 };
 

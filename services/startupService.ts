@@ -1,7 +1,7 @@
 import { log } from "console";
 import { auth, db } from "../config/firebase-config";
 import { getCookie } from "cookies-next";
-import { collection, getDocs, doc, getDoc, addDoc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, setDoc, query, where, QuerySnapshot } from "firebase/firestore";
 
 export const getStartUpData = async (cookieData: any) => {
     let cookie;
@@ -17,7 +17,7 @@ export const getStartUpData = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    // console.log("uid from getStartUpData",uid);
+    console.log("uid from getStartUpData",uid);
 
     if (uid) {
         const docRef = doc(db, "startups", uid);
@@ -93,7 +93,7 @@ export const fetchBusinessAccountDetails = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    // console.log("uid fetchBusinessAccountDetails",uid);
+    console.log("uid fetchBusinessAccountDetails",uid);
 
     if (uid) {
         const docRef = doc(db, `startups/${uid}/details/advance`);
@@ -111,3 +111,36 @@ export const fetchBusinessAccountDetails = async (cookieData: any) => {
     }
 
 };
+
+export const fetchSingleStartup = async (slug:any) => {
+
+    const product = await getDocs(query(collection(db, "startups"), where('slug.name', '==', slug))).then((val: QuerySnapshot) => {
+        if (val.docs.length != 0) {
+            return { ...val?.docs[0].data(), id: val.docs[0].id };
+        } else {
+            return null;
+        }
+    })
+
+    return JSON.parse(JSON.stringify(product));
+}
+
+export const fetchSingleStartupAdvanceDetails = async (sinlgeId:any) => {
+    console.log(sinlgeId,"----------");
+    
+
+    if (sinlgeId) {
+        const docRef = doc(db, `startups/${sinlgeId}/details/advance`);
+        const data = await getDoc(docRef).then(async (docs) => {
+            if (docs.exists()) {
+                // console.log("logged data", JSON.parse(JSON.stringify({ ...docs.data() })));
+                return await JSON.parse(JSON.stringify({ ...docs.data() }));
+            } else {
+                return null;
+            }
+        });
+        return data;
+    } else {
+        return null;
+    }
+}

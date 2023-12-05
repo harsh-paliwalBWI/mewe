@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import mainImg from "../../images/me we.png";
 import Image from "next/image";
 import falgImg from "../../images/Group 34168.svg";
@@ -56,7 +56,10 @@ const SignUpPage2 = () => {
   //   }
   // ));
 
-
+  const resetTimer = () => {
+    setTime(60);
+    setTimerStarted(false);
+  };
 
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber && name && email) {
@@ -77,11 +80,6 @@ const SignUpPage2 = () => {
         );
         // setRecaptchaVerifier(newRecaptchaVerifier);
       // }
-
-    
-    
-    
-
       const formattedPhoneNumber = `+91${phoneNumber}`;
       await signInWithPhoneNumber(auth, formattedPhoneNumber, newRecaptchaVerifier)
         .then((confirmationResult) => {
@@ -129,6 +127,9 @@ const SignUpPage2 = () => {
     }, 60000); 
   };
 
+  useEffect(()=>{
+
+  },[timerStarted])
   // const resendCode =async () => {
   //   try {
   //     setTime(60);
@@ -185,6 +186,7 @@ const SignUpPage2 = () => {
               createdAt: new Date(),
               name: name,
               email: email,
+              signInMethod:"phone number"
             };
 
            
@@ -221,10 +223,11 @@ const SignUpPage2 = () => {
           //   router.replace("/");
         })
         .catch((err: any) => {
+          setTime(60);
+          setTimerStarted(false);
           setverification(false);
           setLoading(false);
-          console.log(err);
-
+          // console.log(err);
           toast.error("Incorrect OTP! Sign in failed !");
         });
     } catch (err) {
@@ -412,26 +415,66 @@ const SignUpPage2 = () => {
                         maxLength={1}
                         className="xl:py-4 md-py-3  py-2 border border-[#868E97] w-full outline-0 text-center"
                         id={`${"otp" + digit}`}
+                        // old onchsnge start 
+                        // onChange={(e) => {
+                        //   if (e.target.value) {
+                        //     document
+                        //       .getElementById(`${"otp" + (digit + 1)}`)
+                        //       ?.focus();
+                        //     let otp = OTP;
+                        //     setOTP(
+                        //       otp.substring(0, digit - 1) +
+                        //         e.target.value +
+                        //         otp.substring(digit)
+                        //     );
+                        //   } else {
+                        //     let otp = OTP;
+                        //     setOTP(
+                        //       otp.substring(0, digit - 1) +
+                        //         " " +
+                        //         otp.substring(digit)
+                        //     );
+                        //   }
+                        // }}
+                        // old onchange end 
+
+                        // new start 
                         onChange={(e) => {
-                          if (e.target.value) {
-                            document
-                              .getElementById(`${"otp" + (digit + 1)}`)
-                              ?.focus();
-                            let otp = OTP;
-                            setOTP(
-                              otp.substring(0, digit - 1) +
-                                e.target.value +
-                                otp.substring(digit)
-                            );
-                          } else {
-                            let otp = OTP;
-                            setOTP(
-                              otp.substring(0, digit - 1) +
-                                " " +
-                                otp.substring(digit)
-                            );
+                          const digit = parseInt(e.target.value, 10);
+                        
+                          // Cast e.nativeEvent to any to avoid TypeScript errors
+                          const nativeEvent: any = e.nativeEvent;
+                          const isBackspace =
+                            nativeEvent.inputType === 'deleteContentBackward' ||
+                            (nativeEvent.inputType === 'deleteContentForward' &&
+                              nativeEvent.data === null);
+                        
+                          if (!isNaN(digit) || isBackspace) {
+                            const currentIndex = idx;
+                            const nextIndex = isBackspace ? currentIndex - 1 : currentIndex + 1;
+                        
+                            if (nextIndex >= 0 && nextIndex < 6) {
+                              document.getElementById(`otp${nextIndex + 1}`)?.focus();
+                            }
+                        
+                            let newOTP = OTP;
+                            if (!isNaN(digit)) {
+                              newOTP =
+                                newOTP.substring(0, currentIndex) +
+                                digit +
+                                newOTP.substring(currentIndex + 1);
+                            } else {
+                              newOTP =
+                                newOTP.substring(0, currentIndex - 1) +
+                                ' ' +
+                                newOTP.substring(currentIndex);
+                            }
+                        
+                            setOTP(newOTP);
                           }
                         }}
+                        
+                        // new end 
                       />
                     </div>
                   );

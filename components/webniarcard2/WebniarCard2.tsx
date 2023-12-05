@@ -8,6 +8,7 @@ import man from "../../images/man.svg";
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
 import Link from "next/link";
+import { constant } from "@/utils/constants";
 
 const WebniarCard2 = (singlewebinar: any,idx:number) => {
   // console.log(singlewebinar,"kkkk")
@@ -28,18 +29,18 @@ const WebniarCard2 = (singlewebinar: any,idx:number) => {
               className="w-full h-full object-contain"
             />
           </div>
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%]  ">
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] h-[275px]  ">
             <Image
               src={
                 singlewebinardata?.image?.url &&
                 singlewebinardata?.image?.url?.includes("bwi-mewe.appspot")
-                  ? man
-                  : singlewebinardata?.image?.url
+                  ? singlewebinardata?.image?.url
+                  : constant.errImage
               }
               alt=""
               width={1000}
               height={1000}
-              className="w-full h-full object-contain  "
+              className="w-[100%] h-[100%] object-fill   "
             />
           </div>
 
@@ -93,18 +94,20 @@ const WebniarCard2 = (singlewebinar: any,idx:number) => {
                     {/* 09:21:37  */}
                     {singlewebinardata?.time}
                     IST{" "}
+                    {singlewebinardata?.duration&&
                     <span
                       className="opacity-90 text-black text-[8px] sm:text-[10px] md:text-xs font-semibold ml-0
                   sm:ml-1 md:ml-2"
                     >
-                      {/* (45mins) */}({singlewebinardata?.duration}mins)
+                      {/* (45mins) */}({singlewebinardata?.duration})
                     </span>
+}
                   </p>
                 </div>
               </div>
             </div>
             {/* px-1 sm:px-6 md:px-11 lg:px-16  */}
-            <Link href={singlewebinardata?.meetingLink} className=" w-[45%] md:w-[41%] h-fit">
+            <Link href={singlewebinardata?.meetingLink?singlewebinardata?.meetingLink:"#"} className=" w-[45%] md:w-[41%] h-fit">
             {/* <Link href={singlewebinardata?.meetingLink ? singlewebinardata?.meetingLink : ""} target="_blank" className=" w-[45%] md:w-[41%] h-fit"> */}
             <div
               className=" flex  justify-center  items-center  rounded-lg     

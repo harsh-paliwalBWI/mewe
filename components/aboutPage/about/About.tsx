@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, Fragment, useEffect } from "react";
+import React, { FC,useState, Fragment, useEffect } from "react";
 // import PieChart from '../pieChart/PieChart'
 import { select, arc, pie } from "d3";
 import PieChartDisplay from "../pieChart/PieChartDisplay";
@@ -8,13 +8,22 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import {
   fetchBusinessAccountDetails,
+  fetchSingleStartupAdvanceDetails,
   getStartUpData,
   isBusinessAccountExistOrNot,
 } from "@/services/startupService";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 
-const About = () => {
+
+interface Props {
+
+  aboutInfo:any
+}
+
+const About: FC<Props> = ({aboutInfo}) => {
+  console.log("aboutInfo",aboutInfo);
+
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
 
@@ -30,7 +39,17 @@ const About = () => {
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(cookies),
   });
+
   // console.log(businessAccountData, "account data");
+
+
+  const { data:  singleBusinessAccountData} = useQuery({
+    queryKey: ["singleBusinessAccountData"],
+    queryFn: () => fetchSingleStartupAdvanceDetails(aboutInfo?.id),
+  });
+
+  console.log("singleBusinessAccountData",singleBusinessAccountData);
+  
 
   const databar = [
     { label: "Jan-Mar", value1: 40, value2: 50 },

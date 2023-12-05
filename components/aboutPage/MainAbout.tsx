@@ -7,8 +7,18 @@ import Posts from './postSection/Posts'
 import VideoSection from './videoSection/VideoSection'
 import Followers from './followers/Followers'
 import Followings from './followings/Followings'
+import { useQuery } from '@tanstack/react-query'
+import { fetchSingleStartup } from '@/services/startupService'
 
-const MainAbout = () => {
+const MainAbout = ({ params }: any) => {
+
+  const { data: singleStartup } = useQuery({
+    queryKey: ["startup", params?.slug],
+    queryFn: () => fetchSingleStartup(params?.slug),
+  });
+
+  // console.log(singleStartup,"----------");
+  
   const [selectedTab, setSelectedTab] = useState(1)
   const headingTabStyle = 'text-primary   xl:text-base md:text-xs text-sm  cursor-pointer font-semibold border md:border-0 rounded-full md:rounded-0 text-center md:text-start py-1  '
   // const headingTabStyle='text-primary lg:text-base  sm:text-sm text-sm  cursor-pointer font-semibold border border-[red]'
@@ -20,7 +30,7 @@ const MainAbout = () => {
       <div className='px-body '>
         <div className='flex md:flex-row flex-col xl:gap-x-14 gap-x-7 w-full sm:mt-6 mt-3 md:mb-32 sm:mb-10 mb-5 '>
           <div className='md:w-[35%] w-[100%]'>
-            <AboutOptions setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
+            <AboutOptions setSelectedTab={setSelectedTab} selectedTab={selectedTab} aboutInfo={singleStartup}/>
           </div>
           <div className='md:w-[60%] w-[100%]'>
             {/* <div className='grid grid-cols-6  xl:mt-14 mt-7 xl:mb-8 mb-6 sm:px-8 px-4'> */}
@@ -32,7 +42,7 @@ const MainAbout = () => {
               <div onClick={() => setSelectedTab(5)} className={`${headingTabStyle} ${selectedTab === 5 && `${selectedStyle}`}`}><h3>Followers</h3></div>
               <div onClick={() => setSelectedTab(6)} className={`${headingTabStyle} ${selectedTab === 6 && `${selectedStyle}`}`}><h3>Followings</h3></div>
             </div>
-            {selectedTab === 1 && <About />}
+            {selectedTab === 1 && <About aboutInfo={singleStartup}/>}
             {selectedTab === 2 && <Photos />}
             {selectedTab === 3 && <VideoSection />}
             {selectedTab === 4 && <Posts />}

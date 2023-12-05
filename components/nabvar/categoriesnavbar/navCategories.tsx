@@ -15,11 +15,13 @@ const Categories = ({ cookie }: any) => {
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
 
-  // const { data: startUpData } = useQuery({
-  //   queryKey: ["startUpData"],
-  //   queryFn: () => getStartUpData(cookies),
-  // });
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(cookies),
+  });
 
+  // console.log(startUpData);
+  
   // console.log(cookies?.value, "from nav");
 
   const pathName = usePathname();
@@ -71,14 +73,32 @@ const Categories = ({ cookie }: any) => {
             )}
           </div>
         </Link>
-        <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
+        {
+          startUpData? <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
           <div className={`text-[#CBCBCB] ${textStyle}`}>
             <h1 className=" ">Account</h1>
             {pathName.includes("account") && (
               <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
             )}
           </div>
+          
         </Link>
+        :
+        <div onClick={()=>toast.error("Please sign in .")} className={`text-[#CBCBCB] cursor-pointer ${textStyle}`}>
+            <h1 className=" ">Account</h1>
+            {pathName.includes("account") && (
+              <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
+            )}
+          </div>
+        }
+        {/* <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
+          <div className={`text-[#CBCBCB] ${textStyle}`}>
+            <h1 className=" ">Account</h1>
+            {pathName.includes("account") && (
+              <div className="w-full h-[2px] bg-[#CBCBCB]"></div>
+            )}
+          </div>
+        </Link> */}
         { isClient && !cookies?.value ? (
           <Link href={"/welcome"}>
             <div className={`text-[#CBCBCB] ${textStyle}`}>

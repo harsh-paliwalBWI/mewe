@@ -13,6 +13,7 @@ import { db } from '@/config/firebase-config';
 import { getCookie } from "cookies-next";
 import Modal from '@/components/Modal/modal';
 import { CircularProgress } from '@mui/material';
+import { fetchAllCategories } from '@/services/categoriesService';
 
 
 const dummyCategory = [
@@ -75,7 +76,7 @@ const BusinessAccount = () => {
 
   });
 
-  // console.log("startUpData", startUpData);
+  console.log("startUpData", startUpData);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(cookies),
@@ -88,6 +89,14 @@ const BusinessAccount = () => {
     queryFn: () => isBusinessAccountExistOrNot(cookies)
   })
 
+  const { data: categoriesData } = useQuery({
+    queryKey: ["categoriesData"],
+    queryFn: () => fetchAllCategories(),
+    // keepPreviousData: true
+  });
+
+  // console.log("categoriesData",categoriesData);
+  
   // console.log(cookies,"cookie");
 
   // console.log(existOrNot,"on not");
@@ -98,7 +107,7 @@ const BusinessAccount = () => {
   const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? { name: businessAccountData.typeOfInvestement } : { name: "" })
   const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id: "", name: "" })
   const [equityPercentage, setEquityPercetnage] = useState(businessAccountData ? businessAccountData?.equityPercentage : "")
-  const [phoneNumber, setPhoneNumber] = useState(startUpData?.phoneNo)
+  const [phoneNumber, setPhoneNumber] = useState(startUpData?.phoneNo?startUpData?.phoneNo:"")
   const [email, setEmail] = useState(startUpData?.email)
   const [name, setName] = useState(startUpData?.name)
   const [state, setState] = useState({
@@ -115,13 +124,14 @@ const BusinessAccount = () => {
     panNo: businessAccountData ? businessAccountData?.panNo : ""
   })
 
-  const addAdvanceDetails = async (advanceDetails: any, email: any) => {
+  const addAdvanceDetails = async (advanceDetails: any, email: any,phoneNo:any) => {
     // console.log(advanceDetails);
     const refDoc = doc(db, `startups/${startUpData?.id}/details/advance`);
     const refDoc2 = doc(db, `startups/${startUpData?.id}`);
     const details = {
       name: advanceDetails.name,
       email: email,
+      phoneNo:phoneNo,
       basic: {
         name: advanceDetails.name,
         category: {
@@ -138,6 +148,7 @@ const BusinessAccount = () => {
     try {
       const accountInfo = {
         name: name,
+        
         founderName: state.founderName,
         coFounderName: state.coFounderName,
         social: {
@@ -166,7 +177,7 @@ const BusinessAccount = () => {
       // if(!state.name&&!state.founderName&&state.coFounderName&&state.linkedInUrl&&category.name&&state.address&&city.name&&companySize.name&&yearOfFormation.name
       //   &&state.description&&state.panNo&&state.currentFinancialIncome&&state.currentValuation&&state.amount&&email)
       // validation end 
-      await addAdvanceDetails(accountInfo, email)
+      await addAdvanceDetails(accountInfo,email,phoneNumber)
       await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
       await queryClient.invalidateQueries({ queryKey: ['businessAccountExistOrNot'] })
@@ -209,7 +220,7 @@ const BusinessAccount = () => {
       setCategory(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id: "", name: "" })
     }
     if (startUpData) {
-      setPhoneNumber(startUpData?.phoneNo)
+      setPhoneNumber(startUpData?.phoneNo?startUpData?.phoneNo:"")
       setEmail(startUpData.email)
       setName(startUpData?.name)
     }
@@ -268,7 +279,7 @@ const BusinessAccount = () => {
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name && isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
-                    {dummyCategory.map((category) => (
+                    {categoriesData&&categoriesData.length>0&&categoriesData.map((category:any) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
                         {({ active, selected }) => (
                           <li
@@ -620,7 +631,7 @@ const BusinessAccount = () => {
             </div>
             <div className={`${borderStyle}  `}>
               <label className={`${labelStyle}`} htmlFor="input">Phone Number</label>
-              <input value={(isClient && phoneNumber) ? phoneNumber : ""} disabled={true} className={`${inputStyle} `} type="text" id="input" />
+              <input value={(isClient && phoneNumber) ? phoneNumber : ""} onChange={(e) => setPhoneNumber(e.target.value)} disabled={startUpData?.signInMethod==="google"?false:true} className={`${inputStyle} `} type="text" id="input" />
             </div>
           </div>
           <div

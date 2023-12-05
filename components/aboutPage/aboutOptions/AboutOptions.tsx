@@ -17,9 +17,13 @@ import { fetchPosts } from '@/services/postService'
 interface Props {
   setSelectedTab: any; // Adjust the type as needed
   selectedTab: any;
+  aboutInfo:any
 }
 
-const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
+const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
+
+  // console.log("aboutInfo",aboutInfo);
+  
   const [client, setClient] = useState(false)
 
   const cookies = { value: getCookie("uid") };
@@ -87,7 +91,7 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
             <div className="flex justify-between items-start  w-full">
               <div className="flex flex-col gap-1">
                 <div className=" xl:text-lg lg:text-base text-sm font-semibold ">
-                  <h2>{(client&&startUpData?.name)?startUpData?.name:""}</h2>
+                  <h2>{(client&&aboutInfo?.name)?aboutInfo?.name:""}</h2>
                 </div>
                 <div className=" lg:text-base text-sm font-medium text-[#868E97] ">
                   <p>{(client&&businessAccountData?.category?.name) ? businessAccountData?.category?.name : " "}</p>
@@ -150,14 +154,14 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Followers</h2>
-              <h2 className="text-[#868E97]">{(client&&startUpData)? startUpData.followers?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.followers?.length: "-"}</h2>
             </div>
             <div
               //   onClick={()=>setSelectedTab(4)}
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Followings</h2>
-              <h2 className="text-[#868E97]">{(client&&startUpData)? startUpData.following?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.following?.length: "-"}</h2>
             </div>
           </div>
         </div>

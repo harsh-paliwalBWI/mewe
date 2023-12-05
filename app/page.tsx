@@ -7,6 +7,7 @@ import { dehydrate } from "@tanstack/react-query"
 import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
 import { cookies } from "next/dist/client/components/headers";
 import { fetchAllStartUps } from '@/services/homeService';
+import { fetchAllCategories } from '@/services/categoriesService';
 
 export default async function Home() {
   const cookie = cookies().get("uid");
@@ -29,8 +30,11 @@ await queryClient.prefetchQuery({ queryKey: ["allStartUpsData"], queryFn: fetchA
 await queryClient.prefetchQuery(["businessAccountExistOrNot"], () =>
 isBusinessAccountExistOrNot(cookie)
 );
+await queryClient.prefetchQuery(["categoriesData"], () =>
+fetchAllCategories()
+);
   const dehydratedState = dehydrate(queryClient);
-  // console.log(cookie,"xdbb");
+  console.log(cookie,"xdbb");
   
 
   return (

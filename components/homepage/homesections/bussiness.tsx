@@ -38,7 +38,7 @@ const Bussiness = () => {
         </p>
         </Link>
       </div>
-      <div className="grid w-full  xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2   grid-cols-2 gap-y-6  sm:gap-y-8  md:gap-y-10 lg:gap-y-12   gap-x-6  sm:gap-x-8  md:gap-x-10 lg:gap-x-12  ">
+      <div className="grid w-full  xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2   grid-cols-2 gap-y-4  sm:gap-y-6  md:gap-y-10 lg:gap-y-12   gap-x-4  sm:gap-x-6  md:gap-x-10 lg:gap-x-12  ">
       
       {
         allStartUpsData&&allStartUpsData.length>0&&allStartUpsData.slice(0,4).map((startUp:any,idx:number)=>{

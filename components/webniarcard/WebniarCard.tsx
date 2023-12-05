@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React,{FC} from "react";
 
 // import CategoryCard from "./categoryCard/CategoryCard";
 import bg from "../../images/bg.svg";
@@ -7,11 +7,22 @@ import man from "../../images/man.svg";
 
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
+import Link from "next/link";
+import { constant } from "@/utils/constants";
+interface Props{
+  singleWebinar:any
+}
 
-const WebniarCard = (singlewebinar: any) => {
-  let singlewebinardata = singlewebinar.singlewebinar;
+const WebniarCard:FC<Props>  = (singleWebinar) => {
+  // console.log("singlewebinar",singleWebinar);
+  
+  let singlewebinardata= singleWebinar.singleWebinar;
+  // console.log("singlewebinardata",singlewebinardata);
+
   return (
     // flex-col lg:
+    <Link href={"/webinar"}>
+
     <div className="  flex flex-row justify-between gap-1 sm:gap-2 md:gap-3 mt-4 sm:mt-8 md:mt-12 bg-[#f2fff3]">
       {/* w-full lg: */}
       <div className="w-[42%]  flex justify-center  ">
@@ -25,18 +36,18 @@ const WebniarCard = (singlewebinar: any) => {
               className="w-full h-full object-contain   "
             />
           </div>
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%]  ">
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[275px] md:h-[200px] sm:h-[150px] h-[100px] ">
             <Image
-              src={man
-                // singlewebinardata?.image?.url &&
-                // singlewebinardata?.image?.url?.includes("bwi-mewe.appspot")
-                //   ? man
-                //   : singlewebinardata?.image?.url
+              src={
+                singlewebinardata?.image?.url &&
+                singlewebinardata?.image?.url?.includes("bwi-mewe.appspot")
+                  ?singlewebinardata?.image?.url
+                  :constant.errImage
               }
               alt=""
               width={1000}
               height={1000}
-              className="w-full h-full object-contain  "
+              className="w-full h-full object-fill "
             />
           </div>
 
@@ -54,15 +65,15 @@ const WebniarCard = (singlewebinar: any) => {
           <div className="  flex flex-col gap-1 sm:gap-2 md:gap-3  justify-between ">
             <div className="flex justify-between gap-1 sm:gap-2 md:gap-3 items-start">
               <h3 className=" text-black text-lg sm:text-xl md:text-[22px] font-semibold">
-                How to startup a new businesss{" "}
-                {/* {singlewebinardata?.title} */}
+                {/* How to startup a new businesss{" "} */}
+                {singlewebinardata?.title}
               </h3>
               <FlatIcon className="flaticon-bookmark md:text-3xl sm:text-2xl text-xl font-bold " />
             </div>
             <p className="opacity-70 text-black text-[8px] sm:text-[10px] md:text-xs font-normal ">
-              Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-              consectetur, adipisci velit, sed qu{" "}
-              {/* {singlewebinardata?.description} */}
+              {/* Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+              consectetur, adipisci velit, sed qu{" "} */}
+              {singlewebinardata?.description}
             </p>
           </div>
 
@@ -72,8 +83,8 @@ const WebniarCard = (singlewebinar: any) => {
                 <FlatIcon className="flaticon-calander md:text-4xl sm:text-3xl text-2xl font-bold text-[#054a91]  " />
               </div>
               <p className="opacity-80 text-black md:text-base sm:text-sm text-xs font-semibold">
-                02/09/12
-                {/* {singlewebinardata?.date} */}
+                {/* 02/09/12 */}
+                {singlewebinardata?.date}
               </p>
             </div>
             <div className="flex justify-between gap-1 sm:gap-2 md:gap-3 items-center">
@@ -82,20 +93,23 @@ const WebniarCard = (singlewebinar: any) => {
                   <FlatIcon className="flaticon-clock md:text-4xl sm:text-3xl text-2xl font-bold text-[#054a91] " />
                 </div>
                 <p className=" opacity-80 text-black md:text-base sm:text-sm text-xs font-semibold">
-                  09:21:37 IST{" "}
-                  {/* {singlewebinardata?.time} */}
-                  {/* IST{" "} */}
+                 
+                  {singlewebinardata?.time}
+                 
                 </p>
               </div>
+              {singlewebinardata?.duration&&
               <p className="opacity-70 text-black text-[8px] sm:text-[10px] md:text-xs font-semibold">
-                (45mins)
-                {/* ({singlewebinardata?.duration}mins) */}
+               
+                ({singlewebinardata?.duration})
               </p>
+}
             </div>
           </div>
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 // h-48 sm:h-48 md:h-64

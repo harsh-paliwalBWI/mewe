@@ -8,14 +8,20 @@ import Searchsidecomponent from "../searchsidecomponent/Searchsidecomponent";
 import WebniarCard2 from "../webniarcard2/WebniarCard2";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchWebniars } from "@/services/webniarService";
+import { fetchAllWebinars } from "@/services/homeService";
 
 const WebniarList = () => {
 
-  const { data: webinars } = useQuery({
-    queryKey: ["webniars"],
-    queryFn: () => fetchWebniars(),
-  });
+  // const { data: webinars } = useQuery({
+  //   queryKey: ["webniars"],
+  //   queryFn: () => fetchWebniars(),
+  // });
 
+  const { data: webinarsData } = useQuery({
+    queryKey: ["webinarsData"],
+    queryFn: () => fetchAllWebinars(),
+    // keepPreviousData: true
+  });
 // console.log(webinars,"PPPP")
 
   return (
@@ -36,9 +42,9 @@ const WebniarList = () => {
           <h3 className="text-black text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 md:mb-4">
           Upcoming Webinar Sessions
           </h3>
-         {webinars?.map((singlewebinar: any, idx: number) => {
+         {webinarsData&&webinarsData.length>0&&webinarsData?.map((singlewebinar: any, idx: number) => {
           return <div key={idx}>
-          <WebniarCard2 singlewebinar={singlewebinar} idx={idx}/>;
+          <WebniarCard2 singlewebinar={singlewebinar} idx={idx}/>
           </div>
         })
         }
@@ -47,7 +53,7 @@ const WebniarList = () => {
         <Searchsidecomponent />
       </div>
     </>
-  );
+  )
 };
 
 export default WebniarList;

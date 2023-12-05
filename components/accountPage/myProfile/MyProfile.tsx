@@ -14,6 +14,7 @@ import Loader from '@/components/loader/Loader';
 import { getCookie } from "cookies-next";
 import Modal from '@/components/Modal/modal';
 import { CircularProgress } from '@mui/material';
+import { fetchAllCategories } from '@/services/categoriesService';
 
 
 const dummyCategory = [
@@ -55,6 +56,13 @@ const MyProfile = () => {
         queryFn: () => isBusinessAccountExistOrNot(cookies)
       })
 //   console.log(existOrNot,"on not");
+const { data: categoriesData } = useQuery({
+    queryKey: ["categoriesData"],
+    queryFn: () => fetchAllCategories(),
+    // keepPreviousData: true
+  });
+
+//   console.log("categoriesData",categoriesData);
 
 
     const [profileInfo, setProfileInfo] = useState({
@@ -164,13 +172,13 @@ const MyProfile = () => {
                                     <Listbox value={category} onChange={setCategory}>
                                         <div className=' '>
                                             <Listbox.Button className={` w-full flex justify-between items-center text-start  py-3 text-sm`}><span>{(client && category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                                            <Listbox.Options className={`absolute top-[50px] px-3  rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
-                                                {dummyCategory.map((category) => (
+                                            <Listbox.Options className={`absolute top-[50px] px-3 py-3  rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
+                                                {categoriesData&&categoriesData.length>0&&categoriesData.map((category:any) => (
                                                     <Listbox.Option key={category.id} value={category} as={Fragment} >
                                                         {({ active, selected }) => (
                                                             <li
-                                                                className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                                                                    }  flex justify-between`}
+                                                                className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' bg-white text-black cursor-pointer'
+                                                                    }  flex justify-between px-2 py-1 shadow rounded-md `}
                                                             >
                                                                 {/* {selected && <CheckIcon />} */}
 

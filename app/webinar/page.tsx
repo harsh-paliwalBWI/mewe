@@ -1,7 +1,7 @@
 import React from 'react'
 import WebniarList from '@/components/webniarlist/WebniarList'
 
-const Webniar = async() => {
+const AllWebinarsPage = async() => {
   return (
 <>
 <WebniarList/>
@@ -9,4 +9,4 @@ const Webniar = async() => {
   )
 }
 
-export default Webniar
+export default AllWebinarsPage

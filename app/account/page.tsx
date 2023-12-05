@@ -6,6 +6,7 @@ import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNo
 import { dehydrate } from "@tanstack/react-query"
 import Hydrate from "../../utils/hydrate.client"
 import { cookies } from "next/dist/client/components/headers";
+import { fetchAllCategories } from '@/services/categoriesService';
 
 
 const ProfilePage= async() => {
@@ -19,6 +20,9 @@ const ProfilePage= async() => {
 );
 await queryClient.prefetchQuery(["businessAccountExistOrNot"], () =>
 isBusinessAccountExistOrNot(cookie)
+);
+await queryClient.prefetchQuery(["categoriesData"], () =>
+fetchAllCategories()
 );
   const dehydratedState = dehydrate(queryClient);
   // console.log(cookie,"cookie from account page");
