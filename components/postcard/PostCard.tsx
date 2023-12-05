@@ -165,7 +165,7 @@ const PostCard = (singlePost: any) => {
         <Carousel dotPosition="bottom" className="dot-white" autoplay>
           {singlePostdata?.images?.map((singleImg: any, idx: number) => {
             return (
-              <div className="lg:h-64 md:h-52 sm:h-40 h-28  w-full  rounded sm:rounded-lg md:rounded-xl  overflow-hidden ">
+              <div className="lg:h-64 md:h-52 sm:h-40 h-28  w-full  rounded sm:rounded-lg md:rounded-xl  overflow-hidden " key={idx}>
                 <Image
                   src={
                     // img2
