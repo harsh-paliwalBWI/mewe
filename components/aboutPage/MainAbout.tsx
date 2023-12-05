@@ -8,16 +8,24 @@ import VideoSection from './videoSection/VideoSection'
 import Followers from './followers/Followers'
 import Followings from './followings/Followings'
 import { useQuery } from '@tanstack/react-query'
-import { fetchSingleStartup } from '@/services/startupService'
+import { fetchSingleStartup, getStartUpData } from '@/services/startupService'
+import { getCookie } from "cookies-next";
+
 
 const MainAbout = ({ params }: any) => {
-
+  const cookies = { value: getCookie("uid") };
   const { data: singleStartup } = useQuery({
     queryKey: ["startup", params?.slug],
     queryFn: () => fetchSingleStartup(params?.slug),
   });
 
-  // console.log(singleStartup,"----------");
+  console.log(singleStartup,"----------");
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(cookies),
+  });
+
+  console.log(startUpData);
   
   const [selectedTab, setSelectedTab] = useState(1)
   const headingTabStyle = 'text-primary   xl:text-base md:text-xs text-sm  cursor-pointer font-semibold border md:border-0 rounded-full md:rounded-0 text-center md:text-start py-1  '
@@ -39,14 +47,19 @@ const MainAbout = ({ params }: any) => {
               <div onClick={() => setSelectedTab(2)} className={`${headingTabStyle} ${selectedTab === 2 && `${selectedStyle}`}`}><h3>Photos</h3></div>
               <div onClick={() => setSelectedTab(3)} className={`${headingTabStyle} ${selectedTab === 3 && `${selectedStyle}`}`}><h3>Videos</h3></div>
               <div onClick={() => setSelectedTab(4)} className={`${headingTabStyle} ${selectedTab === 4 && `${selectedStyle}`}`}><h3>Posts</h3></div>
+             {startUpData?.id===singleStartup?.id&&
               <div onClick={() => setSelectedTab(5)} className={`${headingTabStyle} ${selectedTab === 5 && `${selectedStyle}`}`}><h3>Followers</h3></div>
+             }
+             {startUpData?.id===singleStartup?.id&&
               <div onClick={() => setSelectedTab(6)} className={`${headingTabStyle} ${selectedTab === 6 && `${selectedStyle}`}`}><h3>Followings</h3></div>
+
+             }
             </div>
             {selectedTab === 1 && <About aboutInfo={singleStartup}/>}
             {selectedTab === 2 && <Photos />}
             {selectedTab === 3 && <VideoSection />}
-            {selectedTab === 4 && <Posts />}
-            {selectedTab === 5 && <Followers />}
+            {selectedTab === 4 && <Posts aboutInfo={singleStartup}/>}
+            {selectedTab === 5 && <Followers aboutInfo={singleStartup} />}
             {selectedTab === 6 && <Followings />}
           </div>
         </div>

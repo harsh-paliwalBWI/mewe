@@ -24,6 +24,17 @@ export const fetchAllWebinars = async () => {
     return arr
 }
 
+export const fetchStartUpsabout = async () => {
+    const querySnapshot = await getDocs(collection(db, "startups"));
+    const arr: any = []
+    querySnapshot.forEach((doc) => {
+        const data = JSON.parse(JSON.stringify({ ...doc.data(), docId: doc.id }))
+        //   console.log(data,"------------");
+        arr.push(data)
+    });
+    return arr
+}
+
 export const fetchAllMatchedCategoriesStartups = async (params:any) => {
     console.log(params?.params?.params?.slug,"from fetchAllMatchedCategoriesStartups--------------");
     

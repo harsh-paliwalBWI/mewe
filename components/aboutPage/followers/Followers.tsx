@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, {FC, useState } from 'react'
 import { getCookie } from "cookies-next";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getStartUpData } from '@/services/startupService';
@@ -10,9 +10,13 @@ import { CircularProgress } from '@mui/material';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase-config';
 import { toast } from "react-toastify"
+interface Props {
+    aboutInfo:any
+  }
 
-
-const Followers = () => {
+const Followers:FC<Props> = ({aboutInfo }) => {
+    console.log("aboutInfo",aboutInfo);
+    
     const cookies = { value: getCookie("uid") };
     const [isModalOpen, setIsModalOpen] = useState(false);
     const queryClient = useQueryClient()
@@ -62,12 +66,12 @@ const Followers = () => {
     return (
         <div className=' w-full bg-[#F8FAFC] xl:px-8 px-4  sm:py-7 py-4'>
             {
-                startUpData && startUpData?.followers.length > 0 ?
+                startUpData && startUpData?.followers?.length > 0 ?
 
                     (
                         <div className='flex flex-col gap-6'>
                             {
-                                startUpData && startUpData?.followers.length > 0 && startUpData?.followers.map((follower: any, idx: number) => {
+                                startUpData && startUpData?.followers?.length > 0 && startUpData?.followers.map((follower: any, idx: number) => {
                                     return <div key={idx}>
                                         <div className='flex justify-between items-center'>
                                             <div className='flex items-center gap-x-4'>
@@ -77,7 +81,7 @@ const Followers = () => {
                                                 <h3 className='sm:text-base text-sm'>{follower.name}</h3>
                                             </div>
                                             <button
-                                                onClick={async () => onRemoveHandler(follower)}
+                                                onClick={async () =>await onRemoveHandler(follower)}
                                                 className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Remove</button>
                                         </div>
                                     </div>

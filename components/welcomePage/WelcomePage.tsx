@@ -48,10 +48,10 @@ const WelcomePage = () => {
               </div>
             </Link>
           </div>
-          <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mb-8">
+          {/* <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mb-8">
             <h2>or Sign In with</h2>
-          </div>
-          <div className="flex items-center justify-center gap-x-6">
+          </div> */}
+          {/* <div className="flex items-center justify-center gap-x-6">
             <div className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
               <Image
                 src={googleImg}
@@ -75,7 +75,7 @@ const WelcomePage = () => {
                 className="h-full w-full object-fill"
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

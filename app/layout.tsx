@@ -8,7 +8,7 @@ import Providers from "../utils/provider";
 import { ToastContainer } from "react-toastify";
 import ChatContextProvider from  "../utils/ChatContext"
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MEWE",

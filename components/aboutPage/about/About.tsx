@@ -70,19 +70,19 @@ const About: FC<Props> = ({aboutInfo}) => {
     { value: 35 },
   ];
   const DummyData = [
-    { name: "Name", value: businessAccountData?.name ? businessAccountData?.name : "-" },
-    { name: "Founder", value: businessAccountData?.founderName ? businessAccountData?.founderName : "-" },
-    { name: "Category", value: businessAccountData?.category?.name ? businessAccountData?.category?.name : "-" },
-    { name: "Year of Formation", value: businessAccountData?.yearOfFormation ? businessAccountData?.yearOfFormation : "-" },
-    { name: "Current Valuation", value: businessAccountData?.currentValuation ? businessAccountData?.currentValuation : "-" },
+    { name: "Name", value: aboutInfo?.name ? aboutInfo?.name : "-" },
+    { name: "Founder", value: singleBusinessAccountData?.founderName ? singleBusinessAccountData?.founderName : "-" },
+    { name: "Category", value: singleBusinessAccountData?.category?.name ? singleBusinessAccountData?.category?.name : "-" },
+    { name: "Year of Formation", value: singleBusinessAccountData?.yearOfFormation ? singleBusinessAccountData?.yearOfFormation : "-" },
+    { name: "Current Valuation", value: singleBusinessAccountData?.currentValuation ? singleBusinessAccountData?.currentValuation : "-" },
   ];
   
   const DummyData2 = [
-    { name: "Current Financial Income", value: businessAccountData?.currentFinancialIncome ? businessAccountData?.currentFinancialIncome : "-" },
-    { name: "Previous Investment", value: businessAccountData?.previousInvestment ? businessAccountData?.previousInvestment : "-" },
+    { name: "Current Financial Income", value: singleBusinessAccountData?.currentFinancialIncome ? singleBusinessAccountData?.currentFinancialIncome : "-" },
+    { name: "Previous Investment", value: singleBusinessAccountData?.previousInvestment ? singleBusinessAccountData?.previousInvestment : "-" },
     { name: "Investor Name", value: businessAccountData?.inverstorName ? businessAccountData?.inverstorName : "-" },
-    { name: "Type of Investment", value: businessAccountData?.typeOfInvestement ? businessAccountData?.typeOfInvestement : "-" },
-    { name: "Amount", value: businessAccountData?.amount ? businessAccountData?.amount : "-" }
+    { name: "Type of Investment", value: singleBusinessAccountData?.typeOfInvestement ? singleBusinessAccountData?.typeOfInvestement : "-" },
+    { name: "Amount", value: singleBusinessAccountData?.amount ? singleBusinessAccountData?.amount : "-" }
   ];
 
   useEffect(() => {

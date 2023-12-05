@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { FC,useState } from "react";
 import Image from "next/image";
 import "@ant-design/cssinjs";
 import { Carousel } from "antd";
@@ -14,9 +14,13 @@ import OutsideClickHandler from "../../utils/OutsideClickHandler";
 import moment from "moment";
 import Modal from "../Modal/modal";
 import { CircularProgress } from "@mui/material";
+interface Props {
+  aboutInfo:any
+}
 
-
-const PostsSlider = () => {
+const PostsSlider:FC<Props> = ({aboutInfo}) => {
+  console.log(aboutInfo,"POST SLIDES");
+  
   const [data2, setData2] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +29,7 @@ const PostsSlider = () => {
   const [viewComment, setViewComment] = useState(false)
   const { data: postsData } = useQuery({
     queryKey: ["postsData"],
-    queryFn: () => fetchPosts(),
+    queryFn: () => fetchPosts(aboutInfo.id),
   });
   // console.log(postsData, "post data");
 

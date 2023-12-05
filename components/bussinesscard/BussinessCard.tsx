@@ -149,8 +149,9 @@ const BussinessCard: FC<Props> = ({ startup }) => {
   //   setIsClient(true);
   // }, []);
   return (
-    <Link href={`/startup/${startup?.slug?.name}`}>
-    <div className="flex flex-col justify-between items-center gap-1 sm:gap-2 md:gap-3  bg-[#f6f9fd] rounded-[5px] ">
+    <div className="flex flex-col justify-between items-center gap-1 sm:gap-2 md:gap-3  bg-[#f6f9fd] rounded-[5px] relative  relative">
+     <Link href={`/startup/${startup?.slug?.name}`}>
+      <div className="">
       <div className="relative rounded-[5px] w-full h-auto flex items-center justify-center  ">
         <Image
           src={bussinessimg}
@@ -162,9 +163,9 @@ const BussinessCard: FC<Props> = ({ startup }) => {
                 "
         />
 
-        <div className="absolute  top-0 right-0 transform -translate-x-1/2 translate-y-1/2  cursor-pointer">
+        {/* <div className="absolute  top-0 right-0 transform -translate-x-1/2 translate-y-1/2  cursor-pointer">
           <FlatIcon className="flaticon-close  md:text-xl sm:text-lg text-base text-black" />
-        </div>
+        </div> */}
         <div className="w-12  rounded-full h-12 sm:w-16 sm:h-16  md:w-20 md:h-20 bottom-0 md:translate-y-1/2 sm:translate-y-1/2 translate-y-1/2 absolute ">
           <Image src={startup?.basic?.coverPic?.url || avatarimg}
             alt=""
@@ -191,16 +192,18 @@ const BussinessCard: FC<Props> = ({ startup }) => {
         </h2>
         <div className="flex flex-col gap-1.5 sm:gap-2 md:gap-3 items-center justify-center">
           <p className="opacity-40 text-black  text-xs sm:text-sm md:text-[15px] font-normal text-center">
-            Health & care Services
+          {startup?.basic?.category?.name || "category not filled"}
           </p>
           <p className="opacity-40 text-black text-[10px] sm:text-xs md:text-sm font-normal ">
-            1,29,039 followers
+          {startup?.followers?.length || "No"} followers
           </p>
         </div>
-
-        <div className="w-fit ">
+        </div>
+        </div>
+        </Link>
+        <div className="w-full  px-3  mb-3">
           {isFollowing?(
-            <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-[#a3bad6] cursor-pointer ">
+            <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-black cursor-pointer ">
             <div className=" ">
               <FlatIcon className="flaticon-add-user text-2xl" />
             </div>
@@ -213,7 +216,7 @@ const BussinessCard: FC<Props> = ({ startup }) => {
           </div>
           )
           :
-          (<div onClick={async () => await onFollowHandler(startup)} className=" w-full flex  justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-[#a3bad6] cursor-pointer ">
+          (<div onClick={async () => await onFollowHandler(startup)} className=" w-full flex  justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-primary cursor-pointer ">
           <div className=" ">
           <FlatIcon className="flaticon-add-user text-2xl text-primary" />
 
@@ -235,9 +238,11 @@ const BussinessCard: FC<Props> = ({ startup }) => {
                       </p> */}
                     </div>
                   </Modal>
-      </div>
+      {/* </div> */}
+      <div className="absolute  top-0 right-0 transform -translate-x-1/2 translate-y-1/2  cursor-pointer">
+          <FlatIcon className="flaticon-close  md:text-xl sm:text-lg text-base text-black" />
+        </div>
     </div>
-     </Link>
   );
 };
 

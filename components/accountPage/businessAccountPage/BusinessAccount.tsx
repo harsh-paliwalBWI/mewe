@@ -180,6 +180,8 @@ const BusinessAccount = () => {
       await addAdvanceDetails(accountInfo,email,phoneNumber)
       await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
+      await queryClient.invalidateQueries({ queryKey: ['singleBusinessAccountData'] })
+      await queryClient.refetchQueries({ queryKey: ['singleBusinessAccountData'] })
       await queryClient.invalidateQueries({ queryKey: ['businessAccountExistOrNot'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountExistOrNot'] })
       await queryClient.invalidateQueries({ queryKey: ['startUpData'] })

@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React,{FC} from 'react'
 import Image from 'next/image'
 import logoImg from "../../../images/a5 2.svg"
 import img from "../../../images/hotel.svg"
@@ -7,11 +7,13 @@ import img from "../../../images/hotel.svg"
 import '@ant-design/cssinjs'
 import { Carousel } from 'antd';
 import PostsSlider from '@/components/postsSlider/PostsSlider'
-
-const Posts = () => {
+interface Props {
+  aboutInfo:any
+}
+const Posts:FC<Props> = ({aboutInfo }) => {
   return (
     <div className='w-full '>
-      <PostsSlider/>
+      <PostsSlider aboutInfo={aboutInfo}/>
       </div>
 
   )

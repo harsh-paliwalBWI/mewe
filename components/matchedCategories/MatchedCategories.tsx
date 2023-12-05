@@ -24,7 +24,7 @@ const MatchedCategories = (params: any) => {
           </h1>
           <div className="grid w-full  xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2   grid-cols-2 gap-y-4  sm:gap-y-6  md:gap-y-10 lg:gap-y-12   gap-x-4  sm:gap-x-6  md:gap-x-10 lg:gap-x-12  ">
             {matchedCategoriesStartupsData && matchedCategoriesStartupsData.length > 0 && matchedCategoriesStartupsData.map((startUp: any, idx: number) => {
-              return <div>
+              return <div key={idx}>
                 <BussinessCard startup={startUp} />
               </div>
             })}

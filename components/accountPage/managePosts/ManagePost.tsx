@@ -21,6 +21,9 @@ import { Transition } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
 import Loader from '@/components/loader/Loader'
 import OutsideClickHandler from '@/utils/OutsideClickHandler'
+import { getStartUpData } from '@/services/startupService'
+import { getCookie } from "cookies-next";
+
 
 
 const ManagePost = () => {
@@ -36,9 +39,17 @@ const ManagePost = () => {
   const [viewMessage, setViewMessage] = useState([])
   const [viewComment, setViewComment] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
+  const cookies = { value: getCookie("uid") };
+
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(cookies),
+});
+
+// console.log("startUpData", startUpData);
   const { data: postsData } = useQuery({
     queryKey: ["postsData"],
-    queryFn: () => fetchPosts(),
+    queryFn: () => fetchPosts(startUpData?.id),
   });
   // console.log(postsData);
 

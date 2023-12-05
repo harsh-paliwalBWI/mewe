@@ -64,14 +64,14 @@ const router = useRouter()
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
   });
-  // console.log("startUpData",startUpData);
+  console.log("startUpData",startUpData);
 
     const { data: existOrNot } = useQuery({
     queryKey: ["businessAccountExistOrNot"],
     queryFn: () => isBusinessAccountExistOrNot(cookies),
   });
   // console.log(existOrNot, "on not");
-  const targetPath = existOrNot ? "/about" : "";
+  const targetPath = existOrNot ? `/startup/${startUpData?.slug?.name}` : "";
 
   // const { data: businessAccountData } = useQuery({
   //   queryKey: ["businessAccountData"],

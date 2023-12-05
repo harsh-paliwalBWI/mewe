@@ -1,4 +1,4 @@
-import { log } from "console";
+// import { log } from "console";
 import { auth, db } from "../config/firebase-config";
 import { getCookie } from "cookies-next";
 import { collection, getDocs, doc, getDoc, addDoc, setDoc, query, where, QuerySnapshot } from "firebase/firestore";
@@ -133,6 +133,7 @@ export const fetchSingleStartupAdvanceDetails = async (sinlgeId:any) => {
         const docRef = doc(db, `startups/${sinlgeId}/details/advance`);
         const data = await getDoc(docRef).then(async (docs) => {
             if (docs.exists()) {
+              
                 // console.log("logged data", JSON.parse(JSON.stringify({ ...docs.data() })));
                 return await JSON.parse(JSON.stringify({ ...docs.data() }));
             } else {

@@ -55,7 +55,7 @@ const Categories = ({ cookie }: any) => {
           <div className={`text-[#CBCBCB]  ${textStyle} `}>
             <div className="flex gap-1  lg:gap-2">
               <h1>Schemes</h1>
-              <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
+              {/* <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" /> */}
             </div>
             {pathName.includes("schemes") && (
               <div className="w-full h-[2px] bg-[#CBCBCB] "></div>
@@ -66,7 +66,7 @@ const Categories = ({ cookie }: any) => {
           <div className={`text-[#CBCBCB]  ${textStyle} `}>
             <div className="flex gap-1  lg:gap-2">
               <h1>Financials</h1>
-              <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" />
+              {/* <FlatIcon className="flaticon-down-arrow md:text-xs text-[10px] font-semibold" /> */}
             </div>
             {pathName.includes("financials") && (
               <div className="w-full h-[2px] bg-[#CBCBCB] "></div>

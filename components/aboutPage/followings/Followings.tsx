@@ -64,11 +64,11 @@ const Followings = () => {
     return (
         <div className=' w-full bg-[#F8FAFC] xl:px-8 px-4  sm:py-7 py-4'>
             {
-                startUpData && startUpData?.following.length > 0 ?
+                startUpData && startUpData?.following?.length > 0 ?
                     (
                         <div className='flex flex-col gap-6'>
                             {
-                                startUpData && startUpData?.following.length > 0 && startUpData?.following.map((following: any, idx: number) => {
+                                startUpData && startUpData?.following?.length > 0 && startUpData?.following.map((following: any, idx: number) => {
                                     return <div key={idx}>
                                         <div className='flex justify-between items-center'>
                                             <div className='flex items-center gap-x-4'>
@@ -77,7 +77,7 @@ const Followings = () => {
                                                 </div>
                                                 <h3 className='sm:text-base text-sm'>{following.name}</h3>
                                             </div>
-                                            <button onClick={async () => onUnfollowHandler(following)} className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Following</button>
+                                            <button onClick={async () =>await onUnfollowHandler(following)} className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Following</button>
                                         </div>
                                     </div>
                                 })

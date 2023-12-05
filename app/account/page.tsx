@@ -12,6 +12,9 @@ import { fetchAllCategories } from '@/services/categoriesService';
 const ProfilePage= async() => {
   const cookie = cookies().get("uid");
   const queryClient = getQueryClient();
+ 
+
+
   await queryClient.prefetchQuery(["startUpData"], () =>
     getStartUpData(cookie)
   );

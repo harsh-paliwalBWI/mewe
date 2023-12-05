@@ -38,6 +38,7 @@ const MyProfile = () => {
 
     const pathName = usePathname()
     const [loading, setLoading] = useState(false)
+    
     const { data: startUpData } = useQuery({
         queryKey: ["startUpData"],
         queryFn: () => getStartUpData(cookies),

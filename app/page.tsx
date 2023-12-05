@@ -6,7 +6,7 @@ import { fetchSchemes } from '@/services/schemesService';
 import { dehydrate } from "@tanstack/react-query"
 import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService';
 import { cookies } from "next/dist/client/components/headers";
-import { fetchAllStartUps } from '@/services/homeService';
+import { fetchAllStartUps, fetchAllWebinars } from '@/services/homeService';
 import { fetchAllCategories } from '@/services/categoriesService';
 
 export default async function Home() {
@@ -33,8 +33,11 @@ isBusinessAccountExistOrNot(cookie)
 await queryClient.prefetchQuery(["categoriesData"], () =>
 fetchAllCategories()
 );
+await queryClient.prefetchQuery(["webinarsData"], () =>
+fetchAllWebinars()
+);
   const dehydratedState = dehydrate(queryClient);
-  console.log(cookie,"xdbb");
+  // console.log(cookie,"xdbb");
   
 
   return (

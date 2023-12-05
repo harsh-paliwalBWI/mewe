@@ -1,9 +1,9 @@
 import { auth, db } from "../config/firebase-config";
 import { collection, getDocs,query,where,orderBy } from "firebase/firestore";
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (startupId:any) => {
   const id=auth.currentUser?.uid
-  const querySnapshot = query(collection(db, `posts`), where('createdBy.id', '==', id), orderBy('createdAt', 'desc'));
+  const querySnapshot = query(collection(db, `posts`), where('createdBy.id', '==', startupId), orderBy('createdAt', 'desc'));
 
   const res = await getDocs(querySnapshot);
   let arr: any = [];
@@ -27,6 +27,23 @@ querySnapshot.forEach((doc) => {
 });
 // console.log(arr,"commeyn arr");
 }
+
+export const fetchAllPosts = async () => {
+
+  const querySnapshot = query(collection(db, `posts`), orderBy('createdAt', 'desc'));
+
+  const res = await getDocs(querySnapshot);
+  let arr: any = [];
+  res.forEach((doc) => {
+//  console.log(doc.data(),doc.id,"iiii")
+ let obj={...doc.data(),id:doc.id}
+//  console.log(obj,"obj");
+    arr.push(obj);
+  });
+  return arr;
+
+
+};
 
 
 

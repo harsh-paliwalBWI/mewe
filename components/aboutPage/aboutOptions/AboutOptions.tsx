@@ -6,13 +6,21 @@ import blueTickImg from "../../../images/verify 3.svg";
 import buildingImg from "../../../images/glass-architecture 1.svg";
 import bookMarkImg from "../../../images/Layer 2.svg";
 import FlatIcon from "@/components/flatIcon/flatIcon";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import avatarimg from "../../../images/avatar.png";
+import { toast } from "react-toastify"
+
+
 import {
   getStartUpData,
   fetchBusinessAccountDetails,
 } from "@/services/startupService";
 import { getCookie } from "cookies-next";
 import { fetchPosts } from '@/services/postService'
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/config/firebase-config";
+import Modal from "@/components/Modal/modal";
+import { CircularProgress } from "@mui/material";
 
 interface Props {
   setSelectedTab: any; // Adjust the type as needed
@@ -22,7 +30,7 @@ interface Props {
 
 const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
 
-  // console.log("aboutInfo",aboutInfo);
+  console.log("aboutInfo",aboutInfo);
   
   const [client, setClient] = useState(false)
 
@@ -30,7 +38,8 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
 
   const optionStyle ="flex gap-x-4 bg-[#F3F7FA] px-4 text-sm font-semibold py-4 cursor-pointer";
   const optionTabStyle ="flex w-full justify-between xl:text-lg text-sm font-medium items-center";
-
+  const queryClient = useQueryClient()
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
@@ -45,8 +54,116 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
 
   const { data: postsData } = useQuery({
     queryKey: ["postsData"],
-    queryFn: () => fetchPosts(),
+    queryFn: () => fetchPosts(aboutInfo?.id),
   });
+
+  const isFollowing = startUpData?.following?.some(
+    (item: any) => item.docId === aboutInfo.id
+  );
+
+  const onFollowHandler = async (data: any) => {
+    // console.log(data, "from follow");
+    setIsModalOpen(true)
+    try{
+    const docid = startUpData?.id;
+    // for following start
+    if (docid) {
+      const docRef = doc(db, `startups/${docid}`);
+      const docSnap = await getDoc(docRef);
+      const existingFollowing = docSnap.data()?.following || [];
+      const newFollowingObj = {
+        // [data?.docId]: {
+        docId: data?.id,
+        name: data?.name || "",
+        coverPic: {
+          mob: data?.basic?.coverPic?.mob || "",
+          url: data?.basic?.coverPic?.url || "",
+          thumb: data?.basic?.coverPic?.thumb || ""
+        },
+        category: {
+          id: data?.basic?.category?.id || "",
+          name: data?.basic?.category?.name || ""
+          // },
+        }
+      };
+      const updatedFollowing = [...existingFollowing, newFollowingObj];
+      await setDoc(docRef, { following: updatedFollowing }, { merge: true });
+      // for following end 
+    }
+    // for followers start
+    const followersId = data?.id;
+    if (followersId) {
+      const docRef = doc(db, `startups/${followersId}`);
+      const docSnap = await getDoc(docRef);
+      const existingFollowers = docSnap.data()?.followers || [];
+      const newFollowerObj = {
+        // [startUpData?.id]: {
+        docId: startUpData?.id,
+        name: startUpData?.name || "",
+        coverPic: {
+          mob: startUpData?.basic?.coverPic?.mob || "",
+          url: startUpData?.basic?.coverPic?.url || "",
+          thumb: startUpData?.basic?.coverPic?.thumb || ""
+        },
+        category: {
+          id: startUpData?.basic?.category?.id || "",
+          name: startUpData?.basic?.category?.name || ""
+        },
+        // }
+      };
+      const updatedFollowers = [...existingFollowers, newFollowerObj];
+      await setDoc(docRef, { followers: updatedFollowers }, { merge: true });
+    }
+    // for followers end 
+    await queryClient.invalidateQueries({ queryKey: ['startUpData'] })
+    await queryClient.refetchQueries({ queryKey: ['startUpData'] })
+    toast.success("Followed.")
+    setIsModalOpen(false)
+
+  }catch(err){
+    setIsModalOpen(false)
+      toast.error("Something went wrong!")
+  }
+  }
+
+  const onUnfollowHandler = async (data: any) => {
+    // console.log(data, "from unfollow");
+    setIsModalOpen(true)
+    try{
+    const docid = startUpData?.id;
+    // from following start 
+    if (docid) {
+      const docRef = doc(db, `startups/${docid}`);
+      const docSnap = await getDoc(docRef);
+      const existingFollowing = docSnap.data()?.following || [];
+      const updatedFollowing = existingFollowing.filter(
+        (item: any) => item.docId !== data?.id
+      );
+      await setDoc(docRef, { following: updatedFollowing }, { merge: true });
+    }
+    // from following end
+    // from followers start
+    const followersId = data?.id;
+    if (followersId) {
+      const followersDocRef = doc(db, `startups/${followersId}`);
+      const docSnap = await getDoc(followersDocRef);
+      const existingFollowers = docSnap.data()?.followers || [];
+      const updatedFollowers = existingFollowers.filter(
+        (item: any) => item.docId !== startUpData?.id
+      );
+      await setDoc(followersDocRef, { followers: updatedFollowers }, { merge: true });
+    }
+    // from followers end
+    await queryClient.invalidateQueries({ queryKey: ['startUpData'] })
+    await queryClient.refetchQueries({ queryKey: ['startUpData'] })
+    setIsModalOpen(false)
+    toast.success("Unfollowed.");
+  }catch(err){
+    setIsModalOpen(false)
+    toast.error("Something went wrong!")   
+  }
+  };
+
   useEffect(() => {
     // console.log("inside use effect");
     setClient(true)
@@ -69,13 +186,13 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
           {/* top section  */}
           <div className="flex items-end gap-2 xl:mt-[-70px] md:mt-[-50px] sm:mt-[-70px] mt-[-30px] z-30">
             <div className="flex justify-center ">
-              <div className="xl:h-[145px] md:h-[100px] xl:w-[145px] md:w-[100px] sm:w-[100px] sm:h-[100px] w-[100px] h-[100px]  rounded-full  relative">
+              <div className="xl:h-[145px] md:h-[100px] xl:w-[145px] md:w-[100px] sm:w-[100px] sm:h-[100px] w-[100px] h-[100px]   rounded-full  relative">
                 <Image
-                  src={(client&&startUpData?.basic?.coverPic?.url)?startUpData?.basic?.coverPic?.url:""}
+                  src={(client&&aboutInfo?.basic?.coverPic?.url)?aboutInfo?.basic?.coverPic?.url:avatarimg}
                   alt=""
                   height={1000}
                   width={1000}
-                  className="h-[100%] w-[100%] object-fill  rounded-full"
+                  className="h-[100%] w-[100%] object-fill  rounded-full "
                 />
                 <div className="lg:h-[46px] h-[36px] lg:w-[46px] w-[36px] absolute right-0 top-0">
                   <Image
@@ -94,7 +211,7 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
                   <h2>{(client&&aboutInfo?.name)?aboutInfo?.name:""}</h2>
                 </div>
                 <div className=" lg:text-base text-sm font-medium text-[#868E97] ">
-                  <p>{(client&&businessAccountData?.category?.name) ? businessAccountData?.category?.name : " "}</p>
+                  <p>{(client&&aboutInfo?.basic?.category?.name) ? aboutInfo?.basic?.category?.name : " "}</p>
                 </div>
               </div>
               {/* <div>
@@ -102,23 +219,44 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
               </div> */}
             </div>
           </div>
-          <div className="flex items-center gap-1 mt-6">
+          <div className="flex items-center gap-1 mt-6 ">
             <FlatIcon className="flaticon-map xl:text-2xl text-lg" />
             <p className="text-[#707172] xl:text-base text-xs  font-medium capitalize">
             {(client&&businessAccountData?.city) ? businessAccountData?.city : "Your Startup City"}
             </p>
           </div>
-          {/* <div className="flex xl:text-base text-sm font-medium tracking-widest gap-3">
-            <div className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  ">
+          {startUpData?.id!==aboutInfo?.id&&
+          <div className="flex xl:text-base text-sm font-medium tracking-widest gap-3 mt-6">
+            {client&&isFollowing?(
+               <div onClick={async () => await onUnfollowHandler(aboutInfo)} className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  ">
+               <button className="flex items-center justify-center gap-1">
+                 <FlatIcon className="flaticon-add-user xl:text-2xl text-xl " />
+                 <span className="">Following</span>
+               </button>
+             </div>
+            )
+            :
+          
+            (<div onClick={async () => await onFollowHandler(aboutInfo)} className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  ">
               <button className="flex items-center justify-center gap-1">
                 <FlatIcon className="flaticon-add-user xl:text-2xl text-xl" />
                 <span>Follow</span>
               </button>
-            </div>
+            </div>)
+}
             <div className="w-[50%] border border-primary text-center rounded-full xl:py-3 py-2 text-primary">
               <button>Message</button>
             </div>
-          </div> */}
+          </div>
+}
+<Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
+                    <div className="flex flex-col gap-2 justify-center items-center">
+                      <CircularProgress className="!text-white"></CircularProgress>
+                      <p className="text-white font-medium text-lg">
+                       Processing..
+                      </p>
+                    </div>
+                  </Modal>
           <div className="flex flex-col gap-4 xl:pb-10 py-5">
             <div
               //   onClick={()=>setSelectedTab(1)}
@@ -147,21 +285,25 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Posts</h2>
-              <h2 className="text-[#868E97]">{(client&&postsData)? postsData?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{(client&&postsData && postsData?.length>0)? postsData?.length: "0"}</h2>
             </div>
             <div
               //   onClick={()=>setSelectedTab(4)}
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Followers</h2>
-              <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.followers?.length: "-"}</h2>
+              {/* <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.followers?.length: "-"}</h2> */}
+              <h2 className="text-[#868E97]">{client&&aboutInfo?.followers?aboutInfo?.followers?.length:"0"}</h2>
+
             </div>
             <div
               //   onClick={()=>setSelectedTab(4)}
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Followings</h2>
-              <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.following?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{client&&aboutInfo?.following?aboutInfo?.following?.length:"0"}</h2>
+
+              {/* <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.following?.length: "-"}</h2> */}
             </div>
           </div>
         </div>
