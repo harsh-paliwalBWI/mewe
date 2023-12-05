@@ -19,7 +19,7 @@ interface Props {
   selectedTab: any;
 }
 
-const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
+const AboutOptions: FC<Props> = () => {
   const [client, setClient] = useState(false)
 
   const cookies = { value: getCookie("uid") };
@@ -143,21 +143,21 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab }) => {
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Posts</h2>
-              <h2 className="text-[#868E97]">{(client&&postsData)? postsData?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{(client&&postsData && postsData?.length>0)? postsData?.length: "-"}</h2>
             </div>
             <div
               //   onClick={()=>setSelectedTab(4)}
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Followers</h2>
-              <h2 className="text-[#868E97]">{(client&&startUpData)? startUpData.followers?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{(client&&startUpData && startUpData.followers?.length>0)? startUpData.followers?.length: "-"}</h2>
             </div>
             <div
               //   onClick={()=>setSelectedTab(4)}
               className={`${optionTabStyle}`}
             >
               <h2 className="text-primary">Followings</h2>
-              <h2 className="text-[#868E97]">{(client&&startUpData)? startUpData.following?.length: "-"}</h2>
+              <h2 className="text-[#868E97]">{(client&&startUpData && startUpData.following?.length>0)? startUpData.following?.length: "-"}</h2>
             </div>
           </div>
         </div>

@@ -4,7 +4,9 @@ import { Carousel } from "antd";
 
 import PostCard from "@/components/postcard/PostCard";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPosts } from "@/services/postService";
+import { fetchAllPosts } from "@/services/postService";
+import { getStartUpData } from "@/services/startupService";
+import { getCookie } from "cookies-next";
 
 const Posts = () => {
   // const responsiveSettings = [
@@ -129,10 +131,19 @@ const Posts = () => {
     },
   ];
 
-  const { data: webinars } = useQuery({
+  const cookies = { value: getCookie("uid") };
+
+  const { data: allposts } = useQuery({
     queryKey: ["Posts"],
-    queryFn: () => fetchPosts(),
+    queryFn: () => fetchAllPosts(),
   });
+
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(cookies),
+  });
+
+  // console.log(allposts,"---->")
 
   return (
     <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-16 md:mt-24 lg:mt-32">
@@ -146,15 +157,21 @@ const Posts = () => {
       </div>
 
       <Carousel responsive={responsiveSettings} autoplay className="dot-black ">
-        {/* {webinars?.slice(0, 5).map((singlePost: any, idx: number) => {
-          return (
-            <div className="px-2 sm:px-3 md:px-4 lg:px-5">
-              <PostCard singlePost={singlePost} />
-            </div>
-          );
-        })} */}
+      
+        {allposts &&
+          allposts.length > 0 &&
+          allposts
+            // .filter((post: any) => post?.docId !== startUpData?.id)
+            .slice(0, 6)
+            .map((singlepost: any, idx: number) => {
+              return (
+                <div className="px-2 sm:px-3 md:px-4 lg:px-5" key={idx}>
+                  <PostCard singlePost={singlepost}/>
+                </div>
+              );
+            })}
 
-        <div className="px-2 sm:px-3 md:px-4 lg:px-5">
+        {/* <div className="px-2 sm:px-3 md:px-4 lg:px-5">
           <PostCard />
         </div>
         <div className="px-2 sm:px-3 md:px-4 lg:px-5">
@@ -168,7 +185,7 @@ const Posts = () => {
         </div>
         <div className="px-2 sm:px-3 md:px-4 lg:px-5">
           <PostCard />
-        </div>
+        </div> */}
       </Carousel>
     </div>
   );

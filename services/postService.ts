@@ -28,6 +28,23 @@ querySnapshot.forEach((doc) => {
 // console.log(arr,"commeyn arr");
 }
 
+export const fetchAllPosts = async () => {
+
+  const querySnapshot = query(collection(db, `posts`), orderBy('createdAt', 'desc'));
+
+  const res = await getDocs(querySnapshot);
+  let arr: any = [];
+  res.forEach((doc) => {
+//  console.log(doc.data(),doc.id,"iiii")
+ let obj={...doc.data(),id:doc.id}
+//  console.log(obj,"obj");
+    arr.push(obj);
+  });
+  return arr;
+
+
+};
+
 
 
 

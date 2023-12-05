@@ -14,6 +14,7 @@ import { toast } from 'react-toastify'
 import { cookies } from "next/dist/client/components/headers";
 import { getCookie } from "cookies-next";
 
+
 // interface Props {
 //   cookie: any
 // }
@@ -22,9 +23,17 @@ const AccountPage = () => {
 const cookies = { value: getCookie("uid") };
 // console.log(cookies,"from account page bmbm");
 // console.log(cookies?.value,"value");
+const router = useRouter();
 
 
-  const router = useRouter()
+if (!cookies?.value) {
+  toast.error("Please Login First")
+  router.push('/welcome');
+  return null; 
+}
+
+
+
   const params = useSearchParams()
   const currTab = params.get("tab")
   const [selectedTab, setSelectedTab] = useState(0)

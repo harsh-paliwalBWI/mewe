@@ -32,7 +32,7 @@ const SignInPage = () => {
   const queryClient = useQueryClient();
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verification, setverification] = useState(false);
-  const [time, setTime] = useState(60);
+  const [timer, setTimer] = useState(60);
   const [OTP, setOTP] = useState("");
   const [timerStarted, setTimerStarted] = useState(false);
   const [otpSent, setOTPSent] = useState<any>(null);
@@ -111,6 +111,8 @@ const SignInPage = () => {
     }
   };
 
+
+
   const confirmOTP = () => {
     setLoading(true);
     try {
@@ -126,7 +128,7 @@ const SignInPage = () => {
           router.replace("/");
           setVerifying(false);
           setverification(false);
-          setTime(60);
+          setTimer(60);
           setOTP("");
           setTimerStarted(false);
           setOTPSent(null);
@@ -140,6 +142,28 @@ const SignInPage = () => {
       console.log("error ");
       setLoading(false);
     }
+  };
+
+  const startTimer = () => {
+    setTimer(60);
+    setTimerStarted(true);
+
+    const interval = setInterval(() => {
+      setTimer((prevTimer) => prevTimer - 1);
+    }, 1000);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      setTimerStarted(false);
+    }, 60000);
+  };
+
+  // Function to resend OTP
+  const resendOTP = async () => {
+    // Your existing logic to resend OTP
+
+    // Start the timer
+    startTimer();
   };
 
   return (
@@ -209,7 +233,7 @@ const SignInPage = () => {
               onClick={async () => {
                 await signInUserWithPhoneNumber();
               }}
-              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium font-medium  text-center rounded-lg py-3 cursor-pointer"
+              className="bg-primary text-white lg:text-xl md:text-lg sm:text-base text-sm font-medium  text-center rounded-lg py-3 cursor-pointer"
             >
               <button style={{ height: "100%", position: "relative" }}>
                 {loading && (
@@ -316,7 +340,16 @@ const SignInPage = () => {
                 })}
               </div>
               <div className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6">
-                <h4>Resend code ({time > 9 ? time : "0" + time} sec)</h4>
+              {timerStarted ? (
+                  <h4>Resend code ({timer > 9 ? timer : "0" + timer} sec)</h4>
+                ) : (
+                  <button
+                    className="underline underline-offset-2 cursor-pointer"
+                    // onClick={resendCode}
+                  >
+                    Resend code
+                  </button>
+                )}
               </div>
             </div>
             <div

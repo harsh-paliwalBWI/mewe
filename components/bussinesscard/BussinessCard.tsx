@@ -191,10 +191,10 @@ const BussinessCard: FC<Props> = ({ startup }) => {
         </h2>
         <div className="flex flex-col gap-1.5 sm:gap-2 md:gap-3 items-center justify-center">
           <p className="opacity-40 text-black  text-xs sm:text-sm md:text-[15px] font-normal text-center">
-            Health & care Services
+          {startup?.basic?.category?.name || "category not filled"}
           </p>
           <p className="opacity-40 text-black text-[10px] sm:text-xs md:text-sm font-normal ">
-            1,29,039 followers
+          {startup?.followers?.length || "No"} followers
           </p>
         </div>
 

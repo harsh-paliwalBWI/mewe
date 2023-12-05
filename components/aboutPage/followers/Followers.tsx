@@ -62,12 +62,12 @@ const Followers = () => {
     return (
         <div className=' w-full bg-[#F8FAFC] xl:px-8 px-4  sm:py-7 py-4'>
             {
-                startUpData && startUpData?.followers.length > 0 ?
+                startUpData && startUpData?.followers?.length > 0 ?
 
                     (
                         <div className='flex flex-col gap-6'>
                             {
-                                startUpData && startUpData?.followers.length > 0 && startUpData?.followers.map((follower: any, idx: number) => {
+                                startUpData && startUpData?.followers?.length > 0 && startUpData?.followers.map((follower: any, idx: number) => {
                                     return <div key={idx}>
                                         <div className='flex justify-between items-center'>
                                             <div className='flex items-center gap-x-4'>
