@@ -126,7 +126,7 @@ const ManagePost = () => {
 
               <div className="  w-full   h-fit">
                 <div className="flex flex-col gap-8 ">
-                  {postsData && postsData.length > 0 && postsData.map((post: any, idx: number) => {
+                  {postsData && postsData?.length > 0 && postsData?.map((post: any, idx: number) => {
                     const commentTime = post.createdAt.toDate();
                     // Calculate the duration
                     const now = moment();
@@ -145,14 +145,14 @@ const ManagePost = () => {
                     } else {
                       formattedTime = commentTime.format("MMMM D, YYYY"); // Show full date if more than a week
                     }
-                    const postMessage = postMessages[post.id] || ""
+                    const postMessage = postMessages[post?.id] || ""
                     return <div key={idx} className=" bg-[#F8FAFC] xl:px-8 px-4 xl:pt-8 pt-4 xl:pb-10 pb-5  w-full">
                       <div className=" ">
                         <div className="flex justify-between  ">
                           <div className="flex items-center sm:gap-5 gap-3  mb-4">
                             <div className="w-[65px] h-[65px] rounded-full">
                               <Image
-                                src={post.createdBy?.image?.url}
+                                src={post?.createdBy?.image?.url}
                                 alt=""
                                 height={1000}
                                 width={1000}
@@ -163,7 +163,7 @@ const ManagePost = () => {
                               <div className="flex items-center sm:gap-3 gap-2">
                                 <div className="text-primary font-semibold lg:text-lg sm:text-sm text-xs">
                                   {/* Code Fusion */}
-                                  {post.createdBy?.name}
+                                  {post?.createdBy?.name}
                                 </div>
                                 <div className="h-[5px] w-[5px] rounded-full bg-primary"> </div>
                                 <div className="text-[#636464] lg:text-sm text-xs font-medium ">
@@ -203,7 +203,7 @@ const ManagePost = () => {
                                       {({ active }) => (
                                         <button
                                           onClick={() => {
-                                            setDocId(post.id)
+                                            setDocId(post?.id)
                                             setIsDeleted(true)
                                             // console.log(post.id);
 
@@ -229,10 +229,10 @@ const ManagePost = () => {
                             dotPosition="bottom"
                             className=" h-full rounded-lg  w-[100%]"
                           >
-                            {post.images && post.images.length > 0 && post.images.map((singleImg: any, idx: number) => {
+                            {post?.images && post?.images?.length > 0 && post?.images?.map((singleImg: any, idx: number) => {
                               return <div key={idx} className="w-full sm:h-[300px] h-[200px] rounded-lg relative ">
                                 <Image
-                                  src={singleImg.url}
+                                  src={singleImg?.url}
                                   alt=""
                                   height={1000}
                                   width={1000}
@@ -260,7 +260,7 @@ const ManagePost = () => {
                             <div className="flex flex-col gap-1">
                               <h2 className="xl:text-lg lg:text-base text-sm font-semibold ">
                                 {/* Deliver Conference */}
-                                {post.title}
+                                {post?.title}
                               </h2>
                               {/* <p className="text-xs text-[#9fa0a2]  font-medium">
 
@@ -268,7 +268,7 @@ const ManagePost = () => {
                         </p> */}
                               <div className="text-xs text-[#9fa0a2] font-medium  w-[100%] h-auto">
                                 <p className="w-fit" style={{ overflowWrap: 'break-word', maxWidth: '100%' }}>
-                                  {post.description}
+                                  {post?.description}
                                 </p>
                               </div>
                             </div>
@@ -280,7 +280,7 @@ const ManagePost = () => {
                                 placeholder="Write something.."
                                 className="w-[100%]  xl:px-10 px-5 md:py-3 py-2 rounded-full  outline-0"
                               />
-                              <button onClick={async () => await onCommentHandler(post.id, post.createdBy)} className="md:px-5 px-3 md:py-2 py-1 rounded-full bg-primary text-white md:text-sm text-sm ">Comment</button>
+                              <button onClick={async () => await onCommentHandler(post?.id, post?.createdBy)} className="md:px-5 px-3 md:py-2 py-1 rounded-full bg-primary text-white md:text-sm text-sm ">Comment</button>
                             </div>
 
                             <div>
@@ -295,8 +295,8 @@ const ManagePost = () => {
                                   <button
                                     className=""
                                     onClick={async () => {
-                                      setData2(post.id);
-                                      onViewCommentHandler(post.id);
+                                      setData2(post?.id);
+                                      onViewCommentHandler(post?.id);
                                       setViewComment((prev) => !prev);
                                     }}
                                   >
@@ -305,11 +305,11 @@ const ManagePost = () => {
                                 </div>
                               </div>
                               {/* </OutsideClickHandler> */}
-                              {viewComment && data2 === post.id && (
+                              {viewComment && data2 === post?.id && (
                                 <div className="flex flex-col">
-                                  {viewMessage && viewMessage.length > 0 ? (
-                                    viewMessage.map((msg: any, idx: any) => {
-                                      const commentTime2 = post.createdAt.toDate();
+                                  {viewMessage && viewMessage?.length > 0 ? (
+                                    viewMessage?.map((msg: any, idx: any) => {
+                                      const commentTime2 = post?.createdAt?.toDate();
                                       const now2 = moment();
                                       const duration = moment.duration(now2.diff(commentTime2));
                                       let formattedTime2;
@@ -329,19 +329,19 @@ const ManagePost = () => {
                                       return <div key={idx} className="mt-4 ">
                                         <div className="flex  items-start gap-2 ">
                                           <div className="flex items-start gap-4 ">
-                                            <div className="h-10 w-10 rounded-full"><Image src={msg.createdBy?.image?.url} alt="" height={1000} width={1000} className="h-[100%] w-[100%] rounded-full" /></div>
+                                            <div className="h-10 w-10 rounded-full"><Image src={msg?.createdBy?.image?.url} alt="" height={1000} width={1000} className="h-[100%] w-[100%] rounded-full" /></div>
                                             <div className=" flex flex-col gap-1 ">
                                               <div className=" flex flex-col gap-1 ">
                                                 <div className="flex gap-3 items-center ">
                                                   {
                                                     msg.createdBy?.name &&
-                                                    <p className="text-sm text-primary">{msg.createdBy?.name ? msg.createdBy?.name : ""}</p>
+                                                    <p className="text-sm text-primary">{msg?.createdBy?.name ? msg?.createdBy?.name : ""}</p>
                                                   }
                                                   <div>
                                                     <p className="text-xs text-[#636464]">{formattedTime2}</p>
                                                   </div>
                                                 </div>
-                                                <p className="text-sm">{msg.message}</p>
+                                                <p className="text-sm">{msg?.message}</p>
                                               </div>
                                             </div>
                                           </div>
