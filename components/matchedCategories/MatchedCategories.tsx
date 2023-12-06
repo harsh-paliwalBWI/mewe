@@ -19,7 +19,7 @@ const MatchedCategories = (params: any) => {
     <div className='px-body'>
       {matchedCategoriesStartupsData && matchedCategoriesStartupsData.length > 0 ?
         (<div className='md:pb-20 pb-10'>
-          <h1 className="opacity-80 text-black md:text-4xl sm:text-2xl text-xl font-semibold md:my-10 my-5 ">
+          <h1 className="opacity-80 text-black xl:text-4xl sm:text-2xl text-xl font-semibold md:my-10 my-5 ">
             Promoted Businesses
           </h1>
           <div className="grid w-full  xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2   grid-cols-2 gap-y-4  sm:gap-y-6  md:gap-y-10 lg:gap-y-12   gap-x-4  sm:gap-x-6  md:gap-x-10 lg:gap-x-12  ">

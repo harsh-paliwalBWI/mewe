@@ -36,15 +36,11 @@ export const fetchStartUpsabout = async () => {
 }
 
 export const fetchAllMatchedCategoriesStartups = async (params:any) => {
-    console.log(params?.params?.params?.slug,"from fetchAllMatchedCategoriesStartups--------------");
-    
-const category=params?.params?.params?.slug
+    // console.log(params?.params?.params?.slug,"from fetchAllMatchedCategoriesStartups--------------");
+const category=params?.params?.params?.slug.split("-").join(" ")
+// console.log(category,"-----");
     const querySnapshot = query(collection(db, `startups`), where('basic.category.name', '==', category));
-
     const res = await getDocs(querySnapshot);
-    // const querySnapshot = await getDocs(collection(db, "startups"));
-    console.log(res,"res");
-    
     const arr: any = []
     res.forEach((doc) => {
         const data = JSON.parse(JSON.stringify({ ...doc.data(),id:doc.id }))

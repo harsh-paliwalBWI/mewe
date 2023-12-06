@@ -11,7 +11,7 @@ import NewPost from './businessAccountPage/newPost/NewPost'
 import { useQuery } from '@tanstack/react-query'
 import { getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService'
 import { toast } from 'react-toastify'
-import { cookies } from "next/dist/client/components/headers";
+
 import { getCookie } from "cookies-next";
 
 

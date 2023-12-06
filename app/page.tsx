@@ -37,7 +37,7 @@ await queryClient.prefetchQuery(["webinarsData"], () =>
 fetchAllWebinars()
 );
   const dehydratedState = dehydrate(queryClient);
-  // console.log(cookie,"xdbb");
+  console.log(cookie,"xdbb");
   
 
   return (

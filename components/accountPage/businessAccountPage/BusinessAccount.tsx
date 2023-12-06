@@ -59,6 +59,8 @@ const inputStyle = "rounded-lg px-3 py-3 w-full outline-0 text-sm"
 
 const BusinessAccount = () => {
   const cookies = { value: getCookie("uid") };
+  console.log(cookies,"accoun tpage ");
+  
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false)
 
@@ -280,7 +282,7 @@ const BusinessAccount = () => {
               <Listbox value={category} onChange={setCategory}>
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name && isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                  <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
+                  <Listbox.Options className={`max-h-[300px] overflow-y-scroll absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {categoriesData&&categoriesData.length>0&&categoriesData.map((category:any) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
                         {({ active, selected }) => (

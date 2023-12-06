@@ -22,7 +22,7 @@ interface Props {
 }
 
 const About: FC<Props> = ({aboutInfo}) => {
-  console.log("aboutInfo",aboutInfo);
+  // console.log("aboutInfo",aboutInfo);
 
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);

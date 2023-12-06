@@ -51,7 +51,8 @@ try{
       setLoading(true);
       let timeStamp = new Date().getMilliseconds();
       const storage = getStorage();
-      const storageRef = ref(storage, `${userPic.name}___${timeStamp}`);
+      const storageRef = ref(storage, `startups/${startUpId}/images/${(userPic.name)}___${timeStamp}`);
+      // const storageRef = ref(storage, `${userPic.name}___${timeStamp}`);
       await uploadBytes(storageRef, userPic).then(async (snapshot) => {
         await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
           await setDoc(
@@ -98,7 +99,7 @@ try{
 <div className="flex flex-col gap-2 mt-6">
 <div className="flex justify-center relative">
           <div className="flex justify-center relative z-10 ">
-          <Link href={targetPath}>
+          <Link href={`/startup/${startUpData?.slug?.name}`}>
             <div className="h-[100px] w-[100px] rounded-full  ">
               <Image
                 src={startUpData?.basic?.coverPic?.url}

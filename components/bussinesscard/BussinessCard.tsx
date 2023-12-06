@@ -27,7 +27,7 @@ interface Props {
 const BussinessCard: FC<Props> = ({ startup }) => {
   const [isClient, setIsClient] = useState(false);
 
-  console.log(startup,"from card");
+  // console.log(startup,"from card");
   const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -43,7 +43,7 @@ const BussinessCard: FC<Props> = ({ startup }) => {
   );
 
   const onFollowHandler = async (data: any) => {
-    console.log(data, "from follow");
+    // console.log(data, "from follow");
     setIsModalOpen(true)
     try{
     const docid = startUpData?.id;

@@ -30,7 +30,7 @@ interface Props {
 
 const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
 
-  console.log("aboutInfo",aboutInfo);
+  // console.log("aboutInfo",aboutInfo);
   
   const [client, setClient] = useState(false)
 
@@ -58,7 +58,7 @@ const AboutOptions: FC<Props> = ({ setSelectedTab, selectedTab,aboutInfo }) => {
   });
 
   const isFollowing = startUpData?.following?.some(
-    (item: any) => item.docId === aboutInfo.id
+    (item: any) => item?.docId === aboutInfo?.id
   );
 
   const onFollowHandler = async (data: any) => {

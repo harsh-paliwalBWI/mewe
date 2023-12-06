@@ -15,6 +15,8 @@ import { getCookie } from "cookies-next";
 import Modal from '@/components/Modal/modal';
 import { CircularProgress } from '@mui/material';
 import { fetchAllCategories } from '@/services/categoriesService';
+import Cookies from 'js-cookie' 
+
 
 
 const dummyCategory = [
@@ -29,6 +31,11 @@ const divStyle = "flex flex-col sm:gap-3 gap-2"
 const mainDivStyle = "grid sm:grid-cols-2 grid-cols-1 sm:gap-5 gap-3  w-full "
 
 const MyProfile = () => {
+    // const uid = Cookies.get('uid');
+
+    // console.log(uid, "----------");
+    // console.log(getCookie("uid"),"----------");
+    
     const cookies = { value: getCookie("uid") };
     // console.log(cookies,"my profile page");
 
@@ -38,7 +45,7 @@ const MyProfile = () => {
 
     const pathName = usePathname()
     const [loading, setLoading] = useState(false)
-    
+
     const { data: startUpData } = useQuery({
         queryKey: ["startUpData"],
         queryFn: () => getStartUpData(cookies),
@@ -172,8 +179,9 @@ const { data: categoriesData } = useQuery({
                                 <div className='  relative w-full  px-4 rounded-md   '>
                                     <Listbox value={category} onChange={setCategory}>
                                         <div className=' '>
-                                            <Listbox.Button className={` w-full flex justify-between items-center text-start  py-3 text-sm`}><span>{(client && category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                                            <Listbox.Options className={`absolute top-[50px] px-3 py-3  rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
+                                            <Listbox.Button className={` w-full flex justify-between items-center text-start  py-3 text-sm `}><span>{(client && category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                                            <Listbox.Options className={`max-h-[300px] overflow-y-scroll absolute top-[50px]  px-3 py-3  rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
+                                               {/* <div className='border border-black my-3'> */}
                                                 {categoriesData&&categoriesData.length>0&&categoriesData.map((category:any) => (
                                                     <Listbox.Option key={category.id} value={category} as={Fragment} >
                                                         {({ active, selected }) => (
@@ -192,6 +200,7 @@ const { data: categoriesData } = useQuery({
                                                         )}
                                                     </Listbox.Option>
                                                 ))}
+                                                {/* </div> */}
                                             </Listbox.Options>
                                         </div>
                                     </Listbox>

@@ -17,7 +17,7 @@ export const getStartUpData = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    console.log("uid from getStartUpData",uid);
+    // console.log("uid from getStartUpData",uid);
 
     if (uid) {
         const docRef = doc(db, "startups", uid);
@@ -93,7 +93,7 @@ export const fetchBusinessAccountDetails = async (cookieData: any) => {
     if (cookie?.value) {
         uid = cookie?.value;
     }
-    console.log("uid fetchBusinessAccountDetails",uid);
+    // console.log("uid fetchBusinessAccountDetails",uid);
 
     if (uid) {
         const docRef = doc(db, `startups/${uid}/details/advance`);
@@ -126,7 +126,7 @@ export const fetchSingleStartup = async (slug:any) => {
 }
 
 export const fetchSingleStartupAdvanceDetails = async (sinlgeId:any) => {
-    console.log(sinlgeId,"----------");
+    // console.log(sinlgeId,"----------");
     
 
     if (sinlgeId) {

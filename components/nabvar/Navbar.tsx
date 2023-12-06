@@ -88,7 +88,7 @@ const Navbar = ({ cookie }: any) => {
               </div>
             </div>
           </div>
-          <Categories cookie={cookie} />
+          <Categories  />
         </div>
       </>
     </>

@@ -19,7 +19,7 @@ interface Props {
 }
 
 const PostsSlider:FC<Props> = ({aboutInfo}) => {
-  console.log(aboutInfo,"POST SLIDES");
+  // console.log(aboutInfo,"POST SLIDES");
   
   const [data2, setData2] = useState(null)
   const [isLoading, setIsLoading] = useState(false)

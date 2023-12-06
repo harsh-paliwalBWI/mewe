@@ -9,11 +9,14 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { getCookie } from "cookies-next";
 
+
 const data = ["About", "Explore", "Schemes", "Financials", "Account"];
 
-const Categories = ({ cookie }: any) => {
+const Categories = () => {
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
+  // console.log(cookies,"from nav");
+  
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],

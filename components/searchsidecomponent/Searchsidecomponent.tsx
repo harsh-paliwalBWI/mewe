@@ -12,7 +12,7 @@ import StartupCard from "../startupcard/StartupCard";
 const Searchsidecomponent = () => {
   return (
     <>
-      <div className="w-full md:w-[35%] gap-2 sm:gap-4 md:gap-6 flex flex-col ">
+      <div className="w-full md:w-[35%] gap-2 sm:gap-4 md:gap-6 flex flex-col  ">
         <div className="flex  items-center gap-1 rounded-full  w-full bg-[#e7ecf4] px-1 sm:px-2 md:px-3 ">
           <div className=" h-full  py-1 sm:py-2 md:py-3 pl-2 pr-2 text-[#5d5f63] ">
             <FlatIcon className="flaticon-search text-sm sm:text-base md:text-lg" />

@@ -35,13 +35,13 @@ const WebniarList = () => {
           layout="responsive"
           className="object-contain w-full h-full opacity-60"
         />
-        
       </div>
-      <div className="px-body flex md:flex-row flex-col-reverse gap-6 sm:gap-8 md:gap-10 my-4 sm:my-12 md:my-20 justify-between">
-        <div className="md:w-[60%] gap-0 sm:gap-2 md:gap-4 lg:gap-6 flex flex-col ">
-          <h3 className="text-black text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 md:mb-4">
+      <div className="px-body flex md:flex-row flex-col-reverse gap-6 sm:gap-8 md:gap-10 my-6 sm:my-12 md:my-16 justify-between">
+        <div className="md:w-[60%] gap-6 sm:gap-12 md:gap-8 lg:gap-16 flex flex-col xl:mb-16 md:mb-8 mb-4 ">
+          <h3 className="text-black text-lg sm:text-lg md:text-2xl font-bold  sm:mb-3 xl:mb-10">
           Upcoming Webinar Sessions
           </h3>
+          <div className="flex flex-col  xl:gap-28 lg:gap-16 md:gap-12 sm:gap-16 gap-8 ">
          {webinarsData&&webinarsData.length>0&&webinarsData?.map((singlewebinar: any, idx: number) => {
           return <div key={idx}>
           <WebniarCard2 singlewebinar={singlewebinar} idx={idx}/>
@@ -49,7 +49,7 @@ const WebniarList = () => {
         })
         }
         </div>
-
+        </div>
         <Searchsidecomponent />
       </div>
     </>

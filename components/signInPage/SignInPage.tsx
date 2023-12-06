@@ -42,15 +42,15 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const router = useRouter();
-  const cookies = { value: getCookie("uid") };
+  // const cookies = { value: getCookie("uid") };
   const provider = new GoogleAuthProvider();
   const [docId,setDocId]=useState("")
 
 
-  const { data: startUpData } = useQuery({
-    queryKey: ["startUpData"],
-    queryFn: () => getStartUpData(cookies),
-  });
+  // const { data: startUpData } = useQuery({
+  //   queryKey: ["startUpData"],
+  //   queryFn: () => getStartUpData(cookies),
+  // });
 
 
   const startTimer = () => {
@@ -144,6 +144,8 @@ const SignInPage = () => {
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
+
+          localStorage.setItem("auth", JSON.stringify(res?.user?.uid));
           await axios.post(`/api/login?uid=${res?.user?.uid}`);
           await queryClient?.invalidateQueries({ queryKey: ["startUpData"] });
           await queryClient?.refetchQueries({ queryKey: ["startUpData"] });

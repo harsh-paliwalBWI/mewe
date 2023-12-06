@@ -25,7 +25,7 @@ const MainAbout = ({ params }: any) => {
     queryFn: () => getStartUpData(cookies),
   });
 
-  console.log(startUpData);
+  // console.log(startUpData);
   
   const [selectedTab, setSelectedTab] = useState(1)
   const headingTabStyle = 'text-primary   xl:text-base md:text-xs text-sm  cursor-pointer font-semibold border md:border-0 rounded-full md:rounded-0 text-center md:text-start py-1  '
