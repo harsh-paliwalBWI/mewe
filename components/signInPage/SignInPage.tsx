@@ -14,7 +14,7 @@ import { RecaptchaVerifier, deleteUser } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { signInWithPopup } from "firebase/auth";
-import {  getAdditionalUserInfo} from "firebase/auth";
+import { getAdditionalUserInfo } from "firebase/auth";
 import {
   collection,
   doc,
@@ -30,12 +30,11 @@ import { getStartUpData } from "@/services/startupService";
 import { getCookie } from "cookies-next";
 import { GoogleAuthProvider } from "firebase/auth";
 
-
 const SignInPage = () => {
   const queryClient = useQueryClient();
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verification, setverification] = useState(false);
-  const [timer, setTimer] = useState(60);
+  const [time, setTime] = useState(60);
   const [OTP, setOTP] = useState("");
   const [timerStarted, setTimerStarted] = useState(false);
   const [otpSent, setOTPSent] = useState<any>(null);
@@ -44,51 +43,37 @@ const SignInPage = () => {
   const router = useRouter();
   // const cookies = { value: getCookie("uid") };
   const provider = new GoogleAuthProvider();
-  const [docId,setDocId]=useState("")
-
+  const [docId, setDocId] = useState("");
 
   // const { data: startUpData } = useQuery({
   //   queryKey: ["startUpData"],
   //   queryFn: () => getStartUpData(cookies),
   // });
 
-
-  const startTimer = () => {
-    setTimerStarted(true);
-    const interval = setInterval(() => {
-      // setTime((prevTime) => prevTime - 1);
-    }, 1000);
-    setTimeout(() => {
-      clearInterval(interval);
-      setTimerStarted(false);
-    }, 60000); 
-  };
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       let startUpExistOrNot: any;
       let isBlocked;
-      let startUp
+      let startUp;
       let docId;
       const startupsRef = collection(db, "startups");
       const q = query(startupsRef, where("phoneNo", "==", phoneNumber));
       const querySnapshot = await getDocs(q);
       if (querySnapshot.size > 0) {
         const docSnap = querySnapshot.docs[0];
-         startUp = docSnap.data();
-         docId = docSnap.id;
-         setDocId(docId)
+        startUp = docSnap.data();
+        docId = docSnap.id;
+        setDocId(docId);
         startUpExistOrNot = startUp ? true : false;
-        isBlocked = startUp.blockedByAdmin
+        isBlocked = startUp.blockedByAdmin;
         console.log(startUp);
         console.log("isBlocked", isBlocked);
       } else {
         // console.log('No matching document found');
       }
       if (startUpExistOrNot) {
-      
-        
         if (!isBlocked) {
-          console.log(docId,"-----------");
+          console.log(docId, "-----------");
           setLoading(true);
           const recaptchaVerifier = new RecaptchaVerifier(
             auth,
@@ -100,6 +85,8 @@ const SignInPage = () => {
               },
             }
           );
+          console.log(recaptchaVerifier, "veri");
+
           const formattedPhoneNumber = `+91${phoneNumber}`;
           await signInWithPhoneNumber(
             auth,
@@ -118,7 +105,7 @@ const SignInPage = () => {
               setLoading(false);
             });
         } else {
-          toast.error("You have been blocked by admin.")
+          toast.error("You have been blocked by admin.");
         }
       } else {
         router.push("/signup");
@@ -134,7 +121,56 @@ const SignInPage = () => {
     }
   };
 
+  const startTimer = () => {
+    setTimerStarted(true);
+    const interval = setInterval(() => {
+      setTime((prevTime) => prevTime - 1);
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(interval);
+      setTimerStarted(false);
+    }, 60000);
+  };
 
+  const resendOTP = async () => {
+    if (otpSent) {
+      try {
+        setLoading(true);
+
+        console.log(loading, "uuu");
+        const recaptchaVerifier = new RecaptchaVerifier(
+          auth,
+          "recaptcha-container2",
+          {
+            size: "invisible",
+            callback: (response: any) => {
+              console.log(response);
+            },
+          }
+        );
+        console.log(recaptchaVerifier, "mmmm");
+
+        const updatedOTPSent = await signInWithPhoneNumber(
+          auth,
+          `+91${phoneNumber}`,
+          recaptchaVerifier
+        );
+
+        setOTPSent(updatedOTPSent);
+        setTimerStarted(true);
+        startTimer();
+
+        setLoading(false);
+        toast.success("OTP Resent successfully!");
+      } catch (error:any) {
+        setLoading(false);
+        console.log("Firebase Authentication Error:", error.code, error.message);
+        toast.error(`Failed to resend OTP`);
+      }
+    } else {
+      toast.error("OTP not sent yet. Please initiate the verification first.");
+    }
+  };
 
   const confirmOTP = () => {
     setLoading(true);
@@ -149,25 +185,32 @@ const SignInPage = () => {
           await axios.post(`/api/login?uid=${res?.user?.uid}`);
           await queryClient?.invalidateQueries({ queryKey: ["startUpData"] });
           await queryClient?.refetchQueries({ queryKey: ["startUpData"] });
-          await setDoc(doc(db, `startups/${docId}`), {signInMethod:"phone number"}, { merge: true,});
+          await setDoc(
+            doc(db, `startups/${docId}`),
+            { signInMethod: "phone number" },
+            { merge: true }
+          );
           toast.success("Welcome");
           router.replace("/");
           setVerifying(false);
           setverification(false);
-          setTimer(60);
+          setTime(60);
           setOTP("");
           setTimerStarted(false);
           setOTPSent(null);
           setLoading(false);
-          setDocId("")
+          setDocId("");
         })
         .catch((err: any) => {
           // setTime(0);
           setverification(false);
           setLoading(false);
           toast.error("Incorrect OTP! Sign in failed!");
-          // setOTP("");
-          // resetOTPInputs(); 
+          setLoading(false);
+          setTime(60);
+          setOTP("");
+          setTimerStarted(false);
+          setOTPSent(null);
         });
     } catch (err) {
       console.log("error ");
@@ -178,21 +221,19 @@ const SignInPage = () => {
     const newOTP = Array(6).fill(""); // Create an array of 6 empty strings
     setOTP(newOTP.join("")); // Join the array into a string and set the OTP state
   };
-  
 
   const handleLoginWithGoogle = async (result: any) => {
-    
-    console.log("result",result);
-    
+    console.log("result", result);
+
     const user = result.user;
-    console.log("user",user);
-    
+    console.log("user", user);
+
     const additionalUserInfo = getAdditionalUserInfo(result);
-  
+
     if (additionalUserInfo && additionalUserInfo.isNewUser) {
       console.log("inside if");
       let authuser = {
-        phoneNo:  user?.phoneNumber,
+        phoneNo: user?.phoneNumber,
         createdAt: new Date(),
         role: "startup",
         mode: "google",
@@ -203,32 +244,34 @@ const SignInPage = () => {
         name: user?.displayName,
         email: user?.email,
       };
-      console.log("startup",startup,authuser);
-      
-      await setDoc(doc(db, `startups/${user.uid}`), startup, { merge: true,});
-      await setDoc(doc(db, `auth/${user.uid}`), authuser, {merge: true,});
-    }else{
-      console.log("inside else");
+      console.log("startup", startup, authuser);
 
+      await setDoc(doc(db, `startups/${user.uid}`), startup, { merge: true });
+      await setDoc(doc(db, `auth/${user.uid}`), authuser, { merge: true });
+    } else {
+      console.log("inside else");
     }
-    await setDoc(doc(db, `startups/${user.uid}`), {signInMethod:"google"}, { merge: true,});
+    await setDoc(
+      doc(db, `startups/${user.uid}`),
+      { signInMethod: "google" },
+      { merge: true }
+    );
     await axios.post(`/api/login?uid=${user?.uid}`);
     toast.success("Welcome");
     router.replace("/");
-   
   };
-  
 
   const loginWithGoogle = async () => {
     console.log("inside loginWithGoogle");
-    
+
     signInWithPopup(auth, provider)
       .then((result) => {
-        handleLoginWithGoogle(result)
-      }).catch((error) => {
+        handleLoginWithGoogle(result);
+      })
+      .catch((error) => {
         console.log(error, "error");
       });
-  }
+  };
 
   // const startTimer = () => {
   //   setTimer(60);
@@ -251,6 +294,8 @@ const SignInPage = () => {
   //   // Start the timer
   //   startTimer();
   // };
+
+  console.log(OTP,"dfg")
 
   return (
     <>
@@ -338,37 +383,41 @@ const SignInPage = () => {
               </button>
             </div>
             <div id="recaptcha-container"></div>
+            <div id="recaptcha-container2"></div>
             {/* </Link> */}
             <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
-            <h2>or Sign In with</h2>
-          </div>
-          <div className="flex items-center justify-center gap-x-6">
-            <div  onClick={async () => {
-                await loginWithGoogle()
-              }} className="sm:h-[55px]  sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
-              <Image
-                src={googleImg}
-                alt=""
-                height={1000}
-                width={1000}
-                className="h-full w-full object-fill"
-              />
+              <h2>or Sign In with</h2>
             </div>
-            {/* <div className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
+            <div className="flex items-center justify-center gap-x-6">
+              <div
+                onClick={async () => {
+                  await loginWithGoogle();
+                }}
+                className="sm:h-[55px]  sm:w-[55px] h-[45px] w-[45px] cursor-pointer"
+              >
+                <Image
+                  src={googleImg}
+                  alt=""
+                  height={1000}
+                  width={1000}
+                  className="h-full w-full object-fill"
+                />
+              </div>
+              {/* <div className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
               <Image
                 src={appleImg}
                 alt=""
                 className="h-full w-full object-fill"
               />
             </div> */}
-            {/* <div className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
+              {/* <div className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
               <Image
                 src={linkedIn}
                 alt=""
                 className="h-full w-full object-fill"
               />
             </div> */}
-          </div>
+            </div>
           </div>
         )}
 
@@ -423,49 +472,81 @@ const SignInPage = () => {
                         //   }
                         // }}
 
-
                         onChange={(e) => {
-                          const digit = parseInt(e.target.value, 10);
-                        
-                          // Cast e.nativeEvent to any to avoid TypeScript errors
-                          const nativeEvent: any = e.nativeEvent;
-                          const isBackspace =
-                            nativeEvent.inputType === 'deleteContentBackward' ||
-                            (nativeEvent.inputType === 'deleteContentForward' &&
-                              nativeEvent.data === null);
-                        
-                          if (!isNaN(digit) || isBackspace) {
-                            const currentIndex = idx;
-                            const nextIndex = isBackspace ? currentIndex - 1 : currentIndex + 1;
-                        
-                            if (nextIndex >= 0 && nextIndex < 6) {
-                              document.getElementById(`otp${nextIndex + 1}`)?.focus();
-                            }
-                        
-                            let newOTP = OTP;
-                            if (!isNaN(digit)) {
-                              newOTP =
-                                newOTP.substring(0, currentIndex) +
-                                digit +
-                                newOTP.substring(currentIndex + 1);
-                            } else {
-                              newOTP =
-                                newOTP.substring(0, currentIndex - 1) +
-                                ' ' +
-                                newOTP.substring(currentIndex);
-                            }
-                        
-                            setOTP(newOTP);
+                          const inputElement = document.getElementById(`otp${digit}`) as HTMLInputElement;
+          
+                          if (e.target.value) {
+                            // Move focus to the next input on input
+                            inputElement.blur(); // Blur to handle backspace correctly
+                            document.getElementById(`otp${digit + 1}`)?.focus();
+                            let otp = OTP;
+                            setOTP(
+                              otp.substring(0, digit - 1) +
+                                e.target.value +
+                                otp.substring(digit)
+                            );
+                          } else {
+                            // Move focus to the previous input on backspace
+                            inputElement.blur(); // Blur to handle backspace correctly
+                            document.getElementById(`otp${digit - 1}`)?.focus();
+                            let otp = OTP;
+                            setOTP(
+                              otp.substring(0, digit - 1) + ' ' + otp.substring(digit)
+                            );
                           }
                         }}
+
+                        // onChange={(e) => {
+                        //   const digit = parseInt(e.target.value, 10);
+
+                        //   // Cast e.nativeEvent to any to avoid TypeScript errors
+                        //   const nativeEvent: any = e.nativeEvent;
+                        //   const isBackspace =
+                        //     nativeEvent.inputType === "deleteContentBackward" ||
+                        //     (nativeEvent.inputType === "deleteContentForward" &&
+                        //       nativeEvent.data === null);
+
+                        //   if (!isNaN(digit) || isBackspace) {
+                        //     const currentIndex = idx;
+                        //     const nextIndex = isBackspace
+                        //       ? currentIndex - 1
+                        //       : currentIndex + 1;
+
+                        //     if (nextIndex >= 0 && nextIndex < 6) {
+                        //       document
+                        //         .getElementById(`otp${nextIndex + 1}`)
+                        //         ?.focus();
+                        //     }
+
+                        //     let newOTP = OTP;
+                        //     if (!isNaN(digit)) {
+                        //       newOTP =
+                        //         newOTP.substring(0, currentIndex) +
+                        //         digit +
+                        //         newOTP.substring(currentIndex + 1);
+                        //     } else {
+                        //       newOTP =
+                        //         newOTP.substring(0, currentIndex - 1) +
+                        //         " " +
+                        //         newOTP.substring(currentIndex);
+                        //     }
+
+                        //     setOTP(newOTP);
+                        //   }
+                        // }}
                       />
                     </div>
                   );
                 })}
               </div>
-              <div className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6">
-              {timerStarted ? (
-                  <h4>Resend code ({timer > 9 ? timer : "0" + timer} sec)</h4>
+              <div
+                className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6"
+                onClick={async () => {
+                  await resendOTP();
+                }}
+              >
+                {timerStarted ? (
+                  <h4>Resend code ({time > 9 ? time : "0" + time} sec)</h4>
                 ) : (
                   <button
                     className="underline underline-offset-2 cursor-pointer"

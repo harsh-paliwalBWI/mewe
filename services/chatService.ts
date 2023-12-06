@@ -72,8 +72,10 @@ export const getDataofstartup = async (selectedUser: any) => {
 };
 
 export const NewCreation = async (selectedUser: any, currentUser: any) => {
+  console.log(selectedUser,"selectedUser")
+  console.log(currentUser,"currentUser")
   try {
-    const q = doc(db, `chat/ ${selectedUser}/startups/${currentUser}`);
+    const q = doc(db, `chat/${selectedUser}/startups/${currentUser}`);
     const res = await getDoc(q);
 
     if (!res.exists()) {
