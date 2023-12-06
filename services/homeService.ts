@@ -24,6 +24,7 @@ export const fetchAllWebinars = async () => {
     return arr
 }
 
+
 export const fetchStartUpsabout = async () => {
     const querySnapshot = await getDocs(collection(db, "startups"));
     const arr: any = []

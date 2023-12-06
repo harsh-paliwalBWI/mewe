@@ -43,8 +43,6 @@ const SignUpPage2 = () => {
   //   }
   // ));
 
-
-
   // const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier >(new RecaptchaVerifier(
   //   auth,
   //   "recaptcha-container",
@@ -56,32 +54,31 @@ const SignUpPage2 = () => {
   //   }
   // ));
 
-  const resetTimer = () => {
-    setTime(60);
-    setTimerStarted(false);
-  };
-
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber && name && email) {
       setLoading(true);
 
-      
       // if (!recaptchaVerifier) {
-        // recaptchaVerifier.clear();
-        const newRecaptchaVerifier = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container",
-          {
-            size: "invisible",
-            callback: (response: any) => {
-              console.log(response);
-            },
-          }
-        );
-        // setRecaptchaVerifier(newRecaptchaVerifier);
+      // recaptchaVerifier.clear();
+      const newRecaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response: any) => {
+            console.log(response);
+          },
+        }
+      );
+      // setRecaptchaVerifier(newRecaptchaVerifier);
       // }
+
       const formattedPhoneNumber = `+91${phoneNumber}`;
-      await signInWithPhoneNumber(auth, formattedPhoneNumber, newRecaptchaVerifier)
+      await signInWithPhoneNumber(
+        auth,
+        formattedPhoneNumber,
+        newRecaptchaVerifier
+      )
         .then((confirmationResult) => {
           setOTPSent(confirmationResult);
 
@@ -124,45 +121,47 @@ const SignUpPage2 = () => {
     setTimeout(() => {
       clearInterval(interval);
       setTimerStarted(false);
-    }, 60000); 
+    }, 60000);
   };
 
-  useEffect(()=>{
+  const resendOTP = async () => {
+    if (otpSent) {
+      try {
+        setLoading(true);
 
-  },[timerStarted])
-  // const resendCode =async () => {
-  //   try {
-  //     setTime(60);
-  //     startTimer();
-  //     console.log(recaptchaVerifier, "kkk");
+        console.log(loading, "uuu");
+        const recaptchaVerifier = new RecaptchaVerifier(
+          auth,
+          "recaptcha-container",
+          {
+            size: "invisible",
+            callback: (response: any) => {
+              console.log(response);
+            },
+          }
+        );
+        console.log(recaptchaVerifier, "mmmm");
 
-  //     // Clear existing recaptchaVerifier instance
-  //     recaptchaVerifier.clear();
-      
-  //     // Create a new RecaptchaVerifier instance
-  //     const newRecaptchaVerifier = new RecaptchaVerifier(
-  //         auth,
-  //         "recaptcha-container",
-  //         {
-  //             size: "invisible",
-  //             callback: (response: any) => {
-  //                 console.log(response);
-  //             },
-  //         }
-  //     );
+        const updatedOTPSent = await signInWithPhoneNumber(
+          auth,
+          `+91${phoneNumber}`,
+          recaptchaVerifier
+        );
 
-  //     // Set the new recaptchaVerifier
-  //     setRecaptchaVerifier(newRecaptchaVerifier);
-  //     console.log(recaptchaVerifier, "ggg");
+        setOTPSent(updatedOTPSent);
+        setTimerStarted(true);
+        startTimer();
 
-  //     // Sign in with the phone number again using the new recaptchaVerifier
-  //     await signInUserWithPhoneNumber();
-  // } catch (error) {
-  //     console.error("Error resending code:", error);
-  // }
-
-
-  // };
+        setLoading(false);
+        toast.success("OTP Resent successfully!");
+      } catch (error) {
+        setLoading(false);
+        toast.error(`Failed to resend OTP`);
+      }
+    } else {
+      toast.error("OTP not sent yet. Please initiate the verification first.");
+    }
+  };
 
   const confirmOTP = () => {
     try {
@@ -186,12 +185,8 @@ const SignUpPage2 = () => {
               createdAt: new Date(),
               name: name,
               email: email,
-              signInMethod:"phone number"
+              signInMethod: "phone number",
             };
-
-           
-
-
 
             // console.log(startup, "startup info");
             await setDoc(doc(db, `startups/${res.user.uid}`), startup, {
@@ -211,7 +206,7 @@ const SignUpPage2 = () => {
           }
           // localStorage.setItem("auth", JSON.stringify(res.user.uid));
           //   await axios.get(`/api/login?uid=${res.user.uid}`);
-         
+
           setVerifying(false);
           setverification(false);
           setTime(60);
@@ -415,7 +410,7 @@ const SignUpPage2 = () => {
                         maxLength={1}
                         className="xl:py-4 md-py-3  py-2 border border-[#868E97] w-full outline-0 text-center"
                         id={`${"otp" + digit}`}
-                        // old onchsnge start 
+                        // old onchsnge start
                         // onChange={(e) => {
                         //   if (e.target.value) {
                         //     document
@@ -436,45 +431,76 @@ const SignUpPage2 = () => {
                         //     );
                         //   }
                         // }}
-                        // old onchange end 
+                        // old onchange end
 
-                        // new start 
+
                         onChange={(e) => {
-                          const digit = parseInt(e.target.value, 10);
-                        
-                          // Cast e.nativeEvent to any to avoid TypeScript errors
-                          const nativeEvent: any = e.nativeEvent;
-                          const isBackspace =
-                            nativeEvent.inputType === 'deleteContentBackward' ||
-                            (nativeEvent.inputType === 'deleteContentForward' &&
-                              nativeEvent.data === null);
-                        
-                          if (!isNaN(digit) || isBackspace) {
-                            const currentIndex = idx;
-                            const nextIndex = isBackspace ? currentIndex - 1 : currentIndex + 1;
-                        
-                            if (nextIndex >= 0 && nextIndex < 6) {
-                              document.getElementById(`otp${nextIndex + 1}`)?.focus();
-                            }
-                        
-                            let newOTP = OTP;
-                            if (!isNaN(digit)) {
-                              newOTP =
-                                newOTP.substring(0, currentIndex) +
-                                digit +
-                                newOTP.substring(currentIndex + 1);
-                            } else {
-                              newOTP =
-                                newOTP.substring(0, currentIndex - 1) +
-                                ' ' +
-                                newOTP.substring(currentIndex);
-                            }
-                        
-                            setOTP(newOTP);
+                          const inputElement = document.getElementById(`otp${digit}`) as HTMLInputElement;
+          
+                          if (e.target.value) {
+                            // Move focus to the next input on input
+                            inputElement.blur(); // Blur to handle backspace correctly
+                            document.getElementById(`otp${digit + 1}`)?.focus();
+                            let otp = OTP;
+                            setOTP(
+                              otp.substring(0, digit - 1) +
+                                e.target.value +
+                                otp.substring(digit)
+                            );
+                          } else {
+                            // Move focus to the previous input on backspace
+                            inputElement.blur(); // Blur to handle backspace correctly
+                            document.getElementById(`otp${digit - 1}`)?.focus();
+                            let otp = OTP;
+                            setOTP(
+                              otp.substring(0, digit - 1) + ' ' + otp.substring(digit)
+                            );
                           }
                         }}
-                        
-                        // new end 
+
+
+
+                        // new start
+                        // onChange={(e) => {
+                        //   const digit = parseInt(e.target.value, 10);
+
+                        //   // Cast e.nativeEvent to any to avoid TypeScript errors
+                        //   const nativeEvent: any = e.nativeEvent;
+                        //   const isBackspace =
+                        //     nativeEvent.inputType === "deleteContentBackward" ||
+                        //     (nativeEvent.inputType === "deleteContentForward" &&
+                        //       nativeEvent.data === null);
+
+                        //   if (!isNaN(digit) || isBackspace) {
+                        //     const currentIndex = idx;
+                        //     const nextIndex = isBackspace
+                        //       ? currentIndex - 1
+                        //       : currentIndex + 1;
+
+                        //     if (nextIndex >= 0 && nextIndex < 6) {
+                        //       document
+                        //         .getElementById(`otp${nextIndex + 1}`)
+                        //         ?.focus();
+                        //     }
+
+                        //     let newOTP = OTP;
+                        //     if (!isNaN(digit)) {
+                        //       newOTP =
+                        //         newOTP.substring(0, currentIndex) +
+                        //         digit +
+                        //         newOTP.substring(currentIndex + 1);
+                        //     } else {
+                        //       newOTP =
+                        //         newOTP.substring(0, currentIndex - 1) +
+                        //         " " +
+                        //         newOTP.substring(currentIndex);
+                        //     }
+
+                        //     setOTP(newOTP);
+                        //   }
+                        // }}
+
+                        // new end
                       />
                     </div>
                   );

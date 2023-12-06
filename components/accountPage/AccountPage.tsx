@@ -14,7 +14,6 @@ import { toast } from 'react-toastify'
 
 import { getCookie } from "cookies-next";
 
-
 // interface Props {
 //   cookie: any
 // }
@@ -31,8 +30,6 @@ const router = useRouter();
 //   router.push('/welcome');
 //   return null; 
 // }
-
-
 
   const params = useSearchParams()
   const currTab = params.get("tab")

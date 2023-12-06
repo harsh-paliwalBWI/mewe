@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchAllPosts } from "@/services/postService";
 import { getStartUpData } from "@/services/startupService";
 import { getCookie } from "cookies-next";
+import Link from "next/link";
 
 const Posts = () => {
   // const responsiveSettings = [
@@ -151,13 +152,14 @@ const Posts = () => {
         <h1 className="opacity-80 text-black md:text-4xl sm:text-3xl text-2xl font-semibold">
           Posts
         </h1>
-        <p className="opacity-80 text-black md:text-xl sm:text-lg text-base font-medium underline underline-offset-2 cursor-pointer">
-          View all
-        </p>
+        <Link href={"/all-posts"}>
+          <p className="opacity-80 text-black md:text-xl sm:text-lg text-base font-medium underline underline-offset-2 cursor-pointer">
+            View all
+          </p>
+        </Link>
       </div>
 
       <Carousel responsive={responsiveSettings} autoplay className="dot-black ">
-      
         {allposts &&
           allposts.length > 0 &&
           allposts
@@ -166,7 +168,7 @@ const Posts = () => {
             .map((singlepost: any, idx: number) => {
               return (
                 <div className="px-2 sm:px-3 md:px-4 lg:px-5" key={idx}>
-                  <PostCard singlePost={singlepost}/>
+                  <PostCard singlePost={singlepost} />
                 </div>
               );
             })}
