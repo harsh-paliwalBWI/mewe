@@ -229,12 +229,7 @@ let interval:any
   
   };
 
-  useEffect(() => {
-    return () => {
-      // Clean up the interval when the component unmounts
-      clearInterval(interval);
-    };
-  }, []);
+  
 
   const confirmOTP = () => {
     setLoading(true);
