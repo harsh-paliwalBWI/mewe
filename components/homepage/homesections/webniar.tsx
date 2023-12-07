@@ -26,6 +26,8 @@ const Webniar = () => {
   
 
   return (
+    <>
+    {webinarsData&&webinarsData.length>0&&
     <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-16 md:mt-24 lg:mt-32 pt-5 sm:pt-0">
       <div className="flex justify-between items-center">
         <h1 className="opacity-80 text-black md:text-4xl sm:text-3xl text-2xl font-semibold ">
@@ -49,6 +51,8 @@ const Webniar = () => {
         })}
       </div>
     </div>
+}
+    </>
   );
 };
 

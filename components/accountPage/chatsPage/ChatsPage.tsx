@@ -281,7 +281,7 @@ const ChatsPage = () => {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-    console.log("This is called2");
+    // console.log("This is called2");
   }, [messages]);
 
   return (

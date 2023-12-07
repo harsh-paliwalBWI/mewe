@@ -7,7 +7,7 @@ import Hydrate from "../../../utils/hydrate.client"
 
 
 const AboutPageInfo =async ({ params }:any) => {
-    console.log(params,"----------");
+    console.log(params,"------lll-");
     const queryClient: any = getQueryClient();await queryClient.prefetchQuery({
       queryKey: ["startup", params?.slug],
       queryFn: () => fetchSingleStartup(params?.slug),

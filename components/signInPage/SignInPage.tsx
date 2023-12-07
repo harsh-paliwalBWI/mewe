@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import mainImg from "../../images/me we.png";
 import Image from "next/image";
 import falgImg from "../../images/Group 34168.svg";
@@ -44,69 +44,15 @@ const SignInPage = () => {
   // const cookies = { value: getCookie("uid") };
   const provider = new GoogleAuthProvider();
   const [docId, setDocId] = useState("");
+  const [otpEntered, setOtpEntered] = useState(false);
 
   // const { data: startUpData } = useQuery({
   //   queryKey: ["startUpData"],
   //   queryFn: () => getStartUpData(cookies),
   // });
 
-
-  // const resendOTP = async () => {
-  //   console.log("inside resendOTP");
-  //   console.log(phoneNumber,'FROM RESEND');
-  //   if (otpSent) {
-  //     try {
-  //       console.log("inside try");
-
-  //       setLoading(true);
-  //       console.log("before resendOTP");
-
-  //       // Initialize RecaptchaVerifier here
-  //       const recaptchaVerifier = new RecaptchaVerifier(auth,"resend-container", 
-  //       {
-  //         size: "invisible",
-  //         callback: (response: any) => {
-  //           console.log(response);
-  //         },
-  //       });
-
-
-  //       console.log(recaptchaVerifier,"from resend");
-  //       const formattedPhoneNumber = `+91${phoneNumber}`;
-  //       await signInWithPhoneNumber(
-  //         auth,
-  //         formattedPhoneNumber,
-  //         recaptchaVerifier
-  //       );
-  //       // const updatedOTPSent = await signInWithPhoneNumber(
-  //       //   auth,
-  //       //   formattedPhoneNumber,
-  //       //   recaptchaVerifier
-  //       // );
-
-  //       // setOTPSent(updatedOTPSent);
-  //       setTimerStarted(true);
-  //       startTimer();
-
-  //       setLoading(false);
-  //       toast.success("OTP Resent successfully!");
-  //     } catch (error: any) {
-  //       setLoading(false);
-  //       console.error(
-  //         "Firebase Authentication Error:",
-  //         error.code,
-  //         error.message
-  //       );
-  //       console.log(error);
-
-  //       toast.error("Failed to resend OTP");
-  //     }
-  //   } else {
-  //     toast.error(
-  //       "OTP not sent yet. Please initiate the verification first."
-  //     );
-  //   }
-  // };
+let interval:any
+  
 
   // const resendOTP = async () => {
   //   try {
@@ -228,6 +174,8 @@ const SignInPage = () => {
               setverification(true);
               setLoading(false);
               startTimer();
+              // clearInterval(interval);
+              // setTime(0)
               recaptchaVerifier.clear()
             })
             .catch((error) => {
@@ -256,16 +204,37 @@ const SignInPage = () => {
 
   const startTimer = () => {
     setTimerStarted(true);
-    const interval = setInterval(() => {
+   
+    
+   interval = setInterval(() => {
+    console.log("set interval");
+
       setTime((prevTime) => prevTime - 1);
     }, 1000);
-    setTimeout(() => {
-      clearInterval(interval);
-      setTimerStarted(false);
-    }, 60000);
+    
+    if (otpEntered){
+      console.log("inside if");
+      
+      clearInterval(interval)
+     }else{
+      console.log("inside else");
+
+      setTimeout(() => {
+        console.log("cleaned");
+        
+        clearInterval(interval);
+        setTimerStarted(false);
+      }, 60000);
+     }
+  
   };
 
-
+  useEffect(() => {
+    return () => {
+      // Clean up the interval when the component unmounts
+      clearInterval(interval);
+    };
+  }, []);
 
   const confirmOTP = () => {
     setLoading(true);
@@ -275,7 +244,6 @@ const SignInPage = () => {
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
-
           localStorage.setItem("auth", JSON.stringify(res?.user?.uid));
           await axios.post(`/api/login?uid=${res?.user?.uid}`);
           await queryClient?.invalidateQueries({ queryKey: ["startUpData"] });
@@ -302,6 +270,9 @@ const SignInPage = () => {
           setLoading(false);
           toast.error("Incorrect OTP! Sign in failed!");
           setLoading(false);
+          // clearInterval(interval)
+          setOtpEntered(true)
+          startTimer()
           setTime(60);
           setOTP("");
           setTimerStarted(false);
@@ -312,10 +283,10 @@ const SignInPage = () => {
       setLoading(false);
     }
   };
-  const resetOTPInputs = () => {
-    const newOTP = Array(6).fill(""); // Create an array of 6 empty strings
-    setOTP(newOTP.join("")); // Join the array into a string and set the OTP state
-  };
+  // const resetOTPInputs = () => {
+  //   const newOTP = Array(6).fill(""); // Create an array of 6 empty strings
+  //   setOTP(newOTP.join("")); // Join the array into a string and set the OTP state
+  // };
 
   const handleLoginWithGoogle = async (result: any) => {
     console.log("result", result);
@@ -368,6 +339,8 @@ const SignInPage = () => {
       });
   };
 
+  
+
   // const startTimer = () => {
   //   setTimer(60);
   //   setTimerStarted(true);
@@ -382,15 +355,11 @@ const SignInPage = () => {
   //   }, 60000);
   // };
 
-  // Function to resend OTP
-  // const resendOTP = async () => {
-  //   // Your existing logic to resend OTP
+  
 
-  //   // Start the timer
-  //   startTimer();
-  // };
+  // console.log(OTP, "dfg")
+console.log(time,"time------");
 
-  console.log(OTP, "dfg")
 
 
 
@@ -501,7 +470,11 @@ const SignInPage = () => {
                   className="h-full w-full object-fill"
                 />
               </div>
-              {/* <div className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
+              {/* <div
+               onClick={async () => {
+                await loginWithApple();
+              }}
+               className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
               <Image
                 src={appleImg}
                 alt=""
@@ -567,7 +540,9 @@ const SignInPage = () => {
                             document.getElementById(`otp${digit - 1}`)?.focus();
                             let otp = OTP;
                             setOTP(
-                              otp.substring(0, digit - 1) + ' ' + otp.substring(digit)
+                              otp.substring(0, digit - 1) +
+                                " " +
+                                otp.substring(digit)
                             );
                           }
                         }}

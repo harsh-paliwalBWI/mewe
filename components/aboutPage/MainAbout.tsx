@@ -19,7 +19,7 @@ const MainAbout = ({ params }: any) => {
     queryFn: () => fetchSingleStartup(params?.slug),
   });
 
-  console.log(singleStartup,"----------");
+  console.log(singleStartup,"---jj-----");
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),

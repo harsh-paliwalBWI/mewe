@@ -252,7 +252,7 @@ const PostCard = (singlePost: any) => {
           onClick={async () => {
             await onCommentHandler(singlePostdata?.id);
           }}
-          className="md:px-4 px-2 md:py-2 py-1 rounded-full bg-primary text-white md:text-sm text-sm "
+          className="md:px-4 px-2 md:py-2 py-1 rounded-full bg-primary text-white md:text-sm text-xs "
         >
           Comment
         </button>

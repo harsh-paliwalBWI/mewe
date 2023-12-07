@@ -16,6 +16,7 @@ import { doc, setDoc } from "firebase/firestore";
 import Loader from "../loader/Loader";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { log } from "console";
 
 const SignUpPage2 = () => {
   const [phoneNumber, setPhoneNumber] = useState<any>("");
@@ -28,10 +29,11 @@ const SignUpPage2 = () => {
   const [verifying, setVerifying] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [otpEntered, setOtpEntered] = useState(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
-
+let interval:any
   // const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier >(new RecaptchaVerifier(
   //   auth,
   //   "recaptcha-container",
@@ -115,10 +117,16 @@ const SignUpPage2 = () => {
 
   const startTimer = () => {
     setTimerStarted(true);
-    const interval = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
+    interval = setInterval(() => {
+      console.log("set interval");
+      if (!otpEntered) {
+        setTime((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
+      }
+      // setTime((prevTime) => prevTime - 1);
     }, 1000);
     setTimeout(() => {
+      console.log("clear interval");
+      
       clearInterval(interval);
       setTimerStarted(false);
     }, 60000);
@@ -162,7 +170,8 @@ const SignUpPage2 = () => {
       toast.error("OTP not sent yet. Please initiate the verification first.");
     }
   };
-
+  console.log(time,"time----------");
+  
   const confirmOTP = () => {
     try {
       setLoading(true);
@@ -211,6 +220,7 @@ const SignUpPage2 = () => {
           setverification(false);
           setTime(60);
           setOTP("");
+
           setTimerStarted(false);
           setOTPSent(null);
           setLoading(false);
@@ -219,6 +229,11 @@ const SignUpPage2 = () => {
         })
         .catch((err: any) => {
           setTime(60);
+          console.log("before clearInterval");
+          setOtpEntered(true)
+          clearInterval(interval)
+          console.log("after clearInterval");
+
           setTimerStarted(false);
           setverification(false);
           setLoading(false);

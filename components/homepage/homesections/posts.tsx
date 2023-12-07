@@ -147,6 +147,9 @@ const Posts = () => {
   // console.log(allposts,"---->")
 
   return (
+    <>
+    {allposts &&
+          allposts.length > 0 &&
     <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-8 sm:mt-16 md:mt-24 lg:mt-32">
       <div className="flex justify-between">
         <h1 className="opacity-80 text-black md:text-4xl sm:text-3xl text-2xl font-semibold">
@@ -173,23 +176,10 @@ const Posts = () => {
               );
             })}
 
-        {/* <div className="px-2 sm:px-3 md:px-4 lg:px-5">
-          <PostCard />
-        </div>
-        <div className="px-2 sm:px-3 md:px-4 lg:px-5">
-          <PostCard />
-        </div>
-        <div className="px-2 sm:px-3 md:px-4 lg:px-5">
-          <PostCard />
-        </div>
-        <div className="px-2 sm:px-3 md:px-4 lg:px-5">
-          <PostCard />
-        </div>
-        <div className="px-2 sm:px-3 md:px-4 lg:px-5">
-          <PostCard />
-        </div> */}
       </Carousel>
     </div>
+}
+    </>
   );
 };
 

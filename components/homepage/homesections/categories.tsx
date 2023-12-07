@@ -19,6 +19,8 @@ const Category = () => {
 
   // console.log("categoriesData",categoriesData);
   return (
+    <>{
+categoriesData&&categoriesData.length>0&&
     <>
       <div className="sm:hidden block">
       <CategoriesSlider />
@@ -44,7 +46,10 @@ const Category = () => {
           </div>
         </div>
       </div>
+
     </>
+     }
+     </>
   );
 };
 
