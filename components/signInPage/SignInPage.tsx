@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,useEffect} from "react";
+import React, { useState, useRef } from "react";
 import mainImg from "../../images/me we.png";
 import Image from "next/image";
 import falgImg from "../../images/Group 34168.svg";
@@ -14,7 +14,7 @@ import { RecaptchaVerifier, deleteUser } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { signInWithPopup } from "firebase/auth";
-import { getAuth, getAdditionalUserInfo } from "firebase/auth";
+import { getAdditionalUserInfo } from "firebase/auth";
 import {
   collection,
   doc,
@@ -39,91 +39,20 @@ const SignInPage = () => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [otpSent, setOTPSent] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+  // const [verifying, setVerifying] = useState(false);
   const router = useRouter();
   // const cookies = { value: getCookie("uid") };
   const provider = new GoogleAuthProvider();
   const [docId, setDocId] = useState("");
-  const [otpEntered, setOtpEntered] = useState(false);
 
   // const { data: startUpData } = useQuery({
   //   queryKey: ["startUpData"],
   //   queryFn: () => getStartUpData(cookies),
   // });
 
-let interval:any
-  
+  const intervalRef = useRef<number | null>(null);
 
-  // const resendOTP = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     const verifier = new RecaptchaVerifier(
-  //       auth,
-  //       "resend-container",  // Verify that this matches the actual container ID
-  //       {
-  //         size: "invisible",
-  //         callback: (response: any) => {
-  //           console.log(response);
-  //         },
-  //       }
-  //     );
-
-  //     const formattedPhoneNumber = `+91${phoneNumber}`;
-  //     await signInWithPhoneNumber(auth, formattedPhoneNumber, verifier);
-
-  //     setTimerStarted(true);
-  //     startTimer();
-
-  //     setLoading(false);
-  //     toast.success("OTP Resent successfully!");
-  //   } catch (error) {
-  //     setLoading(false);
-  //     console.error("Firebase Authentication Error:",error);
-  //     toast.error("Failed to resend OTP");
-  //   }
-  // };
-
-  const resenedOtp = async () => {
-    try {
-      console.log("inside resenedOtp");
-      const formattedPhoneNumber1 = `+91${phoneNumber}`;
-      console.log(formattedPhoneNumber1);
-      
-  
-      // Initialize RecaptchaVerifier here
-      const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container',{}
-      //  {
-      //   'size': 'invisible',
-      //   'callback': (response: any) => {
-      //     console.log(response, "response");
-      //   }
-      // }
-      );
-  
-      // Use the recaptchaVerifier in the signInWithPhoneNumber function
-      const formattedPhoneNumber = `+91${phoneNumber}`;
-
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        formattedPhoneNumber,
-        recaptchaVerifier
-      );
-  
-      // Save the confirmation result to use later
-      setOTPSent(confirmationResult);
-  
-      console.log(recaptchaVerifier);
-  
-    } catch (error) {
-      console.log("inside catch", error);
-      toast.error("Failed to initiate OTP verification");
-    }
-  };
-  
-
-
-
+  // console.log(time, "sec");
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       let startUpExistOrNot: any;
@@ -140,17 +69,15 @@ let interval:any
         setDocId(docId);
         startUpExistOrNot = startUp ? true : false;
         isBlocked = startUp.blockedByAdmin;
-        console.log(startUp);
-        console.log("isBlocked", isBlocked);
+        // console.log(startUp);
+        // console.log("isBlocked", isBlocked);
       } else {
         // console.log('No matching document found');
       }
       if (startUpExistOrNot) {
         if (!isBlocked) {
-          console.log(docId, "-----------");
+          // console.log(docId, "-----------");
           setLoading(true);
-          console.log(auth);
-
           const recaptchaVerifier = new RecaptchaVerifier(
             auth,
             "recaptcha-container",
@@ -161,7 +88,7 @@ let interval:any
               },
             }
           );
-          console.log(recaptchaVerifier, "veri");
+          // console.log(recaptchaVerifier, "veri");
 
           const formattedPhoneNumber = `+91${phoneNumber}`;
           await signInWithPhoneNumber(
@@ -173,18 +100,14 @@ let interval:any
               setOTPSent(confirmationResult);
               setverification(true);
               setLoading(false);
+              setTimerStarted(true);
               startTimer();
-              // clearInterval(interval);
-              // setTime(0)
-              recaptchaVerifier.clear()
             })
             .catch((error) => {
               toast.error(`${error}`);
               console.log(error + "...Please eload");
               setLoading(false);
-              recaptchaVerifier.clear()
             });
-
         } else {
           toast.error("You have been blocked by admin.");
         }
@@ -204,38 +127,74 @@ let interval:any
 
   const startTimer = () => {
     setTimerStarted(true);
-   
-    
-   interval = setInterval(() => {
-    console.log("set interval");
+    setTime(60);
 
-      setTime((prevTime) => prevTime - 1);
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current); // Clear existing interval
+    }
+
+    intervalRef.current = window.setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(intervalRef.current!); // Use the non-null assertion operator
+          setTimerStarted(false);
+          return 0;
+        }
+        return prevTime - 1;
+      });
     }, 1000);
-    
-    if (otpEntered){
-      console.log("inside if");
-      
-      clearInterval(interval)
-     }else{
-      console.log("inside else");
-
-      setTimeout(() => {
-        console.log("cleaned");
-        
-        clearInterval(interval);
-        setTimerStarted(false);
-      }, 60000);
-     }
-  
   };
 
-  
+  const resendOTP = async () => {
+    if (otpSent) {
+      try {
+        setLoading(true);
+
+        // console.log(loading, "uuu");
+        const recaptchaVerifier = new RecaptchaVerifier(
+          auth,
+          "recaptcha-container2",
+          {
+            size: "invisible",
+            callback: (response: any) => {
+              console.log(response);
+            },
+          }
+        );
+        // console.log(recaptchaVerifier, "mmmm");
+
+        const updatedOTPSent = await signInWithPhoneNumber(
+          auth,
+          `+91${phoneNumber}`,
+          recaptchaVerifier
+        );
+
+        setOTPSent(updatedOTPSent);
+        setTimerStarted(true);
+        startTimer();
+
+        setLoading(false);
+        toast.success("OTP Resent successfully!");
+      } catch (error: any) {
+        setLoading(false);
+        console.log(
+          "Firebase Authentication Error:",
+          error.code,
+          error.message
+        );
+        toast.error(`Failed to resend OTP`);
+      }
+    } else {
+      toast.error("OTP not sent yet. Please initiate the verification first.");
+    }
+  };
 
   const confirmOTP = () => {
     setLoading(true);
+  
     try {
       setTimerStarted(false);
-      setVerifying(true);
+  
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
@@ -250,49 +209,49 @@ let interval:any
           );
           toast.success("Welcome");
           router.replace("/");
-          setVerifying(false);
-          setverification(false);
-          setTime(60);
-          setOTP("");
-          setTimerStarted(false);
-          setOTPSent(null);
-          setLoading(false);
+  
+          setverification(false);      
           setDocId("");
         })
         .catch((err: any) => {
-          // setTime(0);
           setverification(false);
           setLoading(false);
           toast.error("Incorrect OTP! Sign in failed!");
+        })
+        .finally(() => {
           setLoading(false);
-          // clearInterval(interval)
-          setOtpEntered(true)
-          startTimer()
-          setTime(60);
           setOTP("");
           setTimerStarted(false);
-          setOTPSent(null);
+  
+          if (intervalRef.current !== null) {
+            clearInterval(intervalRef.current);
+          }
         });
     } catch (err) {
       console.log("error ");
       setLoading(false);
+  
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
     }
   };
+  
   // const resetOTPInputs = () => {
   //   const newOTP = Array(6).fill(""); // Create an array of 6 empty strings
   //   setOTP(newOTP.join("")); // Join the array into a string and set the OTP state
   // };
 
   const handleLoginWithGoogle = async (result: any) => {
-    console.log("result", result);
+    // console.log("result", result);
 
     const user = result.user;
-    console.log("user", user);
+    // console.log("user", user);
 
     const additionalUserInfo = getAdditionalUserInfo(result);
 
     if (additionalUserInfo && additionalUserInfo.isNewUser) {
-      console.log("inside if");
+      // console.log("inside if");
       let authuser = {
         phoneNo: user?.phoneNumber,
         createdAt: new Date(),
@@ -305,12 +264,12 @@ let interval:any
         name: user?.displayName,
         email: user?.email,
       };
-      console.log("startup", startup, authuser);
+      // console.log("startup", startup, authuser);
 
       await setDoc(doc(db, `startups/${user.uid}`), startup, { merge: true });
       await setDoc(doc(db, `auth/${user.uid}`), authuser, { merge: true });
     } else {
-      console.log("inside else");
+      // console.log("inside else");
     }
     await setDoc(
       doc(db, `startups/${user.uid}`),
@@ -323,7 +282,7 @@ let interval:any
   };
 
   const loginWithGoogle = async () => {
-    console.log("inside loginWithGoogle");
+    // console.log("inside loginWithGoogle");
 
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -334,7 +293,17 @@ let interval:any
       });
   };
 
-  
+  const loginWithApple = async () => {
+    // console.log("inside loginWithApple");
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        handleLoginWithGoogle(result);
+      })
+      .catch((error) => {
+        console.log(error, "error");
+      });
+  };
 
   // const startTimer = () => {
   //   setTimer(60);
@@ -350,13 +319,15 @@ let interval:any
   //   }, 60000);
   // };
 
-  
+  // Function to resend OTP
+  // const resendOTP = async () => {
+  //   // Your existing logic to resend OTP
 
-  // console.log(OTP, "dfg")
-console.log(time,"time------");
+  //   // Start the timer
+  //   startTimer();
+  // };
 
-
-
+  // console.log(OTP, "dfg");
 
   return (
     <>
@@ -444,8 +415,7 @@ console.log(time,"time------");
               </button>
             </div>
             <div id="recaptcha-container"></div>
-            <div id="sign-in-button"></div>
-            <div id="resend-otp"></div>
+            <div id="recaptcha-container2"></div>
             {/* </Link> */}
             <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
               <h2>or Sign In with</h2>
@@ -517,8 +487,32 @@ console.log(time,"time------");
                         maxLength={1}
                         className="xl:py-4 md-py-3  py-2 border border-[#868E97] w-full outline-0 text-center"
                         id={`${"otp" + digit}`}
+                        // onChange={(e) => {
+                        //   if (e.target.value) {
+                        //     document
+                        //       .getElementById(`${"otp" + (digit + 1)}`)
+                        //       ?.focus();
+                        //     let otp = OTP;
+                        //     setOTP(
+                        //       otp.substring(0, digit - 1) +
+                        //       e.target.value +
+                        //       otp.substring(digit)
+                        //     );
+                        //   } else {
+                        //     let otp = OTP;
+                        //     setOTP(
+                        //       otp.substring(0, digit - 1) +
+                        //       " " +
+                        //       otp.substring(digit)
+                        //     );
+                        //   }
+                        // }}
+
                         onChange={(e) => {
-                          const inputElement = document.getElementById(`otp${digit}`) as HTMLInputElement;
+                          const inputElement = document.getElementById(
+                            `otp${digit}`
+                          ) as HTMLInputElement;
+
                           if (e.target.value) {
                             // Move focus to the next input on input
                             inputElement.blur(); // Blur to handle backspace correctly
@@ -526,8 +520,8 @@ console.log(time,"time------");
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                              e.target.value +
-                              otp.substring(digit)
+                                e.target.value +
+                                otp.substring(digit)
                             );
                           } else {
                             // Move focus to the previous input on backspace
@@ -541,6 +535,45 @@ console.log(time,"time------");
                             );
                           }
                         }}
+
+                        // onChange={(e) => {
+                        //   const digit = parseInt(e.target.value, 10);
+
+                        //   // Cast e.nativeEvent to any to avoid TypeScript errors
+                        //   const nativeEvent: any = e.nativeEvent;
+                        //   const isBackspace =
+                        //     nativeEvent.inputType === "deleteContentBackward" ||
+                        //     (nativeEvent.inputType === "deleteContentForward" &&
+                        //       nativeEvent.data === null);
+
+                        //   if (!isNaN(digit) || isBackspace) {
+                        //     const currentIndex = idx;
+                        //     const nextIndex = isBackspace
+                        //       ? currentIndex - 1
+                        //       : currentIndex + 1;
+
+                        //     if (nextIndex >= 0 && nextIndex < 6) {
+                        //       document
+                        //         .getElementById(`otp${nextIndex + 1}`)
+                        //         ?.focus();
+                        //     }
+
+                        //     let newOTP = OTP;
+                        //     if (!isNaN(digit)) {
+                        //       newOTP =
+                        //         newOTP.substring(0, currentIndex) +
+                        //         digit +
+                        //         newOTP.substring(currentIndex + 1);
+                        //     } else {
+                        //       newOTP =
+                        //         newOTP.substring(0, currentIndex - 1) +
+                        //         " " +
+                        //         newOTP.substring(currentIndex);
+                        //     }
+
+                        //     setOTP(newOTP);
+                        //   }
+                        // }}
                       />
                     </div>
                   );
@@ -549,10 +582,7 @@ console.log(time,"time------");
               <div
                 className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6"
                 onClick={async () => {
-                  // await resendOTP();
-                  await resenedOtp()
-
-                  // await signInUserWithPhoneNumber();
+                  await resendOTP();
                 }}
               >
                 {timerStarted ? (
@@ -560,12 +590,7 @@ console.log(time,"time------");
                 ) : (
                   <button
                     className="underline underline-offset-2 cursor-pointer"
-                    // onClick={}
-                    onClick={async () => {
-                      // await resendOTP();
-                      // await signInUserWithPhoneNumber();
-                    }}
-
+                    // onClick={resendCode}
                   >
                     Resend code
                   </button>

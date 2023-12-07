@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import mainImg from "../../images/me we.png";
 import Image from "next/image";
 import falgImg from "../../images/Group 34168.svg";
@@ -26,14 +26,16 @@ const SignUpPage2 = () => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [otpSent, setOTPSent] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+  // const [verifying, setVerifying] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [otpEntered, setOtpEntered] = useState(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
-let interval:any
+
+  const intervalRef = useRef<number | null>(null);
+
   // const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier >(new RecaptchaVerifier(
   //   auth,
   //   "recaptcha-container",
@@ -117,19 +119,22 @@ let interval:any
 
   const startTimer = () => {
     setTimerStarted(true);
-    interval = setInterval(() => {
-      console.log("set interval");
-      if (!otpEntered) {
-        setTime((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
-      }
-      // setTime((prevTime) => prevTime - 1);
+    setTime(60);
+
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+    }
+
+    intervalRef.current = window.setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(intervalRef.current!);
+          setTimerStarted(false);
+          return 0;
+        }
+        return prevTime - 1;
+      });
     }, 1000);
-    setTimeout(() => {
-      console.log("clear interval");
-      
-      clearInterval(interval);
-      setTimerStarted(false);
-    }, 60000);
   };
 
   const resendOTP = async () => {
@@ -137,7 +142,7 @@ let interval:any
       try {
         setLoading(true);
 
-        console.log(loading, "uuu");
+        // console.log(loading, "uuu");
         const recaptchaVerifier = new RecaptchaVerifier(
           auth,
           "recaptcha-container",
@@ -148,7 +153,7 @@ let interval:any
             },
           }
         );
-        console.log(recaptchaVerifier, "mmmm");
+        // console.log(recaptchaVerifier, "mmmm");
 
         const updatedOTPSent = await signInWithPhoneNumber(
           auth,
@@ -170,13 +175,13 @@ let interval:any
       toast.error("OTP not sent yet. Please initiate the verification first.");
     }
   };
-  console.log(time,"time----------");
+  // console.log(time,"time----------");
   
   const confirmOTP = () => {
+    setLoading(true);
     try {
-      setLoading(true);
       setTimerStarted(false);
-      setVerifying(true);
+
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
@@ -216,34 +221,34 @@ let interval:any
           // localStorage.setItem("auth", JSON.stringify(res.user.uid));
           //   await axios.get(`/api/login?uid=${res.user.uid}`);
 
-          setVerifying(false);
+          // setVerifying(false);
           setverification(false);
-          setTime(60);
-          setOTP("");
-
-          setTimerStarted(false);
           setOTPSent(null);
-          setLoading(false);
           router.replace("/");
+          toast.success("Welcome");
           //   router.replace("/");
         })
         .catch((err: any) => {
-          setTime(60);
-          console.log("before clearInterval");
-          setOtpEntered(true)
-          clearInterval(interval)
-          console.log("after clearInterval");
-
-          setTimerStarted(false);
           setverification(false);
           setLoading(false);
-          // console.log(err);
-          toast.error("Incorrect OTP! Sign in failed !");
+          toast.error("Incorrect OTP! Sign in failed!");
+        })
+        .finally(() => {
+          setLoading(false);
+          setOTP("");
+          setTimerStarted(false);
+
+          if (intervalRef.current !== null) {
+            clearInterval(intervalRef.current);
+          }
         });
     } catch (err) {
       setLoading(false);
       toast.error(`${err}`);
       console.log("error ");
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
     }
   };
 
@@ -448,10 +453,11 @@ let interval:any
                         // }}
                         // old onchange end
 
-
                         onChange={(e) => {
-                          const inputElement = document.getElementById(`otp${digit}`) as HTMLInputElement;
-          
+                          const inputElement = document.getElementById(
+                            `otp${digit}`
+                          ) as HTMLInputElement;
+
                           if (e.target.value) {
                             // Move focus to the next input on input
                             inputElement.blur(); // Blur to handle backspace correctly
@@ -468,12 +474,12 @@ let interval:any
                             document.getElementById(`otp${digit - 1}`)?.focus();
                             let otp = OTP;
                             setOTP(
-                              otp.substring(0, digit - 1) + ' ' + otp.substring(digit)
+                              otp.substring(0, digit - 1) +
+                                " " +
+                                otp.substring(digit)
                             );
                           }
                         }}
-
-
 
                         // new start
                         // onChange={(e) => {

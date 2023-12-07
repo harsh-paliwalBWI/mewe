@@ -31,6 +31,7 @@ const WebniarCard2 = (singlewebinar: any, idx: number) => {
               className="w-full h-full object-contain"
             />
           </div>
+          {/* <div className="absolute   bottom-0 left-1/2 transform -translate-x-1/2 w-[80%] xl:h-[250px] lg:h-[220px] sm:h-[180px] h-[120px]  "> */}
           <div className="absolute   bottom-0 left-1/2 transform -translate-x-1/2 w-[80%] xl:h-[220px] lg:h-[180px] sm:h-[120px] h-[70px]  ">
             <Image
               src={
