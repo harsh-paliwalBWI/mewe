@@ -50,6 +50,96 @@ const SignInPage = () => {
   //   queryFn: () => getStartUpData(cookies),
   // });
 
+
+// const resendOTP = async () => {
+//   console.log("inside resendOTP");
+//   console.log(phoneNumber,'FROM RESEND');
+//   if (otpSent) {
+//     try {
+//       console.log("inside try");
+
+//       setLoading(true);
+//       console.log("before resendOTP");
+
+//       // Initialize RecaptchaVerifier here
+//       const recaptchaVerifier = new RecaptchaVerifier(auth,"resend-container", 
+//       {
+//         size: "invisible",
+//         callback: (response: any) => {
+//           console.log(response);
+//         },
+//       });
+
+
+//       console.log(recaptchaVerifier,"from resend");
+//       const formattedPhoneNumber = `+91${phoneNumber}`;
+//       await signInWithPhoneNumber(
+//         auth,
+//         formattedPhoneNumber,
+//         recaptchaVerifier
+//       );
+//       // const updatedOTPSent = await signInWithPhoneNumber(
+//       //   auth,
+//       //   formattedPhoneNumber,
+//       //   recaptchaVerifier
+//       // );
+
+//       // setOTPSent(updatedOTPSent);
+//       setTimerStarted(true);
+//       startTimer();
+
+//       setLoading(false);
+//       toast.success("OTP Resent successfully!");
+//     } catch (error: any) {
+//       setLoading(false);
+//       console.error(
+//         "Firebase Authentication Error:",
+//         error.code,
+//         error.message
+//       );
+//       console.log(error);
+
+//       toast.error("Failed to resend OTP");
+//     }
+//   } else {
+//     toast.error(
+//       "OTP not sent yet. Please initiate the verification first."
+//     );
+//   }
+// };
+
+const resendOTP = async () => {
+  try {
+    setLoading(true);
+
+    const verifier = new RecaptchaVerifier(
+      auth,
+      "resend-container",  // Verify that this matches the actual container ID
+      {
+        size: "invisible",
+        callback: (response: any) => {
+          console.log(response);
+        },
+      }
+    );
+
+    const formattedPhoneNumber = `+91${phoneNumber}`;
+    await signInWithPhoneNumber(auth, formattedPhoneNumber, verifier);
+
+    setTimerStarted(true);
+    startTimer();
+
+    setLoading(false);
+    toast.success("OTP Resent successfully!");
+  } catch (error) {
+    setLoading(false);
+    console.error("Firebase Authentication Error:",error);
+    toast.error("Failed to resend OTP");
+  }
+};
+
+
+
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       let startUpExistOrNot: any;
@@ -75,6 +165,8 @@ const SignInPage = () => {
         if (!isBlocked) {
           console.log(docId, "-----------");
           setLoading(true);
+          console.log(auth);
+          
           const recaptchaVerifier = new RecaptchaVerifier(
             auth,
             "recaptcha-container",
@@ -104,6 +196,7 @@ const SignInPage = () => {
               console.log(error + "...Please eload");
               setLoading(false);
             });
+            
         } else {
           toast.error("You have been blocked by admin.");
         }
@@ -132,45 +225,45 @@ const SignInPage = () => {
     }, 60000);
   };
 
-  const resendOTP = async () => {
-    if (otpSent) {
-      try {
-        setLoading(true);
+  // const resendOTP = async () => {
+  //   if (otpSent) {
+  //     try {
+  //       setLoading(true);
 
-        console.log(loading, "uuu");
-        const recaptchaVerifier = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container2",
-          {
-            size: "invisible",
-            callback: (response: any) => {
-              console.log(response);
-            },
-          }
-        );
-        console.log(recaptchaVerifier, "mmmm");
+  //       console.log(loading, "uuu");
+  //       const recaptchaVerifier = new RecaptchaVerifier(
+  //         auth,
+  //         "recaptcha-container2",
+  //         {
+  //           size: "invisible",
+  //           callback: (response: any) => {
+  //             console.log(response);
+  //           },
+  //         }
+  //       );
+  //       console.log(recaptchaVerifier, "mmmm");
 
-        const updatedOTPSent = await signInWithPhoneNumber(
-          auth,
-          `+91${phoneNumber}`,
-          recaptchaVerifier
-        );
+  //       const updatedOTPSent = await signInWithPhoneNumber(
+  //         auth,
+  //         `+91${phoneNumber}`,
+  //         recaptchaVerifier
+  //       );
 
-        setOTPSent(updatedOTPSent);
-        setTimerStarted(true);
-        startTimer();
+  //       setOTPSent(updatedOTPSent);
+  //       setTimerStarted(true);
+  //       startTimer();
 
-        setLoading(false);
-        toast.success("OTP Resent successfully!");
-      } catch (error:any) {
-        setLoading(false);
-        console.log("Firebase Authentication Error:", error.code, error.message);
-        toast.error(`Failed to resend OTP`);
-      }
-    } else {
-      toast.error("OTP not sent yet. Please initiate the verification first.");
-    }
-  };
+  //       setLoading(false);
+  //       toast.success("OTP Resent successfully!");
+  //     } catch (error:any) {
+  //       setLoading(false);
+  //       console.log("Firebase Authentication Error:", error.code, error.message);
+  //       toast.error(`Failed to resend OTP`);
+  //     }
+  //   } else {
+  //     toast.error("OTP not sent yet. Please initiate the verification first.");
+  //   }
+  // };
 
   const confirmOTP = () => {
     setLoading(true);
@@ -297,6 +390,8 @@ const SignInPage = () => {
 
   console.log(OTP,"dfg")
 
+
+
   return (
     <>
       <div className="flex py-6 justify-center md:h-[100vh] h-auto items-center">
@@ -383,7 +478,7 @@ const SignInPage = () => {
               </button>
             </div>
             <div id="recaptcha-container"></div>
-            <div id="recaptcha-container2"></div>
+            <div id="resend-container"></div>
             {/* </Link> */}
             <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
               <h2>or Sign In with</h2>
@@ -543,6 +638,7 @@ const SignInPage = () => {
                 className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6"
                 onClick={async () => {
                   await resendOTP();
+                  // await signInUserWithPhoneNumber();
                 }}
               >
                 {timerStarted ? (
@@ -550,7 +646,12 @@ const SignInPage = () => {
                 ) : (
                   <button
                     className="underline underline-offset-2 cursor-pointer"
-                    // onClick={resendCode}
+                    // onClick={}
+                    onClick={async () => {
+                      await resendOTP();
+                      // await signInUserWithPhoneNumber();
+                    }}
+
                   >
                     Resend code
                   </button>
