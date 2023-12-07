@@ -35,7 +35,7 @@ const AboutOptions: FC<Props> = ({
   selectedTab,
   aboutInfo,
 }) => {
-  console.log("aboutInfo", aboutInfo);
+  // console.log("aboutInfo", aboutInfo);
 
   const [client, setClient] = useState(false);
 
@@ -135,12 +135,14 @@ const AboutOptions: FC<Props> = ({
   };
 
   const handleSelect = async (selectedUser: any) => {
-    const currentUser = cookies;
-    console.log(currentUser, "currentUser");
+    const currentUser = cookies?.value;
+    console.log(currentUser, "currentUseroooo");
+    console.log(selectedUser, "selectedUserooo");
+    
     try {
       const q = doc(db, `chat/${currentUser}/startups/${selectedUser}`);
       const res = await getDoc(q);
-      // console.log(res.data(),"res")
+      console.log(res.data(),"res")
 
       if (!res.exists()) {
         const otherstartupdata = await getDataofstartup(selectedUser);

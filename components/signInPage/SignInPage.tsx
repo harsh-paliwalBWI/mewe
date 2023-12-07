@@ -217,10 +217,10 @@ const SignInPage = () => {
       setLoading(false);
     }
   };
-  const resetOTPInputs = () => {
-    const newOTP = Array(6).fill(""); // Create an array of 6 empty strings
-    setOTP(newOTP.join("")); // Join the array into a string and set the OTP state
-  };
+  // const resetOTPInputs = () => {
+  //   const newOTP = Array(6).fill(""); // Create an array of 6 empty strings
+  //   setOTP(newOTP.join("")); // Join the array into a string and set the OTP state
+  // };
 
   const handleLoginWithGoogle = async (result: any) => {
     console.log("result", result);
@@ -263,6 +263,18 @@ const SignInPage = () => {
 
   const loginWithGoogle = async () => {
     console.log("inside loginWithGoogle");
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        handleLoginWithGoogle(result);
+      })
+      .catch((error) => {
+        console.log(error, "error");
+      });
+  };
+
+  const loginWithApple = async () => {
+    console.log("inside loginWithApple");
 
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -403,7 +415,11 @@ const SignInPage = () => {
                   className="h-full w-full object-fill"
                 />
               </div>
-              {/* <div className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
+              {/* <div
+               onClick={async () => {
+                await loginWithApple();
+              }}
+               className="sm:h-[55px] sm:w-[55px] h-[45px] w-[45px] cursor-pointer">
               <Image
                 src={appleImg}
                 alt=""
