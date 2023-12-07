@@ -14,7 +14,7 @@ import { RecaptchaVerifier, deleteUser } from "firebase/auth";
 import { signInWithPhoneNumber } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { signInWithPopup } from "firebase/auth";
-import { getAdditionalUserInfo } from "firebase/auth";
+import { getAuth, getAdditionalUserInfo } from "firebase/auth";
 import {
   collection,
   doc,
@@ -51,92 +51,130 @@ const SignInPage = () => {
   // });
 
 
-// const resendOTP = async () => {
-//   console.log("inside resendOTP");
-//   console.log(phoneNumber,'FROM RESEND');
-//   if (otpSent) {
-//     try {
-//       console.log("inside try");
+  // const resendOTP = async () => {
+  //   console.log("inside resendOTP");
+  //   console.log(phoneNumber,'FROM RESEND');
+  //   if (otpSent) {
+  //     try {
+  //       console.log("inside try");
 
-//       setLoading(true);
-//       console.log("before resendOTP");
+  //       setLoading(true);
+  //       console.log("before resendOTP");
 
-//       // Initialize RecaptchaVerifier here
-//       const recaptchaVerifier = new RecaptchaVerifier(auth,"resend-container", 
-//       {
-//         size: "invisible",
-//         callback: (response: any) => {
-//           console.log(response);
-//         },
-//       });
+  //       // Initialize RecaptchaVerifier here
+  //       const recaptchaVerifier = new RecaptchaVerifier(auth,"resend-container", 
+  //       {
+  //         size: "invisible",
+  //         callback: (response: any) => {
+  //           console.log(response);
+  //         },
+  //       });
 
 
-//       console.log(recaptchaVerifier,"from resend");
-//       const formattedPhoneNumber = `+91${phoneNumber}`;
-//       await signInWithPhoneNumber(
-//         auth,
-//         formattedPhoneNumber,
-//         recaptchaVerifier
-//       );
-//       // const updatedOTPSent = await signInWithPhoneNumber(
-//       //   auth,
-//       //   formattedPhoneNumber,
-//       //   recaptchaVerifier
-//       // );
+  //       console.log(recaptchaVerifier,"from resend");
+  //       const formattedPhoneNumber = `+91${phoneNumber}`;
+  //       await signInWithPhoneNumber(
+  //         auth,
+  //         formattedPhoneNumber,
+  //         recaptchaVerifier
+  //       );
+  //       // const updatedOTPSent = await signInWithPhoneNumber(
+  //       //   auth,
+  //       //   formattedPhoneNumber,
+  //       //   recaptchaVerifier
+  //       // );
 
-//       // setOTPSent(updatedOTPSent);
-//       setTimerStarted(true);
-//       startTimer();
+  //       // setOTPSent(updatedOTPSent);
+  //       setTimerStarted(true);
+  //       startTimer();
 
-//       setLoading(false);
-//       toast.success("OTP Resent successfully!");
-//     } catch (error: any) {
-//       setLoading(false);
-//       console.error(
-//         "Firebase Authentication Error:",
-//         error.code,
-//         error.message
-//       );
-//       console.log(error);
+  //       setLoading(false);
+  //       toast.success("OTP Resent successfully!");
+  //     } catch (error: any) {
+  //       setLoading(false);
+  //       console.error(
+  //         "Firebase Authentication Error:",
+  //         error.code,
+  //         error.message
+  //       );
+  //       console.log(error);
 
-//       toast.error("Failed to resend OTP");
-//     }
-//   } else {
-//     toast.error(
-//       "OTP not sent yet. Please initiate the verification first."
-//     );
-//   }
-// };
+  //       toast.error("Failed to resend OTP");
+  //     }
+  //   } else {
+  //     toast.error(
+  //       "OTP not sent yet. Please initiate the verification first."
+  //     );
+  //   }
+  // };
 
-const resendOTP = async () => {
-  try {
-    setLoading(true);
+  // const resendOTP = async () => {
+  //   try {
+  //     setLoading(true);
 
-    const verifier = new RecaptchaVerifier(
-      auth,
-      "resend-container",  // Verify that this matches the actual container ID
-      {
-        size: "invisible",
-        callback: (response: any) => {
-          console.log(response);
-        },
-      }
-    );
+  //     const verifier = new RecaptchaVerifier(
+  //       auth,
+  //       "resend-container",  // Verify that this matches the actual container ID
+  //       {
+  //         size: "invisible",
+  //         callback: (response: any) => {
+  //           console.log(response);
+  //         },
+  //       }
+  //     );
 
-    const formattedPhoneNumber = `+91${phoneNumber}`;
-    await signInWithPhoneNumber(auth, formattedPhoneNumber, verifier);
+  //     const formattedPhoneNumber = `+91${phoneNumber}`;
+  //     await signInWithPhoneNumber(auth, formattedPhoneNumber, verifier);
 
-    setTimerStarted(true);
-    startTimer();
+  //     setTimerStarted(true);
+  //     startTimer();
 
-    setLoading(false);
-    toast.success("OTP Resent successfully!");
-  } catch (error) {
-    setLoading(false);
-    console.error("Firebase Authentication Error:",error);
-    toast.error("Failed to resend OTP");
-  }
-};
+  //     setLoading(false);
+  //     toast.success("OTP Resent successfully!");
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.error("Firebase Authentication Error:",error);
+  //     toast.error("Failed to resend OTP");
+  //   }
+  // };
+
+  const resenedOtp = async () => {
+    try {
+      console.log("inside resenedOtp");
+      const formattedPhoneNumber1 = `+91${phoneNumber}`;
+      console.log(formattedPhoneNumber1);
+      
+  
+      // Initialize RecaptchaVerifier here
+      const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container',{}
+      //  {
+      //   'size': 'invisible',
+      //   'callback': (response: any) => {
+      //     console.log(response, "response");
+      //   }
+      // }
+      );
+  
+      // Use the recaptchaVerifier in the signInWithPhoneNumber function
+      const formattedPhoneNumber = `+91${phoneNumber}`;
+
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        formattedPhoneNumber,
+        recaptchaVerifier
+      );
+  
+      // Save the confirmation result to use later
+      setOTPSent(confirmationResult);
+  
+      console.log(recaptchaVerifier);
+  
+    } catch (error) {
+      console.log("inside catch", error);
+      toast.error("Failed to initiate OTP verification");
+    }
+  };
+  
 
 
 
@@ -166,7 +204,7 @@ const resendOTP = async () => {
           console.log(docId, "-----------");
           setLoading(true);
           console.log(auth);
-          
+
           const recaptchaVerifier = new RecaptchaVerifier(
             auth,
             "recaptcha-container",
@@ -190,13 +228,15 @@ const resendOTP = async () => {
               setverification(true);
               setLoading(false);
               startTimer();
+              recaptchaVerifier.clear()
             })
             .catch((error) => {
               toast.error(`${error}`);
               console.log(error + "...Please eload");
               setLoading(false);
+              recaptchaVerifier.clear()
             });
-            
+
         } else {
           toast.error("You have been blocked by admin.");
         }
@@ -225,45 +265,7 @@ const resendOTP = async () => {
     }, 60000);
   };
 
-  // const resendOTP = async () => {
-  //   if (otpSent) {
-  //     try {
-  //       setLoading(true);
 
-  //       console.log(loading, "uuu");
-  //       const recaptchaVerifier = new RecaptchaVerifier(
-  //         auth,
-  //         "recaptcha-container2",
-  //         {
-  //           size: "invisible",
-  //           callback: (response: any) => {
-  //             console.log(response);
-  //           },
-  //         }
-  //       );
-  //       console.log(recaptchaVerifier, "mmmm");
-
-  //       const updatedOTPSent = await signInWithPhoneNumber(
-  //         auth,
-  //         `+91${phoneNumber}`,
-  //         recaptchaVerifier
-  //       );
-
-  //       setOTPSent(updatedOTPSent);
-  //       setTimerStarted(true);
-  //       startTimer();
-
-  //       setLoading(false);
-  //       toast.success("OTP Resent successfully!");
-  //     } catch (error:any) {
-  //       setLoading(false);
-  //       console.log("Firebase Authentication Error:", error.code, error.message);
-  //       toast.error(`Failed to resend OTP`);
-  //     }
-  //   } else {
-  //     toast.error("OTP not sent yet. Please initiate the verification first.");
-  //   }
-  // };
 
   const confirmOTP = () => {
     setLoading(true);
@@ -388,7 +390,7 @@ const resendOTP = async () => {
   //   startTimer();
   // };
 
-  console.log(OTP,"dfg")
+  console.log(OTP, "dfg")
 
 
 
@@ -478,7 +480,8 @@ const resendOTP = async () => {
               </button>
             </div>
             <div id="recaptcha-container"></div>
-            <div id="resend-container"></div>
+            <div id="sign-in-button"></div>
+            <div id="resend-otp"></div>
             {/* </Link> */}
             <div className="text-center lg:text-lg sm:text-base text-sm text-[#383838] font-medium  mt-10 mb-8 ">
               <h2>or Sign In with</h2>
@@ -546,30 +549,8 @@ const resendOTP = async () => {
                         maxLength={1}
                         className="xl:py-4 md-py-3  py-2 border border-[#868E97] w-full outline-0 text-center"
                         id={`${"otp" + digit}`}
-                        // onChange={(e) => {
-                        //   if (e.target.value) {
-                        //     document
-                        //       .getElementById(`${"otp" + (digit + 1)}`)
-                        //       ?.focus();
-                        //     let otp = OTP;
-                        //     setOTP(
-                        //       otp.substring(0, digit - 1) +
-                        //       e.target.value +
-                        //       otp.substring(digit)
-                        //     );
-                        //   } else {
-                        //     let otp = OTP;
-                        //     setOTP(
-                        //       otp.substring(0, digit - 1) +
-                        //       " " +
-                        //       otp.substring(digit)
-                        //     );
-                        //   }
-                        // }}
-
                         onChange={(e) => {
                           const inputElement = document.getElementById(`otp${digit}`) as HTMLInputElement;
-          
                           if (e.target.value) {
                             // Move focus to the next input on input
                             inputElement.blur(); // Blur to handle backspace correctly
@@ -577,8 +558,8 @@ const resendOTP = async () => {
                             let otp = OTP;
                             setOTP(
                               otp.substring(0, digit - 1) +
-                                e.target.value +
-                                otp.substring(digit)
+                              e.target.value +
+                              otp.substring(digit)
                             );
                           } else {
                             // Move focus to the previous input on backspace
@@ -590,45 +571,6 @@ const resendOTP = async () => {
                             );
                           }
                         }}
-
-                        // onChange={(e) => {
-                        //   const digit = parseInt(e.target.value, 10);
-
-                        //   // Cast e.nativeEvent to any to avoid TypeScript errors
-                        //   const nativeEvent: any = e.nativeEvent;
-                        //   const isBackspace =
-                        //     nativeEvent.inputType === "deleteContentBackward" ||
-                        //     (nativeEvent.inputType === "deleteContentForward" &&
-                        //       nativeEvent.data === null);
-
-                        //   if (!isNaN(digit) || isBackspace) {
-                        //     const currentIndex = idx;
-                        //     const nextIndex = isBackspace
-                        //       ? currentIndex - 1
-                        //       : currentIndex + 1;
-
-                        //     if (nextIndex >= 0 && nextIndex < 6) {
-                        //       document
-                        //         .getElementById(`otp${nextIndex + 1}`)
-                        //         ?.focus();
-                        //     }
-
-                        //     let newOTP = OTP;
-                        //     if (!isNaN(digit)) {
-                        //       newOTP =
-                        //         newOTP.substring(0, currentIndex) +
-                        //         digit +
-                        //         newOTP.substring(currentIndex + 1);
-                        //     } else {
-                        //       newOTP =
-                        //         newOTP.substring(0, currentIndex - 1) +
-                        //         " " +
-                        //         newOTP.substring(currentIndex);
-                        //     }
-
-                        //     setOTP(newOTP);
-                        //   }
-                        // }}
                       />
                     </div>
                   );
@@ -637,7 +579,9 @@ const resendOTP = async () => {
               <div
                 className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6"
                 onClick={async () => {
-                  await resendOTP();
+                  // await resendOTP();
+                  await resenedOtp()
+
                   // await signInUserWithPhoneNumber();
                 }}
               >
@@ -648,7 +592,7 @@ const resendOTP = async () => {
                     className="underline underline-offset-2 cursor-pointer"
                     // onClick={}
                     onClick={async () => {
-                      await resendOTP();
+                      // await resendOTP();
                       // await signInUserWithPhoneNumber();
                     }}
 
