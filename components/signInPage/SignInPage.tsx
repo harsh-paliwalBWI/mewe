@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import mainImg from "../../images/me we.png";
 import Image from "next/image";
 import falgImg from "../../images/Group 34168.svg";
@@ -39,7 +39,7 @@ const SignInPage = () => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [otpSent, setOTPSent] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+  // const [verifying, setVerifying] = useState(false);
   const router = useRouter();
   // const cookies = { value: getCookie("uid") };
   const provider = new GoogleAuthProvider();
@@ -50,6 +50,9 @@ const SignInPage = () => {
   //   queryFn: () => getStartUpData(cookies),
   // });
 
+  const intervalRef = useRef<number | null>(null);
+
+  console.log(time, "sec");
   const signInUserWithPhoneNumber = async () => {
     if (phoneNumber) {
       let startUpExistOrNot: any;
@@ -97,6 +100,7 @@ const SignInPage = () => {
               setOTPSent(confirmationResult);
               setverification(true);
               setLoading(false);
+              setTimerStarted(true);
               startTimer();
             })
             .catch((error) => {
@@ -123,13 +127,22 @@ const SignInPage = () => {
 
   const startTimer = () => {
     setTimerStarted(true);
-    const interval = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
+    setTime(60);
+
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current); // Clear existing interval
+    }
+
+    intervalRef.current = window.setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(intervalRef.current!); // Use the non-null assertion operator
+          setTimerStarted(false);
+          return 0;
+        }
+        return prevTime - 1;
+      });
     }, 1000);
-    setTimeout(() => {
-      clearInterval(interval);
-      setTimerStarted(false);
-    }, 60000);
   };
 
   const resendOTP = async () => {
@@ -178,9 +191,10 @@ const SignInPage = () => {
 
   const confirmOTP = () => {
     setLoading(true);
+  
     try {
       setTimerStarted(false);
-      setVerifying(true);
+  
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
@@ -195,31 +209,34 @@ const SignInPage = () => {
           );
           toast.success("Welcome");
           router.replace("/");
-          setVerifying(false);
-          setverification(false);
-          setTime(60);
-          setOTP("");
-          setTimerStarted(false);
-          setOTPSent(null);
-          setLoading(false);
+  
+          setverification(false);      
           setDocId("");
         })
         .catch((err: any) => {
-          // setTime(0);
           setverification(false);
           setLoading(false);
           toast.error("Incorrect OTP! Sign in failed!");
+        })
+        .finally(() => {
           setLoading(false);
-          setTime(60);
           setOTP("");
           setTimerStarted(false);
-          setOTPSent(null);
+  
+          if (intervalRef.current !== null) {
+            clearInterval(intervalRef.current);
+          }
         });
     } catch (err) {
       console.log("error ");
       setLoading(false);
+  
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
     }
   };
+  
   // const resetOTPInputs = () => {
   //   const newOTP = Array(6).fill(""); // Create an array of 6 empty strings
   //   setOTP(newOTP.join("")); // Join the array into a string and set the OTP state
