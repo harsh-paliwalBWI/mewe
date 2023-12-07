@@ -162,9 +162,13 @@ const SignInPage = () => {
 
         setLoading(false);
         toast.success("OTP Resent successfully!");
-      } catch (error:any) {
+      } catch (error: any) {
         setLoading(false);
-        console.log("Firebase Authentication Error:", error.code, error.message);
+        console.log(
+          "Firebase Authentication Error:",
+          error.code,
+          error.message
+        );
         toast.error(`Failed to resend OTP`);
       }
     } else {
@@ -180,7 +184,6 @@ const SignInPage = () => {
       otpSent
         .confirm(OTP)
         .then(async (res: any) => {
-
           localStorage.setItem("auth", JSON.stringify(res?.user?.uid));
           await axios.post(`/api/login?uid=${res?.user?.uid}`);
           await queryClient?.invalidateQueries({ queryKey: ["startUpData"] });
@@ -307,7 +310,7 @@ const SignInPage = () => {
   //   startTimer();
   // };
 
-  console.log(OTP,"dfg")
+  console.log(OTP, "dfg");
 
   return (
     <>
@@ -489,8 +492,10 @@ const SignInPage = () => {
                         // }}
 
                         onChange={(e) => {
-                          const inputElement = document.getElementById(`otp${digit}`) as HTMLInputElement;
-          
+                          const inputElement = document.getElementById(
+                            `otp${digit}`
+                          ) as HTMLInputElement;
+
                           if (e.target.value) {
                             // Move focus to the next input on input
                             inputElement.blur(); // Blur to handle backspace correctly
@@ -507,7 +512,9 @@ const SignInPage = () => {
                             document.getElementById(`otp${digit - 1}`)?.focus();
                             let otp = OTP;
                             setOTP(
-                              otp.substring(0, digit - 1) + ' ' + otp.substring(digit)
+                              otp.substring(0, digit - 1) +
+                                " " +
+                                otp.substring(digit)
                             );
                           }
                         }}

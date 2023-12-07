@@ -308,7 +308,7 @@ const AboutOptions: FC<Props> = ({
               {client && isFollowing ? (
                 <div
                   onClick={async () => await onUnfollowHandler(aboutInfo)}
-                  className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  "
+                  className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center cursor-pointer "
                 >
                   <button className="flex items-center justify-center gap-1">
                     <FlatIcon className="flaticon-add-user xl:text-2xl text-xl " />
@@ -318,7 +318,7 @@ const AboutOptions: FC<Props> = ({
               ) : (
                 <div
                   onClick={async () => await onFollowHandler(aboutInfo)}
-                  className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  "
+                  className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  cursor-pointer"
                 >
                   <button className="flex items-center justify-center gap-1">
                     <FlatIcon className="flaticon-add-user xl:text-2xl text-xl" />
@@ -327,7 +327,7 @@ const AboutOptions: FC<Props> = ({
                 </div>
               )}
                {client && isFollowing ? (
-              <div className="w-[50%] border border-primary text-center rounded-full xl:py-3 py-2 text-primary">
+              <div className="w-[50%] border border-primary text-center rounded-full xl:py-3 py-2 text-primary cursor-pointer">
                 <button
                   onClick={() => {
                     handleSelect(aboutInfo?.id);
