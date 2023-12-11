@@ -172,7 +172,8 @@ const ManagePost = () => {
                                 </div>
                               </div>
                               <div className="text-[#636464] lg:text-sm text-xs font-medium ">
-                                @codefusion243
+                                {/* @codefusion243 */}
+                                {startUpData?.email}
                               </div>
                             </div>
                           </div>

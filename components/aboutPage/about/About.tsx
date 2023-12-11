@@ -48,7 +48,7 @@ const About: FC<Props> = ({aboutInfo}) => {
     queryFn: () => fetchSingleStartupAdvanceDetails(aboutInfo?.id),
   });
 
-  console.log("singleBusinessAccountData",singleBusinessAccountData);
+  // console.log("singleBusinessAccountData",singleBusinessAccountData);
   
 
   const databar = [

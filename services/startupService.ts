@@ -33,25 +33,7 @@ export const getStartUpData = async (cookieData: any) => {
     }
 };
 
-// export const addAdvanceDetails = async (advanceDetails: any,email:any) => {
-//     console.log(advanceDetails,email);
 
-//     const refDoc = doc(db, `startups/${auth.currentUser?.uid}/details/advance`);
-//     const refDoc2 = doc(db, `startups/${auth.currentUser?.uid}`);
-//     const details = {
-//         name: advanceDetails.name,
-//         email:email,
-//         basic: {
-//             name: advanceDetails.name,
-//             category: {
-//                 id: advanceDetails.category.id,
-//                 name: advanceDetails.category.name,
-//             },
-//         },
-//     };
-//     await setDoc(refDoc2, details, { merge: true });
-//     // await setDoc(refDoc, advanceDetails, { merge: true });
-// };
 
 export const isBusinessAccountExistOrNot = async (cookieData: any) => {
     let cookie;
@@ -65,7 +47,7 @@ export const isBusinessAccountExistOrNot = async (cookieData: any) => {
         uid = cookie?.value;
     }
     // console.log("uid isBusinessAccountExistOrNot",uid);
-    
+
     if (uid) {
         const docRef = doc(db, `startups/${uid}/details/advance`);
         const data = await getDoc(docRef).then((docs) => {
@@ -112,7 +94,7 @@ export const fetchBusinessAccountDetails = async (cookieData: any) => {
 
 };
 
-export const fetchSingleStartup = async (slug:any) => {
+export const fetchSingleStartup = async (slug: any) => {
 
     const product = await getDocs(query(collection(db, "startups"), where('slug.name', '==', slug))).then((val: QuerySnapshot) => {
         if (val.docs.length != 0) {
@@ -125,15 +107,15 @@ export const fetchSingleStartup = async (slug:any) => {
     return JSON.parse(JSON.stringify(product));
 }
 
-export const fetchSingleStartupAdvanceDetails = async (sinlgeId:any) => {
+export const fetchSingleStartupAdvanceDetails = async (sinlgeId: any) => {
     // console.log(sinlgeId,"----------");
-    
+
 
     if (sinlgeId) {
         const docRef = doc(db, `startups/${sinlgeId}/details/advance`);
         const data = await getDoc(docRef).then(async (docs) => {
             if (docs.exists()) {
-              
+
                 // console.log("logged data", JSON.parse(JSON.stringify({ ...docs.data() })));
                 return await JSON.parse(JSON.stringify({ ...docs.data() }));
             } else {
@@ -145,3 +127,192 @@ export const fetchSingleStartupAdvanceDetails = async (sinlgeId:any) => {
         return null;
     }
 }
+
+export const fetchSavedStartUps = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+
+
+    if (uid) {
+        const docRef = doc(db, "startups", uid);
+        const docSnap = await getDoc(docRef);
+        let savedStartupsArray: any
+        if (docSnap.exists()) {
+            //   console.log("Document data:", docSnap.data());
+            let data = docSnap.data()
+            //   console.log("data",data);
+            savedStartupsArray = data.savedStartups.map(async (item: any, idx: number) => {
+                // console.log(item?.id,"item");
+
+                const docRef1 = doc(db, `startups/${item?.id}`);
+                const docSnap1 = await getDoc(docRef1);
+
+                if (docSnap1.exists()) {
+                    //   console.log("Document data from docSnap1:", docSnap1.data());
+                    return await JSON.parse(JSON.stringify({ ...docSnap1.data(), id: docSnap1.id }));
+                    //   return docSnap1.data()
+                } else {
+                    console.log("No such document!");
+
+                    return null
+                    // docSnap.data() will be undefined in this case
+                }
+            })
+
+            //  console.log("savedStartupsArray",savedStartupsArray);
+            return await Promise.all(savedStartupsArray)
+        } else {
+            // docSnap.data() will be undefined in this case
+            //   console.log("No such document!");
+        }
+        const savedStartupsData = await Promise.all(savedStartupsArray)
+        return savedStartupsData
+    } else {
+        return null
+    }
+}
+
+export const fetchAllFollowingsData = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+    if (uid) {
+        const querySnapshot = await getDocs(collection(db, `startups/${uid}/following`));
+        let arr: any = []
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots\
+            let data = JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+            arr.push(data)
+            //   console.log(doc.id, " => ", doc.data());
+        });
+        return arr;
+    } else {
+        return null;
+    }
+};
+export const fetchPendingFollowRequests = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+    // let docId=id
+    if (uid) {
+        const querySnapshot1 = query(collection(db, `startups/${uid}/followers`), where('status', '==',"pending"));
+        const querySnapshot = await getDocs(querySnapshot1);
+        let arr: any = []
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots\
+            let data = JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+            arr.push(data)
+            //   console.log(doc.id, " => ", doc.data());
+        });
+        return arr;
+    } else {
+        return null;
+    }
+};
+export const fetchAcceptedFollowRequests = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+    // let docId=i
+    if (uid) {
+        const querySnapshot1 = query(collection(db, `startups/${uid}/followers`), where('status', '==',"accepted"));
+        const querySnapshot = await getDocs(querySnapshot1);
+        let arr: any = []
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots\
+            let data = JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+            arr.push(data)
+            //   console.log(doc.id, " => ", doc.data());
+        });
+        return arr;
+    } else {
+        return null;
+    }
+};
+
+export const fetchAcceptedFollowings = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+    // let docId=id
+    if (uid) {
+        const querySnapshot1 = query(collection(db, `startups/${uid}/following`), where('status', '==',"accepted"));
+        const querySnapshot = await getDocs(querySnapshot1);
+        let arr: any = []
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots\
+            let data = JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+            arr.push(data)
+            //   console.log(doc.id, " => ", doc.data());
+        });
+        return arr;
+    } else {
+        return null;
+    }
+};
+
+export const fetchPendingFollowings = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+    // let docId=id
+    if (uid) {
+        const querySnapshot1 = query(collection(db, `startups/${uid}/following`), where('status', '==',"pending"));
+        const querySnapshot = await getDocs(querySnapshot1);
+        let arr: any = []
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots\
+            let data = JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+            arr.push(data)
+            //   console.log(doc.id, " => ", doc.data());
+        });
+        return arr;
+    } else {
+        return null;
+    }
+};
+

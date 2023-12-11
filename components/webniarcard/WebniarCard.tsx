@@ -37,7 +37,7 @@ const WebniarCard:FC<Props>  = (singleWebinar) => {
             />
           </div>
           {/* <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[275px] md:h-[200px] sm:h-[150px] h-[100px] "> */}
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[225px] md:h-[150px] sm:h-[100px] h-[50px] ">
+          <div className="absolute  bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[225px] md:h-[150px] sm:h-[100px] h-[50px] ">
             <Image
               src={
                 singlewebinardata?.image?.url &&

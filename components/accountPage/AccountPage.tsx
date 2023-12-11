@@ -13,6 +13,7 @@ import { getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupS
 import { toast } from 'react-toastify'
 
 import { getCookie } from "cookies-next";
+import SavedStartups from './savedStartups/SavedStartups'
 
 // interface Props {
 //   cookie: any
@@ -56,6 +57,7 @@ const router = useRouter();
         {currTab === "manage-posts" && <ManagePost />}
         {currTab === "chat" && <ChatsPage />}
         {currTab === "new-post" && <NewPost />}
+        {currTab === "saved-startups" && <SavedStartups />}
       </div>
     </>
   );

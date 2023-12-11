@@ -1,37 +1,55 @@
 "use client";
-import React, { FC,useState } from "react";
+import React, { FC, useState,Fragment } from "react";
 import Image from "next/image";
 import "@ant-design/cssinjs";
 import { Carousel } from "antd";
 import FlatIcon from "../flatIcon/flatIcon";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchPosts } from "@/services/postService";
 import { constant } from "@/utils/constants";
-import { addDoc, collection, doc, getDocs, orderBy, query, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, setDoc } from "firebase/firestore";
 import { db } from "@/config/firebase-config";
 import { toast } from "react-toastify";
 import OutsideClickHandler from "../../utils/OutsideClickHandler";
 import moment from "moment";
 import Modal from "../Modal/modal";
 import { CircularProgress } from "@mui/material";
+import { getStartUpData } from "@/services/startupService";
+import { getCookie } from "cookies-next";
+import { Transition } from "@headlessui/react";
+import { Menu } from "@headlessui/react";
+import Loader from "../loader/Loader";
+
 interface Props {
-  aboutInfo:any
+  aboutInfo: any
 }
 
-const PostsSlider:FC<Props> = ({aboutInfo}) => {
-  // console.log(aboutInfo,"POST SLIDES");
-  
+const PostsSlider: FC<Props> = ({ aboutInfo }) => {
+  console.log(aboutInfo, "POST SLIDES");
+
+  const cookies = { value: getCookie("uid") };
   const [data2, setData2] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [postMessages, setPostMessages] = useState<{ [key: string]: string }>({});
   const [viewMessage, setViewMessage] = useState([])
   const [viewComment, setViewComment] = useState(false)
+  const [docId, setDocId] = useState("")
+  const [isDeleted, setIsDeleted] = useState(false)
+  const queryClient = useQueryClient()
+
   const { data: postsData } = useQuery({
     queryKey: ["postsData"],
     queryFn: () => fetchPosts(aboutInfo.id),
   });
-  // console.log(postsData, "post data");
+  console.log(postsData, "post data");
+
+  const { data: startUpData } = useQuery({
+    queryKey: ["startUpData"],
+    queryFn: () => getStartUpData(cookies),
+  });
+
+  // console.log("startUpData", startUpData);
 
   const onViewCommentHandler = async (docId: any) => {
     // console.log(docId,"docId");
@@ -42,22 +60,35 @@ const PostsSlider:FC<Props> = ({aboutInfo}) => {
       const dataObj = doc.data()
       arr.push(dataObj)
     });
-    // console.log(arr,"commeyn arr");
+    console.log(arr,"commeyn arr");
     setViewMessage(arr)
   }
 
-  const onCommentHandler = async (docId: any, createdBy: any) => {
-    // console.log("from click", docId, createdBy);
+  const onCommentHandler = async (docId: any) => {
+    const createdBy = {
+      id: startUpData?.id,
+      name: startUpData?.name,
+      image: {
+        mob: startUpData?.basic?.coverPic?.mob ? startUpData?.basic?.coverPic?.mob : "",
+        thumb: startUpData?.basic?.coverPic?.thumb ? startUpData?.basic?.coverPic?.thumb : "",
+        url: startUpData?.basic?.coverPic?.url ? startUpData?.basic?.coverPic?.url : "",
+      }
+    }
+    console.log("from click", docId, createdBy);
     setIsLoading(true)
     setIsModalOpen(true)
     const message = postMessages[docId] || "";
     const ref = collection(db, `posts/${docId}/comments`);
     try {
-      await addDoc(ref, { message, createdAt: new Date(), createdBy });
-      toast.success("Comment added.");
-      setPostMessages((prevMessages) => ({ ...prevMessages, [docId]: "" }));
-      setIsLoading(false)
-      setIsModalOpen(false)
+      if (docId && startUpData) {
+        await addDoc(ref, { message, createdAt: new Date(), createdBy });
+        toast.success("Comment added.");
+        setPostMessages((prevMessages) => ({ ...prevMessages, [docId]: "" }));
+        setIsLoading(false)
+        setIsModalOpen(false)
+      } else {
+        toast.error("Failed to add comment");
+      }
     } catch (error) {
       setIsLoading(false)
       setIsModalOpen(false)
@@ -66,6 +97,20 @@ const PostsSlider:FC<Props> = ({aboutInfo}) => {
     }
   };
 
+  const postDeleteHandler = async () => {
+    console.log("clikced",docId);
+    setIsLoading(true)
+    try {
+      await deleteDoc(doc(db, "posts", docId));
+      await queryClient.invalidateQueries({ queryKey: ['postsData'] })
+      await queryClient.refetchQueries({ queryKey: ['postsData'] })
+      toast.success("Post deleted successfully.")
+      setIsLoading(false)
+    } catch (error) {
+      toast.error("Failed to delete post.")
+      setIsLoading(false)
+    }
+  }
 
   return (
     <>
@@ -122,13 +167,65 @@ const PostsSlider:FC<Props> = ({aboutInfo}) => {
                               </div>
                             </div>
                             <div className="text-[#636464] lg:text-sm text-xs font-medium ">
-                              @codefusion243
+                              {aboutInfo?.email?aboutInfo?.email:""}
+                              {/* @codefusion243 */}
                             </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-1">
+                        {/* <div className="flex items-center gap-1">
                           <FlatIcon className="flaticon-options  text-primary xl:text-4xl sm:text-2xl text-xl" />
-                        </div>
+                        </div> */}
+                        {/* delte post start  */}
+
+                      {
+                        startUpData?.id===aboutInfo?.id&&
+                        <div className=" flex items-center ">
+                        <Menu
+                          as="div"
+                          className="relative text-left flex justify-center items-center "
+                        >
+                          <div className="flex justify-center items-center ">
+                            <Menu.Button className="">
+                              <div className="flex items-center ">
+                                <FlatIcon className="flaticon-options text-primary xl:text-4xl sm:text-2xl text-xl " />
+                              </div>
+                            </Menu.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="z-50 absolute right-0 mt-2 top-full w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              <div className="px-1 py-1 ">
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <button
+                                      onClick={() => {
+                                        setDocId(post?.id)
+                                        setIsDeleted(true)
+                                        // console.log(post.id);
+
+                                      }}
+                                      className={`${active ? "bg-primary text-white" : "text-gray-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    >
+                                      {/* {active ? "active" : "notActive"} */}
+                                      Delete
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                              </div>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      </div>
+                      }
+                        {/* delete psot end  */}
                       </div>
                       <div className=" sm:h-[300px] h-[200px] w-full relative  ">
                         <Carousel
@@ -189,7 +286,7 @@ const PostsSlider:FC<Props> = ({aboutInfo}) => {
                               placeholder="Write something.."
                               className="w-[100%]  xl:px-10 px-5 md:py-3 py-2 rounded-full  outline-0"
                             />
-                            <button onClick={async () => await onCommentHandler(post?.id, post?.createdBy)} className="md:px-5 px-3 md:py-2 py-1 rounded-full bg-primary text-white md:text-sm text-sm ">Comment</button>
+                            <button onClick={async () => await onCommentHandler(post?.id)} className="md:px-5 px-3 md:py-2 py-1 rounded-full bg-primary text-white md:text-sm text-sm ">Comment</button>
                           </div>
 
                           <div>
@@ -218,7 +315,9 @@ const PostsSlider:FC<Props> = ({aboutInfo}) => {
                               <div className="flex flex-col">
                                 {viewMessage && viewMessage?.length > 0 ? (
                                   viewMessage?.map((msg: any, idx: any) => {
-                                    const commentTime2 = post?.createdAt?.toDate();
+                                    console.log(msg,"from view msg");
+                                    
+                                    const commentTime2 = msg?.createdAt?.toDate();
                                     const now2 = moment();
                                     const duration = moment.duration(now2.diff(commentTime2));
                                     let formattedTime2;
@@ -250,12 +349,10 @@ const PostsSlider:FC<Props> = ({aboutInfo}) => {
                                                 <p className="text-xs text-[#636464]">{formattedTime2}</p>
                                               </div>
                                             </div>
-                                            <p className="text-sm">{msg?.message}</p>
+                                            <p className="text-sm  w-fit" style={{ overflowWrap: 'break-word', maxWidth: '100%' }}>{msg?.message}</p>
                                           </div>
                                         </div>
-                                        {/* <div className="border border-[red]">
-                                  <p className="text-xs text-[#636464]">{formattedTime2}</p>
-                                </div> */}
+                                       
                                       </div>
                                     </div>
                                   })
@@ -268,6 +365,36 @@ const PostsSlider:FC<Props> = ({aboutInfo}) => {
                         </div>
                       </div>
                     </div>
+                    {isDeleted &&
+                        <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.5)] fixed top-0 left-0  flex justify-center items-center z-30">
+                          <div className="sm:w-fit w-[90%]  bg-[white] rounded-md md:px-5 px-5 md:py-5 py-5">
+                            <div className='flex flex-col md:gap-7 gap-5'>
+                              <div className='text-gray-600 sm:text-base text-sm mt-2'><h2>Are you sure you want to delete this post ?</h2></div>
+                              <div className='flex w-full gap-5 sm:text-sm text-xs'>
+                                <div
+                                  onClick={async () => {
+                                    setIsDeleted(false)
+                                    await postDeleteHandler()
+                                  }}
+                                  className="w-[50%] bg-primary text-white py-2.5 rounded-md cursor-pointer flex items-center justify-center "
+                                >
+                                  <button style={{ height: "100%", position: "relative", }}>
+                                    {isLoading && (
+                                      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                                        <Loader />
+                                      </div>
+                                    )}
+                                    {!isLoading && "Yes"}
+                                  </button>
+                                </div>
+                                <div onClick={() => setIsDeleted(false)} className='w-[50%] bg-black text-white rounded-md flex items-center py-2.5 justify-center cursor-pointer'>
+                                  <button >No</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      }
                   </div>
                 })
                 }

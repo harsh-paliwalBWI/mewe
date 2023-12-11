@@ -54,8 +54,8 @@ const dummyTypeOfInvestment = [
   { id: 5, name: 'Investment type4', unavailable: false },]
 
 const borderStyle = "border border-[#C8C8C8] rounded-md relative"
-const labelStyle = " text-sm   text-[#868E97] font-medium  px-1  bg-white absolute top-[-10px] left-[10px]"
-const inputStyle = "rounded-lg px-3 py-3 w-full outline-0 text-sm"
+const labelStyle = " lg:text-sm md:text-xs text-sm  text-[#868E97] font-medium  px-1  bg-white absolute top-[-10px] left-[10px]"
+const inputStyle = "rounded-lg px-3 py-3 w-full outline-0 lg:text-sm md:text-xs text-sm"
 
 const BusinessAccount = () => {
   const cookies = { value: getCookie("uid") };
@@ -281,7 +281,7 @@ const BusinessAccount = () => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={category} onChange={setCategory}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(category?.name && isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start lg:text-sm md:text-xs text-sm`}><span>{(category?.name && isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`max-h-[300px] overflow-y-scroll absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {categoriesData&&categoriesData.length>0&&categoriesData.map((category:any) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
@@ -309,7 +309,7 @@ const BusinessAccount = () => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={companySize} onChange={setCompanySize}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span> {(isClient && companySize?.name && companySize.name) || "Select"}</span><span>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start lg:text-sm md:text-xs text-sm`}><span> {(isClient && companySize?.name && companySize.name) || "Select"}</span><span>
                     <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCompanySize.map((company) => (
@@ -349,7 +349,7 @@ const BusinessAccount = () => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={city} onChange={setCity}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm `}><span>{(isClient && city?.name && city.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start lg:text-sm md:text-xs text-sm `}><span>{(isClient && city?.name && city.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyCities.map((city) => (
                       <Listbox.Option key={city.id} value={city} as={Fragment} >
@@ -425,7 +425,7 @@ const BusinessAccount = () => {
             <div className='  relative w-full py-3 px-4 rounded-md '>
               <Listbox value={yearOfFormation} onChange={setYearOfFormation}>
                 <div className=' '>
-                  <Listbox.Button className={` w-full flex justify-between items-center text-start text-sm`}><span>{(isClient && yearOfFormation?.name && yearOfFormation.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                  <Listbox.Button className={` w-full flex justify-between items-center text-start lg:text-sm md:text-xs text-sm`}><span>{(isClient && yearOfFormation?.name && yearOfFormation.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                     {dummyYearOfFormation.map((year) => (
                       <Listbox.Option key={year.id} value={year} as={Fragment} >
@@ -556,7 +556,7 @@ const BusinessAccount = () => {
                 <div className='  relative w-full py-3 px-4 rounded-md '>
                   <Listbox value={typeOfInvestement} onChange={setTypeOfInvestment}>
                     <div className=' '>
-                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm`}><span>{(isClient && typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                      <Listbox.Button className={` w-full flex items-center justify-between text-start text-sm lg:text-sm md:text-xs text-sm`}><span>{(isClient && typeOfInvestement?.name && typeOfInvestement.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                       <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                         {dummyTypeOfInvestment.map((investment) => (
                           <Listbox.Option key={investment.id} value={investment} as={Fragment} >

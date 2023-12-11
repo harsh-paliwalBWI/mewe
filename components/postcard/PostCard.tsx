@@ -72,8 +72,8 @@ const PostCard = (singlePost: any) => {
     queryFn: () => getStartUpData(cookies),
   });
 
-  let singlePostdata = singlePost.singlePost;
-  // console.log(startUpData, "bbbb");
+  let singlePostdata = singlePost?.singlePost;
+  // console.log(singlePostdata, "bbbb");
 
   const PostTime = singlePostdata?.createdAt?.toDate();
 

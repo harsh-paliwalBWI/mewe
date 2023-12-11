@@ -1,22 +1,23 @@
 "use client"
-import React, {FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { getCookie } from "cookies-next";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getStartUpData } from '@/services/startupService';
+import { fetchAcceptedFollowRequests, fetchPendingFollowRequests, getStartUpData } from '@/services/startupService';
 import Image from 'next/image';
 import avatarimg from "../../../images/avatar.png";
 import Modal from '@/components/Modal/modal';
 import { CircularProgress } from '@mui/material';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase-config';
 import { toast } from "react-toastify"
 interface Props {
-    aboutInfo:any
-  }
+    aboutInfo: any,
+    params: any
+}
 
-const Followers:FC<Props> = ({aboutInfo }) => {
-    console.log("aboutInfo",aboutInfo);
-    
+const Followers: FC<Props> = ({ aboutInfo, params }) => {
+    console.log("aboutInfo", aboutInfo);
+
     const cookies = { value: getCookie("uid") };
     const [isModalOpen, setIsModalOpen] = useState(false);
     const queryClient = useQueryClient()
@@ -26,36 +27,34 @@ const Followers:FC<Props> = ({aboutInfo }) => {
         queryFn: () => getStartUpData(cookies),
     });
 
+    const { data: pendingRequestsData } = useQuery({
+        queryKey: ["pendingRequestsData"],
+        queryFn: () => fetchPendingFollowRequests(cookies),
+    });
+    console.log("followersData", pendingRequestsData);
+
+    const { data: acceptedRequestsData } = useQuery({
+        queryKey: ["acceptedRequestsData"],
+        queryFn: () => fetchAcceptedFollowRequests(cookies),
+    });
+    console.log("AcceptedRequestsData", acceptedRequestsData);
+
     const onRemoveHandler = async (data: any) => {
-        // console.log("from remove", data);
+        console.log("from remove", data);
         setIsModalOpen(true)
         try {
-            const docid = startUpData?.id;
-            // from following start 
+            const docid = data?.id;
             if (docid) {
-                const docRef = doc(db, `startups/${docid}`);
-                const docSnap = await getDoc(docRef);
-                const existingFollowers = docSnap.data()?.followers || [];
-                const updatedFollowers = existingFollowers.filter(
-                    (item: any) => item.docId !== data.docId
-                );
-                await setDoc(docRef, { followers: updatedFollowers }, { merge: true });
+                const refDoc = doc(db, "startups", docid, "following", aboutInfo?.id);
+                await deleteDoc(refDoc)
             }
-            // from following end
-            // from followers start
-            const followersId = data?.docId;
+            const followersId = aboutInfo?.id;
             if (followersId) {
-                const followersDocRef = doc(db, `startups/${followersId}`);
-                const docSnap = await getDoc(followersDocRef);
-                const existingFollowings = docSnap.data()?.following || [];
-                const updatedFollowings = existingFollowings.filter(
-                    (item: any) => item.docId !== startUpData?.id
-                );
-                await setDoc(followersDocRef, { following: updatedFollowings }, { merge: true });
+                const refDoc = doc(db, "startups", followersId, "followers", data?.id);
+                await deleteDoc(refDoc)
             }
-            // from followers end
-            await queryClient.invalidateQueries({ queryKey: ['startUpData'] })
-            await queryClient.refetchQueries({ queryKey: ['startUpData'] })
+            await queryClient.invalidateQueries({ queryKey: ['acceptedRequestsData'] })
+            await queryClient.refetchQueries({ queryKey: ['acceptedRequestsData'] })
             setIsModalOpen(false)
             toast.success("Removed.");
         } catch (err) {
@@ -63,30 +62,150 @@ const Followers:FC<Props> = ({aboutInfo }) => {
             toast.error("Something went wrong!")
         }
     };
+
+    const onAcceptHandler = async (data: any) => {
+        console.log("onAcceptHandler", data);
+        setIsModalOpen(true)
+        try {
+            const docid = aboutInfo?.id;
+            if (docid) {
+                console.log("inside first  if");
+
+                const docRef = doc(db, `startups/${aboutInfo?.id}/followers/${data?.id}`);
+                await setDoc(docRef, { status: "accepted" }, { merge: true });
+            }
+            const followersId = data?.id;
+            if (followersId) {
+                console.log("inside second if");
+
+                const followersDocRef = doc(db, `startups/${data?.id}/following/${aboutInfo?.id}`);
+                await setDoc(followersDocRef, { status: "accepted" }, { merge: true });
+            }
+            await queryClient.invalidateQueries({ queryKey: ['pendingRequestsData'] })
+            await queryClient.refetchQueries({ queryKey: ['pendingRequestsData'] })
+            await queryClient.invalidateQueries({ queryKey: ['acceptedRequestsData'] })
+            await queryClient.refetchQueries({ queryKey: ['acceptedRequestsData'] })
+            // await queryClient.invalidateQueries({ queryKey: ["startup", params?.slug] })
+            // await queryClient.refetchQueries({ queryKey: ["startup", params?.slug] })
+            setIsModalOpen(false)
+            toast.success("Accepted.");
+        } catch (err) {
+            setIsModalOpen(false)
+            toast.error("Something went wrong!")
+        }
+    }
+
+    const onRejectHandler = async (data: any) => {
+        console.log("onAcceptHandler", data);
+        setIsModalOpen(true)
+        try {
+            const docid = aboutInfo?.id;
+            if (docid) {
+                console.log("inside first  if");
+
+                const docRef = doc(db, `startups/${aboutInfo?.id}/followers/${data?.id}`);
+                await setDoc(docRef, { status: "declined" }, { merge: true });
+            }
+            const followersId = data?.id;
+            if (followersId) {
+                console.log("inside second if");
+
+                const followersDocRef = doc(db, `startups/${data?.id}/following/${aboutInfo?.id}`);
+                await setDoc(followersDocRef, { status: "declined" }, { merge: true });
+            }
+            await queryClient.invalidateQueries({ queryKey: ['pendingRequestsData'] })
+            await queryClient.refetchQueries({ queryKey: ['pendingRequestsData'] })
+            // await queryClient.invalidateQueries({ queryKey: ['startUpData'] })
+            // await queryClient.refetchQueries({ queryKey: ['startUpData'] })
+            // await queryClient.invalidateQueries({ queryKey: ["startup", params?.slug] })
+            // await queryClient.refetchQueries({ queryKey: ["startup", params?.slug] })
+            setIsModalOpen(false)
+            toast.success("Declined.");
+        } catch (err) {
+            setIsModalOpen(false)
+            toast.error("Something went wrong!")
+        }
+    }
     return (
         <div className=' w-full bg-[#F8FAFC] xl:px-8 px-4  sm:py-7 py-4'>
             {
-                startUpData && startUpData?.followers?.length > 0 ?
+                pendingRequestsData && pendingRequestsData.length > 0 ?
 
                     (
-                        <div className='flex flex-col gap-6'>
-                            {
-                                startUpData && startUpData?.followers?.length > 0 && startUpData?.followers.map((follower: any, idx: number) => {
-                                    return <div key={idx}>
-                                        <div className='flex justify-between items-center'>
-                                            <div className='flex items-center gap-x-4'>
-                                                <div className='sm:h-16 sm:w-16 h-12 w-12 rounded-full '>
-                                                    <Image src={follower?.coverPic?.url ? follower?.coverPic?.url : avatarimg} alt="" width={1000} height={1000} className='w-[100%] h-[100%] object-fill rounded-full ' />
+                        <>
+                            <h1>Pending Requests :</h1>
+                            <div className='flex flex-col gap-6'>
+                                {
+                                    pendingRequestsData && pendingRequestsData.length > 0 && pendingRequestsData.map((follower: any, idx: number) => {
+                                        return <div key={idx}>
+                                            <div className='flex justify-between items-center'>
+                                                <div className='flex items-center gap-x-4'>
+                                                    <div className='sm:h-16 sm:w-16 h-12 w-12 rounded-full '>
+                                                        <Image src={follower?.coverPic?.url ? follower?.coverPic?.url : avatarimg} alt="" width={1000} height={1000} className='w-[100%] h-[100%] object-fill rounded-full ' />
+                                                    </div>
+                                                    <h3 className='sm:text-base text-sm'>{follower.name}</h3>
                                                 </div>
-                                                <h3 className='sm:text-base text-sm'>{follower.name}</h3>
-                                            </div>
-                                            <button
+                                                <div className='flex gap-4'>
+                                                    {/* <button
                                                 onClick={async () =>await onRemoveHandler(follower)}
-                                                className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Remove</button>
+                                                className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Remove</button> */}
+                                                    <button
+                                                        onClick={async () => await onAcceptHandler(follower)}
+                                                        className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Accept</button>
+                                                    <button
+                                                        onClick={async () => await onRejectHandler(follower)}
+                                                        className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Reject</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                })
-                            }
+                                    })
+                                }
+                            </div>
+                        </>
+                    )
+                    :
+                    (
+                        <div className='w-full flex justify-center  items-center text-primary text-base'>
+                            <h2>No Pending Requests yet !</h2>
+                        </div>
+                    )
+            }
+
+            {
+                acceptedRequestsData && acceptedRequestsData.length > 0 ?
+
+
+                    (
+                        <div className='flex flex-col gap-4'>
+                            <h1 className='w-full  text-primary text-base'>Followers</h1>
+                            <div className='flex flex-col gap-6'>
+                                {
+                                    acceptedRequestsData && acceptedRequestsData.length > 0 && acceptedRequestsData.map((follower: any, idx: number) => {
+                                        return <div key={idx}>
+                                            <div className='flex justify-between items-center'>
+                                                <div className='flex items-center gap-x-4'>
+                                                    <div className='sm:h-16 sm:w-16 h-12 w-12 rounded-full '>
+                                                        <Image src={follower?.coverPic?.url ? follower?.coverPic?.url : avatarimg} alt="" width={1000} height={1000} className='w-[100%] h-[100%] object-fill rounded-full ' />
+                                                    </div>
+                                                    <h3 className='sm:text-base text-sm'>{follower.name}</h3>
+                                                </div>
+                                                <div className='flex gap-4'>
+                                                    <button
+                                                        onClick={async () => await onRemoveHandler(follower)}
+                                                        className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Remove
+                                                    </button>
+                                                    {/* <button
+                                                onClick={async () =>await onAcceptHandler(follower)}
+                                                className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Accept</button> */}
+                                                    {/* <button
+                                                onClick={async () =>await onRemoveHandler(follower)}
+                                                className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Reject</button> */}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    })
+                                }
+                            </div>
                         </div>
                     )
                     :
@@ -96,11 +215,12 @@ const Followers:FC<Props> = ({aboutInfo }) => {
                         </div>
                     )
             }
+
             <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
                 <div className="flex flex-col gap-2 justify-center items-center">
                     <CircularProgress className="!text-white"></CircularProgress>
                     <p className="text-white font-medium text-lg">
-                        Removing..
+                        Processing..
                     </p>
                 </div>
             </Modal>

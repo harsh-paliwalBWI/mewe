@@ -25,8 +25,8 @@ const dummyCategory = [
     { id: "4", name: 'Category3', unavailable: true },
     { id: "5", name: 'Category4', unavailable: false },]
 
-const labelStyle = "sm:text-sm text-sm text-[#868E97] font-medium "
-const inputStyle = "border border-[#C8C8C8] rounded-md px-3 sm:py-3 py-3 outline-0 text-sm"
+const labelStyle = "lg:text-sm md:text-xs text-sm text-[#868E97] font-medium "
+const inputStyle = "border border-[#C8C8C8] rounded-md px-3 sm:py-3 py-3 outline-0 lg:text-sm md:text-xs text-sm"
 const divStyle = "flex flex-col sm:gap-3 gap-2"
 const mainDivStyle = "grid sm:grid-cols-2 grid-cols-1 sm:gap-5 gap-3  w-full "
 
@@ -179,7 +179,7 @@ const { data: categoriesData } = useQuery({
                                 <div className='  relative w-full  px-4 rounded-md   '>
                                     <Listbox value={category} onChange={setCategory}>
                                         <div className=' '>
-                                            <Listbox.Button className={` w-full flex justify-between items-center text-start  py-3 text-sm `}><span>{(client && category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
+                                            <Listbox.Button className={` w-full flex justify-between items-center text-start  py-3 lg:text-sm md:text-xs text-sm `}><span>{(client && category.name && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                                             <Listbox.Options className={`max-h-[300px] overflow-y-scroll absolute top-[50px]  px-3 py-3  rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
                                                {/* <div className='border border-black my-3'> */}
                                                 {categoriesData&&categoriesData.length>0&&categoriesData.map((category:any) => (
