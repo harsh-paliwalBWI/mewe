@@ -32,21 +32,21 @@ export const handleSearch = async (username: any, cookieData: any) => {
 
     if (uid) {
       const userDocRef = doc(db, "startups", uid);
+      const followingCollectionRef = collection(userDocRef, "following");
+      const followingQuery = query(
+        followingCollectionRef,
+        where("status", "==", "accepted")
+      );
 
-      const userDocSnapshot = await getDoc(userDocRef);
+      const followingDocs = await getDocs(followingQuery);
 
-      if (userDocSnapshot.exists()) {
-        const followingArray = userDocSnapshot.data()?.following;
+      if (!followingDocs.empty) {
+        const filteredStartups = followingDocs.docs
+          .filter((doc) => doc.data().name.includes(username))
+          .map((doc) => doc.data());
 
-        if (followingArray && Array.isArray(followingArray)) {
-          const filteredStartups = followingArray.filter((startup) =>
-            startup.name.includes(username)
-          );
-          console.log(filteredStartups, "asdfgh");
-          resolve({ status: true, arr: filteredStartups });
-        } else {
-          resolve({ status: false });
-        }
+        console.log(filteredStartups, "asdfgh"); // Log filtered startups
+        resolve({ status: true, arr: filteredStartups });
       } else {
         resolve({ status: false });
       }
@@ -72,8 +72,8 @@ export const getDataofstartup = async (selectedUser: any) => {
 };
 
 export const NewCreation = async (selectedUser: any, currentUser: any) => {
-  console.log(selectedUser,"selectedUser")
-  console.log(currentUser,"currentUser")
+  console.log(selectedUser, "selectedUser");
+  console.log(currentUser, "currentUser");
   try {
     const q = doc(db, `chat/${selectedUser}/startups/${currentUser}`);
     const res = await getDoc(q);

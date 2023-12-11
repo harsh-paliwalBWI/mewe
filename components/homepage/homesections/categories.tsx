@@ -18,6 +18,20 @@ const Category = () => {
   });
 
   // console.log("categoriesData",categoriesData);
+
+  const getCategoryCardCount = () => {
+    if (categoriesData && categoriesData.length > 0) {
+      return {
+        lg: 16,
+        md: 12,
+        sm: 8,
+      };
+    }
+
+    return 0;
+  };
+
+ 
   return (
     <>{
 categoriesData&&categoriesData.length>0&&

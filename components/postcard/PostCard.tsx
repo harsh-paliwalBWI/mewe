@@ -75,8 +75,11 @@ const PostCard = (singlePost: any) => {
   let singlePostdata = singlePost?.singlePost;
   // console.log(singlePostdata, "bbbb");
 
-  const PostTime = singlePostdata?.createdAt?.toDate();
+  const PostTime = singlePostdata?.createdAt?.toDate
+    ? singlePostdata.createdAt.toDate()
+    : null;
 
+  // console.log(singlePostdata,"bbbbbbbb")
   // Calculate the duration
   const now = moment();
   const duration = moment.duration(now.diff(PostTime));
@@ -121,16 +124,19 @@ const PostCard = (singlePost: any) => {
   };
 
   const onViewCommentHandler = async (docId: any) => {
-    const orderedPosts = query(collection(db, `posts/${docId}/comments`), orderBy('createdAt', 'desc'));
+    const orderedPosts = query(
+      collection(db, `posts/${docId}/comments`),
+      orderBy("createdAt", "desc")
+    );
     const querySnapshot = await getDocs(orderedPosts);
-    const arr: any = []
+    const arr: any = [];
     querySnapshot.forEach((doc) => {
-      const dataObj = doc.data()
-      arr.push(dataObj)
+      const dataObj = doc.data();
+      arr.push(dataObj);
     });
     // console.log(arr,"commeyn arr");
-    setViewMessage(arr)
-  }
+    setViewMessage(arr);
+  };
 
   const postMessage = postMessages[singlePostdata?.id] || "";
   return (
@@ -178,7 +184,10 @@ const PostCard = (singlePost: any) => {
         <Carousel dotPosition="bottom" className="dot-white" autoplay>
           {singlePostdata?.images?.map((singleImg: any, idx: number) => {
             return (
-              <div className="lg:h-64 md:h-52 sm:h-40 h-28  w-full  rounded sm:rounded-lg md:rounded-xl  overflow-hidden " key={idx}>
+              <div
+                className="lg:h-64 md:h-52 sm:h-40 h-28  w-full  rounded sm:rounded-lg md:rounded-xl  overflow-hidden "
+                key={idx}
+              >
                 <Image
                   src={
                     // img2
@@ -223,11 +232,23 @@ const PostCard = (singlePost: any) => {
       </div>
 
       <div className="flex-col gap-1 sm:gap-2 md:gap-3 mt-6 sm:mt-8 md:mt-10 mb-2 sm:mb-3 md:mb-4 ">
-        <h2 className="font-semibold  text-gray-800 md:text-xl sm:text-lg text-base text-ellipsis overflow-hidden ...">
+        <h2
+          className="font-semibold  text-gray-800 md:text-xl sm:text-lg text-base"
+          style={{
+            overflowWrap: "break-word",
+            maxWidth: "100%",
+          }}
+        >
           {/* Deliver Conference */}
           {singlePostdata?.title}
         </h2>
-        <div className=" text-gray-400 md:text-xs sm:text-[10px] text-[8px] font-normal text-ellipsis overflow-hidden ...">
+        <div
+          className=" text-gray-400 md:text-xs sm:text-[10px] text-[8px] font-normal "
+          style={{
+            overflowWrap: "break-word",
+            maxWidth: "100%",
+          }}
+        >
           {/* Eth2Vec: Learning contract-wide code representations for vulnerability
           detection on Ethereum smart cEth2Vec: Learning contract-wide code
           representations for vulnerability detection on Ethereum smart c */}
@@ -235,7 +256,7 @@ const PostCard = (singlePost: any) => {
         </div>
       </div>
 
-      <div className="w-full bg-white border-2 border-gray-300 text-gray-300 rounded-full flex items-center md:gap-5   comment-placeholder px-2 sm:px-3 md:px-4 py-0.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base font-normal">
+      <div className="w-full bg-white border-2 border-gray-300  rounded-full flex items-center md:gap-5   comment-placeholder px-2 sm:px-3 md:px-4 py-0.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base font-normal">
         <input
           value={postMessage}
           onChange={(e) =>
@@ -246,7 +267,7 @@ const PostCard = (singlePost: any) => {
           }
           type="text"
           placeholder="Write something.."
-          className="w-[100%]  lg:px-5 px-3 md:py-2 py-1 rounded-full  outline-0"
+          className="w-[100%]  lg:px-5 px-3 md:py-2 py-1 rounded-full  outline-0 placeholder:text-gray-300 text-black"
         />
         <button
           onClick={async () => {
@@ -258,82 +279,106 @@ const PostCard = (singlePost: any) => {
         </button>
       </div>
       <div>
-                              {/* <OutsideClickHandler
+        {/* <OutsideClickHandler
                       onClick={() => {
                         setViewComment(false);
                       }}
                     > */}
-                              <div className="">
-                                <div className="text-sm text-primary underline flex items-center gap-1 p-1 ">
-                                  {/* <p className="underline">(0)</p> */}
-                                  <button
-                                    className=""
-                                    onClick={async () => {
-                                      setData2(singlePostdata?.id);
-                                      onViewCommentHandler(singlePostdata?.id);
-                                      setViewComment((prev) => !prev);
-                                    }}
-                                  >
-                                    View comments
-                                  </button>
-                                </div>
+        <div className="">
+          <div className="text-sm text-primary underline flex items-center gap-1 p-1 ">
+            {/* <p className="underline">(0)</p> */}
+            <button
+              className=""
+              onClick={async () => {
+                setData2(singlePostdata?.id);
+                onViewCommentHandler(singlePostdata?.id);
+                setViewComment((prev) => !prev);
+              }}
+            >
+              View comments
+            </button>
+          </div>
+        </div>
+        {/* </OutsideClickHandler> */}
+        {viewComment && data2 === singlePostdata?.id && (
+          <div className="flex flex-col">
+            {viewMessage && viewMessage.length > 0 ? (
+              viewMessage.map((msg: any, idx: any) => {
+                const commentTime = msg?.createdAt?.toDate();
+                const now2 = moment();
+                const duration = moment.duration(now2.diff(commentTime));
+                let formattedTime2;
+                if (duration.asSeconds() < 60) {
+                  formattedTime2 = `${Math.floor(
+                    duration.asSeconds()
+                  )} second(s) ago`;
+                } else if (duration.asMinutes() < 60) {
+                  formattedTime2 = `${Math.floor(
+                    duration.asMinutes()
+                  )} minute(s) ago`;
+                } else if (duration.asHours() < 24) {
+                  formattedTime2 = `${Math.floor(
+                    duration.asHours()
+                  )} hour(s) ago`;
+                } else if (duration.asDays() < 7) {
+                  formattedTime2 = `${Math.floor(
+                    duration.asDays()
+                  )} day(s) ago`;
+                } else if (duration.asWeeks() < 8) {
+                  formattedTime2 = `${Math.floor(
+                    duration.asWeeks()
+                  )} week(s) ago`;
+                } else {
+                  formattedTime2 = moment(commentTime)?.format("DD/MM/YYYY"); // Show full date if more than a week
+                }
+                return (
+                  <div key={idx} className="mt-4 w-full">
+                    <div className="flex  items-start gap-2 w-full">
+                      <div className="flex items-start gap-4 w-full">
+                        <div className="w-[6%]  aspect-square rounded-full">
+                          <Image
+                            src={msg.createdBy?.image?.url}
+                            alt=""
+                            height={1000}
+                            width={1000}
+                            className="h-[100%] w-[100%] rounded-full"
+                          />
+                        </div>
+                        <div className=" flex flex-col gap-1 w-[92%]">
+                          <div className=" flex flex-col gap-1">
+                            <div className="flex gap-3 items-center ">
+                              {msg.createdBy?.name && (
+                                <p className="text-sm text-primary">
+                                  {msg.createdBy?.name
+                                    ? msg.createdBy?.name
+                                    : ""}
+                                </p>
+                              )}
+                              <div>
+                                <p className="text-xs text-[#636464]">
+                                  {formattedTime2}
+                                </p>
                               </div>
-                              {/* </OutsideClickHandler> */}
-                              {viewComment && data2 === singlePostdata?.id && (
-                                <div className="flex flex-col">
-                                  {viewMessage && viewMessage.length > 0 ? (
-                                    viewMessage.map((msg: any, idx: any) => {
-                                      const commentTime = msg?.createdAt?.toDate();
-                                      const now2 = moment();
-                                      const duration = moment.duration(now2.diff(commentTime));
-                                      let formattedTime2;
-                                      if (duration.asSeconds() < 60) {
-                                        formattedTime2 = `${Math.floor(duration.asSeconds())} second(s) ago`;
-                                      } else if (duration.asMinutes() < 60) {
-                                        formattedTime2 = `${Math.floor(duration.asMinutes())} minute(s) ago`;
-                                      } else if (duration.asHours() < 24) {
-                                        formattedTime2 = `${Math.floor(duration.asHours())} hour(s) ago`;
-                                      } else if (duration.asDays() < 7) {
-                                        formattedTime2 = `${Math.floor(duration.asDays())} day(s) ago`;
-                                      } else if (duration.asWeeks() < 8) {
-                                        formattedTime2 = `${Math.floor(duration.asWeeks())} week(s) ago`;
-                                      } else {
-                                        formattedTime2 = moment(commentTime)?.format("DD/MM/YYYY"); // Show full date if more than a week
-                                      }
-                                      return <div key={idx} className="mt-4 ">
-                                        <div className="flex  items-start gap-2 ">
-                                          <div className="flex items-start gap-4 ">
-                                            <div className="h-10 w-10 rounded-full"><Image src={msg.createdBy?.image?.url} alt="" height={1000} width={1000} className="h-[100%] w-[100%] rounded-full" /></div>
-                                            <div className=" flex flex-col gap-1 ">
-                                              <div className=" flex flex-col gap-1 ">
-                                                <div className="flex gap-3 items-center ">
-                                                  {
-                                                    msg.createdBy?.name &&
-                                                    <p className="text-sm text-primary">{msg.createdBy?.name ? msg.createdBy?.name : ""}</p>
-                                                  }
-                                                  <div>
-                                                    <p className="text-xs text-[#636464]">{formattedTime2}</p>
-                                                  </div>
-                                                </div>
-                                                <p className="text-sm text-ellipsis overflow-hidden ... ">{msg.message}</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          {/* <div className="">
+                            </div>
+                            <p className="text-sm text-ellipsis break-words ...">
+                              {msg.message}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="">
                                       <p className="text-xs text-[#636464]">{formattedTime2}</p>
                                     </div> */}
-                                        </div>
-                                      </div>
-                                    })
-                                  ) : (
-                                    <p className="text-sm text-[#636464]">No comments yet.</p>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-
-
-
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-sm text-[#636464]">No comments yet.</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
