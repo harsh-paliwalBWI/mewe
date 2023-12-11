@@ -9,7 +9,7 @@ import FlatIcon from "@/components/flatIcon/flatIcon";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import avatarimg from "../../../images/avatar.png";
 import { toast } from "react-toastify";
-import {getStartUpData,fetchBusinessAccountDetails, fetchAllFollowingsData} from "@/services/startupService";
+import {getStartUpData,fetchBusinessAccountDetails, fetchAllFollowingsData, fetchAcceptedFollowings, fetchAcceptedFollowRequests} from "@/services/startupService";
 import { getCookie } from "cookies-next";
 import { fetchPosts } from "@/services/postService";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
@@ -59,6 +59,19 @@ const AboutOptions: FC<Props> = ({setSelectedTab,selectedTab,aboutInfo}) => {
     queryKey: ["allFollowingsData"],
     queryFn: () => fetchAllFollowingsData(cookies),
   });
+
+  const { data: AcceptedfollowingsData } = useQuery({
+    queryKey: ["AcceptedfollowingsData"],
+    queryFn: () => fetchAcceptedFollowings(cookies),
+});
+
+console.log("from AcceptedfollowingsData", AcceptedfollowingsData);
+
+const { data: acceptedRequestsData } = useQuery({
+  queryKey: ["acceptedRequestsData"],
+  queryFn: () => fetchAcceptedFollowRequests(cookies),
+});
+console.log("AcceptedRequestsData", acceptedRequestsData);
 
   const isFollowing = startUpData?.following?.some(
     (item: any) => item?.docId === aboutInfo?.id
@@ -346,7 +359,7 @@ const AboutOptions: FC<Props> = ({setSelectedTab,selectedTab,aboutInfo}) => {
               {client && isFollowed?.status==="pending" ? (
                 <div
                   onClick={async () => await onUnfollowHandler(aboutInfo)}
-                  className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center cursor-pointer "
+                  className="w-[50%] text-center rounded-full border border-primary text-primary text-black xl:py-3 py-2 flex justify-center cursor-pointer "
                 >
                   <button className="flex items-center justify-center gap-1">
                
@@ -361,7 +374,7 @@ const AboutOptions: FC<Props> = ({setSelectedTab,selectedTab,aboutInfo}) => {
                   className="w-[50%] text-center rounded-full bg-primary text-white xl:py-3 py-2 flex justify-center  cursor-pointer"
                 >
                   <button className="flex items-center justify-center gap-1">
-                    <FlatIcon className="flaticon-add-user xl:text-2xl text-xl" />
+                    {/* <FlatIcon className="flaticon-add-user xl:text-2xl text-xl" /> */}
                     <span>Following</span>
                   </button>
                 </div>
@@ -448,8 +461,8 @@ const AboutOptions: FC<Props> = ({setSelectedTab,selectedTab,aboutInfo}) => {
               <h2 className="text-primary">Followers</h2>
               {/* <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.followers?.length: "-"}</h2> */}
               <h2 className="text-[#868E97]">
-                {client && aboutInfo?.followers
-                  ? aboutInfo?.followers?.length
+                {client && acceptedRequestsData
+                  ?acceptedRequestsData?.length
                   : "0"}
               </h2>
             </div>
@@ -459,9 +472,10 @@ const AboutOptions: FC<Props> = ({setSelectedTab,selectedTab,aboutInfo}) => {
             >
               <h2 className="text-primary">Following</h2>
               <h2 className="text-[#868E97]">
-                {client && aboutInfo?.following
-                  ? aboutInfo?.following?.length
-                  : "0"}
+                {client && AcceptedfollowingsData
+                  ? AcceptedfollowingsData?.length
+                  : "0"
+                  }
               </h2>
 
               {/* <h2 className="text-[#868E97]">{(client&&aboutInfo)? aboutInfo.following?.length: "-"}</h2> */}

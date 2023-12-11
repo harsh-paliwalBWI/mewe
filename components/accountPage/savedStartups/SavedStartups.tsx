@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchSavedStartUps } from '@/services/startupService';
 import BussinessCard from '@/components/bussinesscard/BussinessCard';
 import Loading from '@/app/loading';
+import SavedStartUpCard from '@/components/savedStarupCard/SavedStartUpCard';
 
 const SavedStartups = () => {
     const cookies = { value: getCookie("uid") };
@@ -23,8 +24,9 @@ const SavedStartups = () => {
         (
           <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-2 xl:gap-x-8 gap-x-6 xl:gap-y-8 gap-y-6 w-[100%]'>
           {savedStartUpsData&&savedStartUpsData.length>0&&savedStartUpsData.map((item:any,idx:number)=>{
-            return <div>
-              <BussinessCard startup={item}/>
+            return <div key={idx}>
+              <SavedStartUpCard startup={item}/>
+              {/* <BussinessCard startup={item}/> */}
             </div>
           })}
           </div>

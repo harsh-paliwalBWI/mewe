@@ -193,39 +193,12 @@ const BussinessCard: FC<Props> = ({ startup }) => {
         </div>
       </Link>
       <div className="w-full  px-3  mb-3">
-        {/* {isFollowing ? (
-          <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-black cursor-pointer ">
-            <div className=" ">
-              <FlatIcon className="flaticon-add-user text-2xl" />
-            </div>
-            <div className=" text-black text-sm sm:text-base md:text-lg font-semibold ">
-              <button >
-                Following
-              </button>
-
-            </div>
-          </div>
-        )
-          :
-          (<div onClick={async () => await onFollowHandler(startup)} className=" w-full flex  justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-primary cursor-pointer ">
-            <div className=" ">
-              <FlatIcon className="flaticon-add-user text-2xl text-primary" />
-
-            </div>
-            <div className=" text-primary text-sm sm:text-base md:text-lg font-semibold ">
-
-              <button >
-                Follow
-              </button>
-            </div>
-          </div>)
-        } */}
-
+       
 {isFollowed&&isFollowed?.status==="pending" ? (
           <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-black cursor-pointer ">
-            <div className=" ">
+            {/* <div className=" ">
               <FlatIcon className="flaticon-add-user text-2xl" />
-            </div>
+            </div> */}
             <div className=" text-black text-sm sm:text-base md:text-lg font-semibold ">
               <button >
                 Requested
@@ -236,9 +209,9 @@ const BussinessCard: FC<Props> = ({ startup }) => {
         ):
         isFollowed?.status==="accepted" ? (
           <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-black cursor-pointer ">
-            <div className=" ">
+            {/* <div className=" ">
               <FlatIcon className="flaticon-add-user text-2xl" />
-            </div>
+            </div> */}
             <div className=" text-black text-sm sm:text-base md:text-lg font-semibold ">
               <button >
                 Following
@@ -265,15 +238,15 @@ const BussinessCard: FC<Props> = ({ startup }) => {
       <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
         <div className="flex flex-col gap-2 justify-center items-center">
           <CircularProgress className="!text-white"></CircularProgress>
-          {/* <p className="text-white font-medium text-lg">
-                        Adding comment..
-                      </p> */}
+          <p className="text-white font-medium text-lg">
+                        Processing...
+                      </p>
         </div>
       </Modal>
       {/* </div> */}
-      <div className="absolute  top-0 right-0 transform -translate-x-1/2 translate-y-1/2  cursor-pointer">
+      {/* <div className="absolute  top-0 right-0 transform -translate-x-1/2 translate-y-1/2  cursor-pointer">
         <FlatIcon className="flaticon-close  md:text-xl sm:text-lg text-base text-black" />
-      </div>
+      </div> */}
     </div>
   );
 };
