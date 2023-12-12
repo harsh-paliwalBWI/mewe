@@ -54,7 +54,7 @@ const ChatMobile = () => {
   const { data } = useContext(ChatContext);
 
   const cookies = { value: getCookie("uid") };
-  const currUser = auth.currentUser;
+  const currUser = cookies?.value;
 
   const handleKey = async (e: any) => {
     if (e.code === "Enter" && username) {
@@ -64,6 +64,10 @@ const ChatMobile = () => {
       setSearchPerformed(true)
     }
   };
+
+  function formatTwoDigits(value: any) {
+    return value > 9 ? value : `0${value}`;
+  }
 
   const newsearch = async () => {
     if (username) {
@@ -141,9 +145,9 @@ const ChatMobile = () => {
 
   useEffect(() => {
     const getChats = () => {
-      if (currUser?.uid) {
+      if (currUser) {
         const q = query(
-          collection(db, "chat", currUser?.uid, "startups")
+          collection(db, "chat", currUser, "startups")
           // orderBy("lastMsgAt", "desc")
         );
         // console.log("Current", "kkkk");
@@ -165,8 +169,8 @@ const ChatMobile = () => {
       }
       //   console.log("This is called");
     };
-    currUser?.uid && getChats();
-  }, [currUser?.uid]);
+    currUser && getChats();
+  }, [currUser]);
 
   //   console.log(chats);
   //   console.log(searchlist, "jkkkk");
@@ -231,7 +235,7 @@ const ChatMobile = () => {
                       className="flex hover:bg-[#F3F7FA] items-center gap-4 border-b-2 border-b-[#c6c8c9]  py-4  "
                       key={index}
                       onClick={() => {
-                        handleSelect((item as any)?.id);
+                        handleSelect((item as any)?.docId);
 
                         // () => handleChange(item);
                         setUsername("");
@@ -299,7 +303,7 @@ const ChatMobile = () => {
                   onClick={() => handleChange(singlechat)}
                 >
                   <div className="flex  items-center gap-4 border-b-2 border-b-[#c6c8c9]  py-4 ">
-                    <div className="w-[60px] h-[60px] rounded-full aspect-square ">
+                    <div className="w-[15%] sm:w-[10%] md:w-[5%]  rounded-full aspect-square ">
                       <Image
                         src={(singlechat as any)?.coverPic || avatarimg}
                         alt=""
@@ -308,42 +312,34 @@ const ChatMobile = () => {
                         className="h-[100%] w-[100%] rounded-full object-fill"
                       />
                     </div>
-                    <div className="w-full flex  flex-col sm:gap-1">
+                    <div className="w-[80%] sm:w-[85%] md:w-[90%] flex  flex-col sm:gap-1">
                       <div className="flex justify-between">
                         <h2 className="lg:text-base text-sm font-bold ">
                           {" "}
                           {(singlechat as any)?.name || ""}
                         </h2>
+
+                        {(singlechat as any)?.lastMsgAt && (
                         <div className="flex items-center  text-2xl ">
                           <FlatIcon className="flaticon-readed text-primary" />
                           <p className="text-xs text-primary font-bold">
                             {" "}
-                            {new Date(
-                              (singlechat as any)?.lastMsgAt
-                            ).getHours() > 9
-                              ? new Date(
-                                  (singlechat as any)?.lastMsgAt
-                                ).getHours()
-                              : "0" +
-                                new Date(
-                                  (singlechat as any)?.lastMsgAt
-                                ).getHours()}
-                            :
-                            {new Date(
-                              (singlechat as any)?.lastMsgAt
-                            ).getMinutes() > 9
-                              ? new Date(
-                                  (singlechat as any)?.lastMsgAt
-                                ).getMinutes()
-                              : "0" +
-                                new Date(
-                                  (singlechat as any)?.lastMsgAt
-                                ).getMinutes()}
+                            {formatTwoDigits(
+                                  new Date(
+                                    (singlechat as any)?.lastMsgAt
+                                  ).getHours()
+                                )}
+                                :
+                                {formatTwoDigits(
+                                  new Date(
+                                    (singlechat as any)?.lastMsgAt
+                                  ).getMinutes()
+                                )}
                           </p>
-                        </div>
+                        </div>)}
                       </div>
 
-                      <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1">
+                      <p className="text-[#999999] sm:text-sm text-xs font-medium  line-clamp-1 text-ellipsis overflow-hidden ...">
                         {(singlechat as any)?.lastMsg}
                       </p>
                     </div>

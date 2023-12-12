@@ -391,7 +391,7 @@ console.log("AcceptedRequestsData", acceptedRequestsData);
                   </button>
                 </div>
               )}
-              {client && isFollowing ? (
+              {client&& isFollowed?.status==="accepted" ? (
                 <div className="w-[50%] border border-primary text-center rounded-full xl:py-3 py-2 text-primary cursor-pointer">
                   <button
                     onClick={() => {

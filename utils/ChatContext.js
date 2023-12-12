@@ -19,6 +19,9 @@ export const ChatContextProvider = ({ children }) => {
           chatId: action.payload.id,
         };
 
+      case "RESET_STATE":
+        return INITIAL_STATE;
+
       default:
         return state;
     }

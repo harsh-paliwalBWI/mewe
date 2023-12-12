@@ -38,10 +38,10 @@ const Categories = () => {
   return (
     <div className="w-full bg-[#272726] px-body flex justify-center md:justify-start lg:justify-center items-center py-2 sm:py-3 md:py-4 ">
       <div className="flex justify-center  gap-4 w-full  md:w-[80%] lg:w-full   relative ">
-        <Link href={"/about-our-company"} className="">
+        <Link href={"/"} className="">
           <div className={`text-[#cbcbcb] ${textStyle}`}>
-            <h1 className=" ">About</h1>
-            {pathName.includes("about-our-company") && (
+            <h1 className=" ">Home</h1>
+            {pathName.includes("/") && (
               <div className="w-full h-[2px] bg-[#CBCBCB] "></div>
             )}
           </div>
@@ -49,7 +49,7 @@ const Categories = () => {
         <Link href={"/"} className="">
           <div className={`text-[#cbcbcb] ${textStyle} `}>
             <h1 className=" ">Explore</h1>
-            {pathName === "/" && (
+            {pathName === "/explore" && (
               <div className="w-full h-[2px] bg-[#CBCBCB] "></div>
             )}
           </div>
