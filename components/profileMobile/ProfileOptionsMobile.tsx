@@ -163,10 +163,13 @@ const ProfileOptionsMobile = () => {
               <div>Manage Posts</div>
             </div>
           </Link>
+          {/* saved-startups */}
+          <Link href={"/saved-startups"}>
           <div className={`${optionStyle}`}>
             <div><FlatIcon className="flaticon-bookmark text-2xl" /></div>
             <div>Saved Startups</div>
           </div>
+          </Link>
           <Link href={"/all-chats"}>
             <div
               className={`${optionStyle} `}>

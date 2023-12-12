@@ -67,7 +67,7 @@ const Followings: FC<Props> = ({ aboutInfo, params }) => {
 
     return (
         <div className=' w-full bg-[#F8FAFC] xl:px-8 px-4  sm:py-7 py-4 flex flex-col gap-8'>
-            { pendingfollowingsData && pendingfollowingsData?.length > 0&&
+            {/* { pendingfollowingsData && pendingfollowingsData?.length > 0&&
             <div className=''>
             {
                 pendingfollowingsData && pendingfollowingsData?.length > 0 &&
@@ -103,16 +103,10 @@ const Followings: FC<Props> = ({ aboutInfo, params }) => {
                     // )
             }
             </div>
-}
-{/* {AcceptedfollowingsData && AcceptedfollowingsData?.length > 0? */}
-            <div className=' flex flex-col gap-6'>
-                  <h1 className=' text-primary text-base font-semibold'>Following</h1>
+} */}
             {
                     AcceptedfollowingsData && AcceptedfollowingsData?.length > 0 ?
-                        // <div>
                         (
-                            // <div className='flex flex-col gap-4'>
-                            //       <h1 className=' text-primary text-base font-semibold'>Following</h1>
                             <div className='flex flex-col gap-6'>
                                 {
                                     AcceptedfollowingsData && AcceptedfollowingsData?.length > 0 && AcceptedfollowingsData.map((following: any, idx: number) => {
@@ -124,29 +118,21 @@ const Followings: FC<Props> = ({ aboutInfo, params }) => {
                                                     </div>
                                                     <h3 className='sm:text-base text-sm'>{following.name}</h3>
                                                 </div>
-                                                <button onClick={async () => await onUnfollowHandler(following)} className='bg-primary text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Following</button>
+                                                <button onClick={async () => await onUnfollowHandler(following)} className='bg-black text-white h-fit sm:py-2 py-1 sm:px-4 px-3 rounded-md text-sm'>Following</button>
                                             </div>
                                         </div>
                                     })
                                 }
                             </div>
-                            // </div>
+                        
                         )
                         :
                         (
-                            <div className='w-full flex justify-center h-[10vh]  items-center text-primary text-base'>
+                            <div className='w-full flex justify-center  md:h-[50vh] h-[25vh]  items-center text-primary text-base'>
                                 <h2>No following yet !</h2>
                             </div>
                         )
                 }
-            </div>
-            {/* :
-            (
-                <div className='w-full flex justify-center md:h-[50vh] h-[25vh]  items-center text-primary text-base'>
-                    <h2>No following yet !</h2>
-                </div>
-            )
-} */}
             <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
                 <div className="flex flex-col gap-2 justify-center items-center">
                     <CircularProgress className="!text-white"></CircularProgress>
