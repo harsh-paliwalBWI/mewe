@@ -59,7 +59,7 @@ const inputStyle = "rounded-lg px-3 py-3 w-full outline-0 lg:text-sm md:text-xs 
 
 const BusinessAccount = () => {
   const cookies = { value: getCookie("uid") };
-  console.log(cookies,"accoun tpage ");
+  // console.log(cookies,"accoun tpage ");
   
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -78,7 +78,7 @@ const BusinessAccount = () => {
 
   });
 
-  console.log("startUpData", startUpData);
+  // console.log("startUpData", startUpData);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(cookies),
@@ -151,28 +151,28 @@ const BusinessAccount = () => {
       const accountInfo = {
         name: name,
         
-        founderName: state.founderName,
-        coFounderName: state.coFounderName,
+        founderName: state.founderName?state.founderName:"",
+        coFounderName: state.coFounderName?state.coFounderName:"",
         social: {
-          linkedin: state.linkedInUrl,
+          linkedin: state.linkedInUrl?state.linkedInUrl:"",
         },
         category: {
           id: category.id,
           name: category.name
         },
         address: {
-          line1: state.address,
+          line1: state.address?state.address:"",
         },
-        city: city.name,
-        companySize: +companySize.name,
-        yearOfFormation: +yearOfFormation.name,
-        description: state.description,
-        panNo: state.panNo,
-        currentFinancialIncome: +state.currentFinancialIncome,
-        currentValuation: +state.currentValuation,
-        typeOfInvestement: typeOfInvestement.name,
-        equityPercentage: +equityPercentage,
-        amount: +state.amount,
+        city: city.name?city.name:"",
+        companySize: companySize.name?+companySize.name:"",
+        yearOfFormation: yearOfFormation.name?+yearOfFormation.name:"",
+        description: state.description?state.description:"",
+        panNo:state.panNo?state.panNo:"",
+        currentFinancialIncome: state.currentFinancialIncome?+state.currentFinancialIncome:"",
+        currentValuation: state.currentValuation?+state.currentValuation:"",
+        typeOfInvestement: typeOfInvestement.name?typeOfInvestement.name:"",
+        equityPercentage: equityPercentage?+equityPercentage:"",
+        amount:state.amount?+state.amount:"",
       }
       // validation start 
 
@@ -196,6 +196,8 @@ const BusinessAccount = () => {
       }
       setLoading(false)
     } catch (error) {
+      console.log(error);
+      
       toast.error("Some error occured")
       setLoading(false)
     }
