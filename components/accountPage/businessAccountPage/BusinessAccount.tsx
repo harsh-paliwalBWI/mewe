@@ -174,11 +174,7 @@ const BusinessAccount = () => {
         equityPercentage: equityPercentage?+equityPercentage:"",
         amount:state.amount?+state.amount:"",
       }
-      // validation start 
-
-      // if(!state.name&&!state.founderName&&state.coFounderName&&state.linkedInUrl&&category.name&&state.address&&city.name&&companySize.name&&yearOfFormation.name
-      //   &&state.description&&state.panNo&&state.currentFinancialIncome&&state.currentValuation&&state.amount&&email)
-      // validation end 
+      
       await addAdvanceDetails(accountInfo,email,phoneNumber)
       await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
