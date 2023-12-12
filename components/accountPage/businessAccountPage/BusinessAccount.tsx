@@ -58,33 +58,24 @@ const labelStyle = " lg:text-sm md:text-xs text-sm  text-[#868E97] font-medium  
 const inputStyle = "rounded-lg px-3 py-3 w-full outline-0 lg:text-sm md:text-xs text-sm"
 
 const BusinessAccount = () => {
-  const cookies = { value: getCookie("uid") };
-  // console.log(cookies,"accoun tpage ");
-  
+  const cookies = { value: getCookie("uid") }
   const [isClient, setIsClient] = useState(false);
   const [loading, setLoading] = useState(false)
-
   const queryClient = useQueryClient()
   const [industry, setIndustry] = useState(dummyIndustry[0])
   const pathName = usePathname()
   const router = useRouter()
 
-
-
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
-    // keepPreviousData: true
 
   });
 
-  // console.log("startUpData", startUpData);
   const { data: businessAccountData } = useQuery({
     queryKey: ["businessAccountData"],
     queryFn: () => fetchBusinessAccountDetails(cookies),
-    // keepPreviousData: true
   });
-  // console.log(businessAccountData, "account data");
 
   const { data: existOrNot } = useQuery({
     queryKey: ["businessAccountExistOrNot"],
@@ -94,14 +85,7 @@ const BusinessAccount = () => {
   const { data: categoriesData } = useQuery({
     queryKey: ["categoriesData"],
     queryFn: () => fetchAllCategories(),
-    // keepPreviousData: true
   });
-
-  // console.log("categoriesData",categoriesData);
-  
-  // console.log(cookies,"cookie");
-
-  // console.log(existOrNot,"on not");
 
   const [companySize, setCompanySize] = useState(businessAccountData ? { name: businessAccountData.companySize } : { name: "" })
   const [city, setCity] = useState(businessAccountData ? { name: businessAccountData.city } : { name: "" })
@@ -109,7 +93,7 @@ const BusinessAccount = () => {
   const [typeOfInvestement, setTypeOfInvestment] = useState(businessAccountData ? { name: businessAccountData.typeOfInvestement } : { name: "" })
   const [category, setCategory] = useState(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id: "", name: "" })
   const [equityPercentage, setEquityPercetnage] = useState(businessAccountData ? businessAccountData?.equityPercentage : "")
-  const [phoneNumber, setPhoneNumber] = useState(startUpData?.phoneNo?startUpData?.phoneNo:"")
+  const [phoneNumber, setPhoneNumber] = useState(startUpData?.phoneNo ? startUpData?.phoneNo : "")
   const [email, setEmail] = useState(startUpData?.email)
   const [name, setName] = useState(startUpData?.name)
   const [state, setState] = useState({
@@ -126,14 +110,14 @@ const BusinessAccount = () => {
     panNo: businessAccountData ? businessAccountData?.panNo : ""
   })
 
-  const addAdvanceDetails = async (advanceDetails: any, email: any,phoneNo:any) => {
+  const addAdvanceDetails = async (advanceDetails: any, email: any, phoneNo: any) => {
     // console.log(advanceDetails);
     const refDoc = doc(db, `startups/${startUpData?.id}/details/advance`);
     const refDoc2 = doc(db, `startups/${startUpData?.id}`);
     const details = {
       name: advanceDetails.name,
       email: email,
-      phoneNo:phoneNo,
+      phoneNo: phoneNo,
       basic: {
         name: advanceDetails.name,
         category: {
@@ -150,32 +134,32 @@ const BusinessAccount = () => {
     try {
       const accountInfo = {
         name: name,
-        
-        founderName: state.founderName?state.founderName:"",
-        coFounderName: state.coFounderName?state.coFounderName:"",
+
+        founderName: state.founderName ? state.founderName : "",
+        coFounderName: state.coFounderName ? state.coFounderName : "",
         social: {
-          linkedin: state.linkedInUrl?state.linkedInUrl:"",
+          linkedin: state.linkedInUrl ? state.linkedInUrl : "",
         },
         category: {
           id: category.id,
           name: category.name
         },
         address: {
-          line1: state.address?state.address:"",
+          line1: state.address ? state.address : "",
         },
-        city: city.name?city.name:"",
-        companySize: companySize.name?+companySize.name:"",
-        yearOfFormation: yearOfFormation.name?+yearOfFormation.name:"",
-        description: state.description?state.description:"",
-        panNo:state.panNo?state.panNo:"",
-        currentFinancialIncome: state.currentFinancialIncome?+state.currentFinancialIncome:"",
-        currentValuation: state.currentValuation?+state.currentValuation:"",
-        typeOfInvestement: typeOfInvestement.name?typeOfInvestement.name:"",
-        equityPercentage: equityPercentage?+equityPercentage:"",
-        amount:state.amount?+state.amount:"",
+        city: city.name ? city.name : "",
+        companySize: companySize.name ? +companySize.name : "",
+        yearOfFormation: yearOfFormation.name ? +yearOfFormation.name : "",
+        description: state.description ? state.description : "",
+        panNo: state.panNo ? state.panNo : "",
+        currentFinancialIncome: state.currentFinancialIncome ? +state.currentFinancialIncome : "",
+        currentValuation: state.currentValuation ? +state.currentValuation : "",
+        typeOfInvestement: typeOfInvestement.name ? typeOfInvestement.name : "",
+        equityPercentage: equityPercentage ? +equityPercentage : "",
+        amount: state.amount ? +state.amount : "",
       }
-      
-      await addAdvanceDetails(accountInfo,email,phoneNumber)
+
+      await addAdvanceDetails(accountInfo, email, phoneNumber)
       await queryClient.invalidateQueries({ queryKey: ['businessAccountData'] })
       await queryClient.refetchQueries({ queryKey: ['businessAccountData'] })
       await queryClient.invalidateQueries({ queryKey: ['singleBusinessAccountData'] })
@@ -193,7 +177,7 @@ const BusinessAccount = () => {
       setLoading(false)
     } catch (error) {
       console.log(error);
-      
+
       toast.error("Some error occured")
       setLoading(false)
     }
@@ -222,7 +206,7 @@ const BusinessAccount = () => {
       setCategory(businessAccountData ? { id: businessAccountData.category.id, name: businessAccountData.category.name } : { id: "", name: "" })
     }
     if (startUpData) {
-      setPhoneNumber(startUpData?.phoneNo?startUpData?.phoneNo:"")
+      setPhoneNumber(startUpData?.phoneNo ? startUpData?.phoneNo : "")
       setEmail(startUpData.email)
       setName(startUpData?.name)
     }
@@ -281,7 +265,7 @@ const BusinessAccount = () => {
                 <div className=' '>
                   <Listbox.Button className={` w-full flex justify-between items-center text-start lg:text-sm md:text-xs text-sm`}><span>{(category?.name && isClient && category.name) || "Select"}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
                   <Listbox.Options className={`max-h-[300px] overflow-y-scroll absolute top-[50px] px-3 py-3 rounded-md shadow-xl   bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`} >
-                    {categoriesData&&categoriesData.length>0&&categoriesData.map((category:any) => (
+                    {categoriesData && categoriesData.length > 0 && categoriesData.map((category: any) => (
                       <Listbox.Option key={category.id} value={category} as={Fragment} >
                         {({ active, selected }) => (
                           <li
@@ -633,7 +617,7 @@ const BusinessAccount = () => {
             </div>
             <div className={`${borderStyle}  `}>
               <label className={`${labelStyle}`} htmlFor="input">Phone Number</label>
-              <input value={(isClient && phoneNumber) ? phoneNumber : ""} onChange={(e) => setPhoneNumber(e.target.value)} disabled={startUpData?.signInMethod==="google"?false:true} className={`${inputStyle} `} type="text" id="input" />
+              <input value={(isClient && phoneNumber) ? phoneNumber : ""} onChange={(e) => setPhoneNumber(e.target.value)} disabled={startUpData?.signInMethod === "google" ? false : true} className={`${inputStyle} `} type="text" id="input" />
             </div>
           </div>
           <div
