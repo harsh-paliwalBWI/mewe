@@ -56,6 +56,24 @@ const responsiveSettings = [
       centerPadding: "600px",
     },
   },
+  {
+    breakpoint: 2000, 
+    settings: {
+      slidesToShow: 8,
+      slidesToScroll: 8,
+      initialSlide: 0,
+      centerPadding: "600px",
+    },
+  },
+  {
+    breakpoint: 2400, 
+    settings: {
+      slidesToShow: 8,
+      slidesToScroll: 8,
+      initialSlide: 0,
+      centerPadding: "600px",
+    },
+  },
 ];
 
 const ExploreCategories = () => {
