@@ -92,8 +92,8 @@ const Navmobile = () => {
                 <div className="py-[5px]  cursor-pointer">About</div>
               </Link>
               <Link
-                href={"/"}
-                className={`${pathname === "/" && "text-primary"
+                href={"/explore"}
+                className={`${pathname === "/explore" && "text-primary"
                   } flex items-center justify-center gap-2  py-[5px]  cursor-pointer `}
                 onClick={() => {
                   setIsMobile(false);

@@ -528,7 +528,7 @@ const SignUpPage2 = () => {
                 })}
               </div>
               <div className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6">
-                {timerStarted ? (
+                {/* {timerStarted ? (
                   <h4>Resend code ({time > 9 ? time : "0" + time} sec)</h4>
                 ) : (
                   <button
@@ -537,7 +537,7 @@ const SignUpPage2 = () => {
                   >
                     Resend code
                   </button>
-                )}
+                )} */}
               </div>
             </div>
 

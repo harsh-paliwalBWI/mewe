@@ -41,12 +41,12 @@ const Categories = () => {
         <Link href={"/"} className="">
           <div className={`text-[#cbcbcb] ${textStyle}`}>
             <h1 className=" ">Home</h1>
-            {pathName.includes("/") && (
+            {pathName === "/" && (
               <div className="w-full h-[2px] bg-[#CBCBCB] "></div>
             )}
           </div>
         </Link>
-        <Link href={"/"} className="">
+        <Link href={"/explore"} className="">
           <div className={`text-[#cbcbcb] ${textStyle} `}>
             <h1 className=" ">Explore</h1>
             {pathName === "/explore" && (

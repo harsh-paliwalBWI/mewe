@@ -581,11 +581,11 @@ const SignInPage = () => {
               </div>
               <div
                 className="mt-6 text-[#868E97] sm:text-sm text-xs font-semibold md:mb-8 mb-6"
-                onClick={async () => {
-                  await resendOTP();
-                }}
+                // onClick={async () => {
+                //   await resendOTP();
+                // }}
               >
-                {timerStarted ? (
+                {/* {timerStarted ? (
                   <h4>Resend code ({time > 9 ? time : "0" + time} sec)</h4>
                 ) : (
                   <button
@@ -594,7 +594,7 @@ const SignInPage = () => {
                   >
                     Resend code
                   </button>
-                )}
+                )} */}
               </div>
             </div>
             <div

@@ -605,9 +605,7 @@ const ChatsPage = () => {
                             >
                               <button
                                 // onClick={() => {
-                                //   setDocId({data.user?.id});
-                                //   setIsDeleted(true);
-                                //   console.log(post.id);
+                             
                                 // }}
                                 className={`${
                                   active
