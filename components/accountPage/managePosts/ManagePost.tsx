@@ -7,7 +7,6 @@ import logoImg from "../../../images/a5 2.svg";
 import "@ant-design/cssinjs";
 import FlatIcon from "@/components/flatIcon/flatIcon";
 import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { CircularProgress } from "@mui/material";
@@ -15,15 +14,7 @@ import { Carousel } from "antd";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchPosts } from "@/services/postService";
 import Modal from "@/components/Modal/modal";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import {addDoc,collection,deleteDoc,doc,getDocs,orderBy, query,} from "firebase/firestore";
 import { db } from "@/config/firebase-config";
 import { Transition } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
@@ -31,6 +22,7 @@ import Loader from "@/components/loader/Loader";
 import OutsideClickHandler from "@/utils/OutsideClickHandler";
 import { getStartUpData } from "@/services/startupService";
 import { getCookie } from "cookies-next";
+import Link from "next/link";
 
 const ManagePost = () => {
   const [isNewPost, setIsNewPost] = useState(false);
@@ -41,9 +33,7 @@ const ManagePost = () => {
   const [docId, setDocId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [postMessages, setPostMessages] = useState<{ [key: string]: string }>(
-    {}
-  );
+  const [postMessages, setPostMessages] = useState<{ [key: string]: string }>({});
   const [viewMessage, setViewMessage] = useState([]);
   const [viewComment, setViewComment] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -54,12 +44,13 @@ const ManagePost = () => {
     queryFn: () => getStartUpData(cookies),
   });
 
-  // console.log("startUpData", startUpData);
+  console.log("startUpData", startUpData);
+
   const { data: postsData } = useQuery({
     queryKey: ["postsData"],
     queryFn: () => fetchPosts(startUpData?.id),
   });
-  // console.log(postsData);
+  console.log(postsData,"----------");
 
   const onViewCommentHandler = async (docId: any) => {
     const orderedPosts = query(
@@ -163,32 +154,65 @@ const ManagePost = () => {
                 postsData?.map((post: any, idx: number) => {
                   const commentTime = post.createdAt.toDate();
                   // Calculate the duration
-                  const now = moment();
-                  const duration = moment.duration(now.diff(commentTime));
-                  let formattedTime;
-                  if (duration.asSeconds() < 60) {
-                    formattedTime = `${Math.floor(
-                      duration.asSeconds()
-                    )} second(s) ago`;
-                  } else if (duration.asMinutes() < 60) {
-                    formattedTime = `${Math.floor(
-                      duration.asMinutes()
-                    )} minute(s) ago`;
-                  } else if (duration.asHours() < 24) {
-                    formattedTime = `${Math.floor(
-                      duration.asHours()
-                    )} hour(s) ago`;
-                  } else if (duration.asDays() < 7) {
-                    formattedTime = `${Math.floor(
-                      duration.asDays()
-                    )} day(s) ago`;
-                  } else if (duration.asWeeks() < 4) {
-                    formattedTime = `${Math.floor(
-                      duration.asWeeks()
-                    )} week(s) ago`;
-                  } else {
-                    formattedTime = commentTime.format("MMMM D, YYYY"); // Show full date if more than a week
-                  }
+                  // old start 
+                  // const now = moment();
+                  // const duration = moment.duration(now.diff(commentTime));
+                  // let formattedTime;
+                  // if (duration.asSeconds() < 60) {
+                  //   formattedTime = `${Math.floor(
+                  //     duration.asSeconds()
+                  //   )} second(s) ago`;
+                  // } else if (duration.asMinutes() < 60) {
+                  //   formattedTime = `${Math.floor(
+                  //     duration.asMinutes()
+                  //   )} minute(s) ago`;
+                  // } else if (duration.asHours() < 24) {
+                  //   formattedTime = `${Math.floor(
+                  //     duration.asHours()
+                  //   )} hour(s) ago`;
+                  // } else if (duration.asDays() < 7) {
+                  //   formattedTime = `${Math.floor(
+                  //     duration.asDays()
+                  //   )} day(s) ago`;
+                  // } else if (duration.asWeeks() < 4) {
+                  //   formattedTime = `${Math.floor(
+                  //     duration.asWeeks()
+                  //   )} week(s) ago`;
+                  // } else {
+                  //   formattedTime = commentTime?.format("MMMM D, YYYY"); // Show full date if more than a week
+                  // }
+                  // old end 
+
+
+
+
+
+let formattedTime;
+const commentMoment = moment(commentTime);
+
+if (commentMoment.isValid()) {
+  const now = moment();
+  const duration = moment.duration(now.diff(commentMoment));
+
+  if (duration.asSeconds() < 60) {
+    formattedTime = `${Math.floor(duration.asSeconds())} second(s) ago`;
+  } else if (duration.asMinutes() < 60) {
+    formattedTime = `${Math.floor(duration.asMinutes())} minute(s) ago`;
+  } else if (duration.asHours() < 24) {
+    formattedTime = `${Math.floor(duration.asHours())} hour(s) ago`;
+  } else if (duration.asDays() < 7) {
+    formattedTime = `${Math.floor(duration.asDays())} day(s) ago`;
+  } else if (duration.asWeeks() < 4) {
+    formattedTime = `${Math.floor(duration.asWeeks())} week(s) ago`;
+  } else {
+    formattedTime = commentMoment.format("MMMM D, YYYY");
+  }
+} else {
+  // Handle the case where commentTime is not a valid date
+  formattedTime = "Invalid date";
+}
+
+
                   const postMessage = postMessages[post?.id] || "";
                   return (
                     <div
@@ -330,10 +354,30 @@ const ManagePost = () => {
                                 {/* Deliver Conference */}
                                 {post?.title}
                               </h2>
-                              {/* <p className="text-xs text-[#9fa0a2]  font-medium">
+                              {
+                                post?.taggedStartups&&post?.taggedStartups.length>0&&
+                             <div className="flex items-center gap-2">
+                              {
+                                post?.taggedStartups&&post?.taggedStartups.length>0&&post?.taggedStartups.map((item:any,idx:number)=>{
+                                  return <Link  key={idx} href={`/startup/${item?.slug}`}
+                                  onClick={(e) => {
+                                    if (
+                                     item?.slug===""
+                                    ) {
+                                      e.preventDefault();
+                                    }
+                                  }}
+                                  >
 
-                          {post.description}
-                        </p> */}
+                                  <div className="flex items-center  text-sm">
+                                  <p className="text-primary underline">{item.name}</p>
+                                  {idx < post?.taggedStartups.length - 1 && ','}
+                                  </div>
+                                  </Link>
+                                })
+                              }
+                             </div>
+                              }
                               <div className="text-xs text-[#9fa0a2] font-medium  w-[100%] h-auto">
                                 <p
                                   className="w-fit"

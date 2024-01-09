@@ -28,6 +28,7 @@ import { getCookie } from "cookies-next";
 import { Transition } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
 import Loader from "../loader/Loader";
+import Link from "next/link";
 
 interface Props {
   aboutInfo: any;
@@ -146,30 +147,57 @@ const PostsSlider: FC<Props> = ({ aboutInfo }) => {
               postsData?.map((post: any, idx: number) => {
                 const commentTime = post?.createdAt?.toDate();
                 // Calculate the duration
-                const now = moment();
-                const duration = moment.duration(now.diff(commentTime));
+                // old startt 
+                // const now = moment();
+                // const duration = moment.duration(now.diff(commentTime));
+                // let formattedTime;
+                // if (duration.asSeconds() < 60) {
+                //   formattedTime = `${Math.floor(
+                //     duration.asSeconds()
+                //   )} second(s) ago`;
+                // } else if (duration.asMinutes() < 60) {
+                //   formattedTime = `${Math.floor(
+                //     duration.asMinutes()
+                //   )} minute(s) ago`;
+                // } else if (duration.asHours() < 24) {
+                //   formattedTime = `${Math.floor(
+                //     duration.asHours()
+                //   )} hour(s) ago`;
+                // } else if (duration.asDays() < 7) {
+                //   formattedTime = `${Math.floor(duration.asDays())} day(s) ago`;
+                // } else if (duration.asWeeks() < 4) {
+                //   formattedTime = `${Math.floor(
+                //     duration.asWeeks()
+                //   )} week(s) ago`;
+                // } else {
+                //   formattedTime = commentTime.format("MMMM D, YYYY"); // Show full date if more than a week
+                // }
+                // old end 
+
                 let formattedTime;
-                if (duration.asSeconds() < 60) {
-                  formattedTime = `${Math.floor(
-                    duration.asSeconds()
-                  )} second(s) ago`;
-                } else if (duration.asMinutes() < 60) {
-                  formattedTime = `${Math.floor(
-                    duration.asMinutes()
-                  )} minute(s) ago`;
-                } else if (duration.asHours() < 24) {
-                  formattedTime = `${Math.floor(
-                    duration.asHours()
-                  )} hour(s) ago`;
-                } else if (duration.asDays() < 7) {
-                  formattedTime = `${Math.floor(duration.asDays())} day(s) ago`;
-                } else if (duration.asWeeks() < 4) {
-                  formattedTime = `${Math.floor(
-                    duration.asWeeks()
-                  )} week(s) ago`;
-                } else {
-                  formattedTime = commentTime.format("MMMM D, YYYY"); // Show full date if more than a week
-                }
+const commentMoment = moment(commentTime);
+
+if (commentMoment.isValid()) {
+  const now = moment();
+  const duration = moment.duration(now.diff(commentMoment));
+
+  if (duration.asSeconds() < 60) {
+    formattedTime = `${Math.floor(duration.asSeconds())} second(s) ago`;
+  } else if (duration.asMinutes() < 60) {
+    formattedTime = `${Math.floor(duration.asMinutes())} minute(s) ago`;
+  } else if (duration.asHours() < 24) {
+    formattedTime = `${Math.floor(duration.asHours())} hour(s) ago`;
+  } else if (duration.asDays() < 7) {
+    formattedTime = `${Math.floor(duration.asDays())} day(s) ago`;
+  } else if (duration.asWeeks() < 4) {
+    formattedTime = `${Math.floor(duration.asWeeks())} week(s) ago`;
+  } else {
+    formattedTime = commentMoment.format("MMMM D, YYYY");
+  }
+} else {
+  // Handle the case where commentTime is not a valid date
+  formattedTime = "Invalid date";
+}
                 const postMessage = postMessages[post.id] || "";
                 return (
                   <div
@@ -317,6 +345,30 @@ const PostsSlider: FC<Props> = ({ aboutInfo }) => {
                               {/* Deliver Conference */}
                               {post?.title}
                             </h2>
+                            {
+                                post?.taggedStartups&&post?.taggedStartups.length>0&&
+                             <div className="flex items-center gap-2">
+                              {
+                                post?.taggedStartups&&post?.taggedStartups.length>0&&post?.taggedStartups.map((item:any,idx:number)=>{
+                                  return <Link key={idx} href={`/startup/${item?.slug}`}
+                                  onClick={(e) => {
+                                    if (
+                                     item?.slug===""
+                                    ) {
+                                      e.preventDefault();
+                                    }
+                                  }}
+                                  >
+
+                                  <div className="flex items-center  text-sm">
+                                  <p className="text-primary underline">{item.name}</p>
+                                  {idx < post?.taggedStartups.length - 1 && ','}
+                                  </div>
+                                  </Link>
+                                })
+                              }
+                             </div>
+                              }
                             {/* <p className="text-xs text-[#9fa0a2]  font-medium border border-[red] w-[100%] h-auto">
                       <p className="w-fit">
                       {post.description}

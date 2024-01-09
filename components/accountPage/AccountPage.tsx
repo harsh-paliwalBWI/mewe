@@ -49,7 +49,7 @@ const router = useRouter();
 
   return (
     <>
-      <div className='flex w-[100%] md:flex-row flex-col gap-y-6 px-body xl:gap-x-14 gap-x-7 md:mt-14 mt-7 md:mb-20 mb-10 relative z-10'>
+      <div className='flex w-[100%] md:flex-row flex-col gap-y-6 px-body xl:gap-x-14 gap-x-7 md:mt-14 mt-7 md:mb-32 mb-10 relative z-10'>
         <ProfileOptions  setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
         <ProfileOptionsMobile />
         {currTab === "my-profile" && <MyProfile />}

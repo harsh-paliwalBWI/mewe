@@ -77,7 +77,7 @@ const Categories = () => {
           </div>
         </Link>
         {
-          startUpData? <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
+         isClient&& startUpData? <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
           <div className={`text-[#CBCBCB] ${textStyle}`}>
             <h1 className=" ">Account</h1>
             {pathName.includes("account") && (

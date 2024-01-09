@@ -316,3 +316,86 @@ export const fetchPendingFollowings = async (cookieData: any) => {
     }
 };
 
+// export const getTaggedStartupsData=async(cookieData: any)=>{
+//     let cookie;
+//     if (cookieData) {
+//         cookie = cookieData;
+//     } else {
+//         cookie = { value: getCookie('uid') }
+//     }
+//     let uid;
+//     if (cookie?.value) {
+//         uid = cookie?.value;
+//     }
+//     // let docId=id
+//     if (uid) {
+//         const querySnapshot1 = query(collection(db, `startups/${uid}/following`), where('status', '==',"accepted"));
+//         const querySnapshot = await getDocs(querySnapshot1);
+//         let arr: any = []
+//         querySnapshot.forEach(async(docs) => {
+//             console.log("id",docs.id);
+            
+           
+//             // let data = JSON.parse(JSON.stringify({ ...docs.data(), id: docs.id }))
+//             // arr.push(data)
+
+//             const docRef = doc(db, "startups", `${docs.id}`);
+// const docSnap = await getDoc(docRef);
+
+// if (docSnap.exists()) {
+//     let taggedStartupData = JSON.parse(JSON.stringify({ ...docSnap.data(), id: docSnap.id }))
+//   console.log("Document data inside if:", docSnap.data());
+//   arr.push(taggedStartupData)
+
+// } else {
+//   // docSnap.data() will be undefined in this case
+//   console.log("No such document!");
+// }
+           
+//         });
+//         console.log(arr,"arr");
+        
+//         return arr;
+//     } else {
+//         return null;
+//     }
+
+// }
+
+export const getTaggedStartupsData = async (cookieData: any) => {
+    let cookie;
+    if (cookieData) {
+        cookie = cookieData;
+    } else {
+        cookie = { value: getCookie('uid') }
+    }
+    let uid;
+    if (cookie?.value) {
+        uid = cookie?.value;
+    }
+
+    if (uid) {
+        const querySnapshot1 = query(collection(db, `startups/${uid}/following`), where('status', '==', "accepted"));
+        const querySnapshot = await getDocs(querySnapshot1);
+
+        // Use Promise.all to wait for all promises to resolve
+        const arr = await Promise.all(querySnapshot.docs.map(async (docs) => {
+            const docRef = doc(db, "startups", docs.id);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                let taggedStartupData = JSON.parse(JSON.stringify({ ...docSnap.data(), id: docSnap.id }))
+                // console.log("Document data inside if:", docSnap.data());
+                return taggedStartupData;
+            } else {
+                // console.log("No such document!");
+                return null;
+            }
+        }));
+
+        // console.log(arr, "arr");
+        return arr.filter(Boolean); // Remove null values from the array
+    } else {
+        return null;
+    }
+}
