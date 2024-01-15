@@ -3,7 +3,10 @@ import { collection, getDocs,query,where,orderBy } from "firebase/firestore";
 
 export const fetchPosts = async (startupId:any) => {
   const id=auth.currentUser?.uid
-  const querySnapshot = query(collection(db, `posts`), where('createdBy.id', '==', startupId), orderBy('createdAt', 'desc'));
+  console.log(startupId, "bb")
+  const querySnapshot = query(collection(db, `posts`), where('createdBy.id', '==', startupId), 
+  // orderBy('createdAt', 'desc')
+  );
 
   const res = await getDocs(querySnapshot);
   let arr: any = [];
@@ -44,6 +47,39 @@ export const fetchAllPosts = async () => {
 
 
 };
+
+
+// main.js
+
+
+export const fetchPostsByCategory = async (categoryName:any) => {
+  try {
+    console.log(categoryName, "zzzzzzzzz");
+
+    const postsRef = collection(db, 'posts');
+    const postsQuery = query(
+      postsRef,
+      where('category.name', '==', categoryName),
+      // orderBy('createdAt', 'desc')
+    );
+
+    const querySnapshot = await getDocs(postsQuery);
+
+    console.log('Raw querySnapshot:', querySnapshot);
+
+    const arr = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    console.log('Fetched posts:', arr);
+
+    return arr;
+  } catch (error) {
+    console.error('Error fetching documents:', error);
+
+    throw error;
+  }
+};
+
+
 
 
 

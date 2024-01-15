@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // import CategoryCard from "./categoryCard/CategoryCard";
 import profile from "../../images/a5 2.svg";
@@ -18,12 +18,15 @@ import {
   getDocs,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { db } from "@/config/firebase-config";
 import { getStartUpData } from "@/services/startupService";
 import { getCookie } from "cookies-next";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { GoHeartFill } from "react-icons/go";
+import Link from "next/link";
 
 // function calculateTimeDifference(createdAt) {
 
@@ -64,8 +67,12 @@ const PostCard = (singlePost: any) => {
   const [viewMessage, setViewMessage] = useState([]);
   const [viewComment, setViewComment] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const queryClient = useQueryClient();
+  const [liked, setLiked] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const cookies = { value: getCookie("uid") };
+  const commentInputRef = useRef<HTMLInputElement | null>(null);
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
@@ -79,7 +86,7 @@ const PostCard = (singlePost: any) => {
     ? singlePostdata.createdAt.toDate()
     : null;
 
-  // console.log(singlePostdata,"bbbbbbbb")
+  // console.log(shouldShowViewMoreButton,"bbbbbbbb")
   // Calculate the duration
   const now = moment();
   const duration = moment.duration(now.diff(PostTime));
@@ -98,8 +105,47 @@ const PostCard = (singlePost: any) => {
     formattedTime = moment(PostTime)?.format("DD/MM/YYYY"); // Show full date if more than a week
   }
 
+  const descriptionContent = showFullDescription ? (
+    <div
+      className="text-gray-400 md:text-xs sm:text-[10px] text-[8px] font-normal"
+      style={{
+        overflowWrap: "break-word",
+        maxWidth: "100%",
+      }}
+    >
+      {singlePostdata?.description}
+    </div>
+  ) : (
+    <div
+      className="text-gray-400 md:text-xs sm:text-[10px] text-[8px] font-normal line-clamp-1"
+      style={{
+        overflowWrap: "break-word",
+        maxWidth: "100%",
+        display: "-webkit-box",
+        WebkitLineClamp: 1,
+        WebkitBoxOrient: "vertical",
+        textOverflow: "ellipsis",
+      }}
+    >
+      {singlePostdata?.description}
+    </div>
+  );
+
+  const isMultilineDescription =
+    singlePostdata?.description &&
+    singlePostdata?.description.split("\n").length > 1;
+
+  // console.log(isMultilineDescription,"kkklk")
+
   const onCommentHandler = async (docId: any) => {
     if (startUpData) {
+      const message = postMessages[docId] || "";
+
+      if (!message.trim()) {
+        toast.error("Please type something before adding a comment.");
+        return;
+      }
+
       const createdBy = {
         name: startUpData?.name,
         id: startUpData?.id,
@@ -107,7 +153,6 @@ const PostCard = (singlePost: any) => {
       };
 
       setIsModalOpen(true);
-      const message = postMessages[docId] || "";
       const ref = collection(db, `posts/${docId}/comments`);
       try {
         await addDoc(ref, { message, createdAt: new Date(), createdBy });
@@ -137,6 +182,90 @@ const PostCard = (singlePost: any) => {
     // console.log(arr,"commeyn arr");
     setViewMessage(arr);
   };
+
+  const onLikeHandler = async (docId: any) => {
+    if (startUpData) {
+      const createdBy = {
+        name: startUpData?.name,
+        id: startUpData?.id,
+        image: startUpData?.basic?.coverPic,
+      };
+
+      const likeRef = collection(db, `posts/${docId}/likes`);
+      try {
+        await addDoc(likeRef, { createdAt: new Date(), createdBy });
+
+        setLiked(true);
+
+        await queryClient.invalidateQueries({ queryKey: ["postsData"] });
+        await queryClient.refetchQueries({ queryKey: ["postsData"] });
+
+        // toast.success("Like added.");
+      } catch (error) {
+        setIsModalOpen(false);
+        toast.error("Failed to add Like");
+      }
+    } else {
+      toast.error("Please login to Like.");
+    }
+  };
+
+  const onUnlikeHandler = async (docId: any) => {
+    // Reference to the 'likes' collection for the specific post
+    const likeRef = collection(db, `posts/${docId}/likes`);
+
+    try {
+      const likeQuery = query(
+        likeRef,
+        where("createdBy.id", "==", startUpData?.id)
+      );
+
+      // Get the like document
+      const likeSnapshot = await getDocs(likeQuery);
+
+      likeSnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+
+      setLiked(false);
+
+      await queryClient.invalidateQueries({ queryKey: ["postsData"] });
+      await queryClient.refetchQueries({ queryKey: ["postsData"] });
+
+      //   toast.success("Like removed.");
+    } catch (error) {
+      setIsModalOpen(false);
+      toast.error("Failed to remove Like");
+    }
+  };
+
+  const hasLiked = async (postId: any) => {
+    // Reference to the 'likes' subcollection for the specific post
+    const likeRef = collection(db, `posts/${postId}/likes`);
+
+    // Create a query to check if the current user has liked the post
+    const likeQuery = query(
+      likeRef,
+      where("createdBy.id", "==", startUpData?.id)
+    );
+
+    // Get the like documents
+    const likeSnapshot = await getDocs(likeQuery);
+
+    // Check if the user has liked the post
+    return !likeSnapshot.empty;
+  };
+
+  useEffect(() => {
+    const checkLiked = async () => {
+      if (singlePostdata?.id && startUpData?.id) {
+        const hasLikedPost = await hasLiked(singlePostdata?.id);
+        setLiked(hasLikedPost);
+      }
+    };
+
+    checkLiked();
+  }, [singlePostdata?.id, startUpData?.id]);
 
   const postMessage = postMessages[singlePostdata?.id] || "";
   return (
@@ -177,7 +306,7 @@ const PostCard = (singlePost: any) => {
             </p>
           </div>
         </div>
-        <FlatIcon className="flaticon-options md:text-3xl sm:text-2xl text-xl text-[#054A91]  " />
+        {/* <FlatIcon className="flaticon-options md:text-3xl sm:text-2xl text-xl text-[#054A91]  " /> */}
       </div>
 
       <div className="relative rounded sm:rounded-lg md:rounded-xl">
@@ -223,11 +352,29 @@ const PostCard = (singlePost: any) => {
 
         <div className=" flex justify-between bg-[#054a91] py-1 sm:py-2 md:py-3 px-3 sm:px-4 md:px-5  absolute bottom-0 transform translate-y-1/2 w-full  rounded-b sm:rounded-b-lg md:rounded-b-xl">
           <div className=" flex gap-2 sm:gap-3 md:gap-4">
-            <FlatIcon className="flaticon-heart md:text-2xl sm:text-xl text-lg font-bold text-white " />
-            <FlatIcon className="flaticon-chat md:text-2xl sm:text-xl text-lg font-bold text-white " />
+            <div
+              onClick={async () =>
+                await (liked
+                  ? onUnlikeHandler(singlePostdata?.id)
+                  : onLikeHandler(singlePostdata?.id))
+              }
+            >
+              {liked ? (
+                <GoHeartFill className="flaticon-technology md:text-2xl sm:text-xl text-lg font-bold text-white cursor-pointer" />
+              ) : (
+                <FlatIcon className="flaticon-heart md:text-2xl sm:text-xl text-lg font-bold text-white cursor-pointer" />
+              )}
+            </div>
+            <div
+              onClick={() => {
+                commentInputRef.current?.focus();
+              }}
+            >
+              <FlatIcon className="flaticon-chat md:text-2xl sm:text-xl text-lg font-bold text-white cursor-pointer" />
+            </div>
           </div>
 
-          <FlatIcon className="flaticon-send md:text-2xl sm:text-xl text-lg font-bold text-white " />
+          <FlatIcon className="flaticon-send md:text-2xl sm:text-xl text-lg font-bold text-white cursor-pointer" />
         </div>
       </div>
 
@@ -242,22 +389,57 @@ const PostCard = (singlePost: any) => {
           {/* Deliver Conference */}
           {singlePostdata?.title}
         </h2>
-        <div
-          className=" text-gray-400 md:text-xs sm:text-[10px] text-[8px] font-normal "
+
+        {singlePostdata?.taggedStartups &&
+          singlePostdata?.taggedStartups.length > 0 && (
+            <div className="flex items-center gap-2">
+              {singlePostdata?.taggedStartups &&
+                singlePostdata?.taggedStartups.length > 0 &&
+                singlePostdata?.taggedStartups.map((item: any, idx: number) => {
+                  return (
+                    <Link
+                      key={idx}
+                      href={`/startup/${item?.slug}`}
+                      onClick={(e) => {
+                        if (item?.slug === "") {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      <div className="flex items-center  text-sm">
+                        <p className="text-primary underline font-medium">{item.name}</p>
+                        {idx < singlePostdata?.taggedStartups.length - 1 && ","}
+                      </div>
+                    </Link>
+                  );
+                })}
+            </div>
+          )}
+
+        {/* <div
+          className=" text-gray-400 md:text-xs sm:text-[10px] text-[8px] font-normal"
           style={{
             overflowWrap: "break-word",
             maxWidth: "100%",
           }}
         >
-          {/* Eth2Vec: Learning contract-wide code representations for vulnerability
-          detection on Ethereum smart cEth2Vec: Learning contract-wide code
-          representations for vulnerability detection on Ethereum smart c */}
+    
           {singlePostdata?.description}
-        </div>
+        </div> */}
+        <div className="flex-grow">{descriptionContent}</div>
+        {/* {isMultilineDescription && ( */}
+        <button
+          className="mt-3 text-primary md:text-sm text-xs "
+          onClick={() => setShowFullDescription((prev) => !prev)}
+        >
+          {showFullDescription ? "View less" : "View more"}
+        </button>
+        {/* )} */}
       </div>
 
       <div className="w-full bg-white border-2 border-gray-300  rounded-full flex items-center md:gap-5   comment-placeholder px-2 sm:px-3 md:px-4 py-0.5 sm:py-2 md:py-3 text-xs sm:text-sm md:text-base font-normal">
         <input
+          ref={commentInputRef}
           value={postMessage}
           onChange={(e) =>
             setPostMessages((prevMessages) => ({

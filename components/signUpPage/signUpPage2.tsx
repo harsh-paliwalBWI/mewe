@@ -91,8 +91,8 @@ const SignUpPage2 = () => {
           startTimer();
         })
         .catch((error) => {
-          toast.error(`${error}`);
-          console.log(error + "...please reload");
+          toast.error(`${error} ...please reload`);
+          // console.log(error + "...please reload");
           setLoading(false);
         });
     } else {
@@ -111,7 +111,7 @@ const SignUpPage2 = () => {
       } else if (!phoneNumber) {
         toast.error("Please enter correct phone number");
 
-        console.log("Please enter correct phone number");
+        // console.log("Please enter correct phone number");
       }
       setLoading(false);
     }
@@ -137,44 +137,44 @@ const SignUpPage2 = () => {
     }, 1000);
   };
 
-  const resendOTP = async () => {
-    if (otpSent) {
-      try {
-        setLoading(true);
+  // const resendOTP = async () => {
+  //   if (otpSent) {
+  //     try {
+  //       setLoading(true);
 
-        // console.log(loading, "uuu");
-        const recaptchaVerifier = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container",
-          {
-            size: "invisible",
-            callback: (response: any) => {
-              console.log(response);
-            },
-          }
-        );
-        // console.log(recaptchaVerifier, "mmmm");
+  //       // console.log(loading, "uuu");
+  //       const recaptchaVerifier = new RecaptchaVerifier(
+  //         auth,
+  //         "recaptcha-container",
+  //         {
+  //           size: "invisible",
+  //           callback: (response: any) => {
+  //             console.log(response);
+  //           },
+  //         }
+  //       );
+  //       // console.log(recaptchaVerifier, "mmmm");
 
-        const updatedOTPSent = await signInWithPhoneNumber(
-          auth,
-          `+91${phoneNumber}`,
-          recaptchaVerifier
-        );
+  //       const updatedOTPSent = await signInWithPhoneNumber(
+  //         auth,
+  //         `+91${phoneNumber}`,
+  //         recaptchaVerifier
+  //       );
 
-        setOTPSent(updatedOTPSent);
-        setTimerStarted(true);
-        startTimer();
+  //       setOTPSent(updatedOTPSent);
+  //       setTimerStarted(true);
+  //       startTimer();
 
-        setLoading(false);
-        toast.success("OTP Resent successfully!");
-      } catch (error) {
-        setLoading(false);
-        toast.error(`Failed to resend OTP`);
-      }
-    } else {
-      toast.error("OTP not sent yet. Please initiate the verification first.");
-    }
-  };
+  //       setLoading(false);
+  //       toast.success("OTP Resent successfully!");
+  //     } catch (error) {
+  //       setLoading(false);
+  //       toast.error(`Failed to resend OTP`);
+  //     }
+  //   } else {
+  //     toast.error("OTP not sent yet. Please initiate the verification first.");
+  //   }
+  // };
   // console.log(time,"time----------");
   
   const confirmOTP = () => {
@@ -189,13 +189,13 @@ const SignUpPage2 = () => {
           // localStorage.setItem("auth", JSON.stringify(res.user.uid));
           if (res._tokenResponse.isNewUser) {
             let authuser = {
-              phoneNo: phoneNumber,
+              phoneNo: `+91${phoneNumber}`,
               createdAt: new Date(),
               role: "startup",
               mode: "otp",
             };
             let startup = {
-              phoneNo: phoneNumber,
+              phoneNo: `+91${phoneNumber}`,
               createdAt: new Date(),
               name: name,
               email: email,

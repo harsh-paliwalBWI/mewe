@@ -28,7 +28,7 @@ export const handleSearch = async (username: any, cookieData: any) => {
   }
 
   return new Promise(async (resolve) => {
-    console.log(uid, "curr");
+    // console.log(uid, "curr");
 
     if (uid) {
       const userDocRef = doc(db, "startups", uid);
@@ -43,9 +43,11 @@ export const handleSearch = async (username: any, cookieData: any) => {
       if (!followingDocs.empty) {
         const filteredStartups = followingDocs.docs
           .filter((doc) => doc.data().name.includes(username))
-          .map((doc) => doc.data());
+          .map((doc) => {
+            const f = doc.data();
+            return { ...f, id: doc.id };
+          });
 
-        console.log(filteredStartups, "asdfgh"); // Log filtered startups
         resolve({ status: true, arr: filteredStartups });
       } else {
         resolve({ status: false });
@@ -72,8 +74,8 @@ export const getDataofstartup = async (selectedUser: any) => {
 };
 
 export const NewCreation = async (selectedUser: any, currentUser: any) => {
-  console.log(selectedUser, "selectedUser");
-  console.log(currentUser, "currentUser");
+  // console.log(selectedUser, "selectedUser");
+  // console.log(currentUser, "currentUser");
   try {
     const q = doc(db, `chat/${selectedUser}/startups/${currentUser}`);
     const res = await getDoc(q);

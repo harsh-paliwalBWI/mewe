@@ -33,6 +33,22 @@ export const getStartUpData = async (cookieData: any) => {
     }
 };
 
+export const StartUpData = async (uid: any) => {
+
+    if (uid) {
+        const docRef = doc(db, "startups", uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return await JSON.parse(JSON.stringify({ ...docSnap.data(), id: docSnap.id }));
+        } else {
+            return false;
+        }
+    } else {
+        return null;
+    }
+};
+
 
 
 export const isBusinessAccountExistOrNot = async (cookieData: any) => {

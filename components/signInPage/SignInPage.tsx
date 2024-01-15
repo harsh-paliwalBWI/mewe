@@ -60,7 +60,7 @@ const SignInPage = () => {
       let startUp;
       let docId;
       const startupsRef = collection(db, "startups");
-      const q = query(startupsRef, where("phoneNo", "==", phoneNumber));
+      const q = query(startupsRef, where("phoneNo", "==", `+91${phoneNumber}`));
       const querySnapshot = await getDocs(q);
       if (querySnapshot.size > 0) {
         const docSnap = querySnapshot.docs[0];
@@ -145,49 +145,49 @@ const SignInPage = () => {
     }, 1000);
   };
 
-  const resendOTP = async () => {
-    if (otpSent) {
-      try {
-        setLoading(true);
+  // const resendOTP = async () => {
+  //   if (otpSent) {
+  //     try {
+  //       setLoading(true);
 
-        // console.log(loading, "uuu");
-        const recaptchaVerifier = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container2",
-          {
-            size: "invisible",
-            callback: (response: any) => {
-              console.log(response);
-            },
-          }
-        );
-        // console.log(recaptchaVerifier, "mmmm");
+  //       // console.log(loading, "uuu");
+  //       const recaptchaVerifier = new RecaptchaVerifier(
+  //         auth,
+  //         "recaptcha-container2",
+  //         {
+  //           size: "invisible",
+  //           callback: (response: any) => {
+  //             console.log(response);
+  //           },
+  //         }
+  //       );
+  //       // console.log(recaptchaVerifier, "mmmm");
 
-        const updatedOTPSent = await signInWithPhoneNumber(
-          auth,
-          `+91${phoneNumber}`,
-          recaptchaVerifier
-        );
+  //       const updatedOTPSent = await signInWithPhoneNumber(
+  //         auth,
+  //         `+91${phoneNumber}`,
+  //         recaptchaVerifier
+  //       );
 
-        setOTPSent(updatedOTPSent);
-        setTimerStarted(true);
-        startTimer();
+  //       setOTPSent(updatedOTPSent);
+  //       setTimerStarted(true);
+  //       startTimer();
 
-        setLoading(false);
-        toast.success("OTP Resent successfully!");
-      } catch (error: any) {
-        setLoading(false);
-        console.log(
-          "Firebase Authentication Error:",
-          error.code,
-          error.message
-        );
-        toast.error(`Failed to resend OTP`);
-      }
-    } else {
-      toast.error("OTP not sent yet. Please initiate the verification first.");
-    }
-  };
+  //       setLoading(false);
+  //       toast.success("OTP Resent successfully!");
+  //     } catch (error: any) {
+  //       setLoading(false);
+  //       console.log(
+  //         "Firebase Authentication Error:",
+  //         error.code,
+  //         error.message
+  //       );
+  //       toast.error(`Failed to resend OTP`);
+  //     }
+  //   } else {
+  //     toast.error("OTP not sent yet. Please initiate the verification first.");
+  //   }
+  // };
 
   const confirmOTP = () => {
     setLoading(true);
@@ -251,15 +251,15 @@ const SignInPage = () => {
     const additionalUserInfo = getAdditionalUserInfo(result);
 
     if (additionalUserInfo && additionalUserInfo.isNewUser) {
-      // console.log("inside if");
+       
       let authuser = {
-        phoneNo: user?.phoneNumber,
+        phoneNo: `+91${user?.phoneNumber}`,
         createdAt: new Date(),
         role: "startup",
         mode: "google",
       };
       let startup = {
-        phoneNo: user?.phoneNumber,
+        phoneNo: `+91${user?.phoneNumber}`,
         createdAt: new Date(),
         name: user?.displayName,
         email: user?.email,

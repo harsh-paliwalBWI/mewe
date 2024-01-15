@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 // import CategoryCard from "./categoryCard/CategoryCard";
-import img from "../../../images/ME_WE.svg";
+import img from "../../images/we.svg";
 import bottomImg from "../../../images/ME_WE.svg";
 import Image from "next/image";
 import CategoryCard from "@/components/categorycard/CategoryCard";
@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchAllCategories } from "@/services/categoriesService";
 import SelectedCategory from "../selectedcategory/SelectedCategory";
 import CategoryCard2 from "../categorycard/CategoryCard2";
+import CategoryCard3 from "../categorycard/CategoryCard3";
+import Loading from "@/app/loading";
 
 const responsiveSettings = [
   {
@@ -57,7 +59,7 @@ const responsiveSettings = [
     },
   },
   {
-    breakpoint: 2000, 
+    breakpoint: 2000,
     settings: {
       slidesToShow: 8,
       slidesToScroll: 8,
@@ -66,7 +68,7 @@ const responsiveSettings = [
     },
   },
   {
-    breakpoint: 2400, 
+    breakpoint: 2400,
     settings: {
       slidesToShow: 8,
       slidesToScroll: 8,
@@ -77,18 +79,16 @@ const responsiveSettings = [
 ];
 
 const ExploreCategories = () => {
-
-
   const { data: categoriesData } = useQuery({
     queryKey: ["categoriesData"],
     queryFn: () => fetchAllCategories(),
   });
 
-  const [selectedCategory, setSelectedCategory] = useState(
-    categoriesData && categoriesData.length > 0 ? categoriesData[0] : null
-  );
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isviewall, setisviewall] = useState<any>(true);
+  const [isClient, setIsClient] = useState(false);
 
-console.log(selectedCategory,"-1-1-1-1-1-1-1-")
+  // console.log(selectedCategory, "-1-1-1-1-1-1-1-");
   const handleCategorySelect = (singleCategory: any) => {
     setSelectedCategory(singleCategory);
   };
@@ -97,8 +97,11 @@ console.log(selectedCategory,"-1-1-1-1-1-1-1-")
     setSelectedCategory(selectedCategory);
   }, [selectedCategory]);
 
-  // console.log("categoriesData",categoriesData);
-  return (
+  useEffect(() => {
+    setIsClient(true);
+  });
+
+  return isClient ? (
     <div className="px-body flex flex-col gap-6 sm:gap-8 md:gap-10 mt-4 sm:mt-8 md:mt-16 ">
       <div className="flex justify-between items-center">
         <h1 className="opacity-80 text-black md:text-4xl sm:text-3xl text-2xl font-semibold ">
@@ -110,6 +113,16 @@ console.log(selectedCategory,"-1-1-1-1-1-1-1-")
         dotPosition="bottom"
         className="dot-black"
       >
+        <div
+          className="px-3 sm:px-4 md:px-5"
+          onClick={() => {
+            setisviewall(true);
+            setSelectedCategory(null);
+          }}
+        >
+          <CategoryCard3 isviewall={isviewall} />
+        </div>
+
         {categoriesData &&
           categoriesData.length > 0 &&
           categoriesData
@@ -119,18 +132,30 @@ console.log(selectedCategory,"-1-1-1-1-1-1-1-")
                 <div
                   key={idx}
                   className="px-3 sm:px-4 md:px-5"
-                  onClick={() => handleCategorySelect(singleCategory)}
+                  onClick={() => {
+                    handleCategorySelect(singleCategory);
+                    setisviewall(false);
+                  }}
                 >
                   <CategoryCard2
                     category={singleCategory}
                     selectedCategory={selectedCategory}
+                    isviewall={isviewall}
                   />
                 </div>
               );
             })}
       </Carousel>
-      <SelectedCategory selectedCategory={selectedCategory} />
+
+      <SelectedCategory
+        selectedCategory={selectedCategory}
+        isviewall={isviewall}
+      />
     </div>
+  ) : (
+    <>
+      <Loading />
+    </>
   );
 };
 

@@ -15,7 +15,7 @@ export const fetchAllStartUps = async () => {
 
 export const fetchCategoryStartUps = async (categoryname: any) => {
     
-   console.log(categoryname,"kkkk")
+//    console.log(categoryname,"kkkk")
     const startupsQuery = query(collection(db, "startups"), where("basic.category.name", "==", categoryname));
     const querySnapshot = await getDocs(startupsQuery);
 

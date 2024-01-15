@@ -1,17 +1,18 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import Image from "next/image";
 import photoImg from "../../../../images/image (2).svg";
 import docImg from "../../../../images/doc.svg";
 import FlatIcon from "@/components/flatIcon/flatIcon";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import avatarimg from "../../../../images/avatar.png";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAcceptedFollowings, getStartUpData, getTaggedStartupsData } from "@/services/startupService";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/config/firebase-config";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 import Loader from "@/components/loader/Loader";
 import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
@@ -43,7 +44,7 @@ const NewPost = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [images, setImages] = useState<any>([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchedTerm, setSearchedTerm] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -103,22 +104,22 @@ const NewPost = () => {
       updatedImages.splice(indexToRemove, 1);
       return updatedImages;
     });
-    toast.success("Image removed.")
+    toast.success("Image removed.");
   };
 
   const uploadImage = async (userPic: any) => {
-    setIsModalOpen(true)
+    setIsModalOpen(true);
     if (userPic) {
       let timeStamp = (new Date()).getMilliseconds()
       const storage = getStorage();
-      const storageRef = ref(storage, `${(userPic.name)}___${timeStamp}`);
+      const storageRef = ref(storage, `${userPic.name}___${timeStamp}`);
       await uploadBytes(storageRef, userPic).then(async (snapshot) => {
         await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
           let imgObj = {
             mob: downloadURL,
             url: downloadURL,
-            thumb: downloadURL
-          }
+            thumb: downloadURL,
+          };
           setImages((prev: any) => {
             return [imgObj, ...prev]
           })
@@ -131,10 +132,10 @@ const NewPost = () => {
       toast.error("Failed to upload image !")
       setIsModalOpen(false)
     }
-  }
+  };
 
   async function uploadTask(userPic: any) {
-    await uploadImage(userPic)
+    await uploadImage(userPic);
   }
 
   const onPostHandler = async () => {
@@ -143,7 +144,7 @@ const NewPost = () => {
       if (title && location && description && images.length > 0) {
         // console.log("inside first if");
         if (startUpData.id) {
-          // console.log("inside second if");
+          console.log(startUpData,"datatttt");
           const postData = {
             createdAt: new Date(),
             createdBy: {
@@ -155,6 +156,10 @@ const NewPost = () => {
                 thumb: startUpData?.basic?.coverPic?.thumb ? startUpData?.basic?.coverPic?.thumb : ""
               }
             },
+            category: {
+              id: startUpData?.basic?.category?.id ? startUpData?.basic?.category?.id : "",
+              name: startUpData?.basic?.category?.name ? startUpData?.basic?.category?.name : "",
+            },
             title: title,
             description: description,
             location: location,
@@ -162,9 +167,9 @@ const NewPost = () => {
             taggedStartups: taggedStartups,
             stats: {
               totalLikes: 0,
-              totalComments: 0
-            }
-          }
+              totalComments: 0,
+            },
+          };
           // console.log(postData, "data saved");
           await addDoc(collection(db, "posts"), postData);
           setLoading(false)
@@ -175,16 +180,15 @@ const NewPost = () => {
           setImages([])
           setTaggedStartups([])
         } else {
-          setLoading(false)
+          setLoading(false);
           toast.error(`Some error occured !`);
         }
       } else {
-        setLoading(false)
+        setLoading(false);
         if (!title || !description || !location) {
-          toast.error("Please fill all the fields !")
+          toast.error("Please fill all the fields !");
         } else if (images.length < 1) {
-          toast.error("Please upload image(s) !")
-
+          toast.error("Please upload image(s) !");
         }
         // toast.error("Please fill all the fields")
       }
@@ -193,14 +197,15 @@ const NewPost = () => {
       setLoading(false)
       toast.error(`${error}`);
     }
-  }
+  };
 
   return (
     <div
-      className={`  ${currTab === "new-post" ? "block" : "block"} ${pathName.includes("new-post")
-        ? "block w-[100%] "
-        : "sm:block hidden md:w-[60%] w-[100%]"
-        }`}
+      className={`  ${currTab === "new-post" ? "block" : "block"} ${
+        pathName.includes("new-post")
+          ? "block w-[100%] "
+          : "sm:block hidden md:w-[60%] w-[100%]"
+      }`}
     >
       {pathName.includes("new-post") && (
         <div
@@ -217,7 +222,6 @@ const NewPost = () => {
       </div>
       <div className=" flex flex-col md:gap-8 gap-4">
         <div className="grid sm:grid-cols-2 grid-cols-1 md:gap-10 gap-4 w-full ">
-
           {/* <div className="flex md:flex-row flex-col md:gap-10 gap-4 w-full "> */}
           <div className=" flex flex-col gap-2 ">
             <label className={`${labelStyle}`}>Post Title</label>
@@ -332,7 +336,8 @@ const NewPost = () => {
         </div>
         <div className="flex flex-col md:gap-2 gap-3 ">
           <div className=" lg:text-base text-sm text-primary font-semibold ">
-            <h2>Photos
+            <h2>
+              Photos
               {/* and Videos */}
             </h2>
           </div>
@@ -343,22 +348,32 @@ const NewPost = () => {
             </h4>
           </div>
         </div>
-        <div className="flex items-center gap-x-14 md:mt-0 mt-4">
-          <div>
-            <input placeholder='' type='file'
-              accept="image/*"
-              onChange={async (e) => {
-                if (!e.target.files) return;
-                await uploadTask(e.target.files[0])
-              }}
-              id="post-Image" className='w-full hover:cursor-pointer   outline-none px-[10px] py-[7px] hidden rounded-md ' />
-            <label htmlFor="post-Image" className="cursor-pointer text-white bg-primary px-4 py-2.5 rounded-md sm:text-sm text-xs">Choose image</label>
 
+        {images && images.length < 5 && (
+          <div className="flex items-center gap-x-14 md:mt-0 mt-4">
+            <div>
+              <input
+                placeholder=""
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  if (!e.target.files) return;
+                  await uploadTask(e.target.files[0]);
+                }}
+                id="post-Image"
+                className="w-full hover:cursor-pointer   outline-none px-[10px] py-[7px] hidden rounded-md "
+              />
+              <label
+                htmlFor="post-Image"
+                className="cursor-pointer text-white bg-primary px-4 py-2.5 rounded-md sm:text-sm text-xs"
+              >
+                Choose image
+              </label>
+            </div>
           </div>
-          {/* <div>
-              <Image src={docImg} alt="" />
-            </div> */}
-        </div>
+        )}
+        
+
         <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
           <div className="flex flex-col gap-2 justify-center items-center">
             <CircularProgress className="!text-white"></CircularProgress>
@@ -372,8 +387,17 @@ const NewPost = () => {
             {images.length > 0 &&
               images.map((item: any, idx: number) => (
                 <div className="h-20 w-20  relative" key={idx}>
-                  <Image src={item.url} alt="" width={1000} height={1000} className="w-[100%] h-[100%] object-fill " />
-                  <div className="absolute right-0 -top-2 cursor-pointer" onClick={() => removeImage(idx)}>
+                  <Image
+                    src={item.url}
+                    alt=""
+                    width={1000}
+                    height={1000}
+                    className="w-[100%] h-[100%] object-fill "
+                  />
+                  <div
+                    className="absolute right-0 -top-2 cursor-pointer"
+                    onClick={() => removeImage(idx)}
+                  >
                     <FlatIcon className="flaticon-close text-[red] text-sm" />
                   </div>
                 </div>
@@ -387,10 +411,16 @@ const NewPost = () => {
             }}
             className="bg-primary w-[50%] text-center text-white px-8 sm:py-3 py-3 rounded-md cursor-pointer relative"
           >
-            <button
-              style={{ height: "100%", position: "relative", }}>
+            <button style={{ height: "100%", position: "relative" }}>
               {loading && (
-                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
                   <Loader />
                 </div>
               )}
@@ -399,7 +429,8 @@ const NewPost = () => {
           </div>
           <Link
             href={{ pathname: "/account", query: { tab: "manage-posts" } }}
-            className="bg-black w-[50%] text-center text-white px-5 sm:py-3 py-3 rounded-md cursor-pointer">
+            className="bg-black w-[50%] text-center text-white px-5 sm:py-3 py-3 rounded-md cursor-pointer"
+          >
             <div className="">
               <button>Cancel</button>
             </div>

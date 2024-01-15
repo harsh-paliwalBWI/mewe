@@ -32,7 +32,7 @@ interface Props {
 const AboutOptions: FC<Props> = ({setSelectedTab,selectedTab,aboutInfo}) => {
   const optionStyle ="flex gap-x-4 bg-[#F3F7FA] px-4 text-sm font-semibold py-4 cursor-pointer";
   const optionTabStyle ="flex w-full justify-between xl:text-lg text-sm font-medium items-center";
-  console.log("aboutInfo", aboutInfo);
+  // console.log("aboutInfo", aboutInfo);
   const [client, setClient] = useState(false);
   const { dispatch } = useContext(ChatContext);
   const cookies = { value: getCookie("uid") };
@@ -251,7 +251,7 @@ console.log("AcceptedRequestsData", acceptedRequestsData);
   };
 
   const onUnfollowHandler = async (data: any) => {
-    console.log(data, "from unfollow");
+    // console.log(data, "from unfollow");
     setIsModalOpen(true);
     try {
       const docid = startUpData?.id;

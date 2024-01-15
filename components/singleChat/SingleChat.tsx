@@ -96,7 +96,7 @@ const SingleChat = () => {
           lastMsg: text,
           lastMsgAt: messagedoc.createdAt,
         });
-        console.log("Document successfully updated!");
+        // console.log("Document successfully updated!");
 
         const docRef2 = doc(db, "chat", data.chatId, "startups", currUser);
 
@@ -114,15 +114,15 @@ const SingleChat = () => {
           const updatedLastMsg = docRefSnapshot.exists()
             ? docRefSnapshot.data().lastMsg
             : null;
-          console.log(updatedLastMsg, "rrrrrr");
+          // console.log(updatedLastMsg, "rrrrrr");
 
           await updateDoc(docRef2, {
             lastMsg: updatedLastMsg,
             lastMsgAt: messagedoc.createdAt,
           });
 
-          console.log(updatedLastMsg, "aaaa");
-          console.log("Document successfully updated! 2");
+          // console.log(updatedLastMsg, "aaaa");
+          // console.log("Document successfully updated! 2");
         } catch (e) {
           console.error("Error updating document: ", e);
         }
@@ -222,14 +222,14 @@ const SingleChat = () => {
         // orderBy("createdAt", "asc")
         // orderBy(
       );
-      console.log("Current", "kkkk");
+      // console.log("Current", "kkkk");
       const chatsarr = onSnapshot(q, (querySnapshot) => {
         const messagescol: any = [];
         querySnapshot.forEach((doc) => {
           let obj = { ...doc.data(), id: doc.id };
           messagescol.push(obj);
         });
-        console.log("Current", messagescol, "kkkk");
+        // console.log("Current", messagescol, "kkkk");
 
         messagescol.sort((a: any, b: any) => {
           const dateA: any = new Date(a.createdAt);
