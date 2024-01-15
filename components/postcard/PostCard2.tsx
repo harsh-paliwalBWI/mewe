@@ -131,7 +131,7 @@ const PostCard2 = (singlepost: any) => {
       const createdBy = {
         name: startUpData?.name,
         id: startUpData?.id,
-        image: startUpData?.basic?.coverPic,
+        image: startUpData?.basic?.coverPic || "",
       };
 
       const likeRef = collection(db, `posts/${docId}/likes`);

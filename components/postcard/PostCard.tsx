@@ -149,7 +149,7 @@ const PostCard = (singlePost: any) => {
       const createdBy = {
         name: startUpData?.name,
         id: startUpData?.id,
-        image: startUpData?.basic?.coverPic,
+        image: startUpData?.basic?.coverPic || "",
       };
 
       setIsModalOpen(true);
@@ -184,11 +184,12 @@ const PostCard = (singlePost: any) => {
   };
 
   const onLikeHandler = async (docId: any) => {
+    console.log(startUpData, "nnnnnnn")
     if (startUpData) {
       const createdBy = {
         name: startUpData?.name,
         id: startUpData?.id,
-        image: startUpData?.basic?.coverPic,
+        image: startUpData?.basic?.coverPic|| "" ,
       };
 
       const likeRef = collection(db, `posts/${docId}/likes`);
@@ -204,6 +205,8 @@ const PostCard = (singlePost: any) => {
       } catch (error) {
         setIsModalOpen(false);
         toast.error("Failed to add Like");
+        // console.log(createdBy,"gggg")
+        // console.log(error,"kkkkk")
       }
     } else {
       toast.error("Please login to Like.");
@@ -360,7 +363,7 @@ const PostCard = (singlePost: any) => {
               }
             >
               {liked ? (
-                <GoHeartFill className="flaticon-technology md:text-2xl sm:text-xl text-lg font-bold text-white cursor-pointer" />
+                <GoHeartFill className=" md:text-2xl sm:text-xl text-lg font-bold text-white cursor-pointer" />
               ) : (
                 <FlatIcon className="flaticon-heart md:text-2xl sm:text-xl text-lg font-bold text-white cursor-pointer" />
               )}
