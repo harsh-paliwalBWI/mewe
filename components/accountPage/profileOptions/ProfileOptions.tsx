@@ -11,7 +11,11 @@ import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { auth, db } from "@/config/firebase-config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNot } from "@/services/startupService";
+import {
+  fetchBusinessAccountDetails,
+  getStartUpData,
+  isBusinessAccountExistOrNot,
+} from "@/services/startupService";
 import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
 import { signOut } from "firebase/auth";
@@ -23,17 +27,21 @@ interface ProfileOptionsProps {
   selectedTab: any;
 }
 
-const optionStyle = "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer";
+const optionStyle =
+  "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer";
 
-const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }) => {
+const ProfileOptions: FC<ProfileOptionsProps> = ({
+  setSelectedTab,
+  selectedTab,
+}) => {
   const cookies = { value: getCookie("uid") };
   const params = useSearchParams();
-  const [client, setClient] = useState(false)
+  const [client, setClient] = useState(false);
   const currTab = params.get("tab");
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   async function handleLogout() {
     signOut(auth)
@@ -54,7 +62,7 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
   });
-  // console.log("startUpData",startUpData);
+  // console.log("startUpDatahhh", startUpData);
 
   const { data: existOrNot } = useQuery({
     queryKey: ["businessAccountExistOrNot"],
@@ -71,7 +79,10 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
         setLoading(true);
         let timeStamp = new Date().getMilliseconds();
         const storage = getStorage();
-        const storageRef = ref(storage, `startups/${startUpId}/images/${(userPic.name)}___${timeStamp}`);
+        const storageRef = ref(
+          storage,
+          `startups/${startUpId}/images/${userPic.name}___${timeStamp}`
+        );
         await uploadBytes(storageRef, userPic).then(async (snapshot) => {
           await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
             await setDoc(
@@ -94,12 +105,12 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
         });
         setIsModalOpen(false);
       } else {
-        toast.error("Something went wrong !")
+        toast.error("Something went wrong !");
         setIsModalOpen(false);
       }
     } catch (error) {
       setIsModalOpen(false);
-      toast.error("Something went wrong !")
+      toast.error("Something went wrong !");
     }
   };
 
@@ -108,7 +119,7 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
   }
 
   useEffect(() => {
-    setClient(true)
+    setClient(true);
   }, []);
 
   return (
@@ -121,21 +132,27 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
               <Link href={`/startup/${startUpData?.slug?.name}`}>
                 <div className="h-[100px] w-[100px] rounded-full  z-10">
                   <Image
-                    src={(client && startUpData?.basic?.coverPic?.url) ? startUpData?.basic?.coverPic?.url : ""}
+                    src={
+                      client && startUpData?.basic?.coverPic?.url
+                        ? startUpData?.basic?.coverPic?.url
+                        : ""
+                    }
                     alt=""
                     height={1000}
                     width={1000}
                     className="h-[100%] w-[100%] object-fill  rounded-full"
                   />
-                  <div className="h-[30px] w-[30px] absolute right-0 top-0">
-                    <Image
-                      src={blueTickImg}
-                      height={1000}
-                      width={1000}
-                      alt=""
-                      className="h-[100%] w-[100%] object-fill  "
-                    />
-                  </div>
+                  {startUpData?.isVerified && (
+                    <div className="h-[30px] w-[30px] absolute right-0 top-0">
+                      <Image
+                        src={blueTickImg}
+                        height={1000}
+                        width={1000}
+                        alt=""
+                        className="h-[100%] w-[100%] object-fill  "
+                      />
+                    </div>
+                  )}
                 </div>
               </Link>
               <div className="absolute bottom-1 right-1  rounded-full  ">
@@ -168,12 +185,13 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
             </Modal>
           </div>
           <div className="flex text-center justify-center lg:text-base text-sm font-bold ">
-            <h2>
-              {client && startUpData?.name}
-            </h2>
+            <h2>{client && startUpData?.name}</h2>
           </div>
           <div className=" flex justify-center lg:text-sm text-xs font-semibold text-[#868E97]  w-[100%] h-auto ">
-            <p className="w-fit text-center" style={{ overflowWrap: 'break-word', maxWidth: '100%' }}>
+            <p
+              className="w-fit text-center"
+              style={{ overflowWrap: "break-word", maxWidth: "100%" }}
+            >
               {client && startUpData?.email}
             </p>
           </div>
@@ -182,8 +200,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
           {/* option  */}
           <Link href={{ pathname: "/account", query: { tab: "my-profile" } }}>
             <div
-              className={`${optionStyle} ${currTab === "my-profile" ? "text-primary" : "text-black"
-                }`}
+              className={`${optionStyle} ${
+                currTab === "my-profile" ? "text-primary" : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-user text-2xl" />
@@ -195,7 +214,9 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
             href={{ pathname: "/account", query: { tab: "business-account" } }}
           >
             <div
-              className={`${optionStyle}  ${currTab === "business-account" ? "text-primary" : "text-black"}`}
+              className={`${optionStyle}  ${
+                currTab === "business-account" ? "text-primary" : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-office text-2xl" />
@@ -205,10 +226,11 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
           </Link>
           <Link href={{ pathname: "/account", query: { tab: "manage-posts" } }}>
             <div
-              className={`${optionStyle}  ${currTab === "manage-posts" || currTab === "new-post"
-                ? "text-primary"
-                : "text-black"
-                }`}
+              className={`${optionStyle}  ${
+                currTab === "manage-posts" || currTab === "new-post"
+                  ? "text-primary"
+                  : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-post text-2xl" />
@@ -216,18 +238,25 @@ const ProfileOptions: FC<ProfileOptionsProps> = ({ setSelectedTab, selectedTab }
               <div>Manage Posts</div>
             </div>
           </Link>
-          <Link href={{ pathname: "/account", query: { tab: "saved-startups" } }}>
-          <div className={`${optionStyle} ${currTab === "saved-startups" ? "text-primary" : "text-black"}`}>
-            <div>
-              <FlatIcon className="flaticon-bookmark text-2xl" />
+          <Link
+            href={{ pathname: "/account", query: { tab: "saved-startups" } }}
+          >
+            <div
+              className={`${optionStyle} ${
+                currTab === "saved-startups" ? "text-primary" : "text-black"
+              }`}
+            >
+              <div>
+                <FlatIcon className="flaticon-bookmark text-2xl" />
+              </div>
+              <div>Saved Startups</div>
             </div>
-            <div>Saved Startups</div>
-          </div>
           </Link>
           <Link href={{ pathname: "/account", query: { tab: "chat" } }}>
             <div
-              className={`${optionStyle}  ${currTab === "chat" ? "text-primary" : "text-black"
-                }`}
+              className={`${optionStyle}  ${
+                currTab === "chat" ? "text-primary" : "text-black"
+              }`}
             >
               <div>
                 <FlatIcon className="flaticon-chat text-2xl" />

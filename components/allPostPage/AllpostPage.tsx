@@ -10,7 +10,7 @@ import { getStartUpData } from "@/services/startupService";
 const AllPostPage = () => {
   const [isClient, setIsClient] = useState(false);
   const cookies = { value: getCookie("uid") };
-  console.log(cookies.value)
+  // console.log(cookies.value)
 
   const { data: allposts } = useQuery({
     queryKey: ["Posts"],
@@ -20,7 +20,7 @@ const AllPostPage = () => {
 //     queryKey: ["startUpData"],
 //     queryFn: () => getStartUpData(cookies),
 //   });
-  console.log(allposts,"---------");
+  // console.log(allposts,"---------");
 
   useEffect(() => {
     setIsClient(true);

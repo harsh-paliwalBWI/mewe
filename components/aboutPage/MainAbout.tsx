@@ -62,7 +62,7 @@ const MainAbout = ({ params }: any) => {
              }
             </div>
             {selectedTab === 1 && <About aboutInfo={singleStartup}/>}
-            {selectedTab === 2 && <Photos />}
+            {selectedTab === 2 && <Photos aboutInfo={singleStartup}/>}
             {selectedTab === 3 && <VideoSection />}
             {selectedTab === 4 && <Posts aboutInfo={singleStartup}/>}
             {selectedTab === 5 && <Followers aboutInfo={singleStartup}  params={params}  />}

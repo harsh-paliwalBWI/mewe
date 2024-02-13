@@ -39,10 +39,12 @@ const NewsletterCard2:FC<Props> = ({scheme,idx}) => {
               {/* Nemo enim ipsam voluptatem quia voluptas sit aspernatur */}
               {scheme?.name}
             </h3>
-            <div dangerouslySetInnerHTML={{__html:scheme.description}}
-             className="opacity-70 text-black text-sm sm:text-base md:text-lg font-medium "/>
+            <div 
+            dangerouslySetInnerHTML={{__html:scheme.description}}
+             className="opacity-70 text-black text-sm sm:text-base md:text-lg font-medium line-clamp-3"/>
               {/* Ut enim ad minima veniam, quis nostrum exercitationem ullam
               corporis suscipit laboriosam, nisi ut al */}
+              {/* {scheme.description} */}
           </div>
           <Link href={`${scheme?.link}`} target="_blank">
           <div className="w-full   bg-[#054A91] rounded-[5px] flex justify-between px-1 sm:px-2 md:px-3 py-1 sm:py-2 md:py-3 cursor-pointer">

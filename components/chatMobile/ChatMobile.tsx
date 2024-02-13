@@ -59,7 +59,7 @@ const ChatMobile = () => {
   const handleKey = async (e: any) => {
     if (e.code === "Enter" && username) {
       const searchResult: any = await handleSearch(username, cookies);
-      console.log(searchResult.arr, "eeeeee");
+      // console.log(searchResult.arr, "eeeeee");
       setsearchlist(searchResult.arr);
       setSearchPerformed(true)
     }
@@ -72,9 +72,9 @@ const ChatMobile = () => {
   const newsearch = async () => {
     if (username) {
       const searchResult: any = await handleSearch(username, cookies);
-      console.log(searchResult.arr, "eeeeee");
+      // console.log(searchResult.arr, "eeeeee");
       setsearchlist(searchResult.arr);
-      console.log(searchlist, "ffffffff");
+      // console.log(searchlist, "ffffffff");
       setSearchPerformed(true)
     }
   };

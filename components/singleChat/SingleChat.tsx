@@ -168,7 +168,7 @@ const SingleChat = () => {
       // const updatedChatDocSnapshot = await getDoc(chatDocRef);
       // console.log("Updated Chat Document:", updatedChatDocSnapshot.data());
 
-      console.log("Chat cleared successfully!");
+      // console.log("Chat cleared successfully!");
     } catch (error) {
       console.error("Error clearing chat:", error);
     }
@@ -202,7 +202,7 @@ const SingleChat = () => {
 
       dispatch({ type: "RESET_STATE" });
   
-      console.log("Chat deleted successfully!");
+      // console.log("Chat deleted successfully!");
     } catch (error) {
       console.error("Error deleting chat:", error);
     }
@@ -242,7 +242,7 @@ const SingleChat = () => {
     }
   }, [data.chatId]);
 
-  console.log(data.chatId, "jzzzzzz");
+  // console.log(data.chatId, "jzzzzzz");
   useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =

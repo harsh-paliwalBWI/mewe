@@ -13,7 +13,7 @@ interface Props{
 
 const CategoryCard:FC<Props> = ({category}) => {
   // console.log("category CARD",category?.name);
-  let paramsCategoryName=category?.name.split(" ").join("-")
+  let paramsCategoryName=category?.name.toLowerCase().split(" ").join("-");
   // console.log(paramsCategoryName,"------");
   
   return (

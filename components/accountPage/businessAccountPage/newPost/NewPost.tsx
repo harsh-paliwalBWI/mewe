@@ -144,7 +144,7 @@ const NewPost = () => {
       if (title && location && description && images.length > 0) {
         // console.log("inside first if");
         if (startUpData.id) {
-          console.log(startUpData,"datatttt");
+          // console.log(startUpData,"datatttt");
           const postData = {
             createdAt: new Date(),
             createdBy: {
@@ -173,7 +173,7 @@ const NewPost = () => {
           // console.log(postData, "data saved");
           await addDoc(collection(db, "posts"), postData);
           setLoading(false)
-          toast.success("posted")
+          toast.success("Posted")
           setTitle("")
           setLocation("")
           setDescription("")
@@ -193,7 +193,7 @@ const NewPost = () => {
         // toast.error("Please fill all the fields")
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setLoading(false)
       toast.error(`${error}`);
     }

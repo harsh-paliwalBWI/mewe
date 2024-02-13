@@ -1,12 +1,15 @@
-"use client"
-import React, { useState, FC, useEffect } from 'react'
-import blueTickImg from "../../images/verify 3.svg"
-import profileImg from "../../images/Ellipse 33.svg"
-import Image from 'next/image'
-import FlatIcon from '@/components/flatIcon/flatIcon'
-import Link from 'next/link'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getStartUpData, isBusinessAccountExistOrNot } from '@/services/startupService'
+"use client";
+import React, { useState, FC, useEffect } from "react";
+import blueTickImg from "../../images/verify 3.svg";
+import profileImg from "../../images/Ellipse 33.svg";
+import Image from "next/image";
+import FlatIcon from "@/components/flatIcon/flatIcon";
+import Link from "next/link";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getStartUpData,
+  isBusinessAccountExistOrNot,
+} from "@/services/startupService";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -20,13 +23,13 @@ const ProfileOptionsMobile = () => {
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const cookies = { value: getCookie("uid") };
-  const [client, setClient] = useState(false)
+  const [client, setClient] = useState(false);
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
     queryFn: () => getStartUpData(cookies),
   });
-  // console.log("startUpData",startUpData);
+  // console.log("startUpDataiii", startUpData);
 
   const { data: existOrNot } = useQuery({
     queryKey: ["businessAccountExistOrNot"],
@@ -38,13 +41,16 @@ const ProfileOptionsMobile = () => {
   const uploadImageFromMobile = async (userPic: any) => {
     //  console.log(userPic);
     const startUpId = await startUpData?.id;
-    setIsModalOpen(true)
+    setIsModalOpen(true);
     try {
       if (userPic && startUpId) {
         setLoading(true);
         let timeStamp = new Date().getMilliseconds();
         const storage = getStorage();
-        const storageRef = ref(storage, `startups/${startUpId}/images/${(userPic.name)}___${timeStamp}`);
+        const storageRef = ref(
+          storage,
+          `startups/${startUpId}/images/${userPic.name}___${timeStamp}`
+        );
         await uploadBytes(storageRef, userPic).then(async (snapshot) => {
           await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
             await setDoc(
@@ -54,9 +60,9 @@ const ProfileOptionsMobile = () => {
                   coverPic: {
                     mob: downloadURL,
                     url: downloadURL,
-                    thumb: downloadURL
-                  }
-                }
+                    thumb: downloadURL,
+                  },
+                },
               },
               { merge: true }
             );
@@ -65,14 +71,14 @@ const ProfileOptionsMobile = () => {
             toast.success("Profile pic updated successfully.");
           });
         });
-        setIsModalOpen(false)
+        setIsModalOpen(false);
       } else {
         toast.error("Something went wrong !");
-        setIsModalOpen(false)
+        setIsModalOpen(false);
       }
     } catch (error) {
       toast.error("Something went wrong !");
-      setIsModalOpen(false)
+      setIsModalOpen(false);
     }
   };
 
@@ -80,10 +86,11 @@ const ProfileOptionsMobile = () => {
     await uploadImageFromMobile(userPic);
   }
   useEffect(() => {
-    setClient(true)
+    setClient(true);
   }, []);
 
-  const optionStyle = "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer"
+  const optionStyle =
+    "flex lg:gap-x-4 gap-x-2 bg-[#F3F7FA] lg:px-4 px-2 lg:text-sm text-xs font-semibold py-4  cursor-pointer";
   return (
     <>
       <div className=" sm:hidden block xl:w-[25%] md:w-[30%] w-[100%] filter-border  h-full bg-[#F8FAFC] lg:px-5 px-2  ">
@@ -99,25 +106,37 @@ const ProfileOptionsMobile = () => {
                     width={1000}
                     className="h-[100%] w-[100%] object-fill  rounded-full"
                   />
-                  <div className="h-[30px] w-[30px] absolute right-0 top-0">
-                    <Image
-                      src={blueTickImg}
-                      height={1000}
-                      width={1000}
-                      alt=""
-                      className="h-[100%] w-[100%] object-fill  "
-                    />
-                  </div>
+                  {startUpData?.isVerified && (
+                    <div className="h-[30px] w-[30px] absolute right-0 top-0">
+                      <Image
+                        src={blueTickImg}
+                        height={1000}
+                        width={1000}
+                        alt=""
+                        className="h-[100%] w-[100%] object-fill  "
+                      />
+                    </div>
+                  )}
                 </div>
               </Link>
               <div className="absolute bottom-1 right-1  rounded-full z-30 ">
-                <input placeholder='' type='file' accept="image/*" onChange={async (e) => {
-                  if (!e.target.files) return;
-                  await uploadTask(e.target.files[0])
-                }}
-                  id="profile-ImageMobile" className='w-full hover:cursor-pointer   outline-none  hidden rounded-md  ' />
-                <label htmlFor='profile-ImageMobile' className='hover:cursor-pointer h-[20px] w-[20px] rounded-full  bg-white flex justify-center items-center '>
-                  <FlatIcon className="text-primary flaticon-edit text-lg" /></label>
+                <input
+                  placeholder=""
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    if (!e.target.files) return;
+                    await uploadTask(e.target.files[0]);
+                  }}
+                  id="profile-ImageMobile"
+                  className="w-full hover:cursor-pointer   outline-none  hidden rounded-md  "
+                />
+                <label
+                  htmlFor="profile-ImageMobile"
+                  className="hover:cursor-pointer h-[20px] w-[20px] rounded-full  bg-white flex justify-center items-center "
+                >
+                  <FlatIcon className="text-primary flaticon-edit text-lg" />
+                </label>
               </div>
             </div>
             <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
@@ -130,71 +149,84 @@ const ProfileOptionsMobile = () => {
             </Modal>
           </div>
           <div className="flex text-center  justify-center lg:text-base text-sm font-bold ">
-            <h2>
-              {client && startUpData?.name}
-            </h2>
+            <h2>{client && startUpData?.name}</h2>
           </div>
           <div className=" flex justify-center lg:text-sm text-xs font-semibold text-[#868E97]  w-[100%] h-auto ">
-            <p className="w-fit text-center" style={{ overflowWrap: 'break-word', maxWidth: '100%' }}>
+            <p
+              className="w-fit text-center"
+              style={{ overflowWrap: "break-word", maxWidth: "100%" }}
+            >
               {client && startUpData?.email}
             </p>
           </div>
         </div>
-        <div className=' flex flex-col gap-3 my-8'>
+        <div className=" flex flex-col gap-3 my-8">
           {/* option  */}
           <Link href={"/my-profile-page"}>
-            <div
-              className={`${optionStyle} `}>
-              <div><FlatIcon className="flaticon-user text-2xl" /></div>
+            <div className={`${optionStyle} `}>
+              <div>
+                <FlatIcon className="flaticon-user text-2xl" />
+              </div>
               <div>My Profile</div>
             </div>
           </Link>
           <Link href={"/business-account"}>
-            <div
-              className={`${optionStyle} `}>
-              <div><FlatIcon className="flaticon-office text-2xl" /></div>
+            <div className={`${optionStyle} `}>
+              <div>
+                <FlatIcon className="flaticon-office text-2xl" />
+              </div>
               <div>Create a business account</div>
             </div>
           </Link>
           <Link href={"/manage-posts"}>
-            <div
-              className={`${optionStyle}  `}>
-              <div><FlatIcon className="flaticon-post text-2xl" /></div>
+            <div className={`${optionStyle}  `}>
+              <div>
+                <FlatIcon className="flaticon-post text-2xl" />
+              </div>
               <div>Manage Posts</div>
             </div>
           </Link>
           {/* saved-startups */}
           <Link href={"/saved-startups"}>
-          <div className={`${optionStyle}`}>
-            <div><FlatIcon className="flaticon-bookmark text-2xl" /></div>
-            <div>Saved Startups</div>
-          </div>
+            <div className={`${optionStyle}`}>
+              <div>
+                <FlatIcon className="flaticon-bookmark text-2xl" />
+              </div>
+              <div>Saved Startups</div>
+            </div>
           </Link>
           <Link href={"/all-chats"}>
-            <div
-              className={`${optionStyle} `}>
-              <div><FlatIcon className="flaticon-chat text-2xl" /></div>
+            <div className={`${optionStyle} `}>
+              <div>
+                <FlatIcon className="flaticon-chat text-2xl" />
+              </div>
               <div>My chats</div>
             </div>
           </Link>
           <div className={`${optionStyle}`}>
-            <div><FlatIcon className="flaticon-notificaiton text-2xl" /></div>
+            <div>
+              <FlatIcon className="flaticon-notificaiton text-2xl" />
+            </div>
             <div>Notifications</div>
           </div>
           <div className={`${optionStyle}`}>
-            <div><FlatIcon className="flaticon-support text-2xl" /></div>
+            <div>
+              <FlatIcon className="flaticon-support text-2xl" />
+            </div>
             <div>Support</div>
           </div>
           <Link href={"/"}>
             <div className={`${optionStyle}`}>
-              <div><FlatIcon className="flaticon-exit text-2xl" /></div>
+              <div>
+                <FlatIcon className="flaticon-exit text-2xl" />
+              </div>
               <div>Log Out</div>
             </div>
           </Link>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ProfileOptionsMobile
+export default ProfileOptionsMobile;

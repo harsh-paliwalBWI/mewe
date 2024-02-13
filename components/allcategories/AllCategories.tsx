@@ -20,7 +20,7 @@ const AllCategories = () => {
     // keepPreviousData: true
   });
 
-  console.log("categoriesData",categoriesData);
+  // console.log("categoriesData",categoriesData);
   return (
 
         <div className="px-body flex flex-col  md:pb-20 pb-10">

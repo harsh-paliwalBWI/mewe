@@ -7,7 +7,7 @@ import top from "../../images/top-rated 1.svg";
 import newimg from "../../images/new 2.svg";
 import upcoming from "../../images/check-in 1.svg";
 import FlatIcon from "../flatIcon/flatIcon";
-import StartupCard from "../startupcard/StartupCard";
+
 
 const Searchsidecomponent = () => {
   return (

@@ -67,7 +67,7 @@ const PostCard3: FC<Props> = ({ singlepost, aboutInfo }) => {
     queryFn: () => getStartUpData(cookies),
   });
 
-  console.log("singlepost", singlepost);
+  // console.log("singlepost", singlepost);
   const onLikeHandler = async (docId: any) => {
     if (startUpData) {
       const createdBy = {
@@ -136,7 +136,7 @@ const PostCard3: FC<Props> = ({ singlepost, aboutInfo }) => {
       const dataObj = doc.data();
       arr.push(dataObj);
     });
-    console.log(arr, "commeyn arr");
+    // console.log(arr, "commeyn arr");
     setViewMessage(arr);
   };
 
@@ -156,7 +156,7 @@ const PostCard3: FC<Props> = ({ singlepost, aboutInfo }) => {
           : "",
       },
     };
-    console.log("from click", docId, createdBy);
+    // console.log("from click", docId, createdBy);
     setIsLoading(true);
     setIsModalOpen(true);
     const message = postMessages[docId] || "";
@@ -180,7 +180,7 @@ const PostCard3: FC<Props> = ({ singlepost, aboutInfo }) => {
   };
 
   const postDeleteHandler = async () => {
-    console.log("clikced", docId);
+    // console.log("clikced", docId);
     setIsLoading(true);
     try {
       await deleteDoc(doc(db, "posts", docId));
@@ -490,11 +490,11 @@ const PostCard3: FC<Props> = ({ singlepost, aboutInfo }) => {
                             }
                           }}
                         >
-                          <div className="flex items-center  text-sm">
-                            <p className="text-primary underline">
-                              {item.name}
+                          <div className="flex items-center  text-sm px-2.5 py-1 bg-[white] rounded-full my-2 border border-primary">
+                            <p className="text-primary  font-medium">
+                              @{item.name}
                             </p>
-                            {idx < post?.taggedStartups.length - 1 && ","}
+                            {/* {idx < post?.taggedStartups.length - 1 && ","} */}
                           </div>
                         </Link>
                       );
@@ -575,7 +575,7 @@ const PostCard3: FC<Props> = ({ singlepost, aboutInfo }) => {
                 <div className="flex flex-col">
                   {viewMessage && viewMessage?.length > 0 ? (
                     viewMessage?.map((msg: any, idx: any) => {
-                      console.log(msg, "from view msg");
+                      // console.log(msg, "from view msg");
 
                       const commentTime2 = msg?.createdAt?.toDate();
                       const now2 = moment();

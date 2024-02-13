@@ -184,7 +184,7 @@ const PostCard = (singlePost: any) => {
   };
 
   const onLikeHandler = async (docId: any) => {
-    console.log(startUpData, "nnnnnnn")
+    // console.log(startUpData, "nnnnnnn")
     if (startUpData) {
       const createdBy = {
         name: startUpData?.name,
@@ -409,9 +409,9 @@ const PostCard = (singlePost: any) => {
                         }
                       }}
                     >
-                      <div className="flex items-center  text-sm">
-                        <p className="text-primary underline font-medium">{item.name}</p>
-                        {idx < singlePostdata?.taggedStartups.length - 1 && ","}
+                      <div className="flex items-center  text-sm px-2.5 py-1 bg-[white] rounded-full my-2 border border-primary">
+                        <p className="text-primary font-medium">@{item.name}</p>
+                        {/* {idx < singlePostdata?.taggedStartups.length - 1 && ","} */}
                       </div>
                     </Link>
                   );

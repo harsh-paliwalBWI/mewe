@@ -23,6 +23,7 @@ const StartupCard = () => {
                   alt=""
                   className=" rounded-full w-full h-full object-contain"
                 />
+                
                 <div className="absolute w-6 h-6 sm:w-8 sm:h-8  md:w-10 md:h-10 top-[5px] right-0 transform -translate-y-1/3">
                   <Image
                     src={verify}

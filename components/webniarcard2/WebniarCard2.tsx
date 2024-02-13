@@ -31,8 +31,8 @@ const WebniarCard2 = (singlewebinar: any, idx: number) => {
               className="w-full h-full object-contain"
             />
           </div>
-          {/* <div className="absolute   bottom-0 left-1/2 transform -translate-x-1/2 w-[80%] xl:h-[250px] lg:h-[220px] sm:h-[180px] h-[120px]  "> */}
-          <div className="absolute   bottom-0 left-1/2 transform -translate-x-1/2 w-[80%] xl:h-[220px] lg:h-[180px] sm:h-[120px] h-[70px]  ">
+          <div className="absolute   bottom-0 left-1/2 transform -translate-x-1/2 w-[80%] xl:h-[250px] lg:h-[220px] sm:h-[180px] h-[120px]  ">
+          {/* <div className="absolute   bottom-0 left-1/2 transform -translate-x-1/2 w-[80%] xl:h-[220px] lg:h-[180px] sm:h-[120px] h-[70px]  "> */}
             <Image
               src={
                 singlewebinardata?.image?.url &&
@@ -64,16 +64,16 @@ const WebniarCard2 = (singlewebinar: any, idx: number) => {
                 {/* How to startup a new businesss */}
                 {singlewebinardata?.title}
               </h3>
-              <FlatIcon className="flaticon-bookmark md:text-3xl sm:text-2xl text-xl font-bold " />
+              {/* <FlatIcon className="flaticon-bookmark md:text-3xl sm:text-2xl text-xl font-bold " /> */}
             </div>
             <h3 className="opacity-80 text-black text-xs sm:text-sm md:text-base  xl:text-lg font-bold">
               {/* By Jane cooper */}
               By {singlewebinardata?.by?.name}
             </h3>
-            <p className=" opacity-40 text-black text-[10px] sm:text-xs md:text-sm font-semibold w-[80] ">
+            <p className=" opacity-40 text-black text-[10px] sm:text-xs md:text-sm font-semibold w-[80] line-clamp-2">
               {/* Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
               consectetur, adipisci velit, sed qu */}
-              {singlewebinardata?.description?singlewebinardata?.description:"cfghffhgf"}
+              {singlewebinardata?.description?singlewebinardata?.description:"No Description Present"}
             </p>
           </div>
 
@@ -96,7 +96,7 @@ const WebniarCard2 = (singlewebinar: any, idx: number) => {
                   <p className=" opacity-80 text-black lg:text-base md:text-sm  sm:text-xs text-xs font-semibold line-clamp-1 ">
                     {/* 09:21:37  */}
                     {singlewebinardata?.time}
-                    IST{" "}
+                    {" "}IST{" "}
                     {singlewebinardata?.duration &&
                       <span
                         className="opacity-90 text-black text-[8px] sm:text-[10px] md:text-xs font-semibold ml-0
@@ -110,7 +110,7 @@ const WebniarCard2 = (singlewebinar: any, idx: number) => {
               </div>
             </div>
             {/* px-1 sm:px-6 md:px-11 lg:px-16  */}
-            <Link href={singlewebinardata?.meetingLink ? singlewebinardata?.meetingLink : "#"} className=" w-fit md:w-[41%] h-fit">
+            <a href={`${singlewebinardata?.meetingLink ? singlewebinardata?.meetingLink : "#"}`} className="w-fit md:w-[41%] h-fit" target="_blank" rel="noopener noreferrer">
               {/* <Link href={singlewebinardata?.meetingLink ? singlewebinardata?.meetingLink : ""} target="_blank" className=" w-[45%] md:w-[41%] h-fit"> */}
               <div
                 className=" flex  justify-center  items-center  rounded-lg     
@@ -120,7 +120,7 @@ const WebniarCard2 = (singlewebinar: any, idx: number) => {
                   Book Now
                 </h2>
               </div>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

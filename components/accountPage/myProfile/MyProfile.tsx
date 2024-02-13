@@ -150,7 +150,7 @@ const MyProfile = () => {
           : { id: "", name: "" }
       );
     } else {
-      console.log("inside else");
+      // console.log("inside else");
     }
   }, [startUpData, businessAccountData]);
 

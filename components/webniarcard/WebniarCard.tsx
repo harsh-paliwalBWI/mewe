@@ -36,8 +36,8 @@ const WebniarCard:FC<Props>  = (singleWebinar) => {
               className="w-full h-full object-contain   "
             />
           </div>
-          {/* <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[275px] md:h-[200px] sm:h-[150px] h-[100px] "> */}
-          <div className="absolute  bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[225px] md:h-[150px] sm:h-[100px] h-[50px] ">
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[275px] md:h-[200px] sm:h-[150px] h-[100px] ">
+          {/* <div className="absolute  bottom-0 left-1/2 transform -translate-x-1/2 w-[85%] xl:h-[225px] md:h-[150px] sm:h-[100px] h-[50px] "> */}
             <Image
               src={
                 singlewebinardata?.image?.url &&
@@ -48,7 +48,7 @@ const WebniarCard:FC<Props>  = (singleWebinar) => {
               alt=""
               width={1000}
               height={1000}
-              className="w-full h-full object-fill "
+              className="w-full h-full object-fill bottom-0"
             />
           </div>
 
@@ -69,9 +69,9 @@ const WebniarCard:FC<Props>  = (singleWebinar) => {
                 {/* How to startup a new businesss{" "} */}
                 {singlewebinardata?.title}
               </h3>
-              <FlatIcon className="flaticon-bookmark md:text-3xl sm:text-2xl text-xl font-bold " />
+              {/* <FlatIcon className="flaticon-bookmark md:text-3xl sm:text-2xl text-xl font-bold " /> */}
             </div>
-            <p className="opacity-70 text-black text-[8px] sm:text-[10px] md:text-xs font-normal ">
+            <p className="opacity-70 text-black text-[8px] sm:text-[10px] md:text-xs font-normal line-clamp-2">
               {/* Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
               consectetur, adipisci velit, sed qu{" "} */}
               {singlewebinardata?.description}
@@ -95,7 +95,7 @@ const WebniarCard:FC<Props>  = (singleWebinar) => {
                 </div>
                 <p className=" opacity-80 text-black md:text-base sm:text-sm text-xs font-semibold">
                  
-                  {singlewebinardata?.time}
+                  {singlewebinardata?.time} {" "}IST
                  
                 </p>
               </div>

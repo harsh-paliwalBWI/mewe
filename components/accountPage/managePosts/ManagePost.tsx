@@ -20,14 +20,14 @@ const ManagePost = () => {
     queryFn: () => getStartUpData(cookies),
   });
 
-  console.log("startUpData", startUpData);
+  // console.log("startUpData", startUpData);
 
   const { data: postsData } = useQuery({
     queryKey: ["postsData"],
     queryFn: () => fetchPosts(startUpData?.id),
   });
 
-  {console.log(postsData,"zzzzzz")}
+  // {console.log(postsData,"zzzzzz")}
 
   return (
     <>

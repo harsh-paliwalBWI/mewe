@@ -27,7 +27,7 @@ interface Props {
 const BussinessCard: FC<Props> = ({ startup }) => {
   const [isClient, setIsClient] = useState(false);
 
-  console.log(startup,"from card");
+  // console.log(startup, "from card");
   const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,11 +37,11 @@ const BussinessCard: FC<Props> = ({ startup }) => {
     queryFn: () => getStartUpData(cookies),
   });
 
-  const { data: allFollowingsData} = useQuery({
+  const { data: allFollowingsData } = useQuery({
     queryKey: ["allFollowingsData"],
     queryFn: () => fetchAllFollowingsData(cookies),
   });
-  console.log("allFollowingsData",allFollowingsData);
+  // console.log("allFollowingsData", allFollowingsData);
 
   const isFollowing = startUpData?.following?.some(
     (item: any) => item.docId === startup.docId
@@ -51,69 +51,73 @@ const BussinessCard: FC<Props> = ({ startup }) => {
     (item: any) => item.id === startup.docId
   );
 
-  console.log("isFollowed",isFollowed);
-  
-  const onFollowHandler = async (data: any) => {
-    console.log("hii");
-    console.log(data, "from follow");
-    setIsModalOpen(true)
-    try {
-      const docid = startUpData?.id;
-      // for following start
-      if (docid) {
-        const newFollowingObj = {
-          status: "pending",
-          // docId: data?.docId,
-          name: data?.name || "",
-          coverPic: {
-            mob: data?.basic?.coverPic?.mob || "",
-            url: data?.basic?.coverPic?.url || "",
-            thumb: data?.basic?.coverPic?.thumb || ""
-          },
-          category: {
-            id: data?.basic?.category?.id || "",
-            name: data?.basic?.category?.name || ""
-          }
-        };
-        const refDoc = doc(db, "startups", docid, "following", data.docId);
-        await setDoc(refDoc, newFollowingObj, { merge: true });
-        // for following end 
-      }
-      // for followers start
-      const followersId = data?.docId;
-      if (followersId) {
+  // console.log("isFollowed", isFollowed);
 
-        const newFollowerObj = {
-          status: "pending",
-          // docId: startUpData?.id,
-          name: startUpData?.name || "",
-          coverPic: {
-            mob: startUpData?.basic?.coverPic?.mob || "",
-            url: startUpData?.basic?.coverPic?.url || "",
-            thumb: startUpData?.basic?.coverPic?.thumb || ""
-          },
-          category: {
-            id: startUpData?.basic?.category?.id || "",
-            name: startUpData?.basic?.category?.name || ""
-          },
-        };
-        const refDoc = doc(db, "startups", followersId, "followers", docid);
-        await setDoc(refDoc, newFollowerObj, { merge: true });
+  const onFollowHandler = async (data: any) => {
+    // console.log("hii");
+    // console.log(data, "from follow");
+    if (startUpData) {
+      setIsModalOpen(true)
+      try {
+        const docid = startUpData?.id;
+        // for following start
+        if (docid) {
+          const newFollowingObj = {
+            status: "pending",
+            // docId: data?.docId,
+            name: data?.name || "",
+            coverPic: {
+              mob: data?.basic?.coverPic?.mob || "",
+              url: data?.basic?.coverPic?.url || "",
+              thumb: data?.basic?.coverPic?.thumb || ""
+            },
+            category: {
+              id: data?.basic?.category?.id || "",
+              name: data?.basic?.category?.name || ""
+            }
+          };
+          const refDoc = doc(db, "startups", docid, "following", data.docId);
+          await setDoc(refDoc, newFollowingObj, { merge: true });
+          // for following end 
+        }
+        // for followers start
+        const followersId = data?.docId;
+        if (followersId) {
+
+          const newFollowerObj = {
+            status: "pending",
+            // docId: startUpData?.id,
+            name: startUpData?.name || "",
+            coverPic: {
+              mob: startUpData?.basic?.coverPic?.mob || "",
+              url: startUpData?.basic?.coverPic?.url || "",
+              thumb: startUpData?.basic?.coverPic?.thumb || ""
+            },
+            category: {
+              id: startUpData?.basic?.category?.id || "",
+              name: startUpData?.basic?.category?.name || ""
+            },
+          };
+          const refDoc = doc(db, "startups", followersId, "followers", docid);
+          await setDoc(refDoc, newFollowerObj, { merge: true });
+        }
+        // for followers end 
+        await queryClient.invalidateQueries({ queryKey: ['allFollowingsData'] })
+        await queryClient.refetchQueries({ queryKey: ['allFollowingsData'] })
+        toast.success("Followed.")
+        setIsModalOpen(false)
+      } catch (err) {
+        setIsModalOpen(false)
+        console.log(err);
+        toast.error("Something went wrong!")
       }
-      // for followers end 
-      await queryClient.invalidateQueries({ queryKey: ['allFollowingsData'] })
-      await queryClient.refetchQueries({ queryKey: ['allFollowingsData'] })
-      toast.success("Followed.")
-      setIsModalOpen(false)
-    } catch (err) {
-      setIsModalOpen(false)
-      console.log(err);
-      toast.error("Something went wrong!")
+    } else {
+      toast.error("Please login to follow.");
     }
-  }
+  };
 
   const onUnfollowHandler = async (data: any) => {
-    console.log(data, "from unfollow");
+    // console.log(data, "from unfollow");
     setIsModalOpen(true)
     try {
       const docid = startUpData?.id;
@@ -163,13 +167,15 @@ const BussinessCard: FC<Props> = ({ startup }) => {
                 height={1000}
                 width={1000}
                 className=" rounded-full w-[100%] h-[100%] object-fill" />
-              <div className="absolute w-4 h-4 sm:w-6 sm:h-6  md:w-8 md:h-8 top-0 right-0 transform -translate-y-1/3">
-                <Image
-                  src={verify}
-                  alt=""
-                  className="w-full h-full object-contain"
-                />
-              </div>
+              {startup?.isVerified &&
+                <div className="absolute w-4 h-4 sm:w-6 sm:h-6  md:w-8 md:h-8 top-0 right-0 transform -translate-y-1/3">
+                  <Image
+                    src={verify}
+                    alt=""
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              }
             </div>
           </div>
 
@@ -193,8 +199,8 @@ const BussinessCard: FC<Props> = ({ startup }) => {
         </div>
       </Link>
       <div className="w-full  px-3  mb-3">
-       
-{isFollowed&&isFollowed?.status==="pending" ? (
+
+        {isFollowed && isFollowed?.status === "pending" ? (
           <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-black cursor-pointer ">
             {/* <div className=" ">
               <FlatIcon className="flaticon-add-user text-2xl" />
@@ -206,41 +212,41 @@ const BussinessCard: FC<Props> = ({ startup }) => {
 
             </div>
           </div>
-        ):
-        isFollowed?.status==="accepted" ? (
-          <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-black cursor-pointer ">
-            {/* <div className=" ">
+        ) :
+          isFollowed?.status === "accepted" ? (
+            <div onClick={async () => await onUnfollowHandler(startup)} className=" w-full flex   justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-black cursor-pointer ">
+              {/* <div className=" ">
               <FlatIcon className="flaticon-add-user text-2xl" />
             </div> */}
-            <div className=" text-black text-sm sm:text-base md:text-lg font-semibold ">
-              <button >
-                Following
-              </button>
+              <div className=" text-black text-sm sm:text-base md:text-lg font-semibold ">
+                <button >
+                  Following
+                </button>
 
+              </div>
             </div>
-          </div>
-        )
-          :
-          (<div onClick={async () => await onFollowHandler(startup)} className=" w-full flex  justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-primary cursor-pointer ">
-            <div className=" ">
-              <FlatIcon className="flaticon-add-user text-2xl text-primary" />
+          )
+            :
+            (<div onClick={async () => await onFollowHandler(startup)} className=" w-full flex  justify-center  items-center gap-1 sm:gap-2 md:gap-3 rounded-full px-1 sm:px-4 md:px-8 lg:px-12 py-1 sm:py-2 md:py-3 border border-primary cursor-pointer ">
+              <div className=" ">
+                <FlatIcon className="flaticon-add-user text-2xl text-primary" />
 
-            </div>
-            <div className=" text-primary text-sm sm:text-base md:text-lg font-semibold ">
+              </div>
+              <div className=" text-primary text-sm sm:text-base md:text-lg font-semibold ">
 
-              <button >
-                Follow
-              </button>
-            </div>
-          </div>)
+                <button >
+                  Follow
+                </button>
+              </div>
+            </div>)
         }
       </div>
       <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
         <div className="flex flex-col gap-2 justify-center items-center">
           <CircularProgress className="!text-white"></CircularProgress>
           <p className="text-white font-medium text-lg">
-                        Processing...
-                      </p>
+            Processing...
+          </p>
         </div>
       </Modal>
       {/* </div> */}

@@ -95,14 +95,14 @@ const Followers: FC<Props> = ({ aboutInfo, params }) => {
         try {
             const docid = aboutInfo?.id;
             if (docid) {
-                console.log("inside first  if");
+                // console.log("inside first  if");
 
                 const docRef = doc(db, `startups/${aboutInfo?.id}/followers/${data?.id}`);
                 await setDoc(docRef, { status: "declined" }, { merge: true });
             }
             const followersId = data?.id;
             if (followersId) {
-                console.log("inside second if");
+                // console.log("inside second if");
 
                 const followersDocRef = doc(db, `startups/${data?.id}/following/${aboutInfo?.id}`);
                 await setDoc(followersDocRef, { status: "declined" }, { merge: true });

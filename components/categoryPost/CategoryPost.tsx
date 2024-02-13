@@ -10,19 +10,17 @@ import FlatIcon from "../flatIcon/flatIcon";
 import { fetchCategoryStartUps } from "@/services/homeService";
 
 interface Props {
-  selectedCategory: any
-  isviewall:any
+  selectedCategory: any;
+  isviewall: any;
 }
 
-const CategoryPost:FC<Props> = ({selectedCategory, isviewall}) => {
-
-
+const CategoryPost: FC<Props> = ({ selectedCategory, isviewall }) => {
   const { data: allposts } = useQuery({
     queryKey: ["Posts"],
     queryFn: () => fetchAllPosts(),
   });
 
-  const categoryname =  selectedCategory?.name;
+  const categoryname = selectedCategory?.name;
   // const [isClient, setIsClient] = useState(false);
   // console.log(categoryname, "CCCCCCCCX")
 
@@ -45,87 +43,77 @@ const CategoryPost:FC<Props> = ({selectedCategory, isviewall}) => {
     <>
       {isviewall ? (
         <>
-          {
-            allposts && allposts.length > 0 && (
-              // isClient ?
-              <>
-                <div className="flex flex-row justify-between items-center ">
-                  <h1 className=" text-black md:text-4xl sm:text-2xl text-lg font-semibold  ">
-                    Posts
-                  </h1>
-                  <div className="flex px-3 justify-center h-[80%] items-center gap-0.5 md:gap-1 rounded-full w-[50%] sm:w-[40%] md:w-[30%] bg-[#e5eaf1] header-search-conatiner ">
-                    <div className=" h-full  ">
-                      <FlatIcon className="flaticon-search text-sm sm:text-base md:text-xl font-semibold text-[#ced3d8]" />
-                    </div>
-                    <input
-                      type="text"
-                      className="  outline-0  py-1 px-0.5  md:py-2 md:px-1  w-full h-full text-black bg-[#e5eaf1] rounded-full text-xs sm:text-sm md:text-base placeholder-[#ced3d8]"
-                      placeholder="Search by City"
-                    />
+          {allposts && allposts.length > 0 ? (
+            // isClient ?
+            <>
+              <div className="flex flex-row justify-between items-center ">
+                <h1 className=" text-black md:text-4xl sm:text-2xl text-lg font-semibold  ">
+                  Posts
+                </h1>
+                <div className="flex px-3 justify-center h-[80%] items-center gap-0.5 md:gap-1 rounded-full w-[50%] sm:w-[40%] md:w-[30%] bg-[#e5eaf1] header-search-conatiner ">
+                  <div className=" h-full  ">
+                    <FlatIcon className="flaticon-search text-sm sm:text-base md:text-xl font-semibold text-[#ced3d8]" />
                   </div>
+                  <input
+                    type="text"
+                    className="  outline-0  py-1 px-0.5  md:py-2 md:px-1  w-full h-full text-black bg-[#e5eaf1] rounded-full text-xs sm:text-sm md:text-base placeholder-[#ced3d8]"
+                    placeholder="Search by City"
+                  />
                 </div>
+              </div>
 
-                <div className=" sm:mt-5 mt-2 md:mb-20 sm:mb-10 mb-5 flex flex-col gap-3 sm:gap-4 md:gap-5 ">
-                  {allposts &&
-                    allposts.length > 0 &&
-                    allposts.map((singlepost: any, idx: number) => {
-                      return (
-                        <div className="" key={idx}>
-                          <PostCard singlePost={singlepost} />
-                        </div>
-                      );
-                    })}
-                </div>
-              </>
-            )
-            // : (
-            //   <>
-            //     <Loading />
-            //   </>
-            // )
-          }
+              <div className=" sm:mt-5 mt-2 md:mb-20 sm:mb-10 mb-5 flex flex-col gap-3 sm:gap-4 md:gap-5 ">
+                {allposts &&
+                  allposts.length > 0 &&
+                  allposts.map((singlepost: any, idx: number) => {
+                    return (
+                      <div className="" key={idx}>
+                        <PostCard singlePost={singlepost} />
+                      </div>
+                    );
+                  })}
+              </div>
+            </>
+          ) : (
+            <p>No posts available.</p>
+          )}
         </>
       ) : (
         <>
-          {
-            categoryposts && categoryposts.length > 0 && (
-              // isClient ?
-              <>
-                <div className="flex flex-row justify-between items-center ">
-                  <h1 className=" text-black md:text-4xl sm:text-2xl text-lg font-semibold  ">
-                    Posts
-                  </h1>
-                  <div className="flex px-3 justify-center h-[80%] items-center gap-0.5 md:gap-1 rounded-full w-[50%] sm:w-[40%] md:w-[30%] bg-[#e5eaf1] header-search-conatiner ">
-                    <div className=" h-full  ">
-                      <FlatIcon className="flaticon-search text-sm sm:text-base md:text-xl font-semibold text-[#ced3d8]" />
-                    </div>
-                    <input
-                      type="text"
-                      className="  outline-0  py-1 px-0.5  md:py-2 md:px-1  w-full h-full text-black bg-[#e5eaf1] rounded-full text-xs sm:text-sm md:text-base placeholder-[#ced3d8]"
-                      placeholder="Search by City"
-                    />
+          {categoryposts && categoryposts.length > 0 ? (
+            // isClient ?
+            <>
+              <div className="flex flex-row justify-between items-center ">
+                <h1 className=" text-black md:text-4xl sm:text-2xl text-lg font-semibold  ">
+                  Posts
+                </h1>
+                <div className="flex px-3 justify-center h-[80%] items-center gap-0.5 md:gap-1 rounded-full w-[50%] sm:w-[40%] md:w-[30%] bg-[#e5eaf1] header-search-conatiner ">
+                  <div className=" h-full  ">
+                    <FlatIcon className="flaticon-search text-sm sm:text-base md:text-xl font-semibold text-[#ced3d8]" />
                   </div>
+                  <input
+                    type="text"
+                    className="  outline-0  py-1 px-0.5  md:py-2 md:px-1  w-full h-full text-black bg-[#e5eaf1] rounded-full text-xs sm:text-sm md:text-base placeholder-[#ced3d8]"
+                    placeholder="Search by City"
+                  />
                 </div>
+              </div>
 
-                <div className=" sm:mt-5 mt-2 md:mb-20 sm:mb-10 mb-5 flex flex-col gap-3 sm:gap-4 md:gap-5 ">
-                  {categoryposts &&
-                    categoryposts.length > 0 &&
-                    categoryposts.map((singlepost: any, idx: number) => {
-                      return (
-                        <div className="" key={idx}>
-                          <PostCard singlePost={singlepost} />
-                        </div>
-                      );
-                    })}
-                </div>
-              </>
-            )
-            // : (
-            //   <>
-            //     <Loading />
-            //   </>
-            // )
-          }
+              <div className=" sm:mt-5 mt-2 md:mb-20 sm:mb-10 mb-5 flex flex-col gap-3 sm:gap-4 md:gap-5 ">
+                {categoryposts &&
+                  categoryposts.length > 0 &&
+                  categoryposts.map((singlepost: any, idx: number) => {
+                    return (
+                      <div className="" key={idx}>
+                        <PostCard singlePost={singlepost} />
+                      </div>
+                    );
+                  })}
+              </div>
+            </>
+          ) : (
+            <p className="items-center justify-center font-semibold text-xl sm:text-2xl md:text-3xl h-full w-full">No posts available for the selected category.</p>
+          )}
         </>
       )}
     </>

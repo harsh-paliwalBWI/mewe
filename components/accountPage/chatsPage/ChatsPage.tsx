@@ -223,7 +223,7 @@ const ChatsPage = () => {
         const chatDoc = await getDoc(q);
         if (chatDoc.exists()) {
           const chatData = { id: chatDoc.id, ...chatDoc.data() };
-          console.log("Chat Data:", chatData);
+          // console.log("Chat Data:", chatData);
           dispatch({ type: "CHANGE_USER", payload: chatData });
         } else {
           console.log("Chat document not found");
@@ -265,7 +265,7 @@ const ChatsPage = () => {
       // const updatedChatDocSnapshot = await getDoc(chatDocRef);
       // console.log("Updated Chat Document:", updatedChatDocSnapshot.data());
 
-      console.log("Chat cleared successfully!");
+      // console.log("Chat cleared successfully!");
     } catch (error) {
       console.error("Error clearing chat:", error);
     }

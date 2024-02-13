@@ -10,6 +10,7 @@ import verify from "../../images/verify 2.svg";
 import Image from "next/image";
 import FlatIcon from "../flatIcon/flatIcon";
 import { constant } from "@/utils/constants";
+import Link from "next/link";
 
 const NewsletterCard = (singleNewsletter: any) => {
   let singleNewsletterdata = singleNewsletter.singleNewsletter;
@@ -37,16 +38,20 @@ const NewsletterCard = (singleNewsletter: any) => {
             <h3 className=" text-black text-sm sm:text-base md:text-lg font-semibold">
             {singleNewsletterdata?.name}
             </h3>
-            <div className="opacity-70 text-black text-sm sm:text-base md:text-lg font-normal ">
-            {singleNewsletterdata?.description}
+            <div 
+               dangerouslySetInnerHTML={{__html:singleNewsletterdata?.description}}
+            className="opacity-70 text-black text-sm sm:text-base md:text-lg font-normal line-clamp-3">
+            {/* {singleNewsletterdata?.description} */}
             </div>
           </div>
+          <Link href={`${singleNewsletterdata?.link}`} target="_blank">
           <div className="w-full  bg-[#054A91] rounded-[5px] flex justify-between px-1 sm:px-2 md:px-3 py-1 sm:py-2 md:py-3 cursor-pointer">
             <div className="text-white text-sm sm:text-base md:text-lg font-normal ">
               Continue Reading
             </div>
             <FlatIcon className="flaticon-down-arrow md:text-xl sm:text-lg text-base text-white  -rotate-90" />
           </div>
+          </Link>
         </div>
       </div>
     </div>

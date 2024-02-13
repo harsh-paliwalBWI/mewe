@@ -105,7 +105,7 @@ const SignInPage = () => {
             })
             .catch((error) => {
               toast.error(`${error}`);
-              console.log(error + "...Please eload");
+              console.log(error + "...Please reload");
               setLoading(false);
             });
         } else {
@@ -114,7 +114,7 @@ const SignInPage = () => {
       } else {
         router.push("/signup");
         toast.error("New user please Signup first !");
-        console.log("new user ");
+        // console.log("new user ");
       }
     } else {
       if (!phoneNumber) {

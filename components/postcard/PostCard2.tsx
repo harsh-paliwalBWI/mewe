@@ -508,11 +508,11 @@ const PostCard2 = (singlepost: any) => {
                             }
                           }}
                         >
-                          <div className="flex items-center  text-sm">
-                            <p className="text-primary underline">
+                          <div className="flex items-center  text-sm px-2.5 py-1 bg-[white] rounded-full my-2 border border-primary">
+                            <p className="text-primary font-medium">
                               {item.name}
                             </p>
-                            {idx < post?.taggedStartups.length - 1 && ","}
+                            {/* {idx < post?.taggedStartups.length - 1 && ","} */}
                           </div>
                         </Link>
                       );
