@@ -8,7 +8,7 @@ import { fetchBusinessAccountDetails, getStartUpData, isBusinessAccountExistOrNo
 import { cookies } from "next/dist/client/components/headers";
 import { fetchAllStartUps, fetchAllWebinars } from '@/services/homeService';
 import { fetchAllCategories } from '@/services/categoriesService';
-
+import TawkWidget from '@/components/tawkWidget/tawkWidget';
 export default async function Home() {
   const cookie = cookies().get("uid");
   const queryClient = getQueryClient();
@@ -42,6 +42,7 @@ fetchAllWebinars()
 
   return (
     <Hydrate state={dehydratedState}>
+      <TawkWidget />
       <HomeComponent cookie={cookie}/>
     </Hydrate>
   )

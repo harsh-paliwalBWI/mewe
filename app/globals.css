@@ -45,6 +45,13 @@ color:#5c636a;
     font-size: medium;
     font-weight: 600;
   }
+
+  .rupees-placeholder {
+    color:#9bb7d3;
+      font-size: medium;
+      font-weight: 600;
+    }
+
   .no-scroll {
     overflow: hidden;
   }

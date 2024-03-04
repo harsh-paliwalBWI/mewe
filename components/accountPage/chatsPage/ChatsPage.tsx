@@ -79,7 +79,7 @@ const ChatsPage = () => {
   const handleKey = async (e: any) => {
     if (e.code === "Enter" && username) {
       const searchResult: any = await handleSearch(username, cookies);
-      // console.log(searchResult.arr, "eeeeee");
+      console.log(searchResult.arr, "eeeeee");
       setsearchlist(searchResult.arr);
       setSearchPerformed(true);
     }
@@ -88,7 +88,7 @@ const ChatsPage = () => {
   const newsearch = async () => {
     if (username) {
       const searchResult: any = await handleSearch(username, cookies);
-      // console.log(searchResult.arr, "eeeeee");
+      console.log(searchResult.arr, "eeeeee");
       setsearchlist(searchResult.arr);
       // console.log(searchlist, "ffffffff");
       setSearchPerformed(true);
@@ -182,6 +182,7 @@ const ChatsPage = () => {
   const handleSelect = async (selectedUser: any) => {
     const currentUser = cookies?.value;
     // console.log(currentUser, "currentUser");
+    // console.log(selectedUser, "selectedUser");
     try {
       const q = doc(db, `chat/${currentUser}/startups/${selectedUser}`);
       const res = await getDoc(q);
@@ -275,7 +276,7 @@ const ChatsPage = () => {
     try {
       const currentUser = cookies?.value;
       const selectedUser = data.user?.id;
-  
+
       // Delete all messages in the chat
       const messagesRef = collection(
         db,
@@ -283,13 +284,13 @@ const ChatsPage = () => {
       );
       const messagesQuery = query(messagesRef);
       const messagesSnapshot = await getDocs(messagesQuery);
-  
+
       const deleteMessagesPromises = messagesSnapshot.docs.map(async (doc) => {
         await deleteDoc(doc.ref);
       });
-  
+
       await Promise.all(deleteMessagesPromises);
-  
+
       // Delete the chat document
       const chatDocRef = doc(
         db,
@@ -298,13 +299,12 @@ const ChatsPage = () => {
       await deleteDoc(chatDocRef);
 
       dispatch({ type: "RESET_STATE" });
-  
+
       console.log("Chat deleted successfully!");
     } catch (error) {
       console.error("Error deleting chat:", error);
     }
   };
-  
 
   useEffect(() => {
     const getChats = () => {
@@ -375,6 +375,9 @@ const ChatsPage = () => {
     }
   }, [data.chatId]);
 
+  console.log(searchPerformed, "hhhhhhhh");
+  console.log(searchlist, "ffffffff");
+
   // console.log(data.chatId, "jzzzzzz");
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -434,8 +437,8 @@ const ChatsPage = () => {
                           className="flex hover:bg-[#F3F7FA] gap-4 items-center border-b-2 border-b-[#c6c8c9]  py-4 "
                           key={index}
                           onClick={() => {
-                            handleSelect((item as any)?.docId);
-                            // console.log((item as any)?.docId, "kkkgkk");
+                            handleSelect((item as any)?.id);
+                            // console.log((item as any)?.id, "kkkgkk");
                             // console.log(item as any, "cvcvcv");
                             // () => handleChange(item);
                             setUsername("");
@@ -605,7 +608,7 @@ const ChatsPage = () => {
                             >
                               <button
                                 // onClick={() => {
-                             
+
                                 // }}
                                 className={`${
                                   active
@@ -714,8 +717,7 @@ const ChatsPage = () => {
                   </div>
                 )}
 
-
-{isDeleted && (
+                {isDeleted && (
                   <div className="h-[100vh] w-[100vw] bg-[rgba(0,0,0,0.3)] fixed top-0 left-0  flex justify-center items-center z-30">
                     <div className="sm:w-fit w-[90%]  bg-[white] rounded-md md:px-5 px-5 md:py-5 py-5">
                       <div className="flex flex-col md:gap-7 gap-5">
@@ -836,7 +838,7 @@ const ChatsPage = () => {
                             <div
                               className={`relative bg-[#F3F7FA]  w-fit pr-12  `}
                             >
-                               <div className="text-sm font-medium p-3 rounded-md w-full ">
+                              <div className="text-sm font-medium p-3 rounded-md w-full ">
                                 <p className="w-full text-ellipsis break-all ...">
                                   {mg?.msg}
                                 </p>

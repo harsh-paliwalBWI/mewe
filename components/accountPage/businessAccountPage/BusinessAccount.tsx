@@ -19,13 +19,6 @@ import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
 import { fetchAllCategories } from "@/services/categoriesService";
 
-const dummyCategory = [
-  { id: "2", name: "Category1", unavailable: false },
-  { id: "3", name: "Category2", unavailable: false },
-  { id: "4", name: "Category3", unavailable: true },
-  { id: "5", name: "Category4", unavailable: false },
-];
-
 const dummyCompanySize = [
   { id: 2, name: "less than 10", unavailable: false },
   { id: 3, name: "10-50", unavailable: false },
@@ -34,12 +27,12 @@ const dummyCompanySize = [
   { id: 5, name: "more than 500", unavailable: false },
 ];
 
-const dummyCities = [
-  { id: 2, name: "city1", unavailable: false },
-  { id: 3, name: "city2", unavailable: false },
-  { id: 4, name: "city3", unavailable: true },
-  { id: 5, name: "city4", unavailable: false },
-];
+// const dummyCities = [
+//   { id: 2, name: "city1", unavailable: false },
+//   { id: 3, name: "city2", unavailable: false },
+//   { id: 4, name: "city3", unavailable: true },
+//   { id: 5, name: "city4", unavailable: false },
+// ];
 
 const dummyIndustry = [
   { id: 2, name: "Industry1", unavailable: false },
@@ -69,6 +62,23 @@ for (let year = currentYear; year >= 1900; year--) {
   resultArray.push(yearObject);
 }
 
+const rangeArray: any = [];
+
+for (let startYear = currentYear - 1; startYear >= 1900; startYear--) {
+  const endYear = startYear + 1;
+
+  const yearRangeObject = {
+    id: currentYear - startYear + 2,
+    name: `${startYear}-${endYear}`,
+  };
+
+  rangeArray.push(yearRangeObject);
+}
+
+interface Product {
+  name: string;
+  profitPercentage: string;
+}
 
 const dummyTypeOfInvestment = [
   { id: 2, name: "Equity", unavailable: false },
@@ -86,6 +96,7 @@ const inputStyle =
 const BusinessAccount = () => {
   const cookies = { value: getCookie("uid") };
   const [isClient, setIsClient] = useState(false);
+  const [addbutton, setAddbutton] = useState(false);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const [industry, setIndustry] = useState(dummyIndustry[0]);
@@ -123,6 +134,23 @@ const BusinessAccount = () => {
       ? { name: businessAccountData.yearOfFormation }
       : { name: "" }
   );
+
+  const [yearOfFinance1, setYearOfFinance1] = useState(
+    businessAccountData
+      ? { name: businessAccountData.yearOfFinance1 }
+      : { name: "" }
+  );
+
+  const [yearOfFinance2, setYearOfFinance2] = useState(
+    businessAccountData
+      ? { name: businessAccountData.yearOfFinance2 }
+      : { name: "" }
+  );
+
+  const [products, setProducts] = useState<Product[]>([
+    { name: "", profitPercentage: "" },
+  ]);
+
   const [typeOfInvestement, setTypeOfInvestment] = useState(
     businessAccountData
       ? { name: businessAccountData.typeOfInvestement }
@@ -144,6 +172,7 @@ const BusinessAccount = () => {
   );
   const [email, setEmail] = useState(startUpData?.email);
   const [name, setName] = useState(startUpData?.name);
+
   const [state, setState] = useState({
     // name: startUpData?.name,
     founderName: businessAccountData ? businessAccountData?.founderName : "",
@@ -159,15 +188,67 @@ const BusinessAccount = () => {
     currentFinancialIncome: businessAccountData
       ? businessAccountData?.currentFinancialIncome
       : "",
+
+    financialyear1: businessAccountData
+      ? businessAccountData?.financialyear1
+      : "",
+
+    financialyear2: businessAccountData
+      ? businessAccountData?.financialyear2
+      : "",
+
+    typeOfInvestement: businessAccountData
+      ? businessAccountData?.typeOfInvestement
+      : "",
+
+    qua1: businessAccountData?.year1?.qua1,
+    qua2: businessAccountData?.year1?.qua2,
+    qua3: businessAccountData?.year1?.qua3,
+    qua4: businessAccountData?.year1?.qua4,
+    qua5: businessAccountData?.year2?.qua1,
+    qua6: businessAccountData?.year2?.qua2,
+    qua7: businessAccountData?.year2?.qua3,
+    qua8: businessAccountData?.year2?.qua4,
+
     currentValuation: businessAccountData
       ? businessAccountData?.currentValuation
       : "",
     amount: businessAccountData ? businessAccountData?.amount : "",
-    typeOfInvestement: businessAccountData
-      ? businessAccountData?.typeOfInvestement
-      : "",
+
     panNo: businessAccountData ? businessAccountData?.panNo : "",
   });
+
+  function restrictInput(event: any) {
+    const input = event.target;
+    // console.log(input, "vbn")
+    const value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    input.value = value;
+    setState({ ...state, panNo: value });
+  }
+
+  const addProduct = () => {
+    setProducts([...products, { name: "", profitPercentage: "" }]);
+  };
+
+  const handleProductNameChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target;
+    const updatedProducts = [...products];
+    updatedProducts[index].name = value;
+    setProducts(updatedProducts);
+  };
+
+  const handleProfitPercentageChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target;
+    const updatedProducts = [...products];
+    updatedProducts[index].profitPercentage = value;
+    setProducts(updatedProducts);
+  };
 
   const addAdvanceDetails = async (
     advanceDetails: any,
@@ -203,6 +284,19 @@ const BusinessAccount = () => {
         social: {
           linkedin: state.linkedInUrl ? state.linkedInUrl : "",
         },
+        year1: {
+          qua1: state?.qua1 ? state?.qua1 : "",
+          qua2: state?.qua2 ? state?.qua2 : "",
+          qua3: state?.qua3 ? state?.qua3 : "",
+          qua4: state?.qua4 ? state?.qua4 : "",
+        },
+        year2: {
+          qua1: state?.qua5 ? state?.qua5 : "",
+          qua2: state?.qua6 ? state?.qua6 : "",
+          qua3: state?.qua7 ? state?.qua7 : "",
+          qua4: state?.qua8 ? state?.qua8 : "",
+        },
+
         category: {
           id: category.id,
           name: category.name,
@@ -211,17 +305,27 @@ const BusinessAccount = () => {
           line1: state.address ? state.address : "",
         },
         city: state.city ? state.city : "",
-        companySize: companySize.name ? +companySize.name : "",
+        companySize: companySize.name ? companySize.name : "",
         yearOfFormation: yearOfFormation.name ? +yearOfFormation.name : "",
+        yearOfFinance1: yearOfFinance1.name ? yearOfFinance1.name : "",
+        yearOfFinance2: yearOfFinance2.name ? yearOfFinance2.name : "",
+        typeOfInvestement: typeOfInvestement.name ? typeOfInvestement.name : "",
         description: state.description ? state.description : "",
         panNo: state.panNo ? state.panNo : "",
         currentFinancialIncome: state.currentFinancialIncome
           ? +state.currentFinancialIncome
           : "",
         currentValuation: state.currentValuation ? +state.currentValuation : "",
-        typeOfInvestement: typeOfInvestement.name ? typeOfInvestement.name : "",
+
         equityPercentage: equityPercentage ? +equityPercentage : "",
         amount: state.amount ? +state.amount : "",
+
+        products: products.map((product) => ({
+          name: product.name,
+          profitPercentage: product.profitPercentage
+            ? +product.profitPercentage
+            : 0,
+        })),
       };
 
       await addAdvanceDetails(accountInfo, email, phoneNumber);
@@ -270,7 +374,18 @@ const BusinessAccount = () => {
         description: businessAccountData?.description,
         address: businessAccountData?.address?.line1,
         currentFinancialIncome: businessAccountData?.currentFinancialIncome,
+        financialyear1: businessAccountData?.financialyear1,
+        financialyear2: businessAccountData?.financialyear2,
+        qua1: businessAccountData?.year1?.qua1,
+        qua2: businessAccountData?.year1?.qua2,
+        qua3: businessAccountData?.year1?.qua3,
+        qua4: businessAccountData?.year1?.qua4,
+        qua5: businessAccountData?.year2?.qua1,
+        qua6: businessAccountData?.year2?.qua2,
+        qua7: businessAccountData?.year2?.qua3,
+        qua8: businessAccountData?.year2?.qua4,
         currentValuation: businessAccountData?.currentValuation,
+
         amount: businessAccountData?.amount,
         typeOfInvestement: businessAccountData?.typeOfInvestement,
         panNo: businessAccountData?.panNo,
@@ -284,6 +399,17 @@ const BusinessAccount = () => {
           ? { name: businessAccountData.yearOfFormation }
           : { name: "" }
       );
+      setYearOfFinance1(
+        businessAccountData
+          ? { name: businessAccountData.yearOfFinance1 }
+          : { name: "" }
+      );
+      setYearOfFinance2(
+        businessAccountData
+          ? { name: businessAccountData.yearOfFinance2 }
+          : { name: "" }
+      );
+
       setTypeOfInvestment(
         businessAccountData
           ? { name: businessAccountData.typeOfInvestement }
@@ -302,7 +428,14 @@ const BusinessAccount = () => {
             }
           : { id: "", name: "" }
       );
+
+      if (businessAccountData.products) {
+        setProducts(businessAccountData.products);
+      } else {
+        setProducts([{ name: "", profitPercentage: "" }]);
+      }
     }
+
     if (startUpData) {
       setPhoneNumber(startUpData?.phoneNo ? startUpData?.phoneNo : "");
       setEmail(startUpData.email);
@@ -659,88 +792,296 @@ const BusinessAccount = () => {
         </div>
         <div className="w-full  sm:my-8 my-5">
           <div className="grid sm:grid-cols-2  grid-cols-1 md:gap-x-9 gap-x-5 sm:gap-y-9 gap-y-2 w-full  ">
-            <div className="flex flex-col gap-5  ">
-              <div className="flex flex-col sm:gap-9 gap-7">
-                <div
-                  className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}
-                >
-                  <div className={`w-[100%]`}>
-                    <label className={`${labelStyle}`} htmlFor="input">
-                      Current Financial Income
-                    </label>
+            <div className="flex flex-col gap-5  mb-5">
+              {/* <div className="flex flex-col sm:gap-9 gap-7"> */}
+              <div
+                className={`flex ${borderStyle} justify-between  items-center gap-4 w-full  `}
+              >
+                <div className={`w-[100%]`}>
+                  <label className={`${labelStyle}`} htmlFor="input">
+                    Current Financial Income
+                  </label>
+                  <input
+                    value={
+                      isClient && state.currentFinancialIncome
+                        ? state.currentFinancialIncome
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setState({
+                        ...state,
+                        currentFinancialIncome: e.target.value,
+                      })
+                    }
+                    className={`${inputStyle}  w-[100%]`}
+                    type="text"
+                    id="input"
+                  />
+                </div>
+                <div className="px-4 text-xl text-[#9bb7d3]">&#8377;</div>
+              </div>
+              <div className="border border-[#C8C8C8]  relative flex items-center rounded-md ">
+                <p className={`${labelStyle}`}>Year</p>
+                <div className="  relative w-full py-3 px-4 rounded-md ">
+                  <Listbox value={yearOfFinance1} onChange={setYearOfFinance1}>
+                    <div className=" ">
+                      <Listbox.Button
+                        className={` w-full flex items-center justify-between text-start`}
+                      >
+                        {(isClient &&
+                          yearOfFinance1?.name &&
+                          yearOfFinance1.name) ||
+                          "Select"}
+                        <span>
+                          <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" />
+                        </span>
+                      </Listbox.Button>
+                      <Listbox.Options
+                        className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full h-40 overflow-y-scroll`}
+                      >
+                        {rangeArray.map((year: any) => (
+                          <Listbox.Option
+                            key={year.id}
+                            value={year}
+                            as={Fragment}
+                          >
+                            {({ active, selected }) => (
+                              <li
+                                className={`${
+                                  active
+                                    ? "bg-blue-500 text-white cursor-pointer"
+                                    : " text-black cursor-pointer"
+                                }  flex justify-between px-2 py-1 shadow rounded-md`}
+                              >
+                                <span>{year.name}</span>
+                                {selected && <span>&#x2714;</span>}
+                              </li>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </div>
+                  </Listbox>
+                </div>
+              </div>
+
+              <div className="">
+                <div className="flex justify-between items-center text-sm text-[#868E97] font-medium mb-4">
+                  <div className="flex items-center gap-2">
+                    <h2>Quarterly</h2>
+                  </div>
+                  <h2>Amount</h2>
+                </div>
+                <div className="flex flex-col sm:gap-3 gap-2">
+                  {/* <!-- Quarter 1 --> */}
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-[#868E97] font-medium w-[85%]">
+                      Quarter 1 (Jan-Mar)
+                    </div>
+                    {/* <!-- Input field styled as div for Quarter 1 --> */}
                     <input
-                      value={
-                        isClient && state.currentFinancialIncome
-                          ? state.currentFinancialIncome
-                          : ""
-                      }
-                      onChange={(e) =>
-                        setState({
-                          ...state,
-                          currentFinancialIncome: e.target.value,
-                        })
-                      }
-                      className={`${inputStyle}  w-[100%]`}
                       type="text"
-                      id="input"
+                      className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                      placeholder="₹"
+                      value={isClient && state.qua1 ? state.qua1 : ""}
+                      onChange={(e) =>
+                        setState({ ...state, qua1: e.target.value })
+                      }
                     />
                   </div>
-                  <div className="px-4 text-xl text-[#9bb7d3]">&#8377;</div>
+                  {/* <!-- Quarter 2 --> */}
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-[#868E97] font-medium">
+                      Quarter 2 (Apr-Jun)
+                    </div>
+                    {/* <!-- Input field styled as div for Quarter 2 --> */}
+                    <input
+                      type="text"
+                      className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                      placeholder="₹"
+                      value={isClient && state.qua2 ? state.qua2 : ""}
+                      onChange={(e) =>
+                        setState({ ...state, qua2: e.target.value })
+                      }
+                    />
+                  </div>
+                  {/* <!-- Quarter 3 --> */}
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-[#868E97] font-medium">
+                      Quarter 3 (Jul-Sep)
+                    </div>
+                    {/* <!-- Input field styled as div for Quarter 3 --> */}
+                    <input
+                      type="text"
+                      className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                      placeholder="₹"
+                      value={isClient && state.qua3 ? state.qua3 : ""}
+                      onChange={(e) =>
+                        setState({ ...state, qua3: e.target.value })
+                      }
+                    />
+                  </div>
+                  {/* <!-- Quarter 4 --> */}
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-[#868E97] font-medium">
+                      Quarter 4 (Oct-Dec)
+                    </div>
+                    {/* <!-- Input field styled as div for Quarter 4 --> */}
+                    <input
+                      type="text"
+                      className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                      placeholder="₹"
+                      value={isClient && state.qua4 ? state.qua4 : ""}
+                      onChange={(e) =>
+                        setState({ ...state, qua4: e.target.value })
+                      }
+                    />
+                  </div>
                 </div>
-                {/* <div className='border border-[#C8C8C8]  relative flex items-center rounded-md '>
-                  <p className={`${labelStyle}`}>Year</p>
-                  <div className='  relative w-full py-3 px-4 rounded-md '>
-                    <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-                      <div className=' '>
-                        <Listbox.Button className={` w-full flex items-center justify-between text-start`}><span>{selectedPerson.name}</span><span><FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" /></span></Listbox.Button>
-                        <Listbox.Options className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full`} >
-                          {people.map((person) => (
-                            <Listbox.Option key={person.id} value={person} as={Fragment} >
-                              {({ active, selected }) => (
-                                <li
-                                  className={`${active ? 'bg-blue-500 text-white cursor-pointer' : ' text-black cursor-pointer'
-                                    }  flex justify-between`}
-                                >
-                                 
+              </div>
 
-                                  <span>
-                                    {person.name}
-                                  </span>
-                                  {selected && <span>check</span>}
-
-                                </li>
-                              )}
-                            </Listbox.Option>
-                          ))}
-                        </Listbox.Options>
+              {addbutton && (
+                <>
+                  {" "}
+                  <div className="border border-[#C8C8C8]  relative flex items-center rounded-md ">
+                    <p className={`${labelStyle}`}>Year</p>
+                    <div className="  relative w-full py-3 px-4 rounded-md ">
+                      <Listbox
+                        value={yearOfFinance2}
+                        onChange={setYearOfFinance2}
+                      >
+                        <div className=" ">
+                          <Listbox.Button
+                            className={` w-full flex items-center justify-between text-start`}
+                          >
+                            {(isClient &&
+                              yearOfFinance2?.name &&
+                              yearOfFinance2.name) ||
+                              "Select"}
+                            <span>
+                              <FlatIcon className="flaticon-down-arrow text-[#9bb7d3] text-lg" />
+                            </span>
+                          </Listbox.Button>
+                          <Listbox.Options
+                            className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-1 left-0 z-30 w-full h-40 overflow-y-scroll`}
+                          >
+                            {rangeArray.map((year: any) => (
+                              <Listbox.Option
+                                key={year.id}
+                                value={year}
+                                as={Fragment}
+                              >
+                                {({ active, selected }) => (
+                                  <li
+                                    className={`${
+                                      active
+                                        ? "bg-blue-500 text-white cursor-pointer"
+                                        : " text-black cursor-pointer"
+                                    }  flex justify-between px-2 py-1 shadow rounded-md`}
+                                  >
+                                    <span>{year.name}</span>
+                                    {selected && <span>&#x2714;</span>}
+                                  </li>
+                                )}
+                              </Listbox.Option>
+                            ))}
+                          </Listbox.Options>
+                        </div>
+                      </Listbox>
+                    </div>
+                  </div>
+                  <div className="">
+                    <div className="flex justify-between items-center text-sm text-[#868E97] font-medium mb-4">
+                      <div className="flex items-center gap-2">
+                        <h2>Quarterly</h2>
                       </div>
-                    </Listbox>
+                      <h2>Amount</h2>
+                    </div>
+                    <div className="flex flex-col sm:gap-3 gap-2">
+                      {/* <!-- Quarter 1 --> */}
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-[#868E97] font-medium w-[85%]">
+                          Quarter 1 (Jan-Mar)
+                        </div>
+                        {/* <!-- Input field styled as div for Quarter 1 --> */}
+                        <input
+                          type="text"
+                          className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                          placeholder="₹"
+                          value={isClient && state.qua5 ? state.qua5 : ""}
+                          onChange={(e) =>
+                            setState({ ...state, qua5: e.target.value })
+                          }
+                        />
+                      </div>
+                      {/* <!-- Quarter 2 --> */}
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-[#868E97] font-medium">
+                          Quarter 2 (Apr-Jun)
+                        </div>
+                        {/* <!-- Input field styled as div for Quarter 2 --> */}
+                        <input
+                          type="text"
+                          className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                          placeholder="₹"
+                          value={isClient && state.qua6 ? state.qua6 : ""}
+                          onChange={(e) =>
+                            setState({ ...state, qua6: e.target.value })
+                          }
+                        />
+                      </div>
+                      {/* <!-- Quarter 3 --> */}
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-[#868E97] font-medium">
+                          Quarter 3 (Jul-Sep)
+                        </div>
+                        {/* <!-- Input field styled as div for Quarter 3 --> */}
+                        <input
+                          type="text"
+                          className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                          placeholder="₹"
+                          value={isClient && state.qua7 ? state.qua7 : ""}
+                          onChange={(e) =>
+                            setState({ ...state, qua7: e.target.value })
+                          }
+                        />
+                      </div>
+                      {/* <!-- Quarter 4 --> */}
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-[#868E97] font-medium">
+                          Quarter 4 (Oct-Dec)
+                        </div>
+                        {/* <!-- Input field styled as div for Quarter 4 --> */}
+                        <input
+                          type="text"
+                          className="div-styled-input py-3 sm:px-5 px-3 outline-0 w-[15%] border border-[#C8C8C8] rounded-md"
+                          placeholder="₹"
+                          value={isClient && state.qua8 ? state.qua8 : ""}
+                          onChange={(e) =>
+                            setState({ ...state, qua8: e.target.value })
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div> */}
-              </div>
-              <div>
-                {/* <div className='flex justify-between items-center text-sm text-[#868E97] font-medium mb-4'><div className='flex items-center gap-2'><h2>Quarterly</h2>v</div><h2>Amount</h2></div> */}
-                {/* <div className='flex flex-col sm:gap-3 gap-2  '>
-                  <div className='flex justify-between items-center '>
-                    <div className='text-sm text-[#868E97] font-medium w-[85%] '>Quarter 1 (Jan- Mar)</div>
-                    
-                    <div className='sm:px-6 px-4 sm:py-3 py-2 border border-[#C8C8C8] rounded-md sm:text-xl text-base text-[#9bb7d3]'>&#8377;</div>
-                  </div>
-                  <div className='flex justify-between items-center'>
-                    <div className='text-sm text-[#868E97] font-medium '>Quarter 2 (Apr- Jun)</div>
-                    <div className='sm:px-6 px-4 sm:py-3 py-2  border border-[#C8C8C8] rounded-md text-xl text-[#9bb7d3] '>&#8377;</div>
-                  </div>
-                  <div className='flex justify-between items-center'>
-                    <div className='text-sm text-[#868E97] font-medium '>Quarter 3 (Jul- Sep)</div>
-                    <div className='sm:px-6 px-4 sm:py-3 py-2  border border-[#C8C8C8] rounded-md text-xl text-[#9bb7d3] '>&#8377;</div>
-                  </div>
-                  <div className='flex justify-between items-center'>
-                    <div className='text-sm text-[#868E97] font-medium '>Quarter 4 (Oct-Dec)</div>
-                    <div className='sm:px-6 px-4 sm:py-3 py-2  border border-[#C8C8C8] rounded-md text-xl text-[#9bb7d3]'>&#8377;</div>
-                  </div>
-                </div> */}
-              </div>
-              {/* <div className='text-center text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 cursor-pointer'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add Another year</span></button></div> */}
+                </>
+              )}
+
+              {!addbutton ? (
+                <div
+                  className="text-center text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 cursor-pointer"
+                  onClick={() => setAddbutton(!addbutton)}
+                >
+                  <button className="flex items-center justify-center gap-1">
+                    <FlatIcon className="flaticon-plus text-[10px]" />{" "}
+                    <span>Add Another Year</span>
+                  </button>
+                </div>
+              ) : //   <button className="flex items-center justify-center gap-1">
+              //   <FlatIcon className="flaticon-minus text-[10px]" />{" "}
+              //   <span>- Remove Second Year</span>
+              // </button>
+              null}
             </div>
             <div>
               <div className="flex flex-col sm:gap-9 gap-5  ">
@@ -767,23 +1108,84 @@ const BusinessAccount = () => {
                   </div>
                   <div className="px-4 text-xl text-[#9bb7d3]">&#8377;</div>
                 </div>
-                {/* <div className={`text-sm text-[#868E97] font-medium `}>Profit</div> */}
-                {/* <div className='flex md:gap-8 sm:gap-4 gap-2 w-full '>
+                <div className={`text-sm text-[#868E97] font-medium `}>
+                  Profit
+                </div>
+                {/* <div className="flex md:gap-8 sm:gap-4 gap-2 w-full ">
                   <div className={`${borderStyle} w-[85%] `}>
-                    <label className={`${labelStyle}`} htmlFor="input">Enter product name</label>
+                    <label className={`${labelStyle}`} htmlFor="input">
+                      Enter product name
+                    </label>
                     <input className={`${inputStyle}`} type="text" id="input" />
                   </div>
-                  <div className=' w-[15%]  '>
-                    <div className='percentage-placeholder flex justify-center'>
-                      <input type="text" className='py-3 sm:px-5 px-3 outline-0 w-[100%] border border-[#C8C8C8] rounded-md' placeholder='%' />
+                  <div className=" w-[15%]  ">
+                    <div className="percentage-placeholder flex justify-center">
+                      <input
+                        type="text"
+                        className="py-3 sm:px-5 px-3 outline-0 w-[100%] border border-[#C8C8C8] rounded-md"
+                        placeholder="%"
+                      />
                     </div>
                   </div>
                 </div> */}
+
+                {products.map((product, index) => (
+                  <div
+                    key={index}
+                    className="flex md:gap-8 sm:gap-4 gap-2 w-full"
+                  >
+                    <div className={`${borderStyle} w-[85%] `}>
+                      <label
+                        className={`${labelStyle}`}
+                        htmlFor={`product-name-${index}`}
+                      >
+                        Enter product name
+                      </label>
+                      <input
+                        className={`${inputStyle}`}
+                        type="text"
+                        id={`product-name-${index}`}
+                        value={product.name}
+                        onChange={(e) => handleProductNameChange(index, e)} // Separate handler for product name
+                      />
+                    </div>
+                    <div className="w-[15%]">
+                      <div className="percentage-placeholder flex justify-center">
+                        <input
+                          type="text"
+                          className="py-3 sm:px-5 px-3 outline-0 w-[100%] border border-[#C8C8C8] rounded-md"
+                          placeholder="%"
+                          value={product.profitPercentage}
+                          onChange={(e) =>
+                            handleProfitPercentageChange(index, e)
+                          } // Separate handler for profit percentage
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              {/* <div className='text-center cursor-pointer text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 sm:mt-4 mt-6'><button className='flex items-center justify-center gap-1'><FlatIcon className="flaticon-plus text-[10px]" /> <span>Add product</span></button></div> */}
+
+              {products.length < 5 && (
+                <div
+                  className="text-center cursor-pointer text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 sm:mt-4 mt-6"
+                  onClick={addProduct}
+                >
+                  <button className="flex items-center justify-center gap-1">
+                    <FlatIcon className="flaticon-plus text-[10px]" />{" "}
+                    <span>Add Product</span>
+                  </button>
+                </div>
+              )}
+              {/* <div className="text-center cursor-pointer text-[#868e97] flex justify-center text-sm border border-primary rounded-md py-3 sm:mt-4 mt-6">
+                <button className="flex items-center justify-center gap-1">
+                  <FlatIcon className="flaticon-plus text-[10px]" />{" "}
+                  <span>Add product</span>
+                </button>
+              </div> */}
             </div>
           </div>
-          <div className="grid lg:grid-cols-2 grid-cols-1 md:grid-cols-2  sm:gap-y-9 gap-y-7  md:gap-x-9 gap-x-5 w-full  sm:mt-4 mt-7">
+          <div className="grid lg:grid-cols-2 grid-cols-1 md:grid-cols-2  sm:gap-y-9 gap-y-7  md:gap-x-9 gap-x-5 w-full md:mt-6 sm:mt-4 mt-7 ">
             <div className="flex flex-col sm:gap-9 gap-7 ">
               <div className="border border-[#C8C8C8]  relative flex items-center rounded-md ">
                 <p className={`${labelStyle}`}>Type of Investment Required</p>
@@ -888,14 +1290,22 @@ const BusinessAccount = () => {
             </div>
             <div className={`${borderStyle} `}>
               <label className={`${labelStyle}`} htmlFor="input">
-                Pan Number
+                PAN Number
               </label>
               <input
                 value={isClient && state.panNo ? state.panNo : ""}
-                onChange={(e) => setState({ ...state, panNo: e.target.value })}
+                onChange={(e) =>
+                  setState({
+                    ...state,
+                    panNo: e.target.value
+                      .toUpperCase()
+                      .replace(/[^A-Z0-9]/g, ""),
+                  })
+                }
                 className={`${inputStyle}`}
                 type="text"
                 id="input"
+                onInput={restrictInput}
               />
             </div>
           </div>

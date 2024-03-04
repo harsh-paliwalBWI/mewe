@@ -145,7 +145,7 @@ const BussinessCard: FC<Props> = ({ startup }) => {
   // }, []);
   return (
     <div className="flex flex-col justify-between items-center gap-1 sm:gap-2 md:gap-3  bg-[#f6f9fd] rounded-[5px] relative ">
-      <Link href={`/startup/${startup?.slug?.name}`}>
+      <Link href={startup?.slug?.name !== undefined ? `/startup/${startup?.slug?.name}` : "#"}>
         <div className="">
           <div className="relative rounded-[5px] w-full h-auto flex items-center justify-center  ">
             <Image

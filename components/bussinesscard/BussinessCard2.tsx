@@ -161,7 +161,7 @@ const BussinessCard2: FC<Props> = ({ startup }) => {
   // }, []);
   return (
     <Link
-      href={`/startup/${startup?.slug?.name}`}>
+    href={startup?.slug?.name !== undefined ? `/startup/${startup?.slug?.name}` : "#"}>
       <div className="flex flex-row sm:flex-row w-full items-center gap-3 md:gap-2 lg:gap-3  bg-[#f6f9fd] rounded-[5px] p-[4%] ">
         {/* <Link
         href={`/startup/${startup?.name}`}

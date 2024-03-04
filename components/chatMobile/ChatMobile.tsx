@@ -235,7 +235,7 @@ const ChatMobile = () => {
                       className="flex hover:bg-[#F3F7FA] items-center gap-4 border-b-2 border-b-[#c6c8c9]  py-4  "
                       key={index}
                       onClick={() => {
-                        handleSelect((item as any)?.docId);
+                        handleSelect((item as any)?.id);
 
                         // () => handleChange(item);
                         setUsername("");

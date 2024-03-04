@@ -20,13 +20,34 @@ const PromoteBusiness = () => {
   const [isSwitched, setIsSwitched] = useState(false);
   const [hoveredPackage, setHoveredPackage] = useState("");
   const [loading, setLoading] = useState(false);
-  const data = [
-    { text: "Neque porro quisquam est" },
-    { text: "Excepteur sint occaecat cupidatat" },
-    { text: "Voluptate velit esse quam nihil molestiae" },
-    { text: "Qui dolorem ipsum quia dolor sit amet" },
-    { text: "Ut enim ad minima veniam, quis nostrum" },
+  const freePlan = [
+    { text: "Idea from every location" },
+    { text: "Government Schemes" },
+    { text: "News Updates" },
+    { text: "Visual Graph Representation of Startup Data" },
   ];
+  
+  const standardPlan = [
+    { text: "Idea from every location" },
+    { text: "Government Schemes" },
+    { text: "News Updates" },
+    { text: "Visual Graph Representation of Startup" },
+    { text: "Verified Tick for startups" },
+    { text: "Direct Message" },
+    { text: "Access to Online Seminar" },
+  ];
+  
+  const premiumPlan = [
+    { text: "Idea from every location" },
+    { text: "Government Schemes" },
+    { text: "News Updates" },
+    { text: "Visual Graph Representation of Startup Data" },
+    { text: "Verified Tick for startups" },
+    { text: "Direct Message" },
+    { text: "Access to Online Seminar" },
+    { text: "Promote Your Startup" },
+  ];
+  
 
   const cookies = { value: getCookie("uid") };
   const queryClient = useQueryClient();
@@ -175,7 +196,7 @@ const PromoteBusiness = () => {
                       </h2>
                     </div>
                     <div className="flex flex-col gap-2 my-5">
-                      {data.map((item: any, idx: number) => {
+                      {freePlan.map((item: any, idx: number) => {
                         return (
                           <div key={idx} className="flex items-center gap-2">
                             <div className="h-[20px] w-[20px] rounded-full flex items-center justify-center bg-[#A6D6BF]">
@@ -242,7 +263,7 @@ const PromoteBusiness = () => {
                       </h2>
                     </div>
                     <div className="flex flex-col gap-2 my-5">
-                      {data.map((item: any, idx: number) => {
+                      {standardPlan.map((item: any, idx: number) => {
                         return (
                           <div key={idx} className="flex items-center gap-2">
                             <div className="h-[20px] w-[20px] rounded-full flex items-center justify-center bg-[#4B647E]">
@@ -309,7 +330,7 @@ const PromoteBusiness = () => {
                       </h2>
                     </div>
                     <div className="flex flex-col gap-2 my-5">
-                      {data.map((item: any, idx: number) => {
+                      {premiumPlan.map((item: any, idx: number) => {
                         return (
                           <div key={idx} className="flex items-center gap-2">
                             <div className="h-[20px] w-[20px] rounded-full flex items-center justify-center bg-[#9BC1F9]">

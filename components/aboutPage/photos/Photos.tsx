@@ -31,43 +31,50 @@ interface Props {
 }
 
 const Photos: FC<Props> = ({ aboutInfo }) => {
-//   console.log(aboutInfo, "yyyy");
+  //   console.log(aboutInfo, "yyyy");
 
   const { data: startupimages } = useQuery({
     queryKey: ["startupimages", aboutInfo?.id],
     queryFn: () => fetchStartupImages(aboutInfo?.id),
   });
 
-//   console.log(startupimages, "xzxzxzx");
+  //   console.log(startupimages, "xzxzxzx");
 
   return (
-    <div className=" w-full bg-[#F8FAFC] xl:px-8 px-4 xl:pt-14 pt-7">
-      <div className="grid md:grid-cols-3 sm:grid-cols-2  grid-cols-1 w-full gap-x-3 gap-y-6">
-        {startupimages?.map((item: any, idx: number) => {
-          return (
-            <div key={idx} className="w-60 h-40 rounded-[5px] ">
-           
-            <Image
-              src={item}
-              alt=""
-              height={1000}
-              width={1000}
-              className="object-contain h-full w-full"
-              style={{ objectFit: 'cover' }}
-            />
+    <>
+      {startupimages && startupimages?.length <= 0 ? (
+        <div className="text-base text-center md:h-[58vh] h-[30vh] bg-[#F8FAFC] flex items-center justify-center text-primary ">
+          <h1>No Images Available !</h1>
+        </div>
+      ) : (
+        <div className=" w-full bg-[#F8FAFC] xl:px-8 px-4 xl:pt-14 py-7">
+          <div className="grid md:grid-cols-3 sm:grid-cols-2  grid-cols-1 w-full gap-x-3 gap-y-6">
+            {startupimages?.map((item: any, idx: number) => {
+              return (
+                <div key={idx} className="w-60 h-40 rounded-[5px] ">
+                  <Image
+                    src={item}
+                    alt=""
+                    height={1000}
+                    width={1000}
+                    className="object-contain h-full w-full"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              );
+            })}
           </div>
-          );
-        })}
-      </div>
-      <div className="flex justify-center xl:py-14 py-7">
+          {/* <div className="flex justify-center xl:py-14 pt-7">
         <div className="text-center flex justify-center bg-primary w-fit text-white px-10 py-3 rounded-md cursor-pointer">
           <button className="flex items-center gap-3">
             <FlatIcon className="flaticon-reload" />
             <h3 className="xl:text-base text-xs  font-medium">Load More</h3>
           </button>
         </div>
-      </div>
-    </div>
+      </div> */}
+        </div>
+      )}
+    </>
   );
 };
 

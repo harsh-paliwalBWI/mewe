@@ -50,7 +50,7 @@ export const handleSearch = async (username: any, cookieData: any) => {
 
         resolve({ status: true, arr: filteredStartups });
       } else {
-        resolve({ status: false });
+        resolve({ status: false, arr: [] });
       }
     } else {
       resolve({ status: false });
