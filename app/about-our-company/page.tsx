@@ -37,7 +37,7 @@ const DUMMY_DATA = {
 const AboutourCompany = async () => {
   return (
     <>
-      <div className="flex flex-col-reverse md:flex-row justify-center ">
+      <div className="flex flex-col md:flex-row justify-center ">
         <div className="md:w-[48%] ">
           <div className=" relative  w-full h-[16rem] sm:h-[24rem] md:h-[30rem] bg-white bg-opacity-40">
             <Image
@@ -50,25 +50,25 @@ const AboutourCompany = async () => {
           </div>
         </div>
         <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%] bg-primary">
-          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-16 my-auto">
+          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-8 sm:mx-12 md:mx-16 my-8 sm:my-12  md:my-auto">
             <h2 className="font-bold text-[#f6f8fb] text-2xl sm:text-3xl md:text-4xl ">
               About
             </h2>
             <p
-              className=" text-white text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%] leading-8"
+              className=" text-white text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%] "
               dangerouslySetInnerHTML={{ __html: DUMMY_DATA?.abouttext1 }}
             ></p>
           </div>
         </div>
       </div>
-      <div className="flex flex-col-reverse md:flex-row justify-center gap-10">
+      <div className="flex flex-col-reverse md:flex-row justify-center gap-0  sm:gap-4 md:gap-7 lg:gap-10">
         <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%]">
-          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-16 my-auto">
+          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-8 sm:mx-12 md:mx-16 my-8 sm:my-12  md:my-auto ">
             <h2 className="font-semibold  text-2xl sm:text-3xl md:text-4xl ">
               Our Mission: Facilitating Innovation and Investment
             </h2>
             <p
-              className=" text-black text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%] leading-8"
+              className=" text-black text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%]"
               dangerouslySetInnerHTML={{ __html: DUMMY_DATA?.abouttext2 }}
             ></p>
           </div>
@@ -85,9 +85,9 @@ const AboutourCompany = async () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col-reverse md:flex-row justify-center gap-10 bg-[#262626]">
+      <div className="flex flex-col md:flex-row justify-center gap-0  sm:gap-4 md:gap-7 lg:gap-10 bg-[#262626]">
         <div className="md:w-[48%] ">
-          <div className=" relative   h-[13rem] sm:h-[20rem] md:h-[27rem] mx-10 my-10 rounded-full overflow-hidden border-2 border-white">
+          <div className=" relative   h-[13rem] sm:h-[20rem] md:h-[27rem] mx-6 sm:mx-8 md:mx-10 my-4 sm:my-7 md:my-10 rounded-full overflow-hidden border-2 border-white">
             <Image
               src={about3}
               alt=""
@@ -97,17 +97,17 @@ const AboutourCompany = async () => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%]">
-          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-16 my-auto">
+        <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%] ">
+          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-8 sm:mx-12 md:mx-16 my-8 sm:my-12  md:my-auto">
             <h2 className="font-bold text-[#f6f8fb] text-2xl sm:text-3xl md:text-4xl ">
               How MeWe Works: Connecting Visionaries with Capital
             </h2>
             <p
-              className=" text-white text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%] leading-8 mb-4"
+              className=" text-white text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%]  mb-4"
               dangerouslySetInnerHTML={{ __html: DUMMY_DATA?.abouttext3k1 }}
             ></p>
             <p
-              className=" text-white text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%] leading-8"
+              className=" text-white text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%] "
               dangerouslySetInnerHTML={{ __html: DUMMY_DATA?.abouttext3k2 }}
             ></p>
           </div>
