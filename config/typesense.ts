@@ -78,3 +78,65 @@ export async function handleTypesenseSearch(query: string) {
 }
 
 
+
+export async function fetchPostsByCategoryAndLocation(category: any, location: any) {
+  // Initialize Typesense client
+  const client: any = await typesense_initClient();
+console.log(category?.name,"lll")
+console.log(category?.name,"lll")
+  // Check if client is initialized successfully
+  if (client) {
+
+    let searchParameters; 
+
+
+    if (category && category.name) {
+ 
+      searchParameters = {
+        q: location,
+        query_by: "location",
+        filter_by: `category.name:=[${category.name}]`,
+      };
+    } else {
+        searchParameters = {
+        q: location,
+        query_by: "location",
+      };
+    }
+    
+
+    let projectId = firebaseConfig?.projectId;
+
+    try {
+      // Perform search operation on Typesense collection
+      const data = await client
+        .collections(`${projectId}-posts`) // Adjust collection name accordingly
+        .documents()
+        .search(searchParameters);
+
+      // Log data for debugging
+      console.log(data, "fff");
+
+      // If data is available and contains hits
+      if (data && data?.hits) {
+        let arr = [];
+        // Iterate through hits
+        for (const post of data?.hits) {
+          // Push post data to array
+          arr.push(post?.document);
+        }
+        console.log(arr, "mmmm")
+        return arr;
+      }
+      // Return data
+      return data;
+    } catch (error) {
+      // Log error if any occurs
+      console.log(error, "error INSIDE CATCH");
+      // Return empty array
+      return [];
+    }
+  }
+}
+
+

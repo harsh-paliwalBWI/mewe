@@ -8,6 +8,8 @@ import { getCookie } from "cookies-next";
 import { getStartUpData } from "@/services/startupService";
 import FlatIcon from "../flatIcon/flatIcon";
 import { fetchCategoryStartUps } from "@/services/homeService";
+import useDebounce from "@/utils/useDebounce";
+import { fetchPostsByCategoryAndLocation } from "@/config/typesense";
 
 interface Props {
   selectedCategory: any;
@@ -28,6 +30,33 @@ const CategoryPost: FC<Props> = ({ selectedCategory, isviewall }) => {
     queryKey: ["categoryposts", categoryname],
     queryFn: () => fetchPostsByCategory(categoryname),
   });
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebounce(searchQuery, 500);
+  const [searchedPostsbyCity, setSearchedPostsbyCity] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  async function fetchSearchedPostsbyCity() {
+    setIsSearching(true);
+    const res = await fetchPostsByCategoryAndLocation(isviewall?null:selectedCategory,debouncedSearch);
+    if (res) {
+      setSearchedPostsbyCity(res);
+    }
+    setIsSearching(false);
+
+    console.log(searchedPostsbyCity, "kkkkkkkkk")
+  }
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setSearchedPostsbyCity([]);
+    }
+    if (debouncedSearch) {
+      fetchSearchedPostsbyCity();
+      // fetch(`/api/search?q=${debouncedSearch}`);
+    }
+  }, [debouncedSearch]);
+
 
   // console.log(categoryposts, "mmmmmmmm")
   //   const { data: startUpData } = useQuery({
@@ -58,6 +87,10 @@ const CategoryPost: FC<Props> = ({ selectedCategory, isviewall }) => {
                     type="text"
                     className="  outline-0  py-1 px-0.5  md:py-2 md:px-1  w-full h-full text-black bg-[#e5eaf1] rounded-full text-xs sm:text-sm md:text-base placeholder-[#ced3d8]"
                     placeholder="Search by City"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -95,6 +128,10 @@ const CategoryPost: FC<Props> = ({ selectedCategory, isviewall }) => {
                     type="text"
                     className="  outline-0  py-1 px-0.5  md:py-2 md:px-1  w-full h-full text-black bg-[#e5eaf1] rounded-full text-xs sm:text-sm md:text-base placeholder-[#ced3d8]"
                     placeholder="Search by City"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                    }}
                   />
                 </div>
               </div>
