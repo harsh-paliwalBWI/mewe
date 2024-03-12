@@ -124,13 +124,13 @@ const PromoteBusiness = () => {
           <div className="md:text-4xl text-xl font-semibold text-center sm:mt-3 mt-2 ">
             <h1>Promote Your Business</h1>
           </div>
-          <div className="text-center text-[#7f7f7f] font-medium md:text-lg text-sm my-5 ">
+          {/* <div className="text-center text-[#7f7f7f] font-medium md:text-lg text-sm my-5 ">
             <p>
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
               official <br />
               deserunt mollit anim id es
             </p>
-          </div>
+          </div> */}
           {/* <div className='flex justify-center items-center gap-3'>
             <div className={` font-medium text-sm tracking-wider ${isSwitched&&"text-primary"}`}><p>Monthly</p></div>
             <div onClick={()=>setIsSwitched((prev)=>!prev)} className={`sm:w-[58px] w-[48px] flex items-center px-1  sm:h-[29px] h-[19px] ${isSwitched?"justify-start":"justify-end"}  bg-primary rounded-full cursor-pointer`}>

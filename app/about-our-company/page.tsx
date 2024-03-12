@@ -4,6 +4,9 @@ import React from "react";
 import about1 from "../../images/about 1.jpg";
 import about2 from "../../images/about 2.jpg";
 import about3 from "../../images/abou 3.jpg";
+import about4 from "../../images/about 3.jpg";
+import about5 from "../../images/about 5.jpg";
+import about6 from "../../images/about 6.jpg";
 
 const DUMMY_DATA = {
   abouttext1: `At MeWe, we believe in the power of innovation and the transformative potential of connecting 
@@ -52,7 +55,7 @@ const AboutourCompany = async () => {
         <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%] bg-primary">
           <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-8 sm:mx-12 md:mx-16 my-8 sm:my-12  md:my-auto">
             <h2 className="font-bold text-[#f6f8fb] text-2xl sm:text-3xl md:text-4xl ">
-              About
+              About MEWE
             </h2>
             <p
               className=" text-white text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%] "
@@ -74,11 +77,11 @@ const AboutourCompany = async () => {
           </div>
         </div>
         <div className="md:w-[48%] ">
-          <div className=" relative  w-full h-[16rem] sm:h-[24rem] md:h-[30rem] bg-white bg-opacity-40">
+          <div className=" relative  w-full h-[16rem] sm:h-[24rem] md:h-[30rem] bg-white bg-opacity-40 ">
             <Image
               src={about2}
               alt=""
-              className="w-full h-full object-cover "
+              className="w-full h-full object-cover rounded-tr-[100px] sm:rounded-tr-[150px] md:rounded-tr-[200px] rounded-bl-[100px] sm:rounded-bl-[150px] md:rounded-bl-[200px] "
               width={1000}
               height={1000}
             />
@@ -113,6 +116,82 @@ const AboutourCompany = async () => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col-reverse md:flex-row justify-center gap-0  sm:gap-4 md:gap-7 lg:gap-10">
+        <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%]">
+          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-8 sm:mx-12 md:mx-16 my-8 sm:my-12  md:my-auto ">
+            <h2 className="font-semibold  text-2xl sm:text-3xl md:text-4xl ">
+            Why Choose MeWe: Empowering Dreams, Driving Success
+            </h2>
+            <p
+              className=" text-black text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%]"
+              dangerouslySetInnerHTML={{ __html: DUMMY_DATA?.abouttext4 }}
+            ></p>
+          </div>
+        </div>
+        <div className="md:w-[48%] ">
+          <div className=" relative  w-full h-[16rem] sm:h-[24rem] md:h-[30rem] bg-white bg-opacity-40 ">
+            <Image
+              src={about4}
+              alt=""
+              className="w-full h-full object-cover rounded-r-full"
+              width={1000}
+              height={1000}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row justify-center gap-0  sm:gap-4 md:gap-7 lg:gap-10  bg-[#f7f8fa]">
+        <div className="md:w-[48%] ">
+          <div className=" relative   h-[13rem] sm:h-[20rem] md:h-[27rem] mx-6 sm:mx-8 md:mx-10 my-4 sm:my-7 md:my-10 rounded-tl-full overflow-hidden">
+            <Image
+              src={about5}
+              alt=""
+              className="w-full h-full object-cover "
+              width={1000}
+              height={1000}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%] ">
+          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-8 sm:mx-12 md:mx-16 my-8 sm:my-12  md:my-auto">
+            <h2 className="font-bold text-[#262626] text-2xl sm:text-3xl md:text-4xl ">
+            Join the MeWe Community Today
+            </h2>
+            <p
+              className="  text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%]  mb-4"
+              dangerouslySetInnerHTML={{ __html: DUMMY_DATA?.abouttext5 }}
+            ></p>
+           
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col-reverse md:flex-row justify-center gap-0  sm:gap-4 md:gap-7 lg:gap-10  bg-[#4B647E]">
+        
+        <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 md:w-[52%] ">
+          <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mx-8 sm:mx-12 md:mx-16 my-8 sm:my-12  md:my-auto">
+            <h2 className="font-bold text-[white] text-2xl sm:text-3xl md:text-4xl ">
+            Connect with Us
+            </h2>
+            <p
+              className="text-[white] text-xs sm:text-sm md:text-base font-medium w-full md:w-[90%]  mb-4"
+              dangerouslySetInnerHTML={{ __html: DUMMY_DATA?.abouttext6 }}
+            ></p>
+           
+          </div>
+        </div>
+        <div className="md:w-[48%] ">
+          <div className=" relative   h-[13rem] sm:h-[20rem] md:h-[27rem] mx-6 sm:mx-8 md:mx-10 my-4 sm:my-7 md:my-10 rounded-br-full overflow-hidden">
+            <Image
+              src={about6}
+              alt=""
+              className="w-full h-full object-cover "
+              width={1000}
+              height={1000}
+            />
+          </div>
+        </div>
+      </div>
+     
     </>
   );
 };
