@@ -38,7 +38,7 @@ const Navbar = ({ cookie }: any) => {
     }
     setIsSearching(false);
 
-    console.log(searchedStartups, "kkkkkkkkk")
+    console.log(searchedStartups, "kkkkkkkkk");
   }
 
   useEffect(() => {
@@ -77,8 +77,8 @@ const Navbar = ({ cookie }: any) => {
               </div>
               {/* </div> */}
             </Link>
-            <div className="flex justify-between  items-center gap-3 md:gap-5 w-full sm:w-[70%] md:w-[55%]  lg:w-[40%] ">
-              <div className="flex px-3 relative items-center gap-0.5 md:gap-1 rounded-full  w-[50%] bg-[#e5eaf1] header-search-conatiner">
+            <div className="flex justify-between  items-center gap-3 md:gap-5 w-full sm:w-[60%] md:w-[50%]  lg:w-[35%] ">
+              <div className="flex px-3 relative items-center gap-0.5 md:gap-1 rounded-full  w-[60%] bg-[#e5eaf1] header-search-conatiner">
                 <div className=" h-full  text-[#ced3d8] ">
                   <FlatIcon className="flaticon-search text-sm sm:text-base md:text-xl font-semibold" />
                 </div>
@@ -121,11 +121,31 @@ const Navbar = ({ cookie }: any) => {
                 )}
               </div>
 
-              <div className="flex justify-between gap-2 md:gap-0 items-center cursor-pointer w-[50%] ">
-                <FlatIcon className="flaticon-linkedin md:text-2xl sm:text-lg text-base text-[#383838]" />
-                <FlatIcon className="flaticon-instagram md:text-2xl sm:text-lg text-base text-[#383838]" />
-                <FlatIcon className="flaticon-twitter md:text-2xl  sm:text-lg text-base text-[#383838]" />
-                <div className="flex gap-1 md:gap-2 items-center cursor-pointer ">
+              <div className="flex  gap-2 sm:gap-4 md:gap-6 items-center cursor-pointer w-[40%] justify-end">
+                <a
+                  href={`https://www.linkedin.com/company/mewe-connect/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FlatIcon className="flaticon-linkedin md:text-2xl sm:text-lg text-base text-[#383838]" />
+                </a>
+                <a
+                  href={`https://www.instagram.com/mewe.ig?igsh=d2w5cHJ2cDVlbno5`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FlatIcon className="flaticon-instagram md:text-2xl sm:text-lg text-base text-[#383838]" />
+                </a>
+
+                <a
+                  href={`https://x.com/mewe_x?s=21`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FlatIcon className="flaticon-twitter md:text-2xl  sm:text-lg text-base text-[#383838]" />
+                </a>
+
+                {/* <div className="flex gap-1 md:gap-2 items-center cursor-pointer ">
                   <div className="w-6 h-6  sm:w-8 sm:h-8  md:w-10 md:h-10 rounded-full overflow-hidden">
                     <Image
                       src={flag}
@@ -148,7 +168,7 @@ const Navbar = ({ cookie }: any) => {
                       </span>
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

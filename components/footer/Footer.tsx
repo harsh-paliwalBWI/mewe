@@ -47,8 +47,8 @@ const Footer = () => {
         { name: "Posts", href: "/account?tab=manage-posts" },
         { name: "Chats", href: "/account?tab=chat" },
         { name: "Notification", href: "#" },
-        { name: "Terms & Conditions", href: "#" },
-        { name: "Privacy Policy", href: "#" },
+        { name: "Terms & Conditions", href: "terms-and-conditions" },
+        { name: "Privacy Policy", href: "privacy-policy" },
         { name: "FAQS", href: "#" },
       ],
     },
@@ -97,7 +97,7 @@ const Footer = () => {
       </div>
       <hr className="h-1 sm:h-2 md:h-3 bg-white"></hr>
 
-{/* sm:pt-6 md:pt-9 lg:pt-12 */}
+      {/* sm:pt-6 md:pt-9 lg:pt-12 */}
       <div className="px-body  flex flex-col gap-2 md:gap-3 md:flex-row justify-between   pt-4  ">
         <div className=" flex flex-col gap-2 sm:gap-4 md:gap-6  w-full md:w-[40%] ">
           <div className=" flex gap-2 sm:gap-3 md:gap-4  items-center ">
@@ -138,37 +138,36 @@ const Footer = () => {
 
           <div className="text-base ">
             <p className="  text-white md:text-base sm:text-sm text-xs">
-              Full | Driving house with dirty bassline, huge beats, soulful male
-              vocal. Driving house with dirty bassline, huge beats, soulful male
-              vocal, vocal FX & heavy synths
+              Empowering entrepreneurs through innovative connections with
+              investors to drive startup success.
             </p>
           </div>
 
           <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 mt-1 sm:mt-2 md:mt-3 ">
-            <a href={`mailto: me.we23@gmail.com`}>
+            <a href={`mailto: contact@mewe.co.in`}>
               <div className="flex gap-2 sm:gap-3 md:gap-4 cursor-pointer items-center">
                 <div>
                   <FlatIcon className="flaticon-email md:text-4xl sm:text-3xl text-2xl font-bold text-white  " />
                 </div>
                 <p className=" opacity-80 text-white md:text-base sm:text-sm text-xs ">
-                  me.we23@gmail.com
+                  contact@mewe.co.in
                 </p>
               </div>
             </a>
 
-            <a href={`tel:011-34-3922835`}>
+            <a href={`tel:91-7769881806`}>
               <div className="flex gap-2 sm:gap-3 md:gap-4 cursor-pointer items-center">
                 <div>
                   <FlatIcon className="flaticon-phone md:text-4xl sm:text-3xl text-2xl font-bold text-white " />
                 </div>
                 <p className="md:text-base sm:text-sm text-xs opacity-80 text-white ">
-                  011-34-3922835
+                  +91-7769881806
                 </p>
               </div>
             </a>
           </div>
         </div>
-{/* md:mb-[15px] sm:mb-[5px] mb-[1px]  */}
+        {/* md:mb-[15px] sm:mb-[5px] mb-[1px]  */}
         <div className="grid w-full md:w-[53%] xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-2  gap-y-4  ">
           {DUMMY_DATA.map((item: any, idx: number) => {
             return (
@@ -212,7 +211,12 @@ const Footer = () => {
         top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 md:-translate-y-1/3  w-full"
         >
           <div className=" flex gap-2 sm:gap-5 md:gap-8 items-center ">
-            <div className="  w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8  cursor-pointer">
+            <a
+              href={`https://www.instagram.com/mewe.ig?igsh=d2w5cHJ2cDVlbno5`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="  w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8  cursor-pointer"
+            >
               <Image
                 src={instagram}
                 alt="instagram"
@@ -221,8 +225,13 @@ const Footer = () => {
                 // layout="responsive"
                 className="w-full h-full"
               />
-            </div>
-            <div className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8  cursor-pointer">
+            </a>
+            <a
+              href={`https://www.linkedin.com/company/mewe-connect/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8  cursor-pointer"
+            >
               <Image
                 src={linkedin}
                 alt="linkedin"
@@ -231,8 +240,13 @@ const Footer = () => {
                 layout="responsive"
                 className="w-full h-full"
               />
-            </div>
-            <div className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 cursor-pointer">
+            </a>
+            <a
+              href={`https://www.facebook.com/profile.php?id=61556929246770&mibextid=LQQJ4d`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 cursor-pointer"
+            >
               <Image
                 src={facebookImg}
                 alt="facebook"
@@ -241,7 +255,7 @@ const Footer = () => {
                 layout="responsive"
                 className="w-full h-full"
               />
-            </div>
+            </a>
           </div>
 
           <div className="flex gap-1 sm:gap-2 md:gap-3 items-center ">
@@ -256,7 +270,7 @@ const Footer = () => {
               />{" "}
             </div>
             <p className="text-[#e4e4e5] md:text-lg sm:text-sm text-xs font-medium text-center sm:text-start ">
-              Me.We, 2023 All rights reserved.
+              Me.We, 2024 All rights reserved.
             </p>
           </div>
         </div>
