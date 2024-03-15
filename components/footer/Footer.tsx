@@ -49,7 +49,7 @@ const Footer = () => {
         { name: "Notification", href: "#" },
         { name: "Terms & Conditions", href: "terms-and-conditions" },
         { name: "Privacy Policy", href: "privacy-policy" },
-        { name: "FAQS", href: "#" },
+        // { name: "FAQS", href: "#" },
       ],
     },
   ];

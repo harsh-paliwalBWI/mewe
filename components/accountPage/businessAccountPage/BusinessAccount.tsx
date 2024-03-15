@@ -80,11 +80,79 @@ interface Product {
   profitPercentage: string;
 }
 
-const dummyTypeOfInvestment = [
-  { id: 2, name: "Equity", unavailable: false },
-  { id: 3, name: "Investment type2", unavailable: false },
-  { id: 4, name: "Investment type3", unavailable: true },
-  { id: 5, name: "Investment type4", unavailable: false },
+const investmentTypes = [
+  {
+    id: 1,
+    name: "Equity Investment",
+    tooltip:
+      "Buying stocks in a company for ownership and potential profit share.",
+  },
+  {
+    id: 2,
+    name: "Debt Investment",
+    tooltip:
+      "Providing loans or bonds to businesses for fixed income and priority repayment.",
+  },
+  {
+    id: 3,
+    name: "Convertible Securities",
+    tooltip:
+      "Blend of debt and equity where investors can convert to stocks for potential profit.",
+  },
+  {
+    id: 4,
+    name: "Venture Capital",
+    tooltip:
+      "Investing in high-growth startups for equity, often offering expertise.",
+  },
+  {
+    id: 5,
+    name: "Angel Investment",
+    tooltip:
+      "Individuals investing in startups for equity, often providing guidance.",
+  },
+  {
+    id: 6,
+    name: "Private Equity",
+    tooltip:
+      "Buying stakes in established companies, improving them, and selling for profit.",
+  },
+  {
+    id: 7,
+    name: "Strategic Investments",
+    tooltip:
+      "Partnering with other companies for mutual benefit, sometimes acquiring stakes.",
+  },
+  {
+    id: 8,
+    name: "Crowdfunding",
+    tooltip:
+      "Raising capital from many individuals, offering rewards or equity.",
+  },
+  {
+    id: 9,
+    name: "Strategic Partnerships and Joint Ventures",
+    tooltip:
+      "Collaborating with other businesses for shared goals, contributing resources.",
+  },
+  {
+    id: 10,
+    name: "Preferred Stock",
+    tooltip:
+      "Ownership shares with preferential treatment in dividends and liquidation.",
+  },
+  {
+    id: 11,
+    name: "Royalty Financing",
+    tooltip:
+      "Providing capital in exchange for a share of future product profits.",
+  },
+  {
+    id: 12,
+    name: "Revenue-Based Financing",
+    tooltip:
+      "Investing in a business in exchange for a percentage of future revenues without fixed repayments.",
+  },
 ];
 
 const borderStyle = "border border-[#C8C8C8] rounded-md relative";
@@ -1209,9 +1277,9 @@ const BusinessAccount = () => {
                         </span>
                       </Listbox.Button>
                       <Listbox.Options
-                        className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl  bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`}
+                        className={`absolute top-[50px] px-3 py-3 rounded-md shadow-xl overflow-y-scroll max-h-40 bg-[#F8FAFC] text-sm flex flex-col gap-2 left-0 z-30 w-full`}
                       >
-                        {dummyTypeOfInvestment.map((investment) => (
+                        {investmentTypes.map((investment) => (
                           <Listbox.Option
                             key={investment.id}
                             value={investment}
@@ -1229,6 +1297,13 @@ const BusinessAccount = () => {
 
                                 <span>{investment.name}</span>
                                 {selected && <span>&#x2714;</span>}
+                                {/* {active && (
+                                  <div className="z-50 relative">
+                                    <span className="">
+                                      {investment.tooltip}
+                                    </span>
+                                  </div>
+                                )} */}
                               </li>
                             )}
                           </Listbox.Option>

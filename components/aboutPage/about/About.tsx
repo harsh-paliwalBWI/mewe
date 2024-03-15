@@ -132,18 +132,18 @@ const About: FC<Props> = ({ aboutInfo }) => {
         ? singleBusinessAccountData?.currentFinancialIncome
         : "-",
     },
-    {
-      name: "Previous Investment",
-      value: singleBusinessAccountData?.previousInvestment
-        ? singleBusinessAccountData?.previousInvestment
-        : "-",
-    },
-    {
-      name: "Investor Name",
-      value: businessAccountData?.inverstorName
-        ? businessAccountData?.inverstorName
-        : "-",
-    },
+    // {
+    //   name: "Previous Investment",
+    //   value: singleBusinessAccountData?.previousInvestment
+    //     ? singleBusinessAccountData?.previousInvestment
+    //     : "-",
+    // },
+    // {
+    //   name: "Investor Name",
+    //   value: businessAccountData?.inverstorName
+    //     ? businessAccountData?.inverstorName
+    //     : "-",
+    // },
     {
       name: "Type of Investment",
       value: singleBusinessAccountData?.typeOfInvestement
