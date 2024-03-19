@@ -18,6 +18,7 @@ import { getCookie } from "cookies-next";
 import Modal from "@/components/Modal/modal";
 import { CircularProgress } from "@mui/material";
 import { fetchAllCategories } from "@/services/categoriesService";
+import { IoInformationCircleSharp } from "react-icons/io5";
 
 const dummyCompanySize = [
   { id: 2, name: "less than 10", unavailable: false },
@@ -170,6 +171,20 @@ const BusinessAccount = () => {
   const [industry, setIndustry] = useState(dummyIndustry[0]);
   const pathName = usePathname();
   const router = useRouter();
+
+  const [tooltipVisible, setTooltipVisible] = useState(null);
+
+  // Handle mouse enter event to show tooltip
+  const handleMouseEnter = (investmentId: any) => {
+    setTooltipVisible(investmentId);
+  };
+
+  // Handle mouse leave event to hide tooltip
+  const handleMouseLeave = () => {
+    setTooltipVisible(null);
+  };
+
+  console.log(tooltipVisible, "hhhhh");
 
   const { data: startUpData } = useQuery({
     queryKey: ["startUpData"],
@@ -1262,7 +1277,7 @@ const BusinessAccount = () => {
                     value={typeOfInvestement}
                     onChange={setTypeOfInvestment}
                   >
-                    <div className=" ">
+                    <div className="">
                       <Listbox.Button
                         className={` w-full flex items-center justify-between text-start text-sm lg:text-sm md:text-xs text-sm`}
                       >
@@ -1296,14 +1311,16 @@ const BusinessAccount = () => {
                                 {/* {selected && <CheckIcon />} */}
 
                                 <span>{investment.name}</span>
-                                {selected && <span>&#x2714;</span>}
-                                {/* {active && (
-                                  <div className="z-50 relative">
-                                    <span className="">
-                                      {investment.tooltip}
-                                    </span>
-                                  </div>
-                                )} */}
+                                <div className="flex gap-1 md:gap-2 items-center">
+                                  {" "}
+                                  {selected && <span>&#x2714;</span>}
+                                  <IoInformationCircleSharp
+                                    onMouseEnter={() =>
+                                      handleMouseEnter(investment.id)
+                                    }
+                                    onMouseLeave={handleMouseLeave}
+                                  ></IoInformationCircleSharp>
+                                </div>
                               </li>
                             )}
                           </Listbox.Option>
@@ -1312,13 +1329,24 @@ const BusinessAccount = () => {
                     </div>
                   </Listbox>
                 </div>
+                {tooltipVisible && (
+                  <div className="z-50 w-36 sm:w-40 md:w-44 h-auto bg-white absolute right-10 top-[100%] border-2 border-black p-1 rounded-md">
+                    <span className="text-black text-xs sm:text-xs md:text-sm">
+                      {
+                        investmentTypes.find(
+                          (investment) => investment.id === tooltipVisible
+                        )?.tooltip
+                      }
+                    </span>
+                  </div>
+                )}
               </div>
               {/* <div className={`${borderStyle} `}>
                 <label className={`${labelStyle}`} htmlFor="input">Pan Number</label>
                 <input value={(isClient&&state.panNo)?state.panNo:""} onChange={(e) => setState({ ...state, panNo: e.target.value })} className={`${inputStyle}`} type="text" id="input" />
               </div> */}
             </div>
-            {typeOfInvestement.name === "Equity" && (
+            {typeOfInvestement.name === "Equity Investmen" && (
               <div>
                 <div className="flex md:gap-8 sm:gap-4 gap-2 w-full ">
                   <div className={`${borderStyle} w-[85%] `}>
